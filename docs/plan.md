@@ -25,7 +25,7 @@ Een nieuwe webshop die functioneel hetzelfde doet als de previous-webshop-shop, 
 
 ### B. Basis PackDesk
 
-Python + Django, PostgreSQL, Docker, GitHub Actions, inloggen en rollen, instellingenpagina (naam, logo, kleuren, licht/donker, talen, adressen per documentsoort, homepageblokken, menu, footer, onderhoudsmodus en meldingsbalk), admin-opzet, ontwerp.
+Python + Django, PostgreSQL, Docker, GitHub Actions, inloggen en rollen, rollen en rechten (eigen rollen met rechtenmatrix, elke medewerker één rol), instellingenpagina (naam, logo, kleuren, licht/donker, talen, adressen per documentsoort, homepageblokken, menu, footer, onderhoudsmodus en meldingsbalk), admin-opzet, ontwerp.
 De oude Ruby-code dient alleen als naslag voor de werking; er wordt niets van overgenomen.
 
 ### C. Modules, één voor één

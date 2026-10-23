@@ -47,8 +47,17 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   - Alleen de rollen Beheerder en Financieel mogen tellers corrigeren.
 - **Inloggen** met e-mailadres.
 - **Admin** op `/beheer/`.
-- **Rollen:** Beheerder, Financieel, Service, Medewerker (`apps/accounts/roles.py`).
-  Een superuser kan alles, ook rollen beheren.
+- **Rollen en rechten** (Gebruikers → Rollen): maak zelf rollen aan en vink per onderdeel aan wat
+  een rol mag (bekijken, toevoegen, wijzigen, verwijderen, plus speciale rechten zoals *nummertellers
+  corrigeren*). Elke medewerker (admin-gebruiker) heeft verplicht één rol; die rol bepaalt wat hij in
+  het beheer ziet en kan. Klanten hebben geen rol en geen toegang tot het beheer.
+  - Je kunt alleen rechten en rollen toekennen die je zelf hebt; rechten die je niet ziet, blijven bij
+    het bewerken van een rol behouden.
+  - Een rol die nog gebruikers heeft, kan niet worden verwijderd.
+  - Een nieuwe installatie krijgt vier standaardrollen (Beheerder, Financieel, Service, Medewerker,
+    `apps/accounts/roles.py`); daarna worden ze nooit meer automatisch aangepast.
+  - Een superuser kan alles. Nieuwe modules voegen hun app toe aan `MANAGED_APPS` in
+    `apps/accounts/permissions.py`, zodat hun functies in de roleditor verschijnen.
 
 ## Lokaal ontwikkelen
 
