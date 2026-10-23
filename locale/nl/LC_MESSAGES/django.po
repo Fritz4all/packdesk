@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 23:10+0200\n"
+"POT-Creation-Date: 2026-10-23 23:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,21 +17,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/accounts/admin.py:45 apps/accounts/admin.py:51
+#: apps/accounts/admin.py:36 apps/accounts/admin.py:89
+msgid "Permissions"
+msgstr "Rechten"
+
+#: apps/accounts/admin.py:40
+msgid ""
+"Tick what users with this role may see and do. You can only grant rights you "
+"have yourself."
+msgstr "Vink aan wat gebruikers met deze rol mogen zien en doen. U kunt alleen rechten toekennen die u zelf hebt."
+
+#: apps/accounts/admin.py:85 apps/accounts/apps.py:8 packdesk/settings.py:174
+#: packdesk/settings.py:177
+msgid "Users"
+msgstr "Gebruikers"
+
+#: apps/accounts/admin.py:103 apps/accounts/admin.py:188
+#| msgid "Roles"
+msgid "Role"
+msgstr "Rol"
+
+#: apps/accounts/admin.py:106
+msgid ""
+"Required for staff. The role decides what this user sees and may do in the "
+"admin."
+msgstr "Verplicht voor medewerkers. De rol bepaalt wat deze gebruiker in het beheer ziet en mag doen."
+
+#: apps/accounts/admin.py:121
+msgid "Staff users need a role."
+msgstr "Medewerkers moeten een rol hebben."
+
+#: apps/accounts/admin.py:151 apps/accounts/admin.py:157
 msgid "Personal info"
 msgstr "Persoonlijke gegevens"
 
-#: apps/accounts/admin.py:46 apps/accounts/admin.py:52
+#: apps/accounts/admin.py:152 apps/accounts/admin.py:158
+#: apps/accounts/admin.py:163
 msgid "Access"
 msgstr "Toegang"
 
-#: apps/accounts/admin.py:47 apps/accounts/admin.py:53
+#: apps/accounts/admin.py:153 apps/accounts/admin.py:159
 msgid "Dates"
 msgstr "Datums"
 
-#: apps/accounts/apps.py:8 packdesk/settings.py:174 packdesk/settings.py:177
-msgid "Users"
-msgstr "Gebruikers"
+#: apps/accounts/admin.py:191
+#| msgid "user"
+msgid "Superuser"
+msgstr "Superuser"
 
 #: apps/accounts/forms.py:9 apps/accounts/forms.py:21
 msgid "Email address"
@@ -65,8 +97,42 @@ msgstr "gebruiker"
 msgid "users"
 msgstr "gebruikers"
 
+#: apps/accounts/models.py:54
+msgid "role"
+msgstr "rol"
+
+#: apps/accounts/models.py:55
+#| msgid "Roles"
+msgid "roles"
+msgstr "rollen"
+
+#: apps/accounts/permissions.py:12
+msgid "View"
+msgstr "Bekijken"
+
+#: apps/accounts/permissions.py:13
+msgid "Add"
+msgstr "Toevoegen"
+
+#: apps/accounts/permissions.py:14
+#| msgid "changed at"
+msgid "Change"
+msgstr "Wijzigen"
+
+#: apps/accounts/permissions.py:15
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:6
+#| msgid "introduction"
+msgid "Function"
+msgstr "Onderdeel"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:8
+msgid "Other"
+msgstr "Overig"
+
 #: apps/numbering/admin.py:17
-#| msgid "order"
 msgid "In order"
 msgstr "In orde"
 
@@ -114,86 +180,85 @@ msgid "Must be higher than %(highest)s, the highest number already issued."
 msgstr "Moet hoger zijn dan %(highest)s, het hoogste nummer dat al is uitgegeven."
 
 #: apps/numbering/admin.py:95
-#| msgid "country"
 msgid "Counter"
 msgstr "Teller"
 
-#: apps/numbering/admin.py:111
+#: apps/numbering/admin.py:116
 msgid "Next number looks like"
 msgstr "Volgende nummer wordt"
 
-#: apps/numbering/admin.py:115 apps/numbering/admin.py:129
+#: apps/numbering/admin.py:120 apps/numbering/admin.py:134
 msgid "Status"
 msgstr "Status"
 
-#: apps/numbering/admin.py:120
+#: apps/numbering/admin.py:125
 msgid "Unexplained gaps"
 msgstr "Onverklaarde gaten"
 
-#: apps/numbering/admin.py:123
+#: apps/numbering/admin.py:128
 msgid "Check against documents"
 msgstr "Controle tegen documenten"
 
-#: apps/numbering/admin.py:131
+#: apps/numbering/admin.py:136
 msgid "Source"
 msgstr "Bron"
 
-#: apps/numbering/admin.py:131
+#: apps/numbering/admin.py:136
 msgid "No documents to compare with yet."
 msgstr "Nog geen documenten om mee te vergelijken."
 
-#: apps/numbering/admin.py:134
+#: apps/numbering/admin.py:139
 msgid "Documents found"
 msgstr "Gevonden documenten"
 
-#: apps/numbering/admin.py:135
+#: apps/numbering/admin.py:140
 msgid "Lowest / highest number"
 msgstr "Laagste / hoogste nummer"
 
-#: apps/numbering/admin.py:136
+#: apps/numbering/admin.py:141
 msgid "Next number expected"
 msgstr "Verwachte volgende nummer"
 
-#: apps/numbering/admin.py:137
+#: apps/numbering/admin.py:142
 msgid "Next number set"
 msgstr "Ingesteld volgende nummer"
 
-#: apps/numbering/admin.py:141
+#: apps/numbering/admin.py:146
 msgid "Problem"
 msgstr "Probleem"
 
-#: apps/numbering/admin.py:142
+#: apps/numbering/admin.py:147
 msgid ""
 "The counter would hand out a number that already exists. Correct it before "
 "issuing documents."
 msgstr "De teller zou een nummer uitgeven dat al bestaat. Corrigeer dit voordat er documenten worden gemaakt."
 
-#: apps/numbering/admin.py:145
+#: apps/numbering/admin.py:150
 msgid "Missing numbers (not explained)"
 msgstr "Ontbrekende nummers (niet verklaard)"
 
-#: apps/numbering/admin.py:148
+#: apps/numbering/admin.py:153
 msgid "Explained gaps"
 msgstr "Verklaarde gaten"
 
-#: apps/numbering/admin.py:158 apps/numbering/admin.py:192
+#: apps/numbering/admin.py:163 apps/numbering/admin.py:197
 #, python-format
 msgid "Counter set to %(n)s."
 msgstr "Teller ingesteld op %(n)s."
 
-#: apps/numbering/admin.py:171
+#: apps/numbering/admin.py:176
 msgid "Set counter to highest number + 1"
 msgstr "Teller op hoogste nummer + 1 zetten"
 
-#: apps/numbering/admin.py:181
+#: apps/numbering/admin.py:186
 msgid "There are no documents to compare with."
 msgstr "Er zijn geen documenten om mee te vergelijken."
 
-#: apps/numbering/admin.py:185
+#: apps/numbering/admin.py:190
 msgid "The counter is already correct."
 msgstr "De teller klopt al."
 
-#: apps/numbering/admin.py:188
+#: apps/numbering/admin.py:193
 msgid "Set to highest existing number + 1"
 msgstr "Gelijkgezet met hoogste bestaande nummer + 1"
 
@@ -226,7 +291,6 @@ msgid ""
 msgstr "{nr} = teller, {nr:5} = teller met 5 cijfers, {year} = jaar, {yy} = jaar in 2 cijfers, {month} = maand, {letters:2} = willekeurige letters."
 
 #: apps/numbering/models.py:25
-#| msgid "VAT number"
 msgid "next number"
 msgstr "volgende nummer"
 
@@ -276,12 +340,10 @@ msgid "by"
 msgstr "door"
 
 #: apps/numbering/models.py:100
-#| msgid "show VAT number"
 msgid "old next number"
 msgstr "oud volgende nummer"
 
 #: apps/numbering/models.py:101
-#| msgid "show VAT number"
 msgid "new next number"
 msgstr "nieuw volgende nummer"
 
@@ -298,12 +360,10 @@ msgid "counter changes"
 msgstr "tellercorrecties"
 
 #: apps/numbering/models.py:120
-#| msgid "VAT number"
 msgid "from number"
 msgstr "van nummer"
 
 #: apps/numbering/models.py:121
-#| msgid "VAT number"
 msgid "to number"
 msgstr "tot en met nummer"
 

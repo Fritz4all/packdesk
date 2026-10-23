@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 23:10+0200\n"
+"POT-Creation-Date: 2026-10-23 23:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,21 +17,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/accounts/admin.py:45 apps/accounts/admin.py:51
+#: apps/accounts/admin.py:36 apps/accounts/admin.py:89
+msgid "Permissions"
+msgstr "Berechtigungen"
+
+#: apps/accounts/admin.py:40
+msgid ""
+"Tick what users with this role may see and do. You can only grant rights you "
+"have yourself."
+msgstr "Kreuzen Sie an, was Benutzer mit dieser Rolle sehen und tun dürfen. Sie können nur Rechte vergeben, die Sie selbst haben."
+
+#: apps/accounts/admin.py:85 apps/accounts/apps.py:8 packdesk/settings.py:174
+#: packdesk/settings.py:177
+msgid "Users"
+msgstr "Benutzer"
+
+#: apps/accounts/admin.py:103 apps/accounts/admin.py:188
+#| msgid "Roles"
+msgid "Role"
+msgstr "Rolle"
+
+#: apps/accounts/admin.py:106
+msgid ""
+"Required for staff. The role decides what this user sees and may do in the "
+"admin."
+msgstr "Pflicht für Mitarbeiter. Die Rolle bestimmt, was dieser Benutzer in der Verwaltung sieht und tun darf."
+
+#: apps/accounts/admin.py:121
+msgid "Staff users need a role."
+msgstr "Mitarbeiter benötigen eine Rolle."
+
+#: apps/accounts/admin.py:151 apps/accounts/admin.py:157
 msgid "Personal info"
 msgstr "Persönliche Daten"
 
-#: apps/accounts/admin.py:46 apps/accounts/admin.py:52
+#: apps/accounts/admin.py:152 apps/accounts/admin.py:158
+#: apps/accounts/admin.py:163
 msgid "Access"
 msgstr "Zugang"
 
-#: apps/accounts/admin.py:47 apps/accounts/admin.py:53
+#: apps/accounts/admin.py:153 apps/accounts/admin.py:159
 msgid "Dates"
 msgstr "Daten"
 
-#: apps/accounts/apps.py:8 packdesk/settings.py:174 packdesk/settings.py:177
-msgid "Users"
-msgstr "Benutzer"
+#: apps/accounts/admin.py:191
+#| msgid "user"
+msgid "Superuser"
+msgstr "Superuser"
 
 #: apps/accounts/forms.py:9 apps/accounts/forms.py:21
 msgid "Email address"
@@ -65,8 +97,42 @@ msgstr "Benutzer"
 msgid "users"
 msgstr "Benutzer"
 
+#: apps/accounts/models.py:54
+msgid "role"
+msgstr "Rolle"
+
+#: apps/accounts/models.py:55
+#| msgid "Roles"
+msgid "roles"
+msgstr "Rollen"
+
+#: apps/accounts/permissions.py:12
+msgid "View"
+msgstr "Anzeigen"
+
+#: apps/accounts/permissions.py:13
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: apps/accounts/permissions.py:14
+#| msgid "changed at"
+msgid "Change"
+msgstr "Ändern"
+
+#: apps/accounts/permissions.py:15
+msgid "Delete"
+msgstr "Löschen"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:6
+#| msgid "introduction"
+msgid "Function"
+msgstr "Bereich"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:8
+msgid "Other"
+msgstr "Sonstiges"
+
 #: apps/numbering/admin.py:17
-#| msgid "order"
 msgid "In order"
 msgstr "In Ordnung"
 
@@ -114,86 +180,85 @@ msgid "Must be higher than %(highest)s, the highest number already issued."
 msgstr "Muss höher sein als %(highest)s, die höchste bereits vergebene Nummer."
 
 #: apps/numbering/admin.py:95
-#| msgid "country"
 msgid "Counter"
 msgstr "Zähler"
 
-#: apps/numbering/admin.py:111
+#: apps/numbering/admin.py:116
 msgid "Next number looks like"
 msgstr "Nächste Nummer wird"
 
-#: apps/numbering/admin.py:115 apps/numbering/admin.py:129
+#: apps/numbering/admin.py:120 apps/numbering/admin.py:134
 msgid "Status"
 msgstr "Status"
 
-#: apps/numbering/admin.py:120
+#: apps/numbering/admin.py:125
 msgid "Unexplained gaps"
 msgstr "Ungeklärte Lücken"
 
-#: apps/numbering/admin.py:123
+#: apps/numbering/admin.py:128
 msgid "Check against documents"
 msgstr "Prüfung gegen Dokumente"
 
-#: apps/numbering/admin.py:131
+#: apps/numbering/admin.py:136
 msgid "Source"
 msgstr "Quelle"
 
-#: apps/numbering/admin.py:131
+#: apps/numbering/admin.py:136
 msgid "No documents to compare with yet."
 msgstr "Noch keine Dokumente zum Vergleichen."
 
-#: apps/numbering/admin.py:134
+#: apps/numbering/admin.py:139
 msgid "Documents found"
 msgstr "Gefundene Dokumente"
 
-#: apps/numbering/admin.py:135
+#: apps/numbering/admin.py:140
 msgid "Lowest / highest number"
 msgstr "Niedrigste / höchste Nummer"
 
-#: apps/numbering/admin.py:136
+#: apps/numbering/admin.py:141
 msgid "Next number expected"
 msgstr "Erwartete nächste Nummer"
 
-#: apps/numbering/admin.py:137
+#: apps/numbering/admin.py:142
 msgid "Next number set"
 msgstr "Eingestellte nächste Nummer"
 
-#: apps/numbering/admin.py:141
+#: apps/numbering/admin.py:146
 msgid "Problem"
 msgstr "Problem"
 
-#: apps/numbering/admin.py:142
+#: apps/numbering/admin.py:147
 msgid ""
 "The counter would hand out a number that already exists. Correct it before "
 "issuing documents."
 msgstr "Der Zähler würde eine bereits vorhandene Nummer vergeben. Korrigieren Sie dies, bevor Dokumente erstellt werden."
 
-#: apps/numbering/admin.py:145
+#: apps/numbering/admin.py:150
 msgid "Missing numbers (not explained)"
 msgstr "Fehlende Nummern (nicht geklärt)"
 
-#: apps/numbering/admin.py:148
+#: apps/numbering/admin.py:153
 msgid "Explained gaps"
 msgstr "Geklärte Lücken"
 
-#: apps/numbering/admin.py:158 apps/numbering/admin.py:192
+#: apps/numbering/admin.py:163 apps/numbering/admin.py:197
 #, python-format
 msgid "Counter set to %(n)s."
 msgstr "Zähler auf %(n)s gesetzt."
 
-#: apps/numbering/admin.py:171
+#: apps/numbering/admin.py:176
 msgid "Set counter to highest number + 1"
 msgstr "Zähler auf höchste Nummer + 1 setzen"
 
-#: apps/numbering/admin.py:181
+#: apps/numbering/admin.py:186
 msgid "There are no documents to compare with."
 msgstr "Es gibt keine Dokumente zum Vergleichen."
 
-#: apps/numbering/admin.py:185
+#: apps/numbering/admin.py:190
 msgid "The counter is already correct."
 msgstr "Der Zähler stimmt bereits."
 
-#: apps/numbering/admin.py:188
+#: apps/numbering/admin.py:193
 msgid "Set to highest existing number + 1"
 msgstr "Auf höchste vorhandene Nummer + 1 gesetzt"
 
@@ -226,7 +291,6 @@ msgid ""
 msgstr "{nr} = Zähler, {nr:5} = Zähler mit 5 Ziffern, {year} = Jahr, {yy} = Jahr zweistellig, {month} = Monat, {letters:2} = zufällige Buchstaben."
 
 #: apps/numbering/models.py:25
-#| msgid "VAT number"
 msgid "next number"
 msgstr "nächste Nummer"
 
@@ -276,12 +340,10 @@ msgid "by"
 msgstr "von"
 
 #: apps/numbering/models.py:100
-#| msgid "show VAT number"
 msgid "old next number"
 msgstr "alte nächste Nummer"
 
 #: apps/numbering/models.py:101
-#| msgid "show VAT number"
 msgid "new next number"
 msgstr "neue nächste Nummer"
 
@@ -298,12 +360,10 @@ msgid "counter changes"
 msgstr "Zählerkorrekturen"
 
 #: apps/numbering/models.py:120
-#| msgid "VAT number"
 msgid "from number"
 msgstr "von Nummer"
 
 #: apps/numbering/models.py:121
-#| msgid "VAT number"
 msgid "to number"
 msgstr "bis Nummer"
 
