@@ -1,6 +1,6 @@
 # PackDesk – opbouwplan
 
-Status: voorstel; techniekkeuze (Django) besloten. Laatst bijgewerkt: 2026-10-23.
+Status: stap A en B klaar. Laatst bijgewerkt: 2026-10-23.
 
 ## Doel
 
@@ -8,7 +8,7 @@ Een nieuwe webshop die functioneel hetzelfde doet als de previous-webshop-shop, 
 
 - volledig instelbaar via een admin-omgeving (teksten, mails, factuursjabloon, prijzen, huisstijl, SMTP, nummering);
 - modern en verzorgd van uiterlijk;
-- geschikt voor meerdere klanten (eigen domein, data, huisstijl en instellingen per klant);
+- herbruikbaar voor meerdere klanten: per klant een **eigen installatie** (on-site), met naam, logo, kleuren, bedrijfsgegevens en alle andere instellingen aan te passen in de admin;
 - met behoud van alle historie van de vorige webshop: klanten, documentnummers en de bestaande pdf's.
 
 ## Stappen
@@ -24,12 +24,12 @@ Een nieuwe webshop die functioneel hetzelfde doet als de previous-webshop-shop, 
 
 ### B. Basis PackDesk
 
-Python + Django, PostgreSQL, Docker, GitHub Actions, inloggen en rollen, multi-tenant, admin-opzet, ontwerp.
+Python + Django, PostgreSQL, Docker, GitHub Actions, inloggen en rollen, instellingenpagina (naam, logo, kleuren, bedrijfsgegevens, taal), admin-opzet, ontwerp.
 De oude Ruby-code dient alleen als naslag voor de werking; er wordt niets van overgenomen.
 
 ### C. Modules, één voor één
 
-0. **Nummerreeksen** (per klant en per documentsoort instelbaar, zie hieronder)
+0. **Nummerreeksen** (per documentsoort instelbaar, zie hieronder)
 1. Klanten, resellers, gebruikers
 2. Supportpakketten en licenties
 3. Bestellen en verlengen
@@ -50,7 +50,7 @@ De oude Ruby-code dient alleen als naslag voor de werking; er wordt niets van ov
 
 ### E. Livegang en documentatie
 
-Productie-compose, README, beheerdocumentatie, draaiboek voor de overstap.
+Productie-compose, README, beheerdocumentatie, draaiboek voor de overstap, en een **installatiehandleiding voor een nieuwe klant** (on-site neerzetten, eerste instellingen).
 
 ## Nummering in de vorige webshop (gevonden in de code)
 
@@ -70,7 +70,7 @@ Het factuurnummer lijkt het database-id te zijn. Dat moet bij de import behouden
 
 ## Nummerreeksen in PackDesk (voorstel)
 
-Per klant (tenant) en per documentsoort een reeks, in te stellen in de admin:
+Per documentsoort een reeks, in te stellen in de admin:
 
 - **Patroon**, bijvoorbeeld `WS{nr}{letters:2}`, `F{jaar}-{nr:5}`, `C{nr:6}`
 - **Volgende nummer** (bij import automatisch hoogste bestaande + 1)
@@ -91,12 +91,12 @@ Per klant (tenant) en per documentsoort een reeks, in te stellen in de admin:
 Besloten (2026-10-23):
 
 1. **Python + Django** (gekozen boven Rails, Laravel, Dolibarr en Odoo: bekende taal, ingebouwde admin, zelfde Docker-werkwijze als apparatenbeheer).
+2. **Eén installatie per klant, on-site** – geen multi-tenant platform. Alles wat per klant verschilt staat in de instellingen in de admin, niet in de code.
+3. Django 5.2 LTS (ondersteund tot april 2028) op Python 3.13, officiële `python`-image.
+4. PostgreSQL 17.
+5. Admin-thema django-unfold.
 
 Aanbevolen, nog te bevestigen:
 
-2. Django 5.2 LTS (ondersteund tot april 2028) op Python 3.13, officiële `python`-image.
-3. PostgreSQL.
-4. Eén database, elke regel gekoppeld aan een klant (tenant); klant herkend aan het domein.
-5. Admin-thema voor een moderne look (bijv. django-unfold).
 6. Pdf's uit HTML-sjablonen met WeasyPrint (geen Java).
 7. Achtergrondtaken (herinneringen, mails) via de database, geen Redis.

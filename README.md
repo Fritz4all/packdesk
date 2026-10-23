@@ -1,8 +1,9 @@
 # PackDesk
 
-Multi-tenant webshop voor ICT-supportpakketten, licenties, bestellingen en facturen.
-Functioneel gebaseerd op de previous-webshop-shop, maar volledig beheerbaar via een admin-omgeving
-en geschikt voor meerdere klanten (organisaties), elk met een eigen domein, huisstijl en data.
+Webshop voor ICT-supportpakketten, licenties, bestellingen en facturen.
+Functioneel gebaseerd op de previous-webshop-shop, maar volledig beheerbaar via een admin-omgeving.
+Herbruikbaar voor meerdere klanten: elke klant krijgt een eigen installatie (on-site), en naam,
+logo, kleuren, bedrijfsgegevens en taal stel je in via de admin.
 
 Status: in opbouw. Zie [docs/plan.md](docs/plan.md).
 
@@ -12,14 +13,13 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
 
 ## Hoe het werkt
 
-- **Organisaties (tenants):** elke klant van PackDesk is een organisatie met een of meer domeinen.
-  PackDesk herkent aan de hostnaam welke organisatie het is. Onbekende hostnamen geven 404.
-- **Platformhosts** (`PLATFORM_HOSTS`) tonen alleen de admin, voor het beheer van alle organisaties.
-- **Inloggen** met e-mailadres, binnen de organisatie van het domein. Hetzelfde e-mailadres kan bij
-  meerdere organisaties bestaan.
-- **Admin** op `/beheer/`. Platformbeheerders zien alles; beheerders van een organisatie zien alleen
-  hun eigen gegevens en kunnen huisstijl, bedrijfsgegevens, taal en gebruikers aanpassen.
+- **Eén installatie per klant.** Alles wat per klant verschilt staat op de pagina **Instellingen** in de
+  admin: naam, logo, favicon, kleuren, slogan, introductietekst, bedrijfsgegevens (adres, KvK, btw, IBAN)
+  en taal. Er staat niets klantspecifieks in de code.
+- **Inloggen** met e-mailadres.
+- **Admin** op `/beheer/`.
 - **Rollen:** Beheerder, Financieel, Service, Medewerker (`apps/accounts/roles.py`).
+  Een superuser kan alles, ook rollen beheren.
 
 ## Lokaal ontwikkelen
 
@@ -28,14 +28,11 @@ Vereist: Docker met Compose v2.
 ```bash
 docker compose up -d
 docker compose exec web python manage.py migrate
-docker compose exec web python manage.py create_tenant --name "Demo" --slug demo --domain demo.localhost
-docker compose exec web python manage.py create_user --email beheer@demo.test --tenant demo --role Beheerder
-docker compose exec web python manage.py create_user --email admin@example.test
+docker compose exec web python manage.py create_user --email admin@example.test --superuser
 ```
 
-- Site van de organisatie: http://demo.localhost:8000 (`*.localhost` werkt in moderne browsers zonder hosts-file)
-- Admin van de organisatie: http://demo.localhost:8000/beheer/
-- Platform-admin: http://localhost:8000/beheer/
+- Shop: http://localhost:8000
+- Admin: http://localhost:8000/beheer/ → **Instellingen** voor naam, logo en kleuren
 - Mailpit (verstuurde mails): http://localhost:8025
 
 ## Testen
@@ -49,7 +46,7 @@ GitHub Actions draait bij elke push de tests tegen PostgreSQL en bouwt de produc
 ## Vertalingen
 
 Teksten in de code zijn Engels; Nederlands staat in `locale/nl/LC_MESSAGES/django.po`.
-De taal is een instelling per organisatie.
+De taal kies je in de instellingen.
 
 ```bash
 docker compose exec web python manage.py makemessages -l nl --ignore=venv --ignore=staticfiles --ignore=tests
