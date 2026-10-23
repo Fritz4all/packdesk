@@ -98,6 +98,11 @@ class NumberSequenceAdmin(ModelAdmin, TabbedTranslationAdmin):
     def has_add_permission(self, request):
         return request.user.is_superuser
 
+    def has_correct_permission(self, request, obj=None):
+        # A method instead of "numbering.correct_numbersequence" in @action: unfold checks
+        # permission strings against the database at startup, which fails on a fresh install.
+        return request.user.has_perm("numbering.correct_numbersequence")
+
     def has_delete_permission(self, request, obj=None):
         return False
 
@@ -170,7 +175,7 @@ class NumberSequenceAdmin(ModelAdmin, TabbedTranslationAdmin):
     @action(
         description=_("Set counter to highest number + 1"),
         url_path="set-to-highest",
-        permissions=["numbering.correct_numbersequence"],
+        permissions=["correct"],
         icon="sync",
     )
     def set_to_highest(self, request, object_id):
