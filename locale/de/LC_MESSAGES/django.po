@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 23:21+0200\n"
+"POT-Creation-Date: 2026-10-23 23:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,13 +27,12 @@ msgid ""
 "have yourself."
 msgstr "Kreuzen Sie an, was Benutzer mit dieser Rolle sehen und tun dürfen. Sie können nur Rechte vergeben, die Sie selbst haben."
 
-#: apps/accounts/admin.py:85 apps/accounts/apps.py:8 packdesk/settings.py:174
-#: packdesk/settings.py:177
+#: apps/accounts/admin.py:85 apps/accounts/apps.py:8 packdesk/settings.py:206
+#: packdesk/settings.py:209
 msgid "Users"
 msgstr "Benutzer"
 
 #: apps/accounts/admin.py:103 apps/accounts/admin.py:188
-#| msgid "Roles"
 msgid "Role"
 msgstr "Rolle"
 
@@ -61,11 +60,11 @@ msgid "Dates"
 msgstr "Daten"
 
 #: apps/accounts/admin.py:191
-#| msgid "user"
 msgid "Superuser"
 msgstr "Superuser"
 
 #: apps/accounts/forms.py:9 apps/accounts/forms.py:21
+#: apps/customers/forms.py:50
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
@@ -81,7 +80,7 @@ msgstr "Mitarbeiter"
 msgid "Customer"
 msgstr "Kunde"
 
-#: apps/accounts/models.py:27
+#: apps/accounts/models.py:27 apps/customers/models.py:150
 msgid "kind"
 msgstr "Art"
 
@@ -102,7 +101,6 @@ msgid "role"
 msgstr "Rolle"
 
 #: apps/accounts/models.py:55
-#| msgid "Roles"
 msgid "roles"
 msgstr "Rollen"
 
@@ -115,7 +113,6 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: apps/accounts/permissions.py:14
-#| msgid "changed at"
 msgid "Change"
 msgstr "Ändern"
 
@@ -124,13 +121,684 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: apps/accounts/templates/accounts/permission_matrix.html:6
-#| msgid "introduction"
 msgid "Function"
 msgstr "Bereich"
 
 #: apps/accounts/templates/accounts/permission_matrix.html:8
 msgid "Other"
 msgstr "Sonstiges"
+
+#: apps/customers/admin.py:39
+msgid "Login"
+msgstr "Login"
+
+#: apps/customers/admin.py:42
+#| msgid "No documents yet"
+msgid "No login yet"
+msgstr "Noch kein Login"
+
+#: apps/customers/admin.py:43 apps/customers/models.py:49
+#| msgid "active"
+msgid "Active"
+msgstr "Aktiv"
+
+#: apps/customers/admin.py:43
+msgid "Not active (waiting for approval or blocked)"
+msgstr "Nicht aktiv (wartet auf Freigabe oder gesperrt)"
+
+#: apps/customers/admin.py:56 apps/siteconfig/admin.py:103
+msgid "General"
+msgstr "Allgemein"
+
+#: apps/customers/admin.py:59
+#| msgid "Email address"
+msgid "Email addresses"
+msgstr "E-Mail-Adressen"
+
+#: apps/customers/admin.py:60
+msgid "Prices and invoices"
+msgstr "Preise und Rechnungen"
+
+#: apps/customers/admin.py:61
+#| msgid "quotes"
+msgid "Notes"
+msgstr "Notizen"
+
+#: apps/customers/admin.py:78
+#| msgid "Numbering"
+msgid "Number"
+msgstr "Nummer"
+
+#: apps/customers/admin.py:82 apps/customers/forms.py:40
+msgid "City"
+msgstr "Ort"
+
+#: apps/customers/admin.py:87 apps/numbering/admin.py:120
+#: apps/numbering/admin.py:134
+msgid "Status"
+msgstr "Status"
+
+#: apps/customers/admin.py:91
+msgid "Contacts"
+msgstr "Ansprechpartner"
+
+#: apps/customers/admin.py:108
+msgid "Approve selected customers"
+msgstr "Ausgewählte Kunden freigeben"
+
+#: apps/customers/admin.py:112
+#, python-format
+msgid "%(n)s customer(s) approved."
+msgstr "%(n)s Kunde(n) freigegeben."
+
+#: apps/customers/admin.py:114
+msgid "Block selected customers"
+msgstr "Ausgewählte Kunden sperren"
+
+#: apps/customers/admin.py:118
+#, python-format
+msgid "%(n)s customer(s) blocked."
+msgstr "%(n)s Kunde(n) gesperrt."
+
+#: apps/customers/admin.py:123
+msgid "Approve"
+msgstr "Freigeben"
+
+#: apps/customers/admin.py:127
+#, python-format
+msgid "Customer approved with number %(n)s."
+msgstr "Kunde mit Nummer %(n)s freigegeben."
+
+#: apps/customers/admin.py:130
+msgid "Block"
+msgstr "Sperren"
+
+#: apps/customers/admin.py:133
+msgid "Customer blocked; its contacts can no longer log in."
+msgstr "Kunde gesperrt; die Ansprechpartner können sich nicht mehr anmelden."
+
+#: apps/customers/admin.py:136
+msgid "Send login to contacts without one"
+msgstr "Login an Ansprechpartner ohne Login senden"
+
+#: apps/customers/admin.py:154
+#, python-format
+msgid "Logins created; %(n)s invitation(s) sent."
+msgstr "Logins angelegt; %(n)s Einladung(en) gesendet."
+
+#: apps/customers/admin.py:156
+#, python-format
+msgid "Email address already in use: %(list)s"
+msgstr "E-Mail-Adresse bereits vergeben: %(list)s"
+
+#: apps/customers/admin.py:174
+#| msgid "Customer"
+msgid "New customers"
+msgstr "Neue Kunden"
+
+#: apps/customers/admin.py:175
+msgid "Sign-up form"
+msgstr "Anmeldeformular"
+
+#: apps/customers/admin.py:178
+msgid "Form fields"
+msgstr "Formularfelder"
+
+#: apps/customers/admin.py:184
+msgid "Activation email"
+msgstr "Aktivierungs-E-Mail"
+
+#: apps/customers/apps.py:7 packdesk/settings.py:176 packdesk/settings.py:179
+#| msgid "Customer"
+msgid "Customers"
+msgstr "Kunden"
+
+#: apps/customers/emails.py:33
+#, python-format
+msgid ""
+"New sign-up: %(company)s\n"
+"Contact: %(contact)s <%(email)s>\n"
+"\n"
+"Review and approve: %(url)s"
+msgstr "Neue Anmeldung: %(company)s\nAnsprechpartner: %(contact)s <%(email)s>\n\nPrüfen und freigeben: %(url)s"
+
+#: apps/customers/emails.py:39
+#, python-format
+msgid "New sign-up: %(company)s"
+msgstr "Neue Anmeldung: %(company)s"
+
+#: apps/customers/emails.py:47
+msgid "Your account is active"
+msgstr "Ihr Konto ist aktiv"
+
+#: apps/customers/emails.py:48
+#, python-brace-format
+msgid "Your account has been approved. Log in at {login_url}"
+msgstr "Ihr Konto wurde freigegeben. Melden Sie sich unter {login_url} an."
+
+#: apps/customers/emails.py:61
+#, python-format
+msgid ""
+"Dear %(name)s,\n"
+"\n"
+"An account has been created for you at %(company)s.\n"
+"Choose your password via this link:\n"
+"%(link)s\n"
+"\n"
+"Your login is your email address: %(email)s"
+msgstr "Sehr geehrte(r) %(name)s,\n\nbei %(company)s wurde ein Konto für Sie angelegt.\nWählen Sie Ihr Passwort über diesen Link:\n%(link)s\n\nIhr Login ist Ihre E-Mail-Adresse: %(email)s"
+
+#: apps/customers/emails.py:65
+#, python-format
+msgid "Your account at %(company)s"
+msgstr "Ihr Konto bei %(company)s"
+
+#: apps/customers/forms.py:31
+#| msgid "Company details"
+msgid "Company name"
+msgstr "Firmenname"
+
+#: apps/customers/forms.py:32 templates/customers/my_details.html:12
+#| msgid "phone"
+msgid "Phone"
+msgstr "Telefon"
+
+#: apps/customers/forms.py:33 apps/customers/models.py:62
+#: apps/customers/models.py:253 apps/siteconfig/models.py:104
+#: templates/customers/my_details.html:11
+msgid "VAT number"
+msgstr "USt-IdNr."
+
+#: apps/customers/forms.py:34 apps/customers/models.py:63
+#: apps/customers/models.py:255 apps/siteconfig/models.py:103
+msgid "Chamber of Commerce number"
+msgstr "Handelsregisternummer"
+
+#: apps/customers/forms.py:35
+#| msgid "website"
+msgid "Website"
+msgstr "Website"
+
+#: apps/customers/forms.py:37 templates/customers/signup.html:17
+#| msgid "address"
+msgid "Address"
+msgstr "Adresse"
+
+#: apps/customers/forms.py:38
+#| msgid "address line 2"
+msgid "Address line 2"
+msgstr "Adresszeile 2"
+
+#: apps/customers/forms.py:39
+#| msgid "postal code"
+msgid "Postal code"
+msgstr "Postleitzahl"
+
+#: apps/customers/forms.py:41
+#| msgid "country"
+msgid "Country"
+msgstr "Land"
+
+#: apps/customers/forms.py:43
+msgid "Salutation"
+msgstr "Anrede"
+
+#: apps/customers/forms.py:44
+msgid "Initials"
+msgstr "Initialen"
+
+#: apps/customers/forms.py:45
+msgid "First name"
+msgstr "Vorname"
+
+#: apps/customers/forms.py:46
+#| msgid "legal name"
+msgid "Last name"
+msgstr "Nachname"
+
+#: apps/customers/forms.py:47
+#| msgid "title"
+msgid "Job title"
+msgstr "Funktion"
+
+#: apps/customers/forms.py:48
+msgid "Department"
+msgstr "Abteilung"
+
+#: apps/customers/forms.py:49
+msgid "Direct phone"
+msgstr "Direkte Telefonnummer"
+
+#: apps/customers/forms.py:50
+msgid "This is also your login."
+msgstr "Dies ist auch Ihr Login."
+
+#: apps/customers/forms.py:51
+msgid "Password"
+msgstr "Passwort"
+
+#: apps/customers/forms.py:52
+msgid "Repeat password"
+msgstr "Passwort wiederholen"
+
+#: apps/customers/forms.py:53 templates/customers/signup.html:23
+msgid "Message"
+msgstr "Nachricht"
+
+#: apps/customers/forms.py:73
+msgid "There is already an account with this email address."
+msgstr "Es gibt bereits ein Konto mit dieser E-Mail-Adresse."
+
+#: apps/customers/forms.py:79 apps/customers/forms.py:85
+msgid "The form could not be sent."
+msgstr "Das Formular konnte nicht gesendet werden."
+
+#: apps/customers/forms.py:83
+msgid "The form has expired. Please try again."
+msgstr "Das Formular ist abgelaufen. Bitte versuchen Sie es erneut."
+
+#: apps/customers/forms.py:88 apps/customers/models.py:104
+#, python-format
+msgid "A VAT number is required for customers in %(country)s."
+msgstr "Für Kunden in %(country)s ist eine USt-IdNr. erforderlich."
+
+#: apps/customers/forms.py:91
+msgid "The passwords do not match."
+msgstr "Die Passwörter stimmen nicht überein."
+
+#: apps/customers/models.py:13 apps/customers/models.py:30
+#: apps/numbering/models.py:18 apps/siteconfig/models.py:23
+#: apps/siteconfig/models.py:179
+msgid "name"
+msgstr "Name"
+
+#: apps/customers/models.py:14
+msgid "is reseller"
+msgstr "ist Reseller"
+
+#: apps/customers/models.py:15 apps/customers/models.py:35
+#: apps/siteconfig/models.py:195 apps/siteconfig/models.py:234
+#: apps/siteconfig/models.py:254
+msgid "order"
+msgstr "Reihenfolge"
+
+#: apps/customers/models.py:18 apps/customers/models.py:58
+#| msgid "Customer"
+msgid "customer type"
+msgstr "Kundentyp"
+
+#: apps/customers/models.py:19
+#| msgid "Customer"
+msgid "customer types"
+msgstr "Kundentypen"
+
+#: apps/customers/models.py:29 apps/numbering/models.py:17
+msgid "code"
+msgstr "Code"
+
+#: apps/customers/models.py:29
+msgid "Two letters, e.g. NL."
+msgstr "Zwei Buchstaben, z. B. NL."
+
+#: apps/customers/models.py:32
+#| msgid "VAT number"
+msgid "VAT number required"
+msgstr "USt-IdNr. erforderlich"
+
+#: apps/customers/models.py:32
+msgid "E.g. for customers outside your own country."
+msgstr "Z. B. für Kunden außerhalb Ihres eigenen Landes."
+
+#: apps/customers/models.py:34 apps/siteconfig/models.py:233
+#: apps/siteconfig/models.py:253
+msgid "active"
+msgstr "aktiv"
+
+#: apps/customers/models.py:38 apps/customers/models.py:156
+#: apps/siteconfig/models.py:184
+msgid "country"
+msgstr "Land"
+
+#: apps/customers/models.py:39
+#| msgid "country"
+msgid "countries"
+msgstr "Länder"
+
+#: apps/customers/models.py:48
+msgid "Waiting for approval"
+msgstr "Wartet auf Freigabe"
+
+#: apps/customers/models.py:50
+msgid "Blocked"
+msgstr "Gesperrt"
+
+#: apps/customers/models.py:53 templates/core/dashboard.html:7
+#| msgid "to number"
+msgid "customer number"
+msgstr "Kundennummer"
+
+#: apps/customers/models.py:54
+msgid ""
+"Account number (debtor number). Filled in automatically on approval if left "
+"empty."
+msgstr "Debitorennummer. Wird bei der Freigabe automatisch vergeben, wenn leer."
+
+#: apps/customers/models.py:56
+msgid "company name"
+msgstr "Firmenname"
+
+#: apps/customers/models.py:60
+#| msgid "Status"
+msgid "status"
+msgstr "Status"
+
+#: apps/customers/models.py:64 apps/customers/models.py:191
+#: apps/customers/models.py:252 apps/siteconfig/models.py:100
+#: apps/siteconfig/models.py:185
+msgid "phone"
+msgstr "Telefon"
+
+#: apps/customers/models.py:65
+#| msgid "General"
+msgid "general email"
+msgstr "allgemeine E-Mail"
+
+#: apps/customers/models.py:66 apps/customers/models.py:256
+#: apps/siteconfig/models.py:102 apps/siteconfig/models.py:188
+msgid "website"
+msgstr "Website"
+
+#: apps/customers/models.py:68
+#| msgid "email address"
+msgid "email for orders"
+msgstr "E-Mail für Bestellungen"
+
+#: apps/customers/models.py:68
+msgid "Order confirmations; empty = general email."
+msgstr "Auftragsbestätigungen; leer = allgemeine E-Mail."
+
+#: apps/customers/models.py:69
+msgid "email for spare parts"
+msgstr "E-Mail für Ersatzteile"
+
+#: apps/customers/models.py:69 apps/customers/models.py:70
+msgid "Empty = general email."
+msgstr "Leer = allgemeine E-Mail."
+
+#: apps/customers/models.py:70
+#| msgid "invoices"
+msgid "email for invoices"
+msgstr "E-Mail für Rechnungen"
+
+#: apps/customers/models.py:72
+msgid "margin service packs (%)"
+msgstr "Marge Servicepakete (%)"
+
+#: apps/customers/models.py:73
+msgid "margin spare parts (%)"
+msgstr "Marge Ersatzteile (%)"
+
+#: apps/customers/models.py:75
+msgid "no invoice for service packs"
+msgstr "keine Rechnung für Servicepakete"
+
+#: apps/customers/models.py:75
+msgid "Service pack orders of this customer are not invoiced."
+msgstr "Servicepaket-Bestellungen dieses Kunden werden nicht berechnet."
+
+#: apps/customers/models.py:77 apps/siteconfig/models.py:39
+msgid "logo"
+msgstr "Logo"
+
+#: apps/customers/models.py:78
+msgid "internal remark"
+msgstr "interne Bemerkung"
+
+#: apps/customers/models.py:80
+msgid "message with sign-up"
+msgstr "Nachricht bei Anmeldung"
+
+#: apps/customers/models.py:81
+#| msgid "recorded at"
+msgid "approved at"
+msgstr "freigegeben am"
+
+#: apps/customers/models.py:84
+msgid "approved by"
+msgstr "freigegeben von"
+
+#: apps/customers/models.py:86 apps/customers/models.py:195
+msgid "ID in old system"
+msgstr "ID im alten System"
+
+#: apps/customers/models.py:87
+msgid "created"
+msgstr "angelegt"
+
+#: apps/customers/models.py:88 apps/siteconfig/models.py:107
+msgid "updated"
+msgstr "aktualisiert"
+
+#: apps/customers/models.py:91
+#| msgid "Customer"
+msgid "customer"
+msgstr "Kunde"
+
+#: apps/customers/models.py:92
+#| msgid "Customer"
+msgid "customers"
+msgstr "Kunden"
+
+#: apps/customers/models.py:145
+#| msgid "Email address"
+msgid "Main address"
+msgstr "Hauptadresse"
+
+#: apps/customers/models.py:146
+#| msgid "Invoices"
+msgid "Invoice address"
+msgstr "Rechnungsadresse"
+
+#: apps/customers/models.py:147
+#| msgid "email address"
+msgid "Delivery address"
+msgstr "Lieferadresse"
+
+#: apps/customers/models.py:151
+msgid "attention of"
+msgstr "zu Händen von"
+
+#: apps/customers/models.py:152 apps/siteconfig/models.py:180
+#: apps/siteconfig/models.py:198
+msgid "address"
+msgstr "Adresse"
+
+#: apps/customers/models.py:153 apps/customers/models.py:261
+#: apps/siteconfig/models.py:181
+msgid "address line 2"
+msgstr "Adresszeile 2"
+
+#: apps/customers/models.py:154 apps/siteconfig/models.py:182
+msgid "postal code"
+msgstr "Postleitzahl"
+
+#: apps/customers/models.py:155 apps/siteconfig/models.py:183
+msgid "city"
+msgstr "Ort"
+
+#: apps/customers/models.py:159
+#| msgid "show address"
+msgid "customer address"
+msgstr "Kundenadresse"
+
+#: apps/customers/models.py:160
+#| msgid "addresses"
+msgid "customer addresses"
+msgstr "Kundenadressen"
+
+#: apps/customers/models.py:177
+msgid "Mr"
+msgstr "Herr"
+
+#: apps/customers/models.py:178
+msgid "Mrs"
+msgstr "Frau"
+
+#: apps/customers/models.py:183
+msgid "login"
+msgstr "Login"
+
+#: apps/customers/models.py:185 apps/customers/models.py:257
+msgid "salutation"
+msgstr "Anrede"
+
+#: apps/customers/models.py:186
+msgid "initials"
+msgstr "Initialen"
+
+#: apps/customers/models.py:187
+msgid "first name"
+msgstr "Vorname"
+
+#: apps/customers/models.py:188
+#| msgid "legal name"
+msgid "last name"
+msgstr "Nachname"
+
+#: apps/customers/models.py:189 apps/customers/models.py:258
+#| msgid "title"
+msgid "job title"
+msgstr "Funktion"
+
+#: apps/customers/models.py:190 apps/customers/models.py:259
+msgid "department"
+msgstr "Abteilung"
+
+#: apps/customers/models.py:192 apps/siteconfig/models.py:101
+#: apps/siteconfig/models.py:186
+msgid "email"
+msgstr "E-Mail"
+
+#: apps/customers/models.py:193
+#| msgid "primary colour"
+msgid "primary contact"
+msgstr "Hauptansprechpartner"
+
+#: apps/customers/models.py:194
+msgid "remark"
+msgstr "Bemerkung"
+
+#: apps/customers/models.py:198
+msgid "contact"
+msgstr "Ansprechpartner"
+
+#: apps/customers/models.py:199
+msgid "contacts"
+msgstr "Ansprechpartner"
+
+#: apps/customers/models.py:218
+msgid "Hidden"
+msgstr "Ausgeblendet"
+
+#: apps/customers/models.py:219
+msgid "Optional"
+msgstr "Optional"
+
+#: apps/customers/models.py:220
+msgid "Required"
+msgstr "Pflicht"
+
+#: apps/customers/models.py:227
+msgid "default margin service packs (%)"
+msgstr "Standardmarge Servicepakete (%)"
+
+#: apps/customers/models.py:228
+msgid "default margin spare parts (%)"
+msgstr "Standardmarge Ersatzteile (%)"
+
+#: apps/customers/models.py:231
+msgid "sign-up form active"
+msgstr "Anmeldeformular aktiv"
+
+#: apps/customers/models.py:232 apps/siteconfig/models.py:231
+msgid "link text"
+msgstr "Linktext"
+
+#: apps/customers/models.py:233
+msgid "Text of the link to the form on the login page."
+msgstr "Text des Links zum Formular auf der Anmeldeseite."
+
+#: apps/customers/models.py:234 apps/siteconfig/models.py:228
+msgid "title"
+msgstr "Titel"
+
+#: apps/customers/models.py:235 apps/siteconfig/models.py:57
+msgid "introduction"
+msgstr "Einleitung"
+
+#: apps/customers/models.py:236
+msgid "text after sending"
+msgstr "Text nach dem Absenden"
+
+#: apps/customers/models.py:238
+msgid "customer type for sign-ups"
+msgstr "Kundentyp für Anmeldungen"
+
+#: apps/customers/models.py:241
+msgid "approval required"
+msgstr "Freigabe erforderlich"
+
+#: apps/customers/models.py:242
+msgid "New customers can only log in after a staff member approves them."
+msgstr "Neue Kunden können sich erst nach Freigabe durch einen Mitarbeiter anmelden."
+
+#: apps/customers/models.py:244
+msgid "notify about new sign-ups"
+msgstr "Benachrichtigung über neue Anmeldungen an"
+
+#: apps/customers/models.py:245
+#| msgid "Leave empty to use the general email address."
+msgid "Empty = the general email address from the settings."
+msgstr "Leer = die allgemeine E-Mail-Adresse aus den Einstellungen."
+
+#: apps/customers/models.py:246
+msgid "subject of activation email"
+msgstr "Betreff der Aktivierungs-E-Mail"
+
+#: apps/customers/models.py:248
+msgid "text of activation email"
+msgstr "Text der Aktivierungs-E-Mail"
+
+#: apps/customers/models.py:249
+#, python-brace-format
+msgid "Placeholders: {name}, {company}, {number}, {login_url}."
+msgstr "Platzhalter: {name}, {company}, {number}, {login_url}."
+
+#: apps/customers/models.py:254
+msgid "Always required for countries that need a VAT number."
+msgstr "Immer Pflicht für Länder, die eine USt-IdNr. verlangen."
+
+#: apps/customers/models.py:260
+msgid "direct phone of contact"
+msgstr "direkte Telefonnummer des Ansprechpartners"
+
+#: apps/customers/models.py:262
+msgid "message"
+msgstr "Nachricht"
+
+#: apps/customers/models.py:265 apps/customers/models.py:266
+#| msgid "settings"
+msgid "customer settings"
+msgstr "Kundeneinstellungen"
+
+#: apps/customers/models.py:269 packdesk/settings.py:198
+#| msgid "Customer"
+msgid "Customer settings"
+msgstr "Kundeneinstellungen"
+
+#: apps/customers/views.py:53
+msgid "Your details have been saved."
+msgstr "Ihre Daten wurden gespeichert."
 
 #: apps/numbering/admin.py:17
 msgid "In order"
@@ -186,10 +854,6 @@ msgstr "Zähler"
 #: apps/numbering/admin.py:116
 msgid "Next number looks like"
 msgstr "Nächste Nummer wird"
-
-#: apps/numbering/admin.py:120 apps/numbering/admin.py:134
-msgid "Status"
-msgstr "Status"
 
 #: apps/numbering/admin.py:125
 msgid "Unexplained gaps"
@@ -267,17 +931,8 @@ msgid "Numbering"
 msgstr "Nummerierung"
 
 #: apps/numbering/models.py:17
-msgid "code"
-msgstr "Code"
-
-#: apps/numbering/models.py:17
 msgid "Internal code used by the software, e.g. invoice."
 msgstr "Interner Code der Software, z. B. invoice."
-
-#: apps/numbering/models.py:18 apps/siteconfig/models.py:23
-#: apps/siteconfig/models.py:179
-msgid "name"
-msgstr "Name"
 
 #: apps/numbering/models.py:20
 msgid "pattern"
@@ -415,10 +1070,6 @@ msgid ""
 "address."
 msgstr "Kreuzen Sie an, wo diese Adresse erscheint. Was nirgends angekreuzt ist, verwendet die erste Adresse."
 
-#: apps/siteconfig/admin.py:103
-msgid "General"
-msgstr "Allgemein"
-
 #: apps/siteconfig/admin.py:105
 msgid "Branding"
 msgstr "Corporate Design"
@@ -440,7 +1091,7 @@ msgid "Maintenance"
 msgstr "Wartung"
 
 #: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:114
-#: packdesk/settings.py:159
+#: packdesk/settings.py:161
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -471,10 +1122,6 @@ msgstr "Sprache für Besucher, die noch keine Sprache gewählt haben."
 #: apps/siteconfig/models.py:32
 msgid "available languages"
 msgstr "verfügbare Sprachen"
-
-#: apps/siteconfig/models.py:39
-msgid "logo"
-msgstr "Logo"
 
 #: apps/siteconfig/models.py:40
 msgid "favicon"
@@ -507,10 +1154,6 @@ msgstr "Zeigt in der Kopfzeile eine Auswahl für hell/dunkel."
 #: apps/siteconfig/models.py:55
 msgid "tagline"
 msgstr "Slogan"
-
-#: apps/siteconfig/models.py:57
-msgid "introduction"
-msgstr "Einleitung"
 
 #: apps/siteconfig/models.py:59
 msgid "Short text on the home page under the tagline."
@@ -614,33 +1257,9 @@ msgstr "Positiv"
 msgid "legal name"
 msgstr "Firmenname"
 
-#: apps/siteconfig/models.py:100 apps/siteconfig/models.py:185
-msgid "phone"
-msgstr "Telefon"
-
-#: apps/siteconfig/models.py:101 apps/siteconfig/models.py:186
-msgid "email"
-msgstr "E-Mail"
-
-#: apps/siteconfig/models.py:102 apps/siteconfig/models.py:188
-msgid "website"
-msgstr "Website"
-
-#: apps/siteconfig/models.py:103
-msgid "Chamber of Commerce number"
-msgstr "Handelsregisternummer"
-
-#: apps/siteconfig/models.py:104
-msgid "VAT number"
-msgstr "USt-IdNr."
-
 #: apps/siteconfig/models.py:105
 msgid "IBAN"
 msgstr "IBAN"
-
-#: apps/siteconfig/models.py:107
-msgid "updated"
-msgstr "aktualisiert"
 
 #: apps/siteconfig/models.py:110 apps/siteconfig/models.py:111
 msgid "settings"
@@ -649,26 +1268,6 @@ msgstr "Einstellungen"
 #: apps/siteconfig/models.py:179
 msgid "For yourself, e.g. visiting address or postal address."
 msgstr "Für Sie selbst, z. B. Besuchsadresse oder Postanschrift."
-
-#: apps/siteconfig/models.py:180 apps/siteconfig/models.py:198
-msgid "address"
-msgstr "Adresse"
-
-#: apps/siteconfig/models.py:181
-msgid "address line 2"
-msgstr "Adresszeile 2"
-
-#: apps/siteconfig/models.py:182
-msgid "postal code"
-msgstr "Postleitzahl"
-
-#: apps/siteconfig/models.py:183
-msgid "city"
-msgstr "Ort"
-
-#: apps/siteconfig/models.py:184
-msgid "country"
-msgstr "Land"
 
 #: apps/siteconfig/models.py:185
 msgid "Leave empty to use the general phone number."
@@ -698,11 +1297,6 @@ msgstr "E-Mails"
 msgid "sender on labels"
 msgstr "Absender auf Etiketten"
 
-#: apps/siteconfig/models.py:195 apps/siteconfig/models.py:234
-#: apps/siteconfig/models.py:254
-msgid "order"
-msgstr "Reihenfolge"
-
 #: apps/siteconfig/models.py:199
 msgid "addresses"
 msgstr "Adressen"
@@ -727,10 +1321,6 @@ msgstr "Symbol"
 msgid "A symbol or emoji, e.g. ✓ or 🛠"
 msgstr "Ein Symbol oder Emoji, z. B. ✓ oder 🛠"
 
-#: apps/siteconfig/models.py:228
-msgid "title"
-msgstr "Titel"
-
 #: apps/siteconfig/models.py:229 apps/siteconfig/models.py:249
 msgid "text"
 msgstr "Text"
@@ -743,17 +1333,9 @@ msgstr "Link"
 msgid "Page address, e.g. /mijn/ or https://…"
 msgstr "Seitenadresse, z. B. /mijn/ oder https://…"
 
-#: apps/siteconfig/models.py:231
-msgid "link text"
-msgstr "Linktext"
-
 #: apps/siteconfig/models.py:232 apps/siteconfig/models.py:252
 msgid "visible for"
 msgstr "sichtbar für"
-
-#: apps/siteconfig/models.py:233 apps/siteconfig/models.py:253
-msgid "active"
-msgstr "aktiv"
 
 #: apps/siteconfig/models.py:237
 msgid "home page block"
@@ -775,27 +1357,37 @@ msgstr "Menüeintrag"
 msgid "menu items"
 msgstr "Menüeinträge"
 
-#: packdesk/settings.py:92
+#: packdesk/settings.py:94
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: packdesk/settings.py:92
+#: packdesk/settings.py:94
 msgid "English"
 msgstr "Englisch"
 
-#: packdesk/settings.py:92
+#: packdesk/settings.py:94
 msgid "German"
 msgstr "Deutsch"
 
-#: packdesk/settings.py:156
+#: packdesk/settings.py:158
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: packdesk/settings.py:165
+#: packdesk/settings.py:167
 msgid "Number sequences"
 msgstr "Nummernkreise"
 
-#: packdesk/settings.py:183
+#: packdesk/settings.py:186
+#| msgid "Customer"
+msgid "Customer types"
+msgstr "Kundentypen"
+
+#: packdesk/settings.py:192
+#| msgid "Counter"
+msgid "Countries"
+msgstr "Länder"
+
+#: packdesk/settings.py:215
 msgid "Roles"
 msgstr "Rollen"
 
@@ -825,7 +1417,8 @@ msgstr "Abmelden"
 
 #: templates/base.html:62 templates/core/home.html:11
 #: templates/registration/login.html:3 templates/registration/login.html:7
-#: templates/registration/login.html:19
+#: templates/registration/login.html:13
+#: templates/registration/password_reset_complete.html:6
 msgid "Log in"
 msgstr "Anmelden"
 
@@ -842,24 +1435,35 @@ msgstr "USt"
 msgid "Welcome, %(name)s"
 msgstr "Willkommen, %(name)s"
 
-#: templates/core/dashboard.html:10
+#: templates/core/dashboard.html:11 templates/customers/my_details.html:3
+#: templates/customers/my_details.html:5
+#| msgid "Company details"
+msgid "My details"
+msgstr "Meine Daten"
+
+#: templates/core/dashboard.html:11
+msgid "Company details, contact person and password."
+msgstr "Firmendaten, Ansprechpartner und Passwort."
+
+#: templates/core/dashboard.html:13
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: templates/core/dashboard.html:10 templates/core/dashboard.html:11
-#: templates/core/dashboard.html:12
+#: templates/core/dashboard.html:13 templates/core/dashboard.html:14
+#: templates/core/dashboard.html:15
 msgid "Available soon."
 msgstr "Demnächst verfügbar."
 
-#: templates/core/dashboard.html:11
+#: templates/core/dashboard.html:14
 msgid "Licences"
 msgstr "Lizenzen"
 
-#: templates/core/dashboard.html:12
+#: templates/core/dashboard.html:15
 msgid "Invoices"
 msgstr "Rechnungen"
 
 #: templates/core/home.html:9
+#: templates/registration/password_change_done.html:6
 msgid "Go to my account"
 msgstr "Zu meinem Konto"
 
@@ -875,3 +1479,132 @@ msgstr "Wir sind gleich zurück"
 #, python-format
 msgid "Expected back: %(until)s"
 msgstr "Voraussichtlich zurück: %(until)s"
+
+#: templates/customers/my_details.html:10
+#| msgid "to number"
+msgid "Customer number"
+msgstr "Kundennummer"
+
+#: templates/customers/my_details.html:15
+msgid "Company details are wrong? Please contact us."
+msgstr "Stimmen die Firmendaten nicht? Bitte kontaktieren Sie uns."
+
+#: templates/customers/my_details.html:18
+msgid "Contact person"
+msgstr "Ansprechpartner"
+
+#: templates/customers/my_details.html:22
+msgid "Email / login"
+msgstr "E-Mail / Login"
+
+#: templates/customers/my_details.html:24
+msgid "Save"
+msgstr "Speichern"
+
+#: templates/customers/my_details.html:25
+#: templates/registration/password_change_form.html:5
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: templates/customers/signup.html:14
+#| msgid "Company details"
+msgid "Company"
+msgstr "Unternehmen"
+
+#: templates/customers/signup.html:20
+msgid "Contact person and login"
+msgstr "Ansprechpartner und Login"
+
+#: templates/customers/signup.html:24
+msgid "Send sign-up"
+msgstr "Anmeldung senden"
+
+#: templates/customers/signup_done.html:5
+msgid "Thank you"
+msgstr "Vielen Dank"
+
+#: templates/customers/signup_done.html:7
+#| msgid "button text on home page"
+msgid "Back to the home page"
+msgstr "Zurück zur Startseite"
+
+#: templates/registration/login.html:16
+msgid "Forgot password?"
+msgstr "Passwort vergessen?"
+
+#: templates/registration/login.html:17
+msgid "Sign up"
+msgstr "Registrieren"
+
+#: templates/registration/password_change_done.html:5
+#| msgid "counter change"
+msgid "Password changed"
+msgstr "Passwort geändert"
+
+#: templates/registration/password_change_form.html:8
+#: templates/registration/password_reset_confirm.html:9
+msgid "Save password"
+msgstr "Passwort speichern"
+
+#: templates/registration/password_reset_complete.html:5
+msgid "Password saved"
+msgstr "Passwort gespeichert"
+
+#: templates/registration/password_reset_confirm.html:6
+msgid "Choose a password"
+msgstr "Passwort wählen"
+
+#: templates/registration/password_reset_confirm.html:12
+msgid "Link no longer valid"
+msgstr "Link nicht mehr gültig"
+
+#: templates/registration/password_reset_confirm.html:13
+msgid "This link has already been used or has expired."
+msgstr "Dieser Link wurde bereits verwendet oder ist abgelaufen."
+
+#: templates/registration/password_reset_confirm.html:13
+msgid "Request a new link"
+msgstr "Neuen Link anfordern"
+
+#: templates/registration/password_reset_done.html:5
+#| msgid "show email"
+msgid "Check your email"
+msgstr "Prüfen Sie Ihre E-Mails"
+
+#: templates/registration/password_reset_done.html:6
+msgid ""
+"If the email address is known, a link to choose a new password is on its way."
+msgstr "Wenn die E-Mail-Adresse bekannt ist, ist ein Link zum Wählen eines neuen Passworts unterwegs."
+
+#: templates/registration/password_reset_email.txt:1
+msgid "You asked for a new password."
+msgstr "Sie haben ein neues Passwort angefordert."
+
+#: templates/registration/password_reset_email.txt:3
+msgid "Choose a new password via this link:"
+msgstr "Wählen Sie über diesen Link ein neues Passwort:"
+
+#: templates/registration/password_reset_email.txt:6
+msgid "Did you not ask for this? Then you can ignore this email."
+msgstr "Haben Sie dies nicht angefordert? Dann können Sie diese E-Mail ignorieren."
+
+#: templates/registration/password_reset_form.html:3
+#: templates/registration/password_reset_form.html:6
+msgid "Forgot password"
+msgstr "Passwort vergessen"
+
+#: templates/registration/password_reset_form.html:7
+msgid ""
+"Enter your email address. If it is known, you will receive a link to choose "
+"a new password."
+msgstr "Geben Sie Ihre E-Mail-Adresse ein. Wenn sie bekannt ist, erhalten Sie einen Link zum Wählen eines neuen Passworts."
+
+#: templates/registration/password_reset_form.html:10
+#| msgid "link"
+msgid "Send link"
+msgstr "Link senden"
+
+#: templates/registration/password_reset_subject.txt:1
+#, python-format
+msgid "New password for %(name)s"
+msgstr "Neues Passwort für %(name)s"
