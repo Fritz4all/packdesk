@@ -1,14 +1,14 @@
 from django import forms
 from django.contrib import admin, messages
-from django.core.exceptions import ValidationError
-from django.shortcuts import redirect
-from django.urls import reverse
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.utils.html import format_html, format_html_join
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin
 from unfold.admin import ModelAdmin, TabularInline
-from unfold.decorators import action, display
+from unfold.decorators import display
+
+from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
 from .checks import check
 from .models import CounterChange, GapNote, NumberSequence
@@ -83,12 +83,16 @@ class CounterChangeInline(TabularInline):
 
 
 @admin.register(NumberSequence)
-class NumberSequenceAdmin(ModelAdmin, TabbedTranslationAdmin):
+class NumberSequenceAdmin(ObjectActionsMixin, ModelAdmin, TabbedTranslationAdmin):
     form = NumberSequenceForm
     inlines = [GapNoteInline, CounterChangeInline]
     list_display = ["name", "show_preview", "next_number", "show_status"]
+    search_fields = ["name", "key", "pattern"]
     readonly_fields = ["key", "next_number", "show_preview", "status_overview"]
-    actions_detail = ["set_to_highest"]
+    object_actions = [
+        ObjectAction("set-to-highest", _("Set counter to highest number + 1"), "sync", handler="set_to_highest",
+                     show_if="counter_differs"),
+    ]
     fieldsets = [
         (None, {"fields": ["status_overview"]}),
         (None, {"fields": ["name", "key", "pattern", "show_preview", "reset_yearly", "archive_regex"]}),
@@ -97,11 +101,6 @@ class NumberSequenceAdmin(ModelAdmin, TabbedTranslationAdmin):
 
     def has_add_permission(self, request):
         return request.user.is_superuser
-
-    def has_correct_permission(self, request, obj=None):
-        # A method instead of "numbering.correct_numbersequence" in @action: unfold checks
-        # permission strings against the database at startup, which fails on a fresh install.
-        return request.user.has_perm("numbering.correct_numbersequence")
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -172,27 +171,17 @@ class NumberSequenceAdmin(ModelAdmin, TabbedTranslationAdmin):
             deleted.delete()
         formset.save_m2m()
 
-    @action(
-        description=_("Set counter to highest number + 1"),
-        url_path="set-to-highest",
-        permissions=["correct"],
-        icon="sync",
-    )
-    def set_to_highest(self, request, object_id):
-        seq = NumberSequence.objects.get(pk=object_id)
+    def counter_differs(self, obj):
+        result = check(obj)
+        return result.highest is not None and result.suggested_next != obj.next_number
+
+    def set_to_highest(self, request, seq):
+        if not request.user.has_perm("numbering.correct_numbersequence"):
+            raise PermissionDenied
         result = check(seq)
-        url = reverse("admin:numbering_numbersequence_change", args=[object_id])
-        if result.highest is None:
-            messages.warning(request, gettext("There are no documents to compare with."))
-            return redirect(url)
-        target = result.suggested_next
-        if target == seq.next_number:
-            messages.info(request, gettext("The counter is already correct."))
-            return redirect(url)
         try:
-            seq.correct(target, request.user, gettext("Set to highest existing number + 1"), result.highest)
+            seq.correct(result.suggested_next, request.user, gettext("Set to highest existing number + 1"), result.highest)
         except ValidationError as exc:
             messages.error(request, " ".join(exc.messages))
         else:
-            messages.success(request, gettext("Counter set to %(n)s.") % {"n": target})
-        return redirect(url)
+            messages.success(request, gettext("Counter set to %(n)s.") % {"n": result.suggested_next})

@@ -195,3 +195,15 @@ msgstr "Valuta selecteren"
 
 msgid "Sorry, translation is not available."
 msgstr "Sorry, er is geen vertaling beschikbaar."
+
+#, python-format
+msgid "Change selected %(model)s"
+msgstr "%(model)s wijzigen"
+
+#, python-format
+msgid "Add another %(model)s"
+msgstr "%(model)s toevoegen"
+
+#, python-format
+msgid "View selected %(model)s"
+msgstr "%(model)s bekijken"

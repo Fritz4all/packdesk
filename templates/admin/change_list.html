@@ -1,0 +1,21 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls %}
+{% comment %}PackDesk: the "add" button sits next to the search field instead of top right in the page header.{% endcomment %}
+
+{% block object-tools %}{% endblock %}
+
+{% block search %}
+    <div class="flex flex-row flex-wrap gap-3 items-center">
+        {{ block.super }}
+        {% if has_add_permission and not is_popup %}
+            {% url cl.opts|admin_urlname:"add" as add_url %}
+            {% if add_url %}
+                <a href="{% add_preserved_filters add_url is_popup to_field %}"
+                   class="addlink border border-primary-700 bg-primary-600 flex gap-1 items-center h-[38px] px-3 rounded-default text-white text-sm font-medium hover:bg-primary-600/80 dark:border-primary-500">
+                    <span class="material-symbols-outlined text-white">add</span>
+                    {% blocktranslate with name=cl.opts.verbose_name asvar add_title %}Add {{ name }}{% endblocktranslate %}{{ add_title|capfirst }}
+                </a>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

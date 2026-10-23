@@ -162,6 +162,10 @@ class SupportPack(models.Model):
     period = models.ForeignKey(SupportPeriod, on_delete=models.PROTECT, verbose_name=_("period"))
     description = models.CharField(_("description"), max_length=200, blank=True, help_text=_("Shown to customers and in emails."))
     price = models.DecimalField(_("price"), max_digits=10, decimal_places=2, default=Decimal("0"))
+    cost_price = models.DecimalField(
+        _("cost price"), max_digits=10, decimal_places=2, default=Decimal("0"),
+        help_text=_("What the pack costs you; used for margin reports."),
+    )
     enabled = models.BooleanField(_("for sale"), default=True)
     registration_required = models.BooleanField(_("registration required"), default=True)
     requires_monitor = models.BooleanField(_("includes monitor"), default=False)

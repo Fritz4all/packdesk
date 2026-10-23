@@ -30,6 +30,7 @@ STATUS_COLOURS = {"unregistered": "warning", "registered": "success", "ended": "
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = ["name", "end_date_from", "contact_to_register", "position"]
+    search_fields = ["name"]
     filter_horizontal = ["option_types"]
 
 
@@ -63,25 +64,28 @@ class HardwareSystemAdmin(ModelAdmin):
 @admin.register(OptionType)
 class OptionTypeAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = ["name", "internal", "is_monitor"]
+    search_fields = ["name"]
 
 
 @admin.register(SupportPeriod)
 class SupportPeriodAdmin(ModelAdmin):
     list_display = ["__str__", "years", "post_warranty"]
+    search_fields = ["years"]
 
 
 @admin.register(SupportService)
 class SupportServiceAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = ["abbreviation", "name", "response", "office_hours"]
+    search_fields = ["abbreviation", "name", "response"]
 
 
 @admin.register(SupportPack)
 class SupportPackAdmin(ModelAdmin, TabbedTranslationAdmin):
-    list_display = ["__str__", "code", "category", "hardware_class", "period", "price", "enabled"]
+    list_display = ["__str__", "code", "category", "hardware_class", "period", "price", "cost_price", "enabled"]
     list_filter = ["enabled", "category", "period", "service"]
     search_fields = ["code", "description"]
     fieldsets = [
-        (None, {"fields": ["code", "description", ("category", "hardware_class"), ("service", "period"), "price", "enabled"]}),
+        (None, {"fields": ["code", "description", ("category", "hardware_class"), ("service", "period"), ("price", "cost_price"), "enabled"]}),
         (_("Registration"), {"fields": [
             "registration_required", "requires_monitor", ("max_internal_options", "max_external_options"), "remark",
         ]}),
@@ -113,8 +117,11 @@ class LicenceAdmin(ModelAdmin):
     inlines = [OptionInline]
     list_display = ["full_number", "customer", "pack", "show_status", "serial_nr", "end_date"]
     list_filter = ["pack__category", "pack__period", "registered_on", "end_date"]
-    search_fields = ["full_number", "serial_nr", "product_nr", "customer__name", "customer__number",
-                     "end_customer_reference", "end_customer_email", "order_reference"]
+    search_fields = [
+        "full_number", "serial_nr", "product_nr", "description", "customer__name", "customer__number",
+        "end_customer_reference", "end_customer_email", "order_reference", "reseller_name", "system__name",
+        "options__serial_nr",
+    ]
     autocomplete_fields = ["customer", "prolongation_of"]
     readonly_fields = ["full_number", "number", "suffix", "registered_on", "created_at"]
     date_hierarchy = "end_date"

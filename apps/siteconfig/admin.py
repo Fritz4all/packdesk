@@ -61,6 +61,7 @@ class AddressInline(StackedInline):
     formset = AddressFormSet
     extra = 0
     tab = True
+    collapsible = True
     fieldsets = [
         (None, {"fields": ["label", "line1", "line2", ("postal_code", "city"), "country", ("phone", "email")]}),
         (

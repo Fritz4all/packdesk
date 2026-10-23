@@ -1,0 +1,19 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Shorter labels for the related-field menu in the admin.
+
+#, python-format
+msgid "Change selected %(model)s"
+msgstr "Change %(model)s"
+
+#, python-format
+msgid "Add another %(model)s"
+msgstr "Add %(model)s"
+
+#, python-format
+msgid "View selected %(model)s"
+msgstr "View %(model)s"

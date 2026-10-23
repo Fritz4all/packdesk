@@ -207,6 +207,14 @@ class Address(models.Model):
         parts = [self.line1, self.line2, f"{self.postal_code} {self.city}".strip(), self.country]
         return ", ".join(p for p in parts if p)
 
+    def usage_labels(self):
+        return [str(self._meta.get_field(f).verbose_name) for f in self.USAGES.values() if getattr(self, f)]
+
+    def get_inline_title(self):
+        """Title of the collapsed row in the admin: name, address and where it is used."""
+        usages = ", ".join(self.usage_labels()) or str(_("not used yet"))
+        return f"{self.label} · {self.one_line} — {usages}"
+
     def contact_phone(self):
         return self.phone or self.settings.phone
 

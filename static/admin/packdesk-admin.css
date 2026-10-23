@@ -1,0 +1,50 @@
+/* PackDesk additions to the unfold admin theme. */
+
+/* Native dropdown lists: readable colours in dark mode. */
+html.dark select option,
+html.dark select optgroup {
+  background-color: #111827;
+  color: #e5e7eb;
+}
+html.dark select option:disabled { color: #6b7280; }
+
+
+/* Dashboard */
+.pd-btn { display: inline-flex; align-items: center; gap: .3rem; height: 38px; padding: 0 .8rem; border-radius: 8px;
+  border: 1px solid rgb(229 231 235); background: #fff; font-size: .875rem; font-weight: 500; }
+html.dark .pd-btn { background: rgb(17 24 39); border-color: rgb(55 65 81); color: #e5e7eb; }
+.pd-btn-primary { background: var(--color-primary-600, #9333ea); border-color: transparent; color: #fff; }
+.pd-widget { border: 1px solid rgb(229 231 235); border-radius: 8px; padding: 1rem; background: #fff; }
+html.dark .pd-widget { border-color: rgb(31 41 55); background: rgb(17 24 39); }
+.pd-widget-head { display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem; }
+.pd-widget-head h2 { font-weight: 600; flex: 1; }
+.pd-editing { outline: 2px dashed rgb(147 51 234 / .5); cursor: grab; }
+.pd-dragging { opacity: .5; }
+.pd-stat { display: grid; gap: .15rem; padding: .9rem; border-radius: 8px; border: 1px solid rgb(229 231 235); }
+html.dark .pd-stat { border-color: rgb(31 41 55); }
+.pd-stat:hover { border-color: rgb(147 51 234); }
+.pd-stat-value { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+.pd-stat-label { font-size: .85rem; opacity: .75; }
+.pd-stat-warn { border-color: rgb(245 158 11); }
+.pd-stat-warn .pd-stat-value { color: rgb(217 119 6); }
+.pd-list li { display: flex; justify-content: space-between; gap: 1rem; padding: .4rem 0; border-bottom: 1px solid rgb(229 231 235 / .6); font-size: .9rem; }
+html.dark .pd-list li { border-color: rgb(31 41 55); }
+.pd-list li span { opacity: .65; white-space: nowrap; }
+.pd-list a:hover { text-decoration: underline; }
+
+#dashboard .hidden { display: none !important; }
+
+/* Reports */
+.pd-chart text { font-size: 11px; fill: currentColor; opacity: .7; }
+.pd-bar-rev { fill: rgb(147 51 234 / .35); }
+.pd-bar-mar { fill: rgb(147 51 234); }
+.pd-legend { display: flex; align-items: center; gap: .4rem; font-size: .8rem; opacity: .8; }
+.pd-sw { display: inline-block; width: .8rem; height: .8rem; border-radius: 3px; margin-left: .5rem; }
+.pd-sw-rev { background: rgb(147 51 234 / .35); }
+.pd-sw-mar { background: rgb(147 51 234); }
+.pd-hbar { height: .5rem; border-radius: 999px; background: rgb(147 51 234 / .12); overflow: hidden; margin-top: .25rem; }
+.pd-hbar span { display: block; height: 100%; background: rgb(147 51 234); }
+.pd-table { width: 100%; font-size: .9rem; }
+.pd-table th { text-align: left; font-weight: 600; padding: .4rem .5rem; opacity: .75; }
+.pd-table td { padding: .4rem .5rem; border-top: 1px solid rgb(229 231 235 / .6); }
+html.dark .pd-table td { border-color: rgb(31 41 55); }

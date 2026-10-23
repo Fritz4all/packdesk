@@ -77,7 +77,10 @@ class Customer(models.Model):
     logo = models.ImageField(_("logo"), upload_to="customers/logos/", blank=True)
     remark = models.TextField(_("internal remark"), blank=True)
 
-    signup_message = models.TextField(_("message with sign-up"), blank=True)
+    signup_message = models.TextField(
+        _("message from sign-up form"), blank=True,
+        help_text=_("What the customer typed in the 'Message' field of the sign-up form."),
+    )
     approved_at = models.DateTimeField(_("approved at"), null=True, blank=True)
     approved_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="+",
@@ -168,6 +171,9 @@ class CustomerAddress(models.Model):
         parts = [self.line1, self.line2, f"{self.postal_code} {self.city}".strip(), str(self.country or "")]
         return ", ".join(p for p in parts if p)
 
+    def get_inline_title(self):
+        return f"{self.get_kind_display()}: {self.one_line}"
+
 
 class Contact(models.Model):
     """A person at a customer, optionally with a login for the customer portal."""
@@ -206,6 +212,12 @@ class Contact(models.Model):
     def full_name(self):
         given = self.first_name or self.initials
         return f"{given} {self.last_name}".strip()
+
+    def get_inline_title(self):
+        """Title of the collapsed row in the admin."""
+        parts = [self.full_name, self.function, self.email]
+        title = " · ".join(p for p in parts if p)
+        return f"★ {title} ({_('primary contact')})" if self.is_primary else title
 
 
 def customer_of(user):

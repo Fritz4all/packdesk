@@ -6,9 +6,10 @@ from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin
 from unfold.admin import ModelAdmin, StackedInline, TabularInline
-from unfold.decorators import action, display
+from unfold.decorators import display
 
 from apps.accounts.models import User
+from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
 from . import emails
 from .models import Contact, Country, Customer, CustomerAddress, CustomerType, SignupSettings
@@ -27,6 +28,7 @@ class ContactInline(StackedInline):
     model = Contact
     extra = 0
     tab = True
+    collapsible = True
     fields = [
         ("salutation", "initials", "first_name", "last_name"),
         ("function", "department"),
@@ -44,15 +46,25 @@ class ContactInline(StackedInline):
 
 
 @admin.register(Customer)
-class CustomerAdmin(ModelAdmin):
+class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
     inlines = [AddressInline, ContactInline]
     list_display = ["show_number", "name", "customer_type", "show_city", "show_status", "n_contacts"]
     list_display_links = ["show_number", "name"]
     list_filter = ["status", "customer_type", "addresses__country"]
-    search_fields = ["number", "name", "email", "vat_number", "contacts__email", "contacts__last_name", "addresses__city"]
+    search_fields = [
+        "number", "name", "email", "phone", "vat_number", "coc_number", "website",
+        "contacts__email", "contacts__first_name", "contacts__last_name", "contacts__phone",
+        "addresses__line1", "addresses__postal_code", "addresses__city",
+    ]
     readonly_fields = ["approved_at", "approved_by", "created_at", "updated_at", "signup_message"]
     actions = ["approve_selected", "block_selected"]
-    actions_detail = ["approve", "block", "send_invites"]
+    object_actions = [
+        ObjectAction("approve", _("Approve"), "check_circle", handler="approve", show_if="can_approve"),
+        ObjectAction("invite", _("Send login to contacts without one"), "mail", handler="send_invites",
+                     show_if="has_contacts_without_login"),
+        ObjectAction("block", _("Block"), "block", handler="block", show_if="can_block", variant="danger",
+                     confirm=_("Block this customer? Its contacts can no longer log in.")),
+    ]
     fieldsets = [
         (_("General"), {"classes": ["tab"], "fields": [
             ("number", "status"), "name", "customer_type", ("phone", "email"), "website", ("vat_number", "coc_number"), "logo",
@@ -118,25 +130,24 @@ class CustomerAdmin(ModelAdmin):
             customer.block()
         messages.success(request, gettext("%(n)s customer(s) blocked.") % {"n": queryset.count()})
 
-    def _back(self, object_id):
-        return redirect(reverse("admin:customers_customer_change", args=[object_id]))
+    def can_approve(self, obj):
+        return obj.status != Customer.Status.ACTIVE
 
-    @action(description=_("Approve"), url_path="approve", permissions=["change"], icon="check_circle")
-    def approve(self, request, object_id):
-        customer = Customer.objects.get(pk=object_id)
+    def can_block(self, obj):
+        return obj.status != Customer.Status.BLOCKED
+
+    def has_contacts_without_login(self, obj):
+        return obj.contacts.filter(user__isnull=True).exists()
+
+    def approve(self, request, customer):
         self._approve(request, customer)
         messages.success(request, gettext("Customer approved with number %(n)s.") % {"n": customer.number})
-        return self._back(object_id)
 
-    @action(description=_("Block"), url_path="block", permissions=["change"], icon="block")
-    def block(self, request, object_id):
-        Customer.objects.get(pk=object_id).block()
+    def block(self, request, customer):
+        customer.block()
         messages.success(request, gettext("Customer blocked; its contacts can no longer log in."))
-        return self._back(object_id)
 
-    @action(description=_("Send login to contacts without one"), url_path="invite", permissions=["change"], icon="mail")
-    def send_invites(self, request, object_id):
-        customer = Customer.objects.get(pk=object_id)
+    def send_invites(self, request, customer):
         sent, skipped = 0, []
         for contact in customer.contacts.filter(user__isnull=True):
             if User.objects.filter(email__iexact=contact.email).exists():
@@ -155,17 +166,18 @@ class CustomerAdmin(ModelAdmin):
         messages.success(request, gettext("Logins created; %(n)s invitation(s) sent.") % {"n": sent})
         if skipped:
             messages.warning(request, gettext("Email address already in use: %(list)s") % {"list": ", ".join(skipped)})
-        return self._back(object_id)
 
 
 @admin.register(CustomerType)
 class CustomerTypeAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = ["name", "is_reseller", "position"]
+    search_fields = ["name"]
 
 
 @admin.register(Country)
 class CountryAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = ["name", "code", "vat_number_required", "is_active", "position"]
+    search_fields = ["name", "code"]
     list_filter = ["is_active"]
 
 

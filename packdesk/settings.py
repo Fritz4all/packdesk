@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import environ
+from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
@@ -32,11 +33,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.forms",
     "apps.core",
     "apps.siteconfig",
     "apps.numbering",
     "apps.customers",
     "apps.licences",
+    "apps.dashboard",
     # Last: its post_migrate hook gives roles the permissions of all apps above.
     "apps.accounts",
 ]
@@ -75,6 +78,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "packdesk.wsgi.application"
+# Widgets use the normal template search path, so project templates can override them.
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 DATABASES = {"default": env.db("DATABASE_URL")}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -150,11 +155,26 @@ UNFOLD = {
     "SITE_HEADER": "PackDesk",
     "SITE_SYMBOL": "inventory_2",
     "SHOW_HISTORY": True,
-    "ENVIRONMENT": "apps.core.admin_config.environment_badge",
+    "STYLES": [lambda request: static("admin/packdesk-admin.css")],
+    "SCRIPTS": [lambda request: static("admin/packdesk-admin.js")],
+    "COMMAND": {"search_callback": "apps.dashboard.search.search_everything", "show_history": True},
+    "DASHBOARD_CALLBACK": "apps.dashboard.views.dashboard_callback",
     "SIDEBAR": {
         "show_search": True,
         "show_all_applications": False,
         "navigation": [
+            {
+                "title": _("Overview"),
+                "items": [
+                    {"title": _("Dashboard"), "icon": "dashboard", "link": reverse_lazy("admin:index")},
+                    {
+                        "title": _("Sales and margin"),
+                        "icon": "monitoring",
+                        "link": reverse_lazy("reports"),
+                        "permission": lambda request: request.user.has_perm("dashboard.view_reports"),
+                    },
+                ],
+            },
             {
                 "title": _("Configuration"),
                 "items": [
