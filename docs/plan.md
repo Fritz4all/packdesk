@@ -8,6 +8,7 @@ Een nieuwe webshop die functioneel hetzelfde doet als de previous-webshop-shop, 
 
 - volledig instelbaar via een admin-omgeving (teksten, mails, factuursjabloon, prijzen, huisstijl, SMTP, nummering);
 - modern en verzorgd van uiterlijk;
+- volledig meertalig: Nederlands, Engels en Duits (vaste teksten én inhoud per taal);
 - herbruikbaar voor meerdere klanten: per klant een **eigen installatie** (on-site), met naam, logo, kleuren, bedrijfsgegevens en alle andere instellingen aan te passen in de admin;
 - met behoud van alle historie van de vorige webshop: klanten, documentnummers en de bestaande pdf's.
 
@@ -98,8 +99,9 @@ Besloten (2026-10-23):
 3. Django 5.2 LTS (ondersteund tot april 2028) op Python 3.13, officiële `python`-image.
 4. PostgreSQL 17.
 5. Admin-thema django-unfold.
+6. Talen nl/en/de; inhoud per taal met django-modeltranslation.
 
 Aanbevolen, nog te bevestigen:
 
-6. Pdf's uit HTML-sjablonen met WeasyPrint (geen Java).
-7. Achtergrondtaken (herinneringen, mails) via de database, geen Redis.
+7. Pdf's uit HTML-sjablonen met WeasyPrint (geen Java).
+8. Achtergrondtaken (herinneringen, mails) via de database, geen Redis.

@@ -3,7 +3,7 @@
 Webshop voor ICT-supportpakketten, licenties, bestellingen en facturen.
 Functioneel gebaseerd op de previous-webshop-shop, maar volledig beheerbaar via een admin-omgeving.
 Herbruikbaar voor meerdere klanten: elke klant krijgt een eigen installatie (on-site), en naam,
-logo, kleuren, bedrijfsgegevens en taal stel je in via de admin.
+logo, kleuren, bedrijfsgegevens en talen stel je in via de admin. Beschikbaar in het Nederlands, Engels en Duits.
 
 Status: in opbouw. Zie [docs/plan.md](docs/plan.md).
 
@@ -15,7 +15,7 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
 
 - **Eén installatie per klant.** Alles wat per klant verschilt staat op de pagina **Instellingen** in de
   admin: naam, logo, favicon, kleuren, slogan, introductietekst, bedrijfsgegevens (adres, KvK, btw, IBAN)
-  en taal. Er staat niets klantspecifieks in de code.
+  en talen. Er staat niets klantspecifieks in de code.
 - **Inloggen** met e-mailadres.
 - **Admin** op `/beheer/`.
 - **Rollen:** Beheerder, Financieel, Service, Medewerker (`apps/accounts/roles.py`).
@@ -43,15 +43,29 @@ docker compose exec web python -m pytest
 
 GitHub Actions draait bij elke push de tests tegen PostgreSQL en bouwt de productie-image.
 
-## Vertalingen
+## Talen
 
-Teksten in de code zijn Engels; Nederlands staat in `locale/nl/LC_MESSAGES/django.po`.
-De taal kies je in de instellingen.
+PackDesk is volledig beschikbaar in het **Nederlands, Engels en Duits**.
+
+- **Bezoekers** kiezen hun taal rechtsboven; de keuze wordt in een cookie onthouden.
+- **In de instellingen** kies je de standaardtaal en welke talen beschikbaar zijn.
+  Met één taal verdwijnt de taalkeuze.
+- **Inhoud** die per klant verschilt (nu: slogan en introductietekst; later ook producten, mails, enz.)
+  vul je per taal in via tabbladen NL / EN / DE. Is een vertaling leeg, dan wordt de volgende taal
+  uit `FALLBACK_LANGUAGES` getoond (standaard `nl,en,de`).
+- **Vaste teksten** staan in de code in het Engels, met vertalingen in
+  `locale/nl/` en `locale/de/`. Teksten van het admin-thema (django-unfold) die Django zelf niet
+  vertaalt, staan in `locale_vendor/`.
+- Een test controleert dat alle Nederlandse en Duitse vertalingen compleet zijn.
 
 ```bash
-docker compose exec web python manage.py makemessages -l nl --ignore=venv --ignore=staticfiles --ignore=tests
+docker compose exec web python manage.py makemessages -l nl -l de --ignore=venv --ignore=staticfiles --ignore=tests --no-obsolete
 docker compose exec web python manage.py compilemessages --ignore=/venv
 ```
+
+Een taal toevoegen: zet hem in `LANGUAGES` in `packdesk/settings.py`, draai `makemessages -l <code>`,
+vertaal de `.po`-bestanden in `locale/` en `locale_vendor/`, en maak een migratie
+(`makemigrations`) voor de extra inhoudsvelden.
 
 ## Productie-image
 
