@@ -1,2 +1,9 @@
 docs/vorige-webshop/lokaal/const.rb
 docs/vorige-webshop/lokaal/data/
+.env
+media/
+staticfiles/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.mo

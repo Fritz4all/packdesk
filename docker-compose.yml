@@ -1,0 +1,47 @@
+# Local development. Production compose follows in step E.
+name: packdesk
+
+services:
+  db:
+    image: postgres:17.11-bookworm
+    environment:
+      POSTGRES_DB: packdesk
+      POSTGRES_USER: packdesk
+      POSTGRES_PASSWORD: packdesk-dev
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "packdesk"]
+      interval: 3s
+      retries: 30
+
+  mail:
+    image: axllent/mailpit:v1.20
+    ports:
+      - "127.0.0.1:8025:8025"
+
+  web:
+    build:
+      context: .
+      target: dev
+    user: "${UID:-1000}:${GID:-1000}"
+    command: sh -c "python manage.py compilemessages --ignore=/venv -v0 && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DEBUG: "1"
+      SECRET_KEY: dev-only-not-secret
+      DATABASE_URL: postgres://packdesk:packdesk-dev@db:5432/packdesk
+      PLATFORM_HOSTS: localhost,127.0.0.1
+      EMAIL_HOST: mail
+      EMAIL_PORT: "1025"
+      MEDIA_ROOT: /app/media
+      PYTHONDONTWRITEBYTECODE: "1"
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  dbdata:

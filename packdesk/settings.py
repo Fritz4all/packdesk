@@ -1,0 +1,178 @@
+"""PackDesk settings. All environment-specific values come from environment variables."""
+
+from pathlib import Path
+
+import environ
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(
+    DEBUG=(bool, False),
+    PLATFORM_HOSTS=(list, ["localhost", "127.0.0.1"]),
+    SECURE_COOKIES=(bool, False),
+)
+environ.Env.read_env(BASE_DIR / ".env", overwrite=False)
+
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env("DEBUG")
+
+# Tenants are recognised by host name, so any host may reach Django.
+# TenantMiddleware answers 404 for hosts that are not a known tenant domain
+# or a platform host.
+ALLOWED_HOSTS = ["*"]
+PLATFORM_HOSTS = [h.lower() for h in env("PLATFORM_HOSTS")]
+
+INSTALLED_APPS = [
+    "unfold",
+    "unfold.contrib.forms",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "apps.core",
+    "apps.tenants",
+    "apps.accounts",
+]
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "apps.tenants.middleware.TenantMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.tenants.middleware.TenantUserGuardMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "packdesk.urls"
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "apps.tenants.context_processors.tenant",
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = "packdesk.wsgi.application"
+
+DATABASES = {"default": env.db("DATABASE_URL")}
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "accounts.User"
+AUTHENTICATION_BACKENDS = ["apps.accounts.backends.TenantEmailBackend"]
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", "OPTIONS": {"min_length": 10}},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "dashboard"
+LOGOUT_REDIRECT_URL = "home"
+
+LANGUAGE_CODE = "nl"
+LANGUAGES = [("nl", _("Dutch")), ("en", _("English"))]
+LOCALE_PATHS = [BASE_DIR / "locale"]
+TIME_ZONE = "Europe/Amsterdam"
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+MEDIA_URL = "media/"
+MEDIA_ROOT = Path(env("MEDIA_ROOT", default=str(BASE_DIR / "media")))
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+        if DEBUG
+        else "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    },
+}
+
+FORMS_URLFIELD_ASSUME_HTTPS = True  # Django 6 default
+WHITENOISE_USE_FINDERS = DEBUG
+WHITENOISE_AUTOREFRESH = DEBUG
+
+EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = env("EMAIL_HOST", default="localhost")
+EMAIL_PORT = env.int("EMAIL_PORT", default=25)
+
+# Behind a TLS-terminating reverse proxy.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SESSION_COOKIE_SECURE = env("SECURE_COOKIES")
+CSRF_COOKIE_SECURE = env("SECURE_COOKIES")
+SESSION_COOKIE_HTTPONLY = True
+SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=False)
+SECURE_HSTS_SECONDS = env.int("SECURE_HSTS_SECONDS", default=0)
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "root": {"handlers": ["console"], "level": env("LOG_LEVEL", default="INFO")},
+}
+
+UNFOLD = {
+    "SITE_TITLE": "PackDesk",
+    "SITE_HEADER": "PackDesk",
+    "SITE_SYMBOL": "inventory_2",
+    "SHOW_HISTORY": True,
+    "ENVIRONMENT": "apps.core.admin_config.environment_badge",
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": False,
+        "navigation": [
+            {
+                "title": _("Organisation"),
+                "items": [
+                    {
+                        "title": _("Settings"),
+                        "icon": "tune",
+                        "link": reverse_lazy("admin:tenants_tenant_changelist"),
+                    },
+                    {
+                        "title": _("Domains"),
+                        "icon": "language",
+                        "link": reverse_lazy("admin:tenants_domain_changelist"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                ],
+            },
+            {
+                "title": _("Users"),
+                "items": [
+                    {
+                        "title": _("Users"),
+                        "icon": "person",
+                        "link": reverse_lazy("admin:accounts_user_changelist"),
+                    },
+                    {
+                        "title": _("Roles"),
+                        "icon": "badge",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                ],
+            },
+        ],
+    },
+}

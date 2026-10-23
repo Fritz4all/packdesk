@@ -1,0 +1,8 @@
+.git
+.github
+.env
+media
+staticfiles
+docs
+**/__pycache__
+*.pyc
