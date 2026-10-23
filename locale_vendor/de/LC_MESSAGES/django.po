@@ -1,0 +1,197 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+
+# Translations for third-party admin strings (django-unfold, django-modeltranslation)
+# that those packages and Django itself do not translate.
+
+msgid "Select record"
+msgstr "Datensatz auswählen"
+
+msgid "Select action"
+msgstr "Aktion auswählen"
+
+msgid "Select action to run"
+msgstr "Auszuführende Aktion auswählen"
+
+msgid "Raw passwords are not stored, so there is no way to see this user’s password, but you can change the password using <a href=\"{}\" class=\"text-primary-600 dark:text-primary-500\">this form</a>."
+msgstr "Passwörter werden nicht im Klartext gespeichert, daher kann das Passwort dieses Benutzers nicht angezeigt werden. Sie können es jedoch mit <a href=\"{}\" class=\"text-primary-600 dark:text-primary-500\">diesem Formular</a> ändern."
+
+msgid "Dataset not found. No action performed."
+msgstr "Datensatz nicht gefunden. Keine Aktion ausgeführt."
+
+msgid "Select value"
+msgstr "Wert auswählen"
+
+msgid "Field <strong class=\"font-semibold\">{field_name}</strong> is not an autocomplete field. Please add it to the `autocomplete_fields` list."
+msgstr "Feld <strong class=\"font-semibold\">{field_name}</strong> ist kein Autocomplete-Feld. Bitte fügen Sie es zur Liste `autocomplete_fields` hinzu."
+
+msgid "You can not create nested object without parent"
+msgstr "Ein verschachteltes Objekt kann nicht ohne übergeordnetes Objekt erstellt werden"
+
+msgid "Run"
+msgstr "Ausführen"
+
+msgid "After you've created a user, you’ll be able to edit more user options."
+msgstr "Nachdem Sie einen Benutzer angelegt haben, können Sie weitere Benutzeroptionen bearbeiten."
+
+msgid "Welcome back to"
+msgstr "Willkommen zurück bei"
+
+msgid "Type to search"
+msgstr "Tippen zum Suchen"
+
+msgid "You have been successfully logged out from the administration"
+msgstr "Sie wurden erfolgreich von der Verwaltung abgemeldet"
+
+msgid "No data"
+msgstr "Keine Daten"
+
+msgid "All applications"
+msgstr "Alle Anwendungen"
+
+msgid "True"
+msgstr "Ja"
+
+msgid "False"
+msgstr "Nein"
+
+msgid "Apply Filters"
+msgstr "Filter anwenden"
+
+msgid "Filters"
+msgstr "Filter"
+
+msgid "Navigate"
+msgstr "Navigieren"
+
+msgid "Select"
+msgstr "Auswählen"
+
+msgid "Recent searches"
+msgstr "Letzte Suchen"
+
+msgid "Nothing matched your search"
+msgstr "Keine Treffer"
+
+msgid "\n            Found <span class=\"font-medium text-important\">%(counter)s</span> result in %(time)s seconds\n        "
+msgid_plural "\n            Found <span class=\"font-medium text-important\">%(counter)s</span> results in %(time)s seconds\n        "
+msgstr[0] "\n            <span class=\"font-medium text-important\">%(counter)s</span> Ergebnis in %(time)s Sekunden gefunden\n        "
+msgstr[1] "\n            <span class=\"font-medium text-important\">%(counter)s</span> Ergebnisse in %(time)s Sekunden gefunden\n        "
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Submit"
+msgstr "Absenden"
+
+msgid "Record picture"
+msgstr "Bild des Datensatzes"
+
+msgid "This item will be deleted."
+msgstr "Dieses Element wird gelöscht."
+
+msgid "Click to cancel"
+msgstr "Zum Abbrechen klicken"
+
+msgid "No results found"
+msgstr "Keine Ergebnisse gefunden"
+
+msgid "This page yielded into no results."
+msgstr "Diese Seite hat keine Ergebnisse geliefert."
+
+msgid "Reset filters"
+msgstr "Filter zurücksetzen"
+
+msgid "Image preview"
+msgstr "Bildvorschau"
+
+msgid "Click to download"
+msgstr "Zum Herunterladen klicken"
+
+msgid "Go back"
+msgstr "Zurück"
+
+msgid "Previous"
+msgstr "Zurück"
+
+msgid "Next"
+msgstr "Weiter"
+
+msgid "Search apps and models..."
+msgstr "Anwendungen und Modelle durchsuchen..."
+
+msgid "Available shortcuts"
+msgstr "Verfügbare Tastenkürzel"
+
+msgid "Global shortcuts"
+msgstr "Globale Tastenkürzel"
+
+msgid "Open command tool"
+msgstr "Befehlsfenster öffnen"
+
+msgid "Open shortcuts list"
+msgstr "Liste der Tastenkürzel öffnen"
+
+msgid "Toggle sidebar"
+msgstr "Seitenleiste ein-/ausblenden"
+
+msgid "Toggle dark/light mode"
+msgstr "Dunkel-/Hellmodus umschalten"
+
+msgid "Changelist shortcuts"
+msgstr "Tastenkürzel in Listen"
+
+msgid "Toggle filter"
+msgstr "Filter ein-/ausblenden"
+
+msgid "Create new record"
+msgstr "Neuen Datensatz anlegen"
+
+msgid "Command tool shortcuts"
+msgstr "Tastenkürzel im Befehlsfenster"
+
+msgid "Open selection"
+msgstr "Auswahl öffnen"
+
+msgid "Open selection in new tab"
+msgstr "Auswahl in neuem Tab öffnen"
+
+msgid "General"
+msgstr "Allgemein"
+
+msgid "Light"
+msgstr "Hell"
+
+msgid "Dark"
+msgstr "Dunkel"
+
+msgid "System"
+msgstr "System"
+
+msgid "Return to site"
+msgstr "Zurück zur Website"
+
+msgid "Choose file to upload"
+msgstr "Datei zum Hochladen auswählen"
+
+msgid "Toggle password visibility"
+msgstr "Passwort ein-/ausblenden"
+
+msgid "Add row"
+msgstr "Zeile hinzufügen"
+
+msgid "Welcome"
+msgstr "Willkommen"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Select currency"
+msgstr "Währung auswählen"
+
+msgid "Sorry, translation is not available."
+msgstr "Leider ist keine Übersetzung verfügbar."

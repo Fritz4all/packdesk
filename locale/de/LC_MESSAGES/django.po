@@ -1,0 +1,295 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 22:33+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/accounts/admin.py:45 apps/accounts/admin.py:51
+msgid "Personal info"
+msgstr "Persönliche Daten"
+
+#: apps/accounts/admin.py:46 apps/accounts/admin.py:52
+msgid "Access"
+msgstr "Zugang"
+
+#: apps/accounts/admin.py:47 apps/accounts/admin.py:53
+msgid "Dates"
+msgstr "Daten"
+
+#: apps/accounts/apps.py:8 packdesk/settings.py:161 packdesk/settings.py:164
+msgid "Users"
+msgstr "Benutzer"
+
+#: apps/accounts/forms.py:9 apps/accounts/forms.py:21
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+#: apps/accounts/forms.py:15
+msgid "Unknown email address or wrong password."
+msgstr "Unbekannte E-Mail-Adresse oder falsches Passwort."
+
+#: apps/accounts/models.py:24
+msgid "Staff"
+msgstr "Mitarbeiter"
+
+#: apps/accounts/models.py:25
+msgid "Customer"
+msgstr "Kunde"
+
+#: apps/accounts/models.py:27
+msgid "kind"
+msgstr "Art"
+
+#: apps/accounts/models.py:28
+msgid "email address"
+msgstr "E-Mail-Adresse"
+
+#: apps/accounts/models.py:35
+msgid "user"
+msgstr "Benutzer"
+
+#: apps/accounts/models.py:36
+msgid "users"
+msgstr "Benutzer"
+
+#: apps/siteconfig/admin.py:15
+msgid "Available languages"
+msgstr "Verfügbare Sprachen"
+
+#: apps/siteconfig/admin.py:18 apps/siteconfig/models.py:29
+msgid "Languages visitors can choose from."
+msgstr "Sprachen, aus denen Besucher wählen können."
+
+#: apps/siteconfig/admin.py:34
+msgid "The default language must be one of the available languages."
+msgstr "Die Standardsprache muss eine der verfügbaren Sprachen sein."
+
+#: apps/siteconfig/admin.py:49
+msgid "Branding"
+msgstr "Corporate Design"
+
+#: apps/siteconfig/admin.py:51
+msgid "Company details"
+msgstr "Unternehmensdaten"
+
+#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:64
+#: packdesk/settings.py:153
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: apps/siteconfig/models.py:6
+msgid "Use a colour like #1f6feb."
+msgstr "Verwenden Sie eine Farbe wie #1f6feb."
+
+#: apps/siteconfig/models.py:17
+msgid "name"
+msgstr "Name"
+
+#: apps/siteconfig/models.py:19
+msgid "default language"
+msgstr "Standardsprache"
+
+#: apps/siteconfig/models.py:23
+msgid "Language for visitors who have not chosen one."
+msgstr "Sprache für Besucher, die noch keine Sprache gewählt haben."
+
+#: apps/siteconfig/models.py:26
+msgid "available languages"
+msgstr "verfügbare Sprachen"
+
+#: apps/siteconfig/models.py:33
+msgid "logo"
+msgstr "Logo"
+
+#: apps/siteconfig/models.py:34
+msgid "favicon"
+msgstr "Favicon"
+
+#: apps/siteconfig/models.py:35
+msgid "primary colour"
+msgstr "Hauptfarbe"
+
+#: apps/siteconfig/models.py:36
+msgid "accent colour"
+msgstr "Akzentfarbe"
+
+#: apps/siteconfig/models.py:37
+msgid "tagline"
+msgstr "Slogan"
+
+#: apps/siteconfig/models.py:39
+msgid "introduction"
+msgstr "Einleitung"
+
+#: apps/siteconfig/models.py:41
+msgid "Short text on the home page under the tagline."
+msgstr "Kurzer Text auf der Startseite unter dem Slogan."
+
+#: apps/siteconfig/models.py:45
+msgid "legal name"
+msgstr "Firmenname"
+
+#: apps/siteconfig/models.py:46
+msgid "address"
+msgstr "Adresse"
+
+#: apps/siteconfig/models.py:47
+msgid "postal code"
+msgstr "Postleitzahl"
+
+#: apps/siteconfig/models.py:48
+msgid "city"
+msgstr "Ort"
+
+#: apps/siteconfig/models.py:49
+msgid "country"
+msgstr "Land"
+
+#: apps/siteconfig/models.py:50
+msgid "phone"
+msgstr "Telefon"
+
+#: apps/siteconfig/models.py:51
+msgid "email"
+msgstr "E-Mail"
+
+#: apps/siteconfig/models.py:52
+msgid "website"
+msgstr "Website"
+
+#: apps/siteconfig/models.py:53
+msgid "Chamber of Commerce number"
+msgstr "Handelsregisternummer"
+
+#: apps/siteconfig/models.py:54
+msgid "VAT number"
+msgstr "USt-IdNr."
+
+#: apps/siteconfig/models.py:55
+msgid "IBAN"
+msgstr "IBAN"
+
+#: apps/siteconfig/models.py:57
+msgid "updated"
+msgstr "aktualisiert"
+
+#: apps/siteconfig/models.py:60 apps/siteconfig/models.py:61
+msgid "settings"
+msgstr "Einstellungen"
+
+#: packdesk/settings.py:89
+msgid "Dutch"
+msgstr "Niederländisch"
+
+#: packdesk/settings.py:89
+msgid "English"
+msgstr "Englisch"
+
+#: packdesk/settings.py:89
+msgid "German"
+msgstr "Deutsch"
+
+#: packdesk/settings.py:150
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: packdesk/settings.py:170
+msgid "Roles"
+msgstr "Rollen"
+
+#: templates/base.html:22
+msgid "Language"
+msgstr "Sprache"
+
+#: templates/base.html:30 templates/core/dashboard.html:3
+msgid "My account"
+msgstr "Mein Konto"
+
+#: templates/base.html:31
+msgid "Admin"
+msgstr "Verwaltung"
+
+#: templates/base.html:32
+msgid "Log out"
+msgstr "Abmelden"
+
+#: templates/base.html:34 templates/core/home.html:11
+#: templates/registration/login.html:3 templates/registration/login.html:7
+#: templates/registration/login.html:19
+msgid "Log in"
+msgstr "Anmelden"
+
+#: templates/base.html:54
+msgid "CoC"
+msgstr "HRB"
+
+#: templates/core/dashboard.html:6
+#, python-format
+msgid "Welcome, %(name)s"
+msgstr "Willkommen, %(name)s"
+
+#: templates/core/dashboard.html:10
+msgid "Orders"
+msgstr "Bestellungen"
+
+#: templates/core/dashboard.html:10 templates/core/dashboard.html:11
+#: templates/core/dashboard.html:12
+msgid "Available soon."
+msgstr "Demnächst verfügbar."
+
+#: templates/core/dashboard.html:11
+msgid "Licences"
+msgstr "Lizenzen"
+
+#: templates/core/dashboard.html:12
+msgid "Invoices"
+msgstr "Rechnungen"
+
+#: templates/core/home.html:6
+msgid ""
+"Order and extend hardware service packs, register licences and follow your "
+"orders – all in one place."
+msgstr "Hardware-Servicepakete bestellen und verlängern, Lizenzen registrieren und Bestellungen verfolgen – alles an einem Ort."
+
+#: templates/core/home.html:9
+msgid "Go to my account"
+msgstr "Zu meinem Konto"
+
+#: templates/core/home.html:19
+msgid "Service packs"
+msgstr "Servicepakete"
+
+#: templates/core/home.html:20
+msgid ""
+"Order support for servers, desktops, printers and more, and extend it on "
+"time."
+msgstr "Bestellen Sie Support für Server, Desktops, Drucker und mehr und verlängern Sie ihn rechtzeitig."
+
+#: templates/core/home.html:24
+msgid "Register a licence"
+msgstr "Lizenz registrieren"
+
+#: templates/core/home.html:25
+msgid "Link your device to a licence so support starts right away."
+msgstr "Verknüpfen Sie Ihr Gerät mit einer Lizenz, damit der Support sofort beginnt."
+
+#: templates/core/home.html:29
+msgid "Spare parts"
+msgstr "Ersatzteile"
+
+#: templates/core/home.html:30
+msgid "Request parts, accept quotes and follow deliveries."
+msgstr "Ersatzteile anfragen, Angebote annehmen und Lieferungen verfolgen."
