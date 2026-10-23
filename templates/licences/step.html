@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Register a licence" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>{% translate "Register a licence" %}</h1>
+  {% if current == "licence" and rules.wizard_intro %}<p class="lead">{{ rules.wizard_intro|linebreaksbr }}</p>{% endif %}
+</div>
+{% include "licences/_steps.html" %}
+<form method="post" class="form-card" novalidate>
+  {% csrf_token %}
+  {% if licence %}<p class="muted">{% translate "Licence" %} <strong>{{ licence.full_number }}</strong> · {{ licence.pack }}</p>{% endif %}
+  {% if title %}<h2>{{ title }}</h2>{% endif %}
+  {% if current == "monitor" %}<p class="muted">{% translate "Optional: fill in the monitor that is covered by this pack." %}</p>{% endif %}
+  {% if form.non_field_errors %}<div class="message message-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+  <div class="form-grid">{% include "includes/form_fields.html" with fields=form %}</div>
+  <div class="hero-actions">
+    <button class="btn btn-primary" type="submit">{% translate "Next" %}</button>
+    {% if licence %}<a class="btn btn-ghost" href="{% url 'register_licence' %}">{% translate "Start again" %}</a>{% endif %}
+  </div>
+</form>
+{% endblock %}

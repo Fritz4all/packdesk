@@ -1,0 +1,4 @@
+{% load i18n %}
+<ol class="steps" aria-label="{% translate 'Steps' %}">
+  {% for key, label in steps %}<li class="{% if key == current %}is-current{% elif forloop.counter < step_number %}is-done{% endif %}">{{ label }}</li>{% endfor %}
+</ol>

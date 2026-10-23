@@ -13,6 +13,7 @@ urlpatterns = [
     path("taal/", set_language, name="set_language"),
     path("", include("apps.accounts.urls")),
     path("", include("apps.customers.urls")),
+    path("", include("apps.licences.urls")),
     path("", include("apps.core.urls")),
     # Public assets such as the logo. Private documents (invoices) get
     # their own authenticated views later and never live under MEDIA_URL.

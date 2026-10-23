@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Register a licence" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Register a licence" %}</h1></div>
+{% include "licences/_steps.html" %}
+<form method="post" class="form-card" novalidate>
+  {% csrf_token %}
+  <p class="muted">{% translate "Licence" %} <strong>{{ licence.full_number }}</strong> · {{ licence.pack }}</p>
+  <h2>{% translate "Options" %}</h2>
+  <p class="muted">{% blocktranslate with i=licence.pack.max_internal_options e=licence.pack.max_external_options %}This pack covers up to {{ i }} internal and {{ e }} external options. Leave rows empty that you do not need.{% endblocktranslate %}</p>
+  {{ formset.management_form }}
+  {% if formset.non_form_errors %}<div class="message message-error">{{ formset.non_form_errors|join:" " }}</div>{% endif %}
+  <div class="table-wrap">
+  <table class="table">
+    <thead><tr><th>{% translate "Type" %}</th><th>{% translate "Brand" %}</th><th>{% translate "Quantity" %}</th><th>{% translate "Article number" %}</th><th>{% translate "Description" %}</th></tr></thead>
+    <tbody>
+      {% for form in formset %}
+      <tr>
+        {% for field in form %}<td>{{ field }}{% for e in field.errors %}<small class="error">{{ e }}</small>{% endfor %}</td>{% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <div class="hero-actions">
+    <button class="btn btn-primary" type="submit">{% translate "Next" %}</button>
+    <a class="btn btn-ghost" href="{% url 'register_licence' %}">{% translate "Start again" %}</a>
+  </div>
+</form>
+{% endblock %}

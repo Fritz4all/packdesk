@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Register a licence" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Register a licence" %}</h1></div>
+{% include "licences/_steps.html" %}
+<form method="post" class="form-card">
+  {% csrf_token %}
+  <h2>{% translate "Check your registration" %}</h2>
+  <dl class="details">
+    <dt>{% translate "Licence" %}</dt><dd>{{ licence.full_number }} · {{ licence.pack }}</dd>
+    <dt>{% translate "Cover" %}</dt><dd>{{ summary.cover_start|date:"j F Y" }} – {{ summary.cover_end|date:"j F Y" }}</dd>
+    <dt>{% translate "End customer" %}</dt><dd>{{ state.end_customer.email }}{% if state.end_customer.reference %} · {{ state.end_customer.reference }}{% endif %}</dd>
+    {% if state.reseller %}<dt>{% translate "Reseller" %}</dt><dd>{{ state.reseller.name }}, {{ state.reseller.address }}, {{ state.reseller.postal_code }} {{ state.reseller.city }}</dd>{% endif %}
+    <dt>{% translate "Device" %}</dt><dd>{% if summary.system %}{{ summary.system }}{% else %}{{ summary.vendor }}{% endif %} · {{ state.device.description }}</dd>
+    <dt>{% translate "Serial number" %}</dt><dd>{{ state.device.serial_nr }}</dd>
+    {% if state.device.product_nr %}<dt>{% translate "Article number" %}</dt><dd>{{ state.device.product_nr }}</dd>{% endif %}
+    {% if summary.purchase_date %}<dt>{% translate "Purchase date" %}</dt><dd>{{ summary.purchase_date|date:"j F Y" }}</dd>{% endif %}
+    {% if state.monitor %}<dt>{% translate "Monitor" %}</dt><dd>{{ summary.monitor_vendor }} · {{ state.monitor.description }} · {{ state.monitor.serial_nr }}</dd>{% endif %}
+    {% for row in summary.options %}<dt>{% translate "Option" %}</dt><dd>{{ row.quantity }} × {{ row.type }} {% if row.vendor_obj %}({{ row.vendor_obj }}){% endif %} · {{ row.description }}</dd>{% endfor %}
+  </dl>
+  <div class="hero-actions">
+    <button class="btn btn-primary btn-lg" type="submit">{% translate "Complete registration" %}</button>
+    <a class="btn btn-ghost" href="{% url 'register_licence' %}">{% translate "Start again" %}</a>
+  </div>
+</form>
+{% endblock %}

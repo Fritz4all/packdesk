@@ -1,0 +1,27 @@
+{% load i18n %}{% autoescape off %}{{ site_settings.display_name }}
+{% translate "Service certificate" %}
+
+{% translate "Thank you for registering your service pack." %}
+
+{% translate "Support details" %}
+  {% translate "Licence number" %}: {{ licence.full_number }}
+  {% translate "Pack" %}: {{ licence.pack.category }}
+  {% translate "Duration" %}: {{ licence.pack.period }}
+  {% translate "Service level" %}: {{ licence.pack.service }}
+  {% translate "Start date" %}: {{ licence.start_date|date:"j F Y" }}
+  {% translate "End date" %}: {{ licence.end_date|date:"j F Y" }}
+{% if licence.end_customer_reference %}
+{% translate "Your reference" %}: {{ licence.end_customer_reference }}
+{% endif %}
+{% translate "Covered products" %}
+  {% translate "Brand" %}: {% firstof licence.system.vendor licence.vendor %}
+  {% if licence.system %}{% translate "Type" %}: {{ licence.system.name }}
+  {% endif %}{% translate "Article number" %}: {{ licence.product_nr }}
+  {% translate "Description" %}: {{ licence.description }}
+  {% translate "Serial number" %}: {{ licence.serial_nr }}
+  {% if licence.purchase_date %}{% translate "Purchase date" %}: {{ licence.purchase_date|date:"j F Y" }}{% endif %}
+{% for option in options %}
+  - {{ option.option_type }}{% if option.vendor %} ({{ option.vendor }}){% endif %}: {{ option.description }} · {% translate "serial number" %} {{ option.serial_nr }}{% endfor %}
+
+{{ site_settings.display_name }}
+{% endautoescape %}

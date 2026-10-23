@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="auth"><div class="auth-card">
+  <h1>{% translate "Please contact us" %}</h1>
+  <p>{{ rules.contact_text|linebreaksbr }}</p>
+  <p class="muted">{% translate "Licence" %} {{ licence.full_number }}</p>
+  {% with address=site_settings.website_address %}
+  {% firstof address.phone site_settings.phone as phone %}{% firstof address.email site_settings.email as email %}
+  {% if phone %}<p>{{ phone }}</p>{% endif %}{% if email %}<p><a href="mailto:{{ email }}">{{ email }}</a></p>{% endif %}
+  {% endwith %}
+</div></div>
+{% endblock %}
