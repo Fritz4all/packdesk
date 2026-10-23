@@ -87,8 +87,6 @@ Ontvangen: productie-`const.rb`, kopie van `/data/previous-webshop/data/` (factu
 Nog nodig:
 
 - Database met data: voor het testen van de import een geanonimiseerde dump; voor de echte overstap later een verse dump. (Het schema is ontvangen.)
-- Facturen van vóór 2014, als die nog bestaan.
-- Bevestiging van het actuele bedrijfsadres.
 
 ## Keuzes
 

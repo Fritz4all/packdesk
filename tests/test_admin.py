@@ -1,5 +1,5 @@
 from apps.accounts.models import User
-from apps.siteconfig.models import SiteSettings
+from apps.siteconfig.models import Address, SiteSettings
 
 from .conftest import make_user
 
@@ -16,6 +16,10 @@ def settings_form(**overrides):
         "country": "NL",
         "theme": "auto",
         "theme_switch": "on",
+        "addresses-TOTAL_FORMS": "0",
+        "addresses-INITIAL_FORMS": "0",
+        "addresses-MIN_NUM_FORMS": "0",
+        "addresses-MAX_NUM_FORMS": "1000",
     }
     data.update(overrides)
     return data
@@ -122,3 +126,38 @@ def test_beheerder_sets_appearance(client, site, beheerder):
     client.post(SETTINGS_URL + "1/change/", form)
     site = SiteSettings.load()
     assert site.theme == "light" and site.theme_switch is False
+
+
+def address_rows(*rows):
+    data = {"addresses-TOTAL_FORMS": str(len(rows))}
+    for i, row in enumerate(rows):
+        base = {"label": f"Adres {i}", "line1": f"Straat {i}", "postal_code": "1234 AB", "city": "Almere",
+                "country": "Nederland", "position": str(i)}
+        base.update(row)
+        data.update({f"addresses-{i}-{k}": v for k, v in base.items()})
+    return data
+
+
+def test_beheerder_adds_separate_billing_address(client, site, beheerder):
+    client.force_login(beheerder)
+    form = settings_form(**address_rows(
+        {"label": "Bezoekadres", "line1": "Koningsbeltweg 41F", "on_website": "on"},
+        {"label": "Factuuradres", "line1": "Postbus 1", "on_invoices": "on", "on_quotes": "on"},
+    ))
+    response = client.post(SETTINGS_URL + "1/change/", form)
+    assert response.status_code == 302, response.content.decode()[:3000]
+    site = SiteSettings.load()
+    assert site.address_for("website").line1 == "Koningsbeltweg 41F"
+    assert site.address_for("invoice").line1 == "Postbus 1"
+    assert site.address_for("quote").line1 == "Postbus 1"
+    # Nothing ticked for mails: falls back to the first address.
+    assert site.address_for("mail").line1 == "Koningsbeltweg 41F"
+
+
+def test_usage_on_two_addresses_is_rejected(client, site, beheerder):
+    client.force_login(beheerder)
+    form = settings_form(**address_rows({"on_invoices": "on"}, {"on_invoices": "on"}))
+    response = client.post(SETTINGS_URL + "1/change/", form)
+    assert response.status_code == 200
+    assert "meer dan één adres" in response.content.decode()
+    assert Address.objects.count() == 0

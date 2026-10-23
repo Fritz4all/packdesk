@@ -1,4 +1,4 @@
-from apps.siteconfig.models import SiteSettings
+from apps.siteconfig.models import Address, SiteSettings
 
 
 def test_settings_are_created_on_first_use(db):
@@ -18,9 +18,12 @@ def test_home_shows_name_colour_and_company_details(client, site):
     site.legal_name = "Testshop B.V."
     site.coc_number = "12345678"
     site.save()
+    Address.objects.create(settings=site, label="Bezoek", line1="Koningsbeltweg 41F", postal_code="1329 AB",
+                           city="Almere", on_website=True)
     page = client.get("/").content.decode()
     assert "Testshop" in page and "#112233" in page
     assert "Testshop B.V." in page and "12345678" in page
+    assert "Koningsbeltweg 41F, 1329 AB Almere" in page
 
 
 def test_intro_text_replaces_default(client, site):
@@ -60,3 +63,16 @@ def test_theme_switch_is_translated(client, site):
     client.post("/taal/", {"language": "de", "next": "/"})
     page = client.get("/").content.decode()
     assert "Hell" in page and "Dunkel" in page
+
+
+def test_address_for_without_addresses(site):
+    assert site.address_for("invoice") is None
+
+
+def test_address_specific_contact_details(site):
+    site.phone, site.email = "010-1111111", "info@example.test"
+    site.save()
+    billing = Address.objects.create(settings=site, label="Factuur", line1="Postbus 1", postal_code="1000 AA",
+                                     city="Almere", on_invoices=True, email="administratie@example.test")
+    assert billing.contact_email() == "administratie@example.test"
+    assert billing.contact_phone() == "010-1111111"

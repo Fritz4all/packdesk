@@ -5,9 +5,9 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from modeltranslation.admin import TabbedTranslationAdmin
-from unfold.admin import ModelAdmin
+from unfold.admin import ModelAdmin, StackedInline
 
-from .models import SiteSettings
+from .models import Address, SiteSettings
 
 
 class SiteSettingsForm(forms.ModelForm):
@@ -36,11 +36,52 @@ class SiteSettingsForm(forms.ModelForm):
         return cleaned
 
 
+class AddressFormSet(forms.BaseInlineFormSet):
+    """Each usage (website, invoices, ...) may be ticked on one address only."""
+
+    def clean(self):
+        super().clean()
+        labels = {f: Address._meta.get_field(f).verbose_name for f in Address.USAGES.values()}
+        seen = {}
+        for form in self.forms:
+            if not form.cleaned_data or form.cleaned_data.get("DELETE"):
+                continue
+            for field, label in labels.items():
+                if form.cleaned_data.get(field):
+                    if field in seen:
+                        raise forms.ValidationError(
+                            _("“%(usage)s” is ticked on more than one address. Choose one address per usage.")
+                            % {"usage": label}
+                        )
+                    seen[field] = form
+
+
+class AddressInline(StackedInline):
+    model = Address
+    formset = AddressFormSet
+    extra = 0
+    tab = True
+    fieldsets = [
+        (None, {"fields": ["label", "line1", "line2", ("postal_code", "city"), "country", ("phone", "email")]}),
+        (
+            _("Use this address for"),
+            {
+                "fields": [("on_website", "on_invoices", "on_quotes"), ("on_orders", "on_mails", "on_labels")],
+                "description": _(
+                    "Tick where this address appears. Anything not ticked anywhere uses the first address."
+                ),
+            },
+        ),
+        (None, {"fields": ["position"]}),
+    ]
+
+
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
     """Single settings page: the list view jumps straight to the form."""
 
     form = SiteSettingsForm
+    inlines = [AddressInline]
 
     readonly_fields = ["updated_at"]
     color_fields = {"primary_color", "accent_color"}
@@ -53,8 +94,6 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
             {
                 "fields": [
                     "legal_name",
-                    "address_line",
-                    ("postal_code", "city", "country"),
                     ("phone", "email"),
                     "website",
                     ("coc_number", "vat_number"),

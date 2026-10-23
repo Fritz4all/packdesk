@@ -66,11 +66,12 @@
     <div class="container footer-inner">
       <div>
         <strong>{{ site.display_name }}</strong>
-        {% if site.address_line %}<br>{{ site.address_line }}, {{ site.postal_code }} {{ site.city }}{% endif %}
+        {% with address=site.website_address %}{% if address %}<br>{{ address.one_line }}{% endif %}
       </div>
       <div class="footer-meta">
-        {% if site.phone %}<span>{{ site.phone }}</span>{% endif %}
-        {% if site.email %}<a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}
+        {% firstof address.phone site.phone as phone %}{% firstof address.email site.email as email %}
+        {% if phone %}<span>{{ phone }}</span>{% endif %}
+        {% if email %}<a href="mailto:{{ email }}">{{ email }}</a>{% endif %}{% endwith %}
         {% if site.coc_number %}<span>{% translate "CoC" %} {{ site.coc_number }}</span>{% endif %}
       </div>
     </div>

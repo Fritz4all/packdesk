@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 22:40+0200\n"
+"POT-Creation-Date: 2026-10-23 22:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,19 +77,36 @@ msgstr "Sprachen, aus denen Besucher wählen können."
 msgid "The default language must be one of the available languages."
 msgstr "Die Standardsprache muss eine der verfügbaren Sprachen sein."
 
-#: apps/siteconfig/admin.py:49
+#: apps/siteconfig/admin.py:53
+#, python-format
+msgid ""
+"“%(usage)s” is ticked on more than one address. Choose one address per usage."
+msgstr "„%(usage)s“ ist bei mehr als einer Adresse angekreuzt. Wählen Sie pro Verwendung eine Adresse."
+
+#: apps/siteconfig/admin.py:67
+#| msgid "email address"
+msgid "Use this address for"
+msgstr "Diese Adresse verwenden für"
+
+#: apps/siteconfig/admin.py:71
+msgid ""
+"Tick where this address appears. Anything not ticked anywhere uses the first "
+"address."
+msgstr "Kreuzen Sie an, wo diese Adresse erscheint. Was nirgends angekreuzt ist, verwendet die erste Adresse."
+
+#: apps/siteconfig/admin.py:90
 msgid "Branding"
 msgstr "Corporate Design"
 
-#: apps/siteconfig/admin.py:50 templates/base.html:31 templates/base.html:32
+#: apps/siteconfig/admin.py:91 templates/base.html:31 templates/base.html:32
 msgid "Appearance"
 msgstr "Darstellung"
 
-#: apps/siteconfig/admin.py:52
+#: apps/siteconfig/admin.py:93
 msgid "Company details"
 msgstr "Unternehmensdaten"
 
-#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:82
+#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:78
 #: packdesk/settings.py:153
 msgid "Settings"
 msgstr "Einstellungen"
@@ -110,7 +127,7 @@ msgstr "Hell"
 msgid "Dark"
 msgstr "Dunkel"
 
-#: apps/siteconfig/models.py:23
+#: apps/siteconfig/models.py:23 apps/siteconfig/models.py:143
 msgid "name"
 msgstr "Name"
 
@@ -143,17 +160,14 @@ msgid "accent colour"
 msgstr "Akzentfarbe"
 
 #: apps/siteconfig/models.py:44
-#| msgid "default language"
 msgid "default appearance"
 msgstr "Standarddarstellung"
 
 #: apps/siteconfig/models.py:48
-#| msgid "Language for visitors who have not chosen one."
 msgid "Light or dark appearance for visitors who have not chosen one."
 msgstr "Helle oder dunkle Darstellung für Besucher, die noch nichts gewählt haben."
 
 #: apps/siteconfig/models.py:51
-#| msgid "Languages visitors can choose from."
 msgid "visitors can choose appearance"
 msgstr "Besucher können Darstellung wählen"
 
@@ -177,53 +191,103 @@ msgstr "Kurzer Text auf der Startseite unter dem Slogan."
 msgid "legal name"
 msgstr "Firmenname"
 
-#: apps/siteconfig/models.py:64
-msgid "address"
-msgstr "Adresse"
-
-#: apps/siteconfig/models.py:65
-msgid "postal code"
-msgstr "Postleitzahl"
-
-#: apps/siteconfig/models.py:66
-msgid "city"
-msgstr "Ort"
-
-#: apps/siteconfig/models.py:67
-msgid "country"
-msgstr "Land"
-
-#: apps/siteconfig/models.py:68
+#: apps/siteconfig/models.py:64 apps/siteconfig/models.py:149
 msgid "phone"
 msgstr "Telefon"
 
-#: apps/siteconfig/models.py:69
+#: apps/siteconfig/models.py:65 apps/siteconfig/models.py:150
 msgid "email"
 msgstr "E-Mail"
 
-#: apps/siteconfig/models.py:70
+#: apps/siteconfig/models.py:66 apps/siteconfig/models.py:152
 msgid "website"
 msgstr "Website"
 
-#: apps/siteconfig/models.py:71
+#: apps/siteconfig/models.py:67
 msgid "Chamber of Commerce number"
 msgstr "Handelsregisternummer"
 
-#: apps/siteconfig/models.py:72
+#: apps/siteconfig/models.py:68
 msgid "VAT number"
 msgstr "USt-IdNr."
 
-#: apps/siteconfig/models.py:73
+#: apps/siteconfig/models.py:69
 msgid "IBAN"
 msgstr "IBAN"
 
-#: apps/siteconfig/models.py:75
+#: apps/siteconfig/models.py:71
 msgid "updated"
 msgstr "aktualisiert"
 
-#: apps/siteconfig/models.py:78 apps/siteconfig/models.py:79
+#: apps/siteconfig/models.py:74 apps/siteconfig/models.py:75
 msgid "settings"
 msgstr "Einstellungen"
+
+#: apps/siteconfig/models.py:143
+msgid "For yourself, e.g. visiting address or postal address."
+msgstr "Für Sie selbst, z. B. Besuchsadresse oder Postanschrift."
+
+#: apps/siteconfig/models.py:144 apps/siteconfig/models.py:162
+msgid "address"
+msgstr "Adresse"
+
+#: apps/siteconfig/models.py:145
+#| msgid "address"
+msgid "address line 2"
+msgstr "Adresszeile 2"
+
+#: apps/siteconfig/models.py:146
+msgid "postal code"
+msgstr "Postleitzahl"
+
+#: apps/siteconfig/models.py:147
+msgid "city"
+msgstr "Ort"
+
+#: apps/siteconfig/models.py:148
+msgid "country"
+msgstr "Land"
+
+#: apps/siteconfig/models.py:149
+msgid "Leave empty to use the general phone number."
+msgstr "Leer lassen, um die allgemeine Telefonnummer zu verwenden."
+
+#: apps/siteconfig/models.py:150
+msgid "Leave empty to use the general email address."
+msgstr "Leer lassen, um die allgemeine E-Mail-Adresse zu verwenden."
+
+#: apps/siteconfig/models.py:153
+#| msgid "Invoices"
+msgid "invoices"
+msgstr "Rechnungen"
+
+#: apps/siteconfig/models.py:154
+msgid "quotes"
+msgstr "Angebote"
+
+#: apps/siteconfig/models.py:155
+#| msgid "Configuration"
+msgid "order confirmations"
+msgstr "Auftragsbestätigungen"
+
+#: apps/siteconfig/models.py:156
+#| msgid "email"
+msgid "emails"
+msgstr "E-Mails"
+
+#: apps/siteconfig/models.py:157
+msgid "sender on labels"
+msgstr "Absender auf Etiketten"
+
+#: apps/siteconfig/models.py:159
+#| msgid "Orders"
+msgid "order"
+msgstr "Reihenfolge"
+
+#: apps/siteconfig/models.py:163
+#| msgid "address"
+msgid "addresses"
+msgstr "Adressen"
 
 #: packdesk/settings.py:89
 msgid "Dutch"
@@ -271,7 +335,7 @@ msgstr "Abmelden"
 msgid "Log in"
 msgstr "Anmelden"
 
-#: templates/base.html:74
+#: templates/base.html:75
 msgid "CoC"
 msgstr "HRB"
 

@@ -61,10 +61,6 @@ class SiteSettings(models.Model):
 
     # Company details
     legal_name = models.CharField(_("legal name"), max_length=200, blank=True)
-    address_line = models.CharField(_("address"), max_length=200, blank=True)
-    postal_code = models.CharField(_("postal code"), max_length=20, blank=True)
-    city = models.CharField(_("city"), max_length=100, blank=True)
-    country = models.CharField(_("country"), max_length=2, default="NL")
     phone = models.CharField(_("phone"), max_length=40, blank=True)
     email = models.EmailField(_("email"), blank=True)
     website = models.URLField(_("website"), blank=True)
@@ -111,3 +107,72 @@ class SiteSettings(models.Model):
     @property
     def display_name(self):
         return self.legal_name or self.name
+
+    def address_for(self, usage):
+        """The address to show for a usage: website, invoice, quote, order, mail or label."""
+        field = Address.USAGES[usage]
+        addresses = list(self.addresses.all())
+        for address in addresses:
+            if getattr(address, field):
+                return address
+        return addresses[0] if addresses else None
+
+    @property
+    def website_address(self):
+        return self.address_for("website")
+
+
+class Address(models.Model):
+    """A company address, e.g. visiting address, postal address or billing address.
+
+    Each usage (website, invoices, quotes, ...) is ticked on at most one address.
+    A usage nobody ticked falls back to the first address, so documents always
+    have an address.
+    """
+
+    USAGES = {
+        "website": "on_website",
+        "invoice": "on_invoices",
+        "quote": "on_quotes",
+        "order": "on_orders",
+        "mail": "on_mails",
+        "label": "on_labels",
+    }
+
+    settings = models.ForeignKey(SiteSettings, on_delete=models.CASCADE, related_name="addresses")
+    label = models.CharField(_("name"), max_length=60, help_text=_("For yourself, e.g. visiting address or postal address."))
+    line1 = models.CharField(_("address"), max_length=200)
+    line2 = models.CharField(_("address line 2"), max_length=200, blank=True)
+    postal_code = models.CharField(_("postal code"), max_length=20)
+    city = models.CharField(_("city"), max_length=100)
+    country = models.CharField(_("country"), max_length=60, blank=True, default="Nederland")
+    phone = models.CharField(_("phone"), max_length=40, blank=True, help_text=_("Leave empty to use the general phone number."))
+    email = models.EmailField(_("email"), blank=True, help_text=_("Leave empty to use the general email address."))
+
+    on_website = models.BooleanField(_("website"), default=False)
+    on_invoices = models.BooleanField(_("invoices"), default=False)
+    on_quotes = models.BooleanField(_("quotes"), default=False)
+    on_orders = models.BooleanField(_("order confirmations"), default=False)
+    on_mails = models.BooleanField(_("emails"), default=False)
+    on_labels = models.BooleanField(_("sender on labels"), default=False)
+
+    position = models.PositiveSmallIntegerField(_("order"), default=0)
+
+    class Meta:
+        verbose_name = _("address")
+        verbose_name_plural = _("addresses")
+        ordering = ["position", "id"]
+
+    def __str__(self):
+        return f"{self.label}: {self.one_line}"
+
+    @property
+    def one_line(self):
+        parts = [self.line1, self.line2, f"{self.postal_code} {self.city}".strip(), self.country]
+        return ", ".join(p for p in parts if p)
+
+    def contact_phone(self):
+        return self.phone or self.settings.phone
+
+    def contact_email(self):
+        return self.email or self.settings.email

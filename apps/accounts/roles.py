@@ -10,6 +10,10 @@ ROLES = {
     "Beheerder": [
         "siteconfig.view_sitesettings",
         "siteconfig.change_sitesettings",
+        "siteconfig.view_address",
+        "siteconfig.add_address",
+        "siteconfig.change_address",
+        "siteconfig.delete_address",
         "accounts.view_user",
         "accounts.add_user",
         "accounts.change_user",
