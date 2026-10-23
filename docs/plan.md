@@ -81,10 +81,13 @@ Per documentsoort een reeks, in te stellen in de admin:
 
 ## Nodig van Roy
 
-- Een kopie van `/data/previous-webshop/data/` van de oude webserver (o.a. `invoices/`), aangeleverd als backup; ik maak zelf geen verbinding met productie.
-- Voor de test: een geanonimiseerde dump of alleen het schema. Voor de echte overstap later: een verse dump.
-- De productie-`const.rb`.
-- Een kopie van `/home/app/webapp/public/system/` uit de draaiende productiecontainer (geüploade logo's en artikelfoto's; staan niet op een volume, zie `docs/vorige-webshop/analyse.md` §8).
+Ontvangen: productie-`const.rb`, kopie van `/data/previous-webshop/data/` (factuurarchief), kopie van de app uit de container (zie `docs/vorige-webshop/analyse.md` §12).
+
+Nog nodig:
+
+- Database: voor de test een geanonimiseerde dump of alleen het schema; voor de echte overstap later een verse dump.
+- Facturen van vóór 2014, als die nog bestaan.
+- Bevestiging van het actuele bedrijfsadres.
 
 ## Keuzes
 
