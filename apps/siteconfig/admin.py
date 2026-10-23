@@ -47,6 +47,7 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
     fieldsets = [
         (None, {"fields": ["name", "language", "languages"]}),
         (_("Branding"), {"fields": ["logo", "favicon", ("primary_color", "accent_color"), "tagline", "intro_text"]}),
+        (_("Appearance"), {"fields": ["theme", "theme_switch"]}),
         (
             _("Company details"),
             {

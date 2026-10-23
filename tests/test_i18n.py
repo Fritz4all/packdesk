@@ -17,7 +17,7 @@ def test_visitor_can_switch_language(client, site, language, text):
     switch(client, language)
     page = client.get("/").content.decode()
     assert text in page
-    assert f'<html lang="{language}">' in page
+    assert f'<html lang="{language}"' in page
 
 
 def test_default_language_from_settings(client, site):
@@ -66,6 +66,7 @@ def test_every_message_is_translated(folder, lang):
 
     po = (Path(settings.BASE_DIR) / folder / lang / "LC_MESSAGES" / "django.po").read_text(encoding="utf-8")
     entries = po.split("\n\n")[1:]
-    missing = [e for e in entries if re.search(r'^msgstr ""\s*$', e, re.M) and "msgid_plural" not in e]
+    # An empty msgstr is `msgstr ""` without continuation lines.
+    missing = [e for e in entries if re.search(r'^msgstr ""\n(?!")', e + "\n", re.M) and "msgid_plural" not in e]
     assert not missing, f"{len(missing)} untranslated, e.g. {missing[0][:120]}"
     assert "#, fuzzy" not in po

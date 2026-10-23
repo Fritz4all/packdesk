@@ -1,9 +1,21 @@
 {% load static i18n %}<!doctype html>
-<html lang="{{ LANGUAGE_CODE|default:'nl' }}">
+<html lang="{{ LANGUAGE_CODE|default:'nl' }}" data-theme-default="{{ site.theme|default:'auto' }}" data-theme-switch="{{ site.theme_switch|yesno:'1,0' }}"{% if site.theme and site.theme != 'auto' %} data-theme="{{ site.theme }}"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ site.name }}{% endblock %}</title>
+  <script>
+    /* Apply the visitor's light/dark choice before anything is drawn (no flash). */
+    (function () {
+      var root = document.documentElement, choice = root.dataset.themeDefault;
+      try {
+        var saved = localStorage.getItem("packdesk-theme");
+        if (root.dataset.themeSwitch === "1" && ["auto", "light", "dark"].indexOf(saved) !== -1) choice = saved;
+      } catch (e) {}
+      if (choice === "auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", choice);
+      root.dataset.themeChoice = choice;
+    })();
+  </script>
   {% if site.favicon %}<link rel="icon" href="{{ site.favicon.url }}">{% endif %}
   <link rel="stylesheet" href="{% static 'css/packdesk.css' %}">
   <style>:root { --brand: {{ site.primary_color|default:'#1f6feb' }}; --accent: {{ site.accent_color|default:'#0ea5e9' }}; }</style>
@@ -15,12 +27,20 @@
         {% if site.logo %}<img src="{{ site.logo.url }}" alt="{{ site.name }}">{% else %}<span class="brand-mark">{{ site.name|slice:":1" }}</span><span class="brand-name">{{ site.name }}</span>{% endif %}
       </a>
       <nav class="nav">
+        {% if site.theme_switch %}
+        <label class="visually-hidden" for="theme-select">{% translate "Appearance" %}</label>
+        <select id="theme-select" class="header-select" title="{% translate "Appearance" %}">
+          <option value="auto">◐ {% translate "Auto" %}</option>
+          <option value="light">☀ {% translate "Light" %}</option>
+          <option value="dark">☾ {% translate "Dark" %}</option>
+        </select>
+        {% endif %}
         {% if site.language_choices|length > 1 %}
         <form class="lang-switch" method="post" action="{% url 'set_language' %}">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ request.get_full_path }}">
           <label class="visually-hidden" for="lang-select">{% translate "Language" %}</label>
-          <select id="lang-select" name="language" onchange="this.form.submit()">
+          <select id="lang-select" class="header-select" name="language" onchange="this.form.submit()">
             {% for code, name in site.language_choices %}<option value="{{ code }}" title="{{ name }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ code|upper }}</option>{% endfor %}
           </select>
           <noscript><button type="submit">OK</button></noscript>
@@ -55,5 +75,19 @@
       </div>
     </div>
   </footer>
+  {% if site.theme_switch %}
+  <script>
+    (function () {
+      var root = document.documentElement, select = document.getElementById("theme-select");
+      select.value = root.dataset.themeChoice || "auto";
+      select.addEventListener("change", function () {
+        var choice = select.value;
+        try { localStorage.setItem("packdesk-theme", choice); } catch (e) {}
+        if (choice === "auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", choice);
+        root.dataset.themeChoice = choice;
+      });
+    })();
+  </script>
+  {% endif %}
 </body>
 </html>

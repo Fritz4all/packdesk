@@ -6,6 +6,12 @@ from django.utils.translation import gettext_lazy as _
 hex_color = RegexValidator(r"^#[0-9a-fA-F]{6}$", _("Use a colour like #1f6feb."))
 
 
+class Theme(models.TextChoices):
+    AUTO = "auto", _("Auto (follow device)")
+    LIGHT = "light", _("Light")
+    DARK = "dark", _("Dark")
+
+
 class SiteSettings(models.Model):
     """Everything that differs per customer installation.
 
@@ -34,6 +40,18 @@ class SiteSettings(models.Model):
     favicon = models.ImageField(_("favicon"), upload_to="branding/", blank=True)
     primary_color = models.CharField(_("primary colour"), max_length=7, default="#1f6feb", validators=[hex_color])
     accent_color = models.CharField(_("accent colour"), max_length=7, default="#0ea5e9", validators=[hex_color])
+    theme = models.CharField(
+        _("default appearance"),
+        max_length=8,
+        choices=Theme.choices,
+        default=Theme.AUTO,
+        help_text=_("Light or dark appearance for visitors who have not chosen one."),
+    )
+    theme_switch = models.BooleanField(
+        _("visitors can choose appearance"),
+        default=True,
+        help_text=_("Shows a light/dark switch in the header."),
+    )
     tagline = models.CharField(_("tagline"), max_length=200, blank=True)
     intro_text = models.TextField(
         _("introduction"),

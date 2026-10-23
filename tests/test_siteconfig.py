@@ -38,3 +38,25 @@ def test_page_language_follows_setting(client, site):
 
 def test_unknown_host_is_rejected(client, site):
     assert client.get("/", HTTP_HOST="evil.example").status_code == 400
+
+
+def test_default_theme_is_auto_with_switch(client, site):
+    page = client.get("/").content.decode()
+    assert 'data-theme-default="auto"' in page and 'data-theme-switch="1"' in page
+    assert 'id="theme-select"' in page
+    assert ' data-theme="' not in page
+
+
+def test_fixed_dark_theme_without_switch(client, site):
+    site.theme = "dark"
+    site.theme_switch = False
+    site.save()
+    page = client.get("/").content.decode()
+    assert 'data-theme="dark"' in page and 'data-theme-switch="0"' in page
+    assert 'id="theme-select"' not in page
+
+
+def test_theme_switch_is_translated(client, site):
+    client.post("/taal/", {"language": "de", "next": "/"})
+    page = client.get("/").content.decode()
+    assert "Hell" in page and "Dunkel" in page

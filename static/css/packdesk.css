@@ -10,18 +10,40 @@
   --shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 4px 16px rgb(16 24 40 / 0.06);
   --danger: #c62828;
   --success: #2e7d32;
+  /* Brand colour for text and links: darkened a little so light brand
+     colours stay readable on a white background. */
+  --brand-text: color-mix(in srgb, var(--brand) 85%, black);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  color-scheme: light dark;
+  color-scheme: light;
+}
+
+/* Dark: either chosen explicitly, or "auto" on a device set to dark. */
+:root[data-theme="dark"] {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --text: #e8eaed;
+  --muted: #9aa1ac;
+  --border: #2a2f39;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px rgb(0 0 0 / 0.25);
+  --danger: #ef6b6b;
+  --success: #6fcf73;
+  /* Lightened so dark brand colours stay readable on a dark background. */
+  --brand-text: color-mix(in srgb, var(--brand) 60%, white);
+  color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --bg: #0f1115;
     --surface: #171a21;
     --text: #e8eaed;
     --muted: #9aa1ac;
     --border: #2a2f39;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px rgb(0 0 0 / 0.25);
+    --danger: #ef6b6b;
+    --success: #6fcf73;
+    --brand-text: color-mix(in srgb, var(--brand) 60%, white);
+    color-scheme: dark;
   }
 }
 
@@ -35,7 +57,7 @@ body {
   display: flex;
   flex-direction: column;
 }
-a { color: var(--brand); text-decoration: none; }
+a { color: var(--brand-text); text-decoration: none; }
 a:hover { text-decoration: underline; }
 h1, h2 { line-height: 1.2; margin: 0 0 0.5rem; }
 h1 { font-size: clamp(1.8rem, 1.2rem + 2vw, 2.6rem); letter-spacing: -0.02em; }
@@ -67,7 +89,7 @@ h2 { font-size: 1.15rem; }
 .nav form { margin: 0; }
 .nav > a:not(.btn) { color: var(--muted); font-weight: 500; }
 
-.lang-switch select {
+.header-select {
   font: inherit; font-size: 0.85rem; font-weight: 600;
   padding: 0.35rem 0.5rem; border-radius: 8px;
   border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer;
@@ -116,7 +138,7 @@ h2 { font-size: 1.15rem; }
   width: 40px; height: 40px; border-radius: 10px; margin-bottom: 0.9rem;
   display: grid; place-items: center; font-size: 1.2rem;
   background: color-mix(in srgb, var(--brand) 14%, transparent);
-  color: var(--brand);
+  color: var(--brand-text);
 }
 .page-head { margin-bottom: 1.5rem; }
 

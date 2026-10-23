@@ -14,6 +14,8 @@ def settings_form(**overrides):
         "primary_color": "#112233",
         "accent_color": "#ffffff",
         "country": "NL",
+        "theme": "auto",
+        "theme_switch": "on",
     }
     data.update(overrides)
     return data
@@ -111,3 +113,12 @@ def test_available_languages_are_saved(client, site, beheerder):
     client.force_login(beheerder)
     client.post(SETTINGS_URL + "1/change/", settings_form(languages=["nl", "de"]))
     assert SiteSettings.load().language_codes == ["nl", "de"]
+
+
+def test_beheerder_sets_appearance(client, site, beheerder):
+    client.force_login(beheerder)
+    form = settings_form(theme="light")
+    del form["theme_switch"]
+    client.post(SETTINGS_URL + "1/change/", form)
+    site = SiteSettings.load()
+    assert site.theme == "light" and site.theme_switch is False

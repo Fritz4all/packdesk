@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 22:33+0200\n"
+"POT-Creation-Date: 2026-10-23 22:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,7 +69,7 @@ msgstr "Benutzer"
 msgid "Available languages"
 msgstr "Verfügbare Sprachen"
 
-#: apps/siteconfig/admin.py:18 apps/siteconfig/models.py:29
+#: apps/siteconfig/admin.py:18 apps/siteconfig/models.py:35
 msgid "Languages visitors can choose from."
 msgstr "Sprachen, aus denen Besucher wählen können."
 
@@ -81,11 +81,15 @@ msgstr "Die Standardsprache muss eine der verfügbaren Sprachen sein."
 msgid "Branding"
 msgstr "Corporate Design"
 
-#: apps/siteconfig/admin.py:51
+#: apps/siteconfig/admin.py:50 templates/base.html:31 templates/base.html:32
+msgid "Appearance"
+msgstr "Darstellung"
+
+#: apps/siteconfig/admin.py:52
 msgid "Company details"
 msgstr "Unternehmensdaten"
 
-#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:64
+#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:82
 #: packdesk/settings.py:153
 msgid "Settings"
 msgstr "Einstellungen"
@@ -94,99 +98,130 @@ msgstr "Einstellungen"
 msgid "Use a colour like #1f6feb."
 msgstr "Verwenden Sie eine Farbe wie #1f6feb."
 
-#: apps/siteconfig/models.py:17
+#: apps/siteconfig/models.py:10
+msgid "Auto (follow device)"
+msgstr "Auto (wie Gerät)"
+
+#: apps/siteconfig/models.py:11 templates/base.html:34
+msgid "Light"
+msgstr "Hell"
+
+#: apps/siteconfig/models.py:12 templates/base.html:35
+msgid "Dark"
+msgstr "Dunkel"
+
+#: apps/siteconfig/models.py:23
 msgid "name"
 msgstr "Name"
 
-#: apps/siteconfig/models.py:19
+#: apps/siteconfig/models.py:25
 msgid "default language"
 msgstr "Standardsprache"
 
-#: apps/siteconfig/models.py:23
+#: apps/siteconfig/models.py:29
 msgid "Language for visitors who have not chosen one."
 msgstr "Sprache für Besucher, die noch keine Sprache gewählt haben."
 
-#: apps/siteconfig/models.py:26
+#: apps/siteconfig/models.py:32
 msgid "available languages"
 msgstr "verfügbare Sprachen"
 
-#: apps/siteconfig/models.py:33
+#: apps/siteconfig/models.py:39
 msgid "logo"
 msgstr "Logo"
 
-#: apps/siteconfig/models.py:34
+#: apps/siteconfig/models.py:40
 msgid "favicon"
 msgstr "Favicon"
 
-#: apps/siteconfig/models.py:35
+#: apps/siteconfig/models.py:41
 msgid "primary colour"
 msgstr "Hauptfarbe"
 
-#: apps/siteconfig/models.py:36
+#: apps/siteconfig/models.py:42
 msgid "accent colour"
 msgstr "Akzentfarbe"
 
-#: apps/siteconfig/models.py:37
+#: apps/siteconfig/models.py:44
+#| msgid "default language"
+msgid "default appearance"
+msgstr "Standarddarstellung"
+
+#: apps/siteconfig/models.py:48
+#| msgid "Language for visitors who have not chosen one."
+msgid "Light or dark appearance for visitors who have not chosen one."
+msgstr "Helle oder dunkle Darstellung für Besucher, die noch nichts gewählt haben."
+
+#: apps/siteconfig/models.py:51
+#| msgid "Languages visitors can choose from."
+msgid "visitors can choose appearance"
+msgstr "Besucher können Darstellung wählen"
+
+#: apps/siteconfig/models.py:53
+msgid "Shows a light/dark switch in the header."
+msgstr "Zeigt in der Kopfzeile eine Auswahl für hell/dunkel."
+
+#: apps/siteconfig/models.py:55
 msgid "tagline"
 msgstr "Slogan"
 
-#: apps/siteconfig/models.py:39
+#: apps/siteconfig/models.py:57
 msgid "introduction"
 msgstr "Einleitung"
 
-#: apps/siteconfig/models.py:41
+#: apps/siteconfig/models.py:59
 msgid "Short text on the home page under the tagline."
 msgstr "Kurzer Text auf der Startseite unter dem Slogan."
 
-#: apps/siteconfig/models.py:45
+#: apps/siteconfig/models.py:63
 msgid "legal name"
 msgstr "Firmenname"
 
-#: apps/siteconfig/models.py:46
+#: apps/siteconfig/models.py:64
 msgid "address"
 msgstr "Adresse"
 
-#: apps/siteconfig/models.py:47
+#: apps/siteconfig/models.py:65
 msgid "postal code"
 msgstr "Postleitzahl"
 
-#: apps/siteconfig/models.py:48
+#: apps/siteconfig/models.py:66
 msgid "city"
 msgstr "Ort"
 
-#: apps/siteconfig/models.py:49
+#: apps/siteconfig/models.py:67
 msgid "country"
 msgstr "Land"
 
-#: apps/siteconfig/models.py:50
+#: apps/siteconfig/models.py:68
 msgid "phone"
 msgstr "Telefon"
 
-#: apps/siteconfig/models.py:51
+#: apps/siteconfig/models.py:69
 msgid "email"
 msgstr "E-Mail"
 
-#: apps/siteconfig/models.py:52
+#: apps/siteconfig/models.py:70
 msgid "website"
 msgstr "Website"
 
-#: apps/siteconfig/models.py:53
+#: apps/siteconfig/models.py:71
 msgid "Chamber of Commerce number"
 msgstr "Handelsregisternummer"
 
-#: apps/siteconfig/models.py:54
+#: apps/siteconfig/models.py:72
 msgid "VAT number"
 msgstr "USt-IdNr."
 
-#: apps/siteconfig/models.py:55
+#: apps/siteconfig/models.py:73
 msgid "IBAN"
 msgstr "IBAN"
 
-#: apps/siteconfig/models.py:57
+#: apps/siteconfig/models.py:75
 msgid "updated"
 msgstr "aktualisiert"
 
-#: apps/siteconfig/models.py:60 apps/siteconfig/models.py:61
+#: apps/siteconfig/models.py:78 apps/siteconfig/models.py:79
 msgid "settings"
 msgstr "Einstellungen"
 
@@ -210,29 +245,33 @@ msgstr "Konfiguration"
 msgid "Roles"
 msgstr "Rollen"
 
-#: templates/base.html:22
+#: templates/base.html:33
+msgid "Auto"
+msgstr "Auto"
+
+#: templates/base.html:42
 msgid "Language"
 msgstr "Sprache"
 
-#: templates/base.html:30 templates/core/dashboard.html:3
+#: templates/base.html:50 templates/core/dashboard.html:3
 msgid "My account"
 msgstr "Mein Konto"
 
-#: templates/base.html:31
+#: templates/base.html:51
 msgid "Admin"
 msgstr "Verwaltung"
 
-#: templates/base.html:32
+#: templates/base.html:52
 msgid "Log out"
 msgstr "Abmelden"
 
-#: templates/base.html:34 templates/core/home.html:11
+#: templates/base.html:54 templates/core/home.html:11
 #: templates/registration/login.html:3 templates/registration/login.html:7
 #: templates/registration/login.html:19
 msgid "Log in"
 msgstr "Anmelden"
 
-#: templates/base.html:54
+#: templates/base.html:74
 msgid "CoC"
 msgstr "HRB"
 

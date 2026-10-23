@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 22:33+0200\n"
+"POT-Creation-Date: 2026-10-23 22:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,11 +66,10 @@ msgid "users"
 msgstr "gebruikers"
 
 #: apps/siteconfig/admin.py:15
-#| msgid "Available soon."
 msgid "Available languages"
 msgstr "Beschikbare talen"
 
-#: apps/siteconfig/admin.py:18 apps/siteconfig/models.py:29
+#: apps/siteconfig/admin.py:18 apps/siteconfig/models.py:35
 msgid "Languages visitors can choose from."
 msgstr "Talen waaruit bezoekers kunnen kiezen."
 
@@ -82,11 +81,15 @@ msgstr "De standaardtaal moet een van de beschikbare talen zijn."
 msgid "Branding"
 msgstr "Huisstijl"
 
-#: apps/siteconfig/admin.py:51
+#: apps/siteconfig/admin.py:50 templates/base.html:31 templates/base.html:32
+msgid "Appearance"
+msgstr "Weergave"
+
+#: apps/siteconfig/admin.py:52
 msgid "Company details"
 msgstr "Bedrijfsgegevens"
 
-#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:64
+#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:82
 #: packdesk/settings.py:153
 msgid "Settings"
 msgstr "Instellingen"
@@ -95,100 +98,130 @@ msgstr "Instellingen"
 msgid "Use a colour like #1f6feb."
 msgstr "Gebruik een kleur zoals #1f6feb."
 
-#: apps/siteconfig/models.py:17
+#: apps/siteconfig/models.py:10
+msgid "Auto (follow device)"
+msgstr "Auto (volgt apparaat)"
+
+#: apps/siteconfig/models.py:11 templates/base.html:34
+msgid "Light"
+msgstr "Licht"
+
+#: apps/siteconfig/models.py:12 templates/base.html:35
+msgid "Dark"
+msgstr "Donker"
+
+#: apps/siteconfig/models.py:23
 msgid "name"
 msgstr "naam"
 
-#: apps/siteconfig/models.py:19
-#| msgid "language"
+#: apps/siteconfig/models.py:25
 msgid "default language"
 msgstr "standaardtaal"
 
-#: apps/siteconfig/models.py:23
+#: apps/siteconfig/models.py:29
 msgid "Language for visitors who have not chosen one."
 msgstr "Taal voor bezoekers die zelf nog geen taal hebben gekozen."
 
-#: apps/siteconfig/models.py:26
+#: apps/siteconfig/models.py:32
 msgid "available languages"
 msgstr "beschikbare talen"
 
-#: apps/siteconfig/models.py:33
+#: apps/siteconfig/models.py:39
 msgid "logo"
 msgstr "logo"
 
-#: apps/siteconfig/models.py:34
+#: apps/siteconfig/models.py:40
 msgid "favicon"
 msgstr "favicon"
 
-#: apps/siteconfig/models.py:35
+#: apps/siteconfig/models.py:41
 msgid "primary colour"
 msgstr "hoofdkleur"
 
-#: apps/siteconfig/models.py:36
+#: apps/siteconfig/models.py:42
 msgid "accent colour"
 msgstr "accentkleur"
 
-#: apps/siteconfig/models.py:37
+#: apps/siteconfig/models.py:44
+#| msgid "default language"
+msgid "default appearance"
+msgstr "standaardweergave"
+
+#: apps/siteconfig/models.py:48
+#| msgid "Language for visitors who have not chosen one."
+msgid "Light or dark appearance for visitors who have not chosen one."
+msgstr "Lichte of donkere weergave voor bezoekers die zelf nog niets hebben gekozen."
+
+#: apps/siteconfig/models.py:51
+#| msgid "Languages visitors can choose from."
+msgid "visitors can choose appearance"
+msgstr "bezoekers kunnen weergave kiezen"
+
+#: apps/siteconfig/models.py:53
+msgid "Shows a light/dark switch in the header."
+msgstr "Toont een keuze voor licht/donker in de kopregel."
+
+#: apps/siteconfig/models.py:55
 msgid "tagline"
 msgstr "slogan"
 
-#: apps/siteconfig/models.py:39
+#: apps/siteconfig/models.py:57
 msgid "introduction"
 msgstr "introductie"
 
-#: apps/siteconfig/models.py:41
+#: apps/siteconfig/models.py:59
 msgid "Short text on the home page under the tagline."
 msgstr "Korte tekst op de homepage onder de slogan."
 
-#: apps/siteconfig/models.py:45
+#: apps/siteconfig/models.py:63
 msgid "legal name"
 msgstr "statutaire naam"
 
-#: apps/siteconfig/models.py:46
+#: apps/siteconfig/models.py:64
 msgid "address"
 msgstr "adres"
 
-#: apps/siteconfig/models.py:47
+#: apps/siteconfig/models.py:65
 msgid "postal code"
 msgstr "postcode"
 
-#: apps/siteconfig/models.py:48
+#: apps/siteconfig/models.py:66
 msgid "city"
 msgstr "plaats"
 
-#: apps/siteconfig/models.py:49
+#: apps/siteconfig/models.py:67
 msgid "country"
 msgstr "land"
 
-#: apps/siteconfig/models.py:50
+#: apps/siteconfig/models.py:68
 msgid "phone"
 msgstr "telefoon"
 
-#: apps/siteconfig/models.py:51
+#: apps/siteconfig/models.py:69
 msgid "email"
 msgstr "e-mail"
 
-#: apps/siteconfig/models.py:52
+#: apps/siteconfig/models.py:70
 msgid "website"
 msgstr "website"
 
-#: apps/siteconfig/models.py:53
+#: apps/siteconfig/models.py:71
 msgid "Chamber of Commerce number"
 msgstr "KvK-nummer"
 
-#: apps/siteconfig/models.py:54
+#: apps/siteconfig/models.py:72
 msgid "VAT number"
 msgstr "btw-nummer"
 
-#: apps/siteconfig/models.py:55
+#: apps/siteconfig/models.py:73
 msgid "IBAN"
 msgstr "IBAN"
 
-#: apps/siteconfig/models.py:57
+#: apps/siteconfig/models.py:75
 msgid "updated"
 msgstr "bijgewerkt"
 
-#: apps/siteconfig/models.py:60 apps/siteconfig/models.py:61
+#: apps/siteconfig/models.py:78 apps/siteconfig/models.py:79
 msgid "settings"
 msgstr "instellingen"
 
@@ -212,30 +245,33 @@ msgstr "Configuratie"
 msgid "Roles"
 msgstr "Rollen"
 
-#: templates/base.html:22
-#| msgid "language"
+#: templates/base.html:33
+msgid "Auto"
+msgstr "Auto"
+
+#: templates/base.html:42
 msgid "Language"
 msgstr "Taal"
 
-#: templates/base.html:30 templates/core/dashboard.html:3
+#: templates/base.html:50 templates/core/dashboard.html:3
 msgid "My account"
 msgstr "Mijn omgeving"
 
-#: templates/base.html:31
+#: templates/base.html:51
 msgid "Admin"
 msgstr "Beheer"
 
-#: templates/base.html:32
+#: templates/base.html:52
 msgid "Log out"
 msgstr "Uitloggen"
 
-#: templates/base.html:34 templates/core/home.html:11
+#: templates/base.html:54 templates/core/home.html:11
 #: templates/registration/login.html:3 templates/registration/login.html:7
 #: templates/registration/login.html:19
 msgid "Log in"
 msgstr "Inloggen"
 
-#: templates/base.html:54
+#: templates/base.html:74
 msgid "CoC"
 msgstr "KvK"
 

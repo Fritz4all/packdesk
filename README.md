@@ -16,6 +16,10 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
 - **Eén installatie per klant.** Alles wat per klant verschilt staat op de pagina **Instellingen** in de
   admin: naam, logo, favicon, kleuren, slogan, introductietekst, bedrijfsgegevens (adres, KvK, btw, IBAN)
   en talen. Er staat niets klantspecifieks in de code.
+- **Licht, donker of auto:** in de instellingen kies je de standaardweergave (auto volgt het apparaat)
+  en of bezoekers zelf mogen kiezen. Hun keuze wordt in de browser onthouden. De merkkleur wordt in
+  elke weergave automatisch iets lichter of donkerder gemaakt, zodat links leesbaar blijven.
+  De admin heeft een eigen keuze voor licht/donker/systeem.
 - **Inloggen** met e-mailadres.
 - **Admin** op `/beheer/`.
 - **Rollen:** Beheerder, Financieel, Service, Medewerker (`apps/accounts/roles.py`).
