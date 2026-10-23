@@ -96,3 +96,57 @@ def test_global_search_respects_permissions(rf, site, catalogue_free_user=None):
     request = rf.get("/")
     request.user = user
     assert not [r for r in search_everything(request, "koper") if "Gebruiker" in r.description]
+
+
+def test_report_custom_range_and_month_drilldown(client, site, beheerder):
+    from django.utils import timezone
+
+    licences = make_licences(2)
+    old = licences[0]
+    Licence.objects.filter(pk=old.pk).update(created_at=timezone.now().replace(year=timezone.now().year - 2))
+    client.force_login(beheerder)
+    today = timezone.localdate()
+    response = client.get("/beheer/rapportage/", {"from": today.replace(day=1).isoformat(), "to": today.isoformat()})
+    assert response.context["period"] == "custom"
+    assert response.context["report"]["totals"]["count"] == 1
+    page = response.content.decode()
+    assert licences[1].full_number in page and old.full_number not in page
+    assert f"?from={today.replace(day=1).isoformat()}" in page  # month bar links to that month
+
+
+def test_report_active_period_is_highlighted(client, site, beheerder):
+    client.force_login(beheerder)
+    page = client.get("/beheer/rapportage/", {"period": "this_year"}).content.decode()
+    assert 'value="this_year" class="pd-btn pd-btn-primary"' in page
+
+
+def test_configuration_is_last_in_menu_by_default(rf, site, beheerder):
+    from apps.dashboard.navigation import sidebar
+
+    request = rf.get("/")
+    request.user = beheerder
+    assert [s["key"] for s in sidebar(request)][-1] == "configuration"
+
+
+def test_menu_sections_can_be_reordered_per_user(client, site, beheerder, rf):
+    from apps.dashboard.navigation import sidebar
+
+    client.force_login(beheerder)
+    new = ["configuration", "users", "licences", "customers", "overview"]
+    client.post("/beheer/dashboard/layout/", json.dumps({"sidebar": new + ["bogus"]}), content_type="application/json")
+    request = rf.get("/")
+    request.user = beheerder
+    assert [s["key"] for s in sidebar(request)] == new
+    other = make_user("ander@example.test", staff=True, role="Beheerder")
+    request.user = other
+    assert [s["key"] for s in sidebar(request)][0] == "overview"
+
+
+def test_single_tiles_can_be_hidden(client, site, beheerder):
+    client.force_login(beheerder)
+    client.post("/beheer/dashboard/layout/", json.dumps({"hidden_items": ["stats:active_customers", "nope:x"]}),
+                content_type="application/json")
+    assert DashboardLayout.objects.get(user=beheerder).hidden_items == ["stats:active_customers"]
+    page = client.get("/beheer/").content.decode()
+    assert 'data-item="stats:active_customers"' in page  # offered again in the hidden panel
+    assert 'pd-stat-wrap" data-item="stats:active_customers"' not in page

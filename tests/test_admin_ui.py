@@ -37,10 +37,14 @@ def test_approve_button_hidden_for_active_customer(client, site, beheerder):
 def test_inline_titles_summarise_rows(site):
     address = Address(settings=site, label="Bezoekadres", line1="Straat 1", postal_code="1000 AA", city="Almere",
                       on_website=True, on_invoices=True)
-    assert address.get_inline_title() == "Bezoekadres · Straat 1, 1000 AA Almere, Nederland — website, facturen"
+    assert address.get_inline_title() == (
+        'Bezoekadres · Straat 1, 1000 AA Almere, Nederland <span class="pd-dim">— website, facturen</span>'
+    )
     contact = Contact(customer=Customer(name="X"), first_name="Jan", last_name="Jansen", function="Inkoop",
                       email="jan@x.test", is_primary=True)
-    assert contact.get_inline_title().startswith("★ Jan Jansen · Inkoop · jan@x.test")
+    assert contact.get_inline_title() == (
+        'Jan Jansen <span class="pd-dim">— ★ hoofdcontactpersoon · Inkoop · jan@x.test</span>'
+    )
 
 
 def test_related_menu_has_short_labels_and_no_delete(client, site, beheerder):
