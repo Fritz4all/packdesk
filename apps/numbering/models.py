@@ -20,7 +20,10 @@ class NumberSequence(models.Model):
         _("pattern"),
         max_length=60,
         default="{nr}",
-        help_text=_("{nr} = counter, {nr:5} = counter with 5 digits, {year}, {yy}, {month}, {letters:2} = random letters."),
+        help_text=_(
+            "{nr} = counter, {nr:5} = counter with 5 digits, {block:4} = letter + 4 digits (A0001), "
+            "{year}, {yy}, {month}, {letters:2} = random letters."
+        ),
     )
     next_number = models.PositiveBigIntegerField(_("next number"), default=1)
     reset_yearly = models.BooleanField(_("start again every year"), default=False)

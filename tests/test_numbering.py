@@ -205,3 +205,11 @@ def test_status_shown_in_admin_and_badge(client, site, invoices, archive, rf):
     request = rf.get("/")
     request.user = user
     assert problems(request) == "1"
+
+
+def test_block_token_like_old_licence_numbers():
+    day = datetime.date(2026, 1, 5)
+    assert patterns.render("{yy}{block:4}", 1, day) == "26A0001"
+    assert patterns.render("{yy}{block:4}", 10000, day) == "26B0000"
+    assert patterns.number_from("{yy}{block:4}", "26B0007") == 10007
+    patterns.validate("{yy}{block:4}")
