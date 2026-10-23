@@ -31,7 +31,7 @@ De oude Ruby-code dient alleen als naslag voor de werking; er wordt niets van ov
 ### C. Modules, één voor één
 
 0. **Nummerreeksen** (per documentsoort instelbaar, zie hieronder) – **gebouwd**, incl. controle tegen het factuurarchief, correctie met reden en logboek, en verklaren van gaten
-1. Klanten, resellers, gebruikers, **aanmeldformulier "reseller worden"** (met goedkeuring door beheer)
+1. Klanten, resellers, gebruikers, **aanmeldformulier "reseller worden"** (met goedkeuring door beheer) – **gebouwd**, incl. klantportaal "Mijn gegevens", wachtwoord vergeten/wijzigen en uitnodigingen
 2. Supportpakketten en licenties, **registratiewizard** (licentie → reseller → eindklant → apparaat → monitor → interne/externe opties) en **storing melden**
 3. Bestellen en verlengen
 4. Facturen en pdf's (sjabloon instelbaar, zonder Java)

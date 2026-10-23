@@ -45,6 +45,19 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   - **Gaten verklaren:** ontbrekende nummers kun je verklaren (bijv. "geannuleerd voor verzending");
     verklaarde gaten tellen niet meer als probleem.
   - Alleen de rollen Beheerder en Financieel mogen tellers corrigeren.
+- **Klanten** (Klanten → Klanten): bedrijfsgegevens, klanttype, status (wacht op goedkeuring / actief /
+  geblokkeerd), klantnummer (automatisch uit de nummerreeks *Klanten* bij goedkeuring, of handmatig),
+  aparte e-mailadressen voor bestellingen, onderdelen en facturen, marges, hoofd-, factuur- en
+  afleveradres, en contactpersonen met of zonder login.
+  - Knoppen: *Goedkeuren* (klantnummer, logins actief, activeringsmail), *Blokkeren* (logins uit) en
+    *Login sturen naar contactpersonen zonder login* (uitnodiging met link om een wachtwoord te kiezen).
+  - Klanttypes en landen (met "btw-nummer verplicht") zijn zelf te beheren, in drie talen.
+- **Aanmeldformulier** (`/aanmelden/`, link op de inlogpagina): bedrijven melden zich zelf aan. Onder
+  *Klantinstellingen* stel je in: aan/uit, titel en teksten, klanttype, of goedkeuring nodig is, wie een
+  melding krijgt, de activeringsmail, standaardmarges, en **per veld verborgen / optioneel / verplicht**.
+  Bescherming tegen spam met een onzichtbaar veld en een minimale invultijd.
+- **Klantportaal:** *Mijn gegevens* (bedrijfsgegevens en adressen bekijken, eigen contactgegevens
+  wijzigen), wachtwoord wijzigen en *wachtwoord vergeten*.
 - **Inloggen** met e-mailadres.
 - **Admin** op `/beheer/`.
 - **Rollen en rechten** (Gebruikers → Rollen): maak zelf rollen aan en vink per onderdeel aan wat
