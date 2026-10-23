@@ -84,7 +84,8 @@ def test_beheerder_creates_user(client, site, beheerder):
     client.force_login(beheerder)
     client.post(
         "/beheer/accounts/user/add/",
-        {"email": "nieuw@example.test", "password1": "Een-lang-wachtwoord-42", "password2": "Een-lang-wachtwoord-42"},
+        {"email": "nieuw@example.test", "password1": "Een-lang-wachtwoord-42", "password2": "Een-lang-wachtwoord-42",
+         "kind": "customer"},
     )
     assert User.objects.filter(email="nieuw@example.test").exists()
 
