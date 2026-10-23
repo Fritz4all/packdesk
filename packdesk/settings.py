@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.siteconfig",
     "apps.numbering",
+    "apps.customers",
     # Last: its post_migrate hook gives roles the permissions of all apps above.
     "apps.accounts",
 ]
@@ -66,6 +67,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "apps.siteconfig.context_processors.site_settings",
+                "apps.customers.context_processors.customer",
             ],
         },
     },
@@ -167,6 +169,36 @@ UNFOLD = {
                         "link": reverse_lazy("admin:numbering_numbersequence_changelist"),
                         "badge": "apps.numbering.admin_badge.problems",
                         "permission": lambda request: request.user.has_perm("numbering.view_numbersequence"),
+                    },
+                ],
+            },
+            {
+                "title": _("Customers"),
+                "items": [
+                    {
+                        "title": _("Customers"),
+                        "icon": "storefront",
+                        "link": reverse_lazy("admin:customers_customer_changelist"),
+                        "badge": "apps.customers.admin_badge.pending",
+                        "permission": lambda request: request.user.has_perm("customers.view_customer"),
+                    },
+                    {
+                        "title": _("Customer types"),
+                        "icon": "category",
+                        "link": reverse_lazy("admin:customers_customertype_changelist"),
+                        "permission": lambda request: request.user.has_perm("customers.view_customertype"),
+                    },
+                    {
+                        "title": _("Countries"),
+                        "icon": "public",
+                        "link": reverse_lazy("admin:customers_country_changelist"),
+                        "permission": lambda request: request.user.has_perm("customers.view_country"),
+                    },
+                    {
+                        "title": _("Customer settings"),
+                        "icon": "how_to_reg",
+                        "link": reverse_lazy("admin:customers_signupsettings_changelist"),
+                        "permission": lambda request: request.user.has_perm("customers.view_signupsettings"),
                     },
                 ],
             },
