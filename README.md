@@ -78,6 +78,17 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   contact" staan.
 - **Democatalogus:** `docker compose exec web python manage.py load_demo_catalogue` maakt een kleine
   catalogus en testlicenties aan om de wizard te proberen (alleen als er nog geen packs zijn).
+- **Dashboard** (beheer-startpagina): totalen (actieve klanten, te keuren aanmeldingen, licenties, nog
+  niet geregistreerd, aflopend binnen 90 dagen, nummerreeksen met problemen) en lijsten. Elke beheerder
+  kan via *Aanpassen* blokken verslepen en verbergen; *Standaard herstellen* zet alles terug. Blokken
+  volgen de rechten van de rol.
+- **Verkoop en marge** (`/beheer/rapportage/`, recht *Mag verkooprapportage bekijken*): omzet, brutomarge
+  en margepercentage, grafiek per maand, omzet per categorie, beste klanten en een prijslijst met
+  inkoopprijs en marge per pack. Zolang bestellingen en facturen nog niet in PackDesk staan, telt elke
+  licentie als verkocht pack tegen de huidige prijs min de korting van de klant (dat staat op de pagina).
+- **Zoeken (Ctrl/Cmd+K):** doorzoekt alle lijsten waar je rechten voor hebt, met hun zoekvelden:
+  licentienummers (ook een deel), serienummers van apparaten en opties, klanten (naam, nummer, btw, KvK,
+  adres, contactpersonen), gebruikers, packs, enz.
 - **Inloggen** met e-mailadres.
 - **Admin** op `/beheer/`.
 - **Rollen en rechten** (Gebruikers → Rollen): maak zelf rollen aan en vink per onderdeel aan wat

@@ -34,13 +34,13 @@ De oude Ruby-code dient alleen als naslag voor de werking; er wordt niets van ov
 1. Klanten, resellers, gebruikers, **aanmeldformulier "reseller worden"** (met goedkeuring door beheer) – **gebouwd**, incl. klantportaal "Mijn gegevens", wachtwoord vergeten/wijzigen en uitnodigingen
 2. Supportpakketten en licenties, **registratiewizard** (licentie → reseller → eindklant → apparaat → monitor → interne/externe opties) en **storing melden** – catalogus, licenties en registratiewizard **gebouwd**; storing melden volgt
 3. Bestellen en verlengen
-4. Facturen en pdf's (sjabloon instelbaar, zonder Java)
+4. Facturen en pdf's (sjabloon instelbaar, zonder Java); **facturen zichtbaar, downloadbaar en opnieuw te versturen** – in het beheer per klant én voor de klant zelf in het klantportaal
 5. Mails (sjablonen bewerkbaar)
 6. Overzichten: aflopend, herinneringen, verlengingen, omzet
 7. Onderdelen: aanvragen, offertes, orders
 8. Content: pagina's (over ons, contact, producten), FAQ, artikelen, formulieren – homepage, menu en footer zijn al instelbaar (stap B)
 9. Export naar Exact
-10. **Documentarchief**: oude en nieuwe pdf's opzoeken op nummer, klant, datum, soort (en optioneel op tekst in de pdf)
+10. **Documentarchief**: oude en nieuwe pdf's opzoeken op nummer, klant, datum, soort (en optioneel op tekst in de pdf); oude facturen uit het archief koppelen aan klanten, zodat ze ook in het beheer en het klantportaal te zien, te downloaden en opnieuw te versturen zijn
 
 ### D. Data overzetten
 
