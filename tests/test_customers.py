@@ -124,7 +124,7 @@ def test_approve_gives_number_activates_and_mails(client, signup_settings, behee
     NumberSequence.objects.filter(key="customer").update(pattern="D{nr:5}", next_number=900)
     mail.outbox.clear()
     client.force_login(beheerder)
-    client.get(f"{CUSTOMERS}{customer.pk}/approve/")
+    client.post(f"{CUSTOMERS}{customer.pk}/action/approve/")
     customer.refresh_from_db()
     assert customer.status == Customer.Status.ACTIVE and customer.number == "D00900"
     assert customer.approved_by == beheerder
@@ -139,7 +139,7 @@ def test_block_stops_login(client, site, beheerder):
     user = make_user("k@klant.test")
     Contact.objects.create(customer=customer, user=user, last_name="K", email=user.email)
     client.force_login(beheerder)
-    client.get(f"{CUSTOMERS}{customer.pk}/block/")
+    client.post(f"{CUSTOMERS}{customer.pk}/action/block/")
     user.refresh_from_db()
     assert not user.is_active
 
@@ -148,7 +148,7 @@ def test_invite_creates_login_and_sends_link(client, site, beheerder):
     customer = Customer.objects.create(name="Klant", status=Customer.Status.ACTIVE, number="5")
     Contact.objects.create(customer=customer, last_name="Pietersen", first_name="Piet", email="piet@klant.test")
     client.force_login(beheerder)
-    client.get(f"{CUSTOMERS}{customer.pk}/invite/")
+    client.post(f"{CUSTOMERS}{customer.pk}/action/invite/")
     user = User.objects.get(email="piet@klant.test")
     assert user.kind == "customer" and not user.has_usable_password()
     assert "/wachtwoord-instellen/" in mail.outbox[0].body
@@ -185,7 +185,7 @@ def test_employee_role_can_view_but_not_change(client, site):
     customer = Customer.objects.create(name="Klant")
     client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
     assert client.get(f"{CUSTOMERS}{customer.pk}/change/").status_code == 200
-    assert client.get(f"{CUSTOMERS}{customer.pk}/approve/").status_code == 403
+    assert client.post(f"{CUSTOMERS}{customer.pk}/action/approve/").status_code == 403
 
 
 # --- customer portal -----------------------------------------------------------

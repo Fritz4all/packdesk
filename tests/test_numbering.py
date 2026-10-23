@@ -172,7 +172,7 @@ def test_admin_correction_requires_reason_and_valid_number(client, site, invoice
 def test_set_to_highest_action(client, site, invoices, archive):
     archive(1017494, 1030953)
     client.force_login(make_user("fin@example.test", staff=True, role="Financieel"))
-    client.get(f"{URL}{invoices.pk}/set-to-highest/")
+    client.post(f"{URL}{invoices.pk}/action/set-to-highest/")
     invoices.refresh_from_db()
     assert invoices.next_number == 1030954
     assert CounterChange.objects.filter(sequence=invoices, new_value=1030954).exists()
@@ -193,7 +193,7 @@ def test_gap_note_records_user(client, site, invoices, archive):
 def test_employee_cannot_correct(client, site, invoices):
     client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
     assert client.get(f"{URL}{invoices.pk}/change/").status_code == 403
-    assert client.get(f"{URL}{invoices.pk}/set-to-highest/").status_code == 403
+    assert client.post(f"{URL}{invoices.pk}/action/set-to-highest/").status_code == 403
 
 
 def test_status_shown_in_admin_and_badge(client, site, invoices, archive, rf):
