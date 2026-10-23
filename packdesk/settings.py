@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.core",
     "apps.siteconfig",
+    "apps.numbering",
+    # Last: its post_migrate hook gives roles the permissions of all apps above.
     "apps.accounts",
 ]
 
@@ -104,6 +106,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "media/"
 MEDIA_ROOT = Path(env("MEDIA_ROOT", default=str(BASE_DIR / "media")))
+# Folder with existing documents (e.g. the previous webshop's invoice PDFs), read-only.
+DOCUMENT_ARCHIVE_DIR = env("DOCUMENT_ARCHIVE_DIR", default="")
+
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {
@@ -155,6 +160,13 @@ UNFOLD = {
                         "icon": "tune",
                         "link": reverse_lazy("admin:siteconfig_sitesettings_changelist"),
                         "permission": lambda request: request.user.has_perm("siteconfig.view_sitesettings"),
+                    },
+                    {
+                        "title": _("Number sequences"),
+                        "icon": "pin",
+                        "link": reverse_lazy("admin:numbering_numbersequence_changelist"),
+                        "badge": "apps.numbering.admin_badge.problems",
+                        "permission": lambda request: request.user.has_perm("numbering.view_numbersequence"),
                     },
                 ],
             },

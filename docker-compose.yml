@@ -38,10 +38,13 @@ services:
       EMAIL_PORT: "1025"
       MEDIA_ROOT: /app/media
       PYTHONDONTWRITEBYTECODE: "1"
+      DOCUMENT_ARCHIVE_DIR: /data/archive
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
       - .:/app
+      # Existing documents (e.g. old invoice PDFs), read-only. Set DOCUMENT_ARCHIVE in .env.
+      - ${DOCUMENT_ARCHIVE:-./media/archive}:/data/archive:ro
 
 volumes:
   dbdata:
