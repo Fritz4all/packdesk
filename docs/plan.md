@@ -82,11 +82,11 @@ Per documentsoort een reeks, in te stellen in de admin:
 
 ## Nodig van Roy
 
-Ontvangen: productie-`const.rb`, kopie van `/data/previous-webshop/data/` (factuurarchief), kopie van de app uit de container (zie `docs/vorige-webshop/analyse.md` §12).
+Ontvangen: productie-`const.rb`, kopie van `/data/previous-webshop/data/` (factuurarchief), kopie van de app uit de container, databaseschema (zie `docs/vorige-webshop/analyse.md` §12 en §13).
 
 Nog nodig:
 
-- Database: voor de test een geanonimiseerde dump of alleen het schema; voor de echte overstap later een verse dump.
+- Database met data: voor het testen van de import een geanonimiseerde dump; voor de echte overstap later een verse dump. (Het schema is ontvangen.)
 - Facturen van vóór 2014, als die nog bestaan.
 - Bevestiging van het actuele bedrijfsadres.
 
