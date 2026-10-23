@@ -10,7 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
     DEBUG=(bool, False),
-    PLATFORM_HOSTS=(list, ["localhost", "127.0.0.1"]),
+    ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
+    CSRF_TRUSTED_ORIGINS=(list, []),
     SECURE_COOKIES=(bool, False),
 )
 environ.Env.read_env(BASE_DIR / ".env", overwrite=False)
@@ -18,11 +19,8 @@ environ.Env.read_env(BASE_DIR / ".env", overwrite=False)
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
-# Tenants are recognised by host name, so any host may reach Django.
-# TenantMiddleware answers 404 for hosts that are not a known tenant domain
-# or a platform host.
-ALLOWED_HOSTS = ["*"]
-PLATFORM_HOSTS = [h.lower() for h in env("PLATFORM_HOSTS")]
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
 INSTALLED_APPS = [
     "unfold",
@@ -34,7 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "apps.core",
-    "apps.tenants",
+    "apps.siteconfig",
     "apps.accounts",
 ]
 
@@ -42,11 +40,10 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "apps.tenants.middleware.TenantMiddleware",
+    "apps.siteconfig.middleware.SiteSettingsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "apps.tenants.middleware.TenantUserGuardMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -63,7 +60,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "apps.tenants.context_processors.tenant",
+                "apps.siteconfig.context_processors.site_settings",
             ],
         },
     },
@@ -75,7 +72,7 @@ DATABASES = {"default": env.db("DATABASE_URL")}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
-AUTHENTICATION_BACKENDS = ["apps.accounts.backends.TenantEmailBackend"]
+AUTHENTICATION_BACKENDS = ["apps.accounts.backends.EmailBackend"]
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", "OPTIONS": {"min_length": 10}},
@@ -142,18 +139,13 @@ UNFOLD = {
         "show_all_applications": False,
         "navigation": [
             {
-                "title": _("Organisation"),
+                "title": _("Configuration"),
                 "items": [
                     {
                         "title": _("Settings"),
                         "icon": "tune",
-                        "link": reverse_lazy("admin:tenants_tenant_changelist"),
-                    },
-                    {
-                        "title": _("Domains"),
-                        "icon": "language",
-                        "link": reverse_lazy("admin:tenants_domain_changelist"),
-                        "permission": lambda request: request.user.is_superuser,
+                        "link": reverse_lazy("admin:siteconfig_sitesettings_changelist"),
+                        "permission": lambda request: request.user.has_perm("siteconfig.view_sitesettings"),
                     },
                 ],
             },
@@ -164,6 +156,7 @@ UNFOLD = {
                         "title": _("Users"),
                         "icon": "person",
                         "link": reverse_lazy("admin:accounts_user_changelist"),
+                        "permission": lambda request: request.user.has_perm("accounts.view_user"),
                     },
                     {
                         "title": _("Roles"),

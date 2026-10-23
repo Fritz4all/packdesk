@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}{{ tenant.name }}{% endblock %}</title>
+  <title>{% block title %}{{ site.name }}{% endblock %}</title>
+  {% if site.favicon %}<link rel="icon" href="{{ site.favicon.url }}">{% endif %}
   <link rel="stylesheet" href="{% static 'css/packdesk.css' %}">
-  <style>:root { --brand: {{ tenant.primary_color|default:'#1f6feb' }}; --accent: {{ tenant.accent_color|default:'#0ea5e9' }}; }</style>
+  <style>:root { --brand: {{ site.primary_color|default:'#1f6feb' }}; --accent: {{ site.accent_color|default:'#0ea5e9' }}; }</style>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="{% url 'home' %}">
-        {% if tenant.logo %}<img src="{{ tenant.logo.url }}" alt="{{ tenant.name }}">{% else %}<span class="brand-mark">{{ tenant.name|slice:":1" }}</span><span class="brand-name">{{ tenant.name }}</span>{% endif %}
+        {% if site.logo %}<img src="{{ site.logo.url }}" alt="{{ site.name }}">{% else %}<span class="brand-mark">{{ site.name|slice:":1" }}</span><span class="brand-name">{{ site.name }}</span>{% endif %}
       </a>
       <nav class="nav">
         {% if user.is_authenticated %}
@@ -33,13 +34,13 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>
-        <strong>{{ tenant.display_name }}</strong>
-        {% if tenant.address_line %}<br>{{ tenant.address_line }}, {{ tenant.postal_code }} {{ tenant.city }}{% endif %}
+        <strong>{{ site.display_name }}</strong>
+        {% if site.address_line %}<br>{{ site.address_line }}, {{ site.postal_code }} {{ site.city }}{% endif %}
       </div>
       <div class="footer-meta">
-        {% if tenant.phone %}<span>{{ tenant.phone }}</span>{% endif %}
-        {% if tenant.email %}<a href="mailto:{{ tenant.email }}">{{ tenant.email }}</a>{% endif %}
-        {% if tenant.coc_number %}<span>{% translate "CoC" %} {{ tenant.coc_number }}</span>{% endif %}
+        {% if site.phone %}<span>{{ site.phone }}</span>{% endif %}
+        {% if site.email %}<a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}
+        {% if site.coc_number %}<span>{% translate "CoC" %} {{ site.coc_number }}</span>{% endif %}
       </div>
     </div>
   </footer>

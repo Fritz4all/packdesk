@@ -33,7 +33,7 @@ services:
       DEBUG: "1"
       SECRET_KEY: dev-only-not-secret
       DATABASE_URL: postgres://packdesk:packdesk-dev@db:5432/packdesk
-      PLATFORM_HOSTS: localhost,127.0.0.1
+      ALLOWED_HOSTS: localhost,127.0.0.1
       EMAIL_HOST: mail
       EMAIL_PORT: "1025"
       MEDIA_ROOT: /app/media

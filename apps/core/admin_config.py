@@ -1,11 +1,7 @@
-from django.conf import settings
-from django.utils.translation import gettext as _
+from apps.siteconfig.models import SiteSettings
 
 
 def environment_badge(request):
-    """Shows in the admin header which organisation (or the platform) you are managing."""
-    if getattr(request, "tenant", None):
-        return [request.tenant.name, "info"]
-    if settings.DEBUG:
-        return [_("Platform (development)"), "warning"]
-    return [_("Platform"), "danger"]
+    """Shows the installation's name in the admin header."""
+    site = getattr(request, "site_settings", None) or SiteSettings.load()
+    return [site.name, "info"]

@@ -47,7 +47,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
         (_("Dates"), {"fields": ["last_login", "date_joined"]}),
     ]
     superuser_fieldsets = [
-        (None, {"fields": ["tenant", "email", "password"]}),
+        (None, {"fields": ["email", "password"]}),
         (_("Personal info"), {"fields": ["first_name", "last_name"]}),
         (_("Access"), {"fields": ["kind", "is_active", "is_staff", "is_superuser", "groups", "user_permissions"]}),
         (_("Dates"), {"fields": ["last_login", "date_joined"]}),
@@ -58,23 +58,17 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
 
     def get_fieldsets(self, request, obj=None):
         if obj is None:
-            if request.user.is_superuser:
-                return [(None, {"fields": ["tenant", "email", "password1", "password2"]})]
             return self.add_fieldsets
         return self.superuser_fieldsets if request.user.is_superuser else self.staff_fieldsets
-
-    def get_list_filter(self, request):
-        filters = list(super().get_list_filter(request))
-        return ["tenant", *filters] if request.user.is_superuser else filters
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        return qs.filter(tenant=request.user.tenant, is_superuser=False)
+        # Non-superusers cannot see or edit superusers.
+        return qs.filter(is_superuser=False)
 
     def save_model(self, request, obj, form, change):
         if not request.user.is_superuser:
-            obj.tenant = request.user.tenant
             obj.is_superuser = False
         super().save_model(request, obj, form, change)
