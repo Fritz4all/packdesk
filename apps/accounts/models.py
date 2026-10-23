@@ -1,6 +1,6 @@
 import uuid
 
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, Group, UserManager
 from django.db import models
 from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
@@ -44,3 +44,15 @@ class User(AbstractUser):
             self.username = uuid.uuid4().hex
         self.email = self.email.strip().lower()
         super().save(*args, **kwargs)
+
+
+class Role(Group):
+    """A role for staff users (a Django group). Its permissions decide what a user sees and may do in the admin."""
+
+    class Meta:
+        proxy = True
+        verbose_name = _("role")
+        verbose_name_plural = _("roles")
+
+    def __str__(self):
+        return self.name

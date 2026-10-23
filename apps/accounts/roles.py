@@ -1,7 +1,7 @@
-"""Roles (Django groups) that staff can be given.
+"""Default roles, created on the first migrate.
 
-Based on the previous webshop's back-office roles. Modules add their permissions
-here as they are built.
+Based on the previous webshop's back-office roles. After that, roles are managed
+in the admin (Users → Roles); this file only seeds new installations.
 """
 
 from django.contrib.auth.models import Group, Permission
@@ -32,6 +32,10 @@ ROLES = {
         "accounts.add_user",
         "accounts.change_user",
         "accounts.delete_user",
+        "accounts.view_role",
+        "accounts.add_role",
+        "accounts.change_role",
+        "accounts.delete_role",
     ],
     "Financieel": [
         "numbering.view_numbersequence",
@@ -47,8 +51,11 @@ ROLES = {
 
 
 def ensure_roles(**kwargs):
+    """Create the default roles once. Existing roles are never changed, so edits in the admin are kept."""
     for name, codes in ROLES.items():
-        group, _ = Group.objects.get_or_create(name=name)
+        group, created = Group.objects.get_or_create(name=name)
+        if not created:
+            continue
         perms = []
         for code in codes:
             app_label, codename = code.split(".")

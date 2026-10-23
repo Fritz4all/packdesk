@@ -182,8 +182,8 @@ UNFOLD = {
                     {
                         "title": _("Roles"),
                         "icon": "badge",
-                        "link": reverse_lazy("admin:auth_group_changelist"),
-                        "permission": lambda request: request.user.is_superuser,
+                        "link": reverse_lazy("admin:accounts_role_changelist"),
+                        "permission": lambda request: request.user.has_perm("accounts.view_role"),
                     },
                 ],
             },
