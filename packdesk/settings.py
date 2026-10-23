@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "apps.siteconfig",
     "apps.numbering",
     "apps.customers",
+    "apps.licences",
     # Last: its post_migrate hook gives roles the permissions of all apps above.
     "apps.accounts",
 ]
@@ -199,6 +200,72 @@ UNFOLD = {
                         "icon": "how_to_reg",
                         "link": reverse_lazy("admin:customers_signupsettings_changelist"),
                         "permission": lambda request: request.user.has_perm("customers.view_signupsettings"),
+                    },
+                ],
+            },
+            {
+                "title": _("Service packs and licences"),
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Licences"),
+                        "icon": "verified",
+                        "link": reverse_lazy("admin:licences_licence_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_licence"),
+                    },
+                    {
+                        "title": _("Service packs"),
+                        "icon": "inventory_2",
+                        "link": reverse_lazy("admin:licences_supportpack_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_supportpack"),
+                    },
+                    {
+                        "title": _("Pack categories"),
+                        "icon": "folder",
+                        "link": reverse_lazy("admin:licences_category_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_category"),
+                    },
+                    {
+                        "title": _("Hardware classes"),
+                        "icon": "dns",
+                        "link": reverse_lazy("admin:licences_hardwareclass_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_hardwareclass"),
+                    },
+                    {
+                        "title": _("Brands"),
+                        "icon": "sell",
+                        "link": reverse_lazy("admin:licences_vendor_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_vendor"),
+                    },
+                    {
+                        "title": _("Device types"),
+                        "icon": "devices",
+                        "link": reverse_lazy("admin:licences_hardwaresystem_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_hardwaresystem"),
+                    },
+                    {
+                        "title": _("Option types"),
+                        "icon": "memory",
+                        "link": reverse_lazy("admin:licences_optiontype_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_optiontype"),
+                    },
+                    {
+                        "title": _("Support periods"),
+                        "icon": "schedule",
+                        "link": reverse_lazy("admin:licences_supportperiod_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_supportperiod"),
+                    },
+                    {
+                        "title": _("Service levels"),
+                        "icon": "support_agent",
+                        "link": reverse_lazy("admin:licences_supportservice_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_supportservice"),
+                    },
+                    {
+                        "title": _("Licence settings"),
+                        "icon": "tune",
+                        "link": reverse_lazy("admin:licences_licencesettings_changelist"),
+                        "permission": lambda request: request.user.has_perm("licences.view_licencesettings"),
                     },
                 ],
             },
