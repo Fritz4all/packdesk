@@ -2,13 +2,13 @@
 {% load i18n %}
 {% block content %}
 <section class="hero">
-  <h1>{{ site.tagline|default:site.name }}</h1>
-  {% if site.intro_text %}<p class="lead">{{ site.intro_text|linebreaksbr }}</p>{% endif %}
+  <h1>{{ site_settings.tagline|default:site_settings.name }}</h1>
+  {% if site_settings.intro_text %}<p class="lead">{{ site_settings.intro_text|linebreaksbr }}</p>{% endif %}
   <div class="hero-actions">
     {% if user.is_authenticated %}
-      <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}">{% firstof site.hero_button_text _("Go to my account") %}</a>
+      <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}">{% firstof site_settings.hero_button_text _("Go to my account") %}</a>
     {% else %}
-      <a class="btn btn-primary btn-lg" href="{% url 'login' %}">{% firstof site.hero_button_text _("Log in") %}</a>
+      <a class="btn btn-primary btn-lg" href="{% url 'login' %}">{% firstof site_settings.hero_button_text _("Log in") %}</a>
     {% endif %}
   </div>
 </section>

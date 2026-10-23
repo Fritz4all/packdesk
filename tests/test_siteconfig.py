@@ -78,3 +78,9 @@ def test_address_specific_contact_details(site):
                                      city="Almere", on_invoices=True, email="administratie@example.test")
     assert billing.contact_email() == "administratie@example.test"
     assert billing.contact_phone() == "010-1111111"
+
+
+def test_login_page_shows_site_name_not_host(client, site):
+    page = client.get("/inloggen/").content.decode()
+    assert "Testshop" in page
+    assert "testserver" not in page

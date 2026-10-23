@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% translate "Maintenance" %} – {{ site.name }}{% endblock %}
+{% block title %}{% translate "Maintenance" %} – {{ site_settings.name }}{% endblock %}
 {% block content %}
 <div class="maintenance">
   <div class="card">
     <div class="maintenance-icon">🛠</div>
     <h1>{% translate "We'll be right back" %}</h1>
-    {% if site.maintenance_message %}<p>{{ site.maintenance_message|linebreaksbr }}</p>{% endif %}
-    {% if site.maintenance_until %}<p class="muted">{% blocktranslate with until=site.maintenance_until|date:"j F Y, H:i" %}Expected back: {{ until }}{% endblocktranslate %}</p>{% endif %}
+    {% if site_settings.maintenance_message %}<p>{{ site_settings.maintenance_message|linebreaksbr }}</p>{% endif %}
+    {% if site_settings.maintenance_until %}<p class="muted">{% blocktranslate with until=site_settings.maintenance_until|date:"j F Y, H:i" %}Expected back: {{ until }}{% endblocktranslate %}</p>{% endif %}
   </div>
 </div>
 {% endblock %}

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% translate "My account" %} – {{ site.name }}{% endblock %}
+{% block title %}{% translate "My account" %} – {{ site_settings.name }}{% endblock %}
 {% block content %}
 <div class="page-head">
   <h1>{% blocktranslate with name=user.first_name|default:user.email %}Welcome, {{ name }}{% endblocktranslate %}</h1>
-  <p class="muted">{{ site.display_name }}</p>
+  <p class="muted">{{ site_settings.display_name }}</p>
 </div>
 <section class="cards">
   <article class="card card-muted"><h2>{% translate "Orders" %}</h2><p>{% translate "Available soon." %}</p></article>
