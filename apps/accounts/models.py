@@ -1,0 +1,63 @@
+import uuid
+
+from django.contrib.auth.models import AbstractUser, UserManager
+from django.db import models
+from django.db.models.functions import Lower
+from django.utils.translation import gettext_lazy as _
+
+
+class TenantUserManager(UserManager):
+    def create_user(self, username=None, email=None, password=None, **extra_fields):
+        return super().create_user(username or uuid.uuid4().hex, email, password, **extra_fields)
+
+    def create_superuser(self, username=None, email=None, password=None, **extra_fields):
+        return super().create_superuser(username or uuid.uuid4().hex, email, password, **extra_fields)
+
+
+class User(AbstractUser):
+    """A login. Users sign in with their email address within one tenant.
+
+    The same email address may exist in several tenants. Platform staff
+    (superusers) have no tenant and manage all tenants.
+    `username` is an internal unique key and is never shown.
+    """
+
+    class Kind(models.TextChoices):
+        STAFF = "staff", _("Staff")
+        CUSTOMER = "customer", _("Customer")
+
+    tenant = models.ForeignKey(
+        "tenants.Tenant",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="users",
+        verbose_name=_("organisation"),
+    )
+    kind = models.CharField(_("kind"), max_length=16, choices=Kind.choices, default=Kind.CUSTOMER)
+    email = models.EmailField(_("email address"))
+
+    objects = TenantUserManager()
+
+    REQUIRED_FIELDS = ["email"]
+
+    class Meta:
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
+        constraints = [
+            models.UniqueConstraint(Lower("email"), "tenant", name="unique_email_per_tenant"),
+            models.UniqueConstraint(
+                Lower("email"),
+                condition=models.Q(tenant__isnull=True),
+                name="unique_email_platform",
+            ),
+        ]
+
+    def __str__(self):
+        return self.get_full_name() or self.email
+
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = uuid.uuid4().hex
+        self.email = self.email.strip().lower()
+        super().save(*args, **kwargs)
