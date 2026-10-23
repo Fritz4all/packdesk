@@ -58,6 +58,26 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   Bescherming tegen spam met een onzichtbaar veld en een minimale invultijd.
 - **Klantportaal:** *Mijn gegevens* (bedrijfsgegevens en adressen bekijken, eigen contactgegevens
   wijzigen), wachtwoord wijzigen en *wachtwoord vergeten*.
+- **Servicepacks en licenties** (menu *Servicepacks en licenties*):
+  - Catalogus: packcategorieën, hardwareklassen, merken (met optionele controle van het artikelnummer),
+    apparaattypes per merk en klasse, optietypes (intern / extern / beeldscherm), looptijden (ook "na
+    garantie"), serviceniveaus en servicepacks met prijs, maximaal aantal interne/externe opties,
+    beeldscherm ja/nee en registratie verplicht ja/nee. Alles in drie talen.
+  - Licenties: aanmaken per klant en pack (meerdere tegelijk), nummer uit de nummerreeks *Licenties*
+    (standaard het oude formaat `26A0001` + drie willekeurige letters + `-1`), status niet
+    geregistreerd / geregistreerd / afgelopen, zoeken op nummer, serienummer, klant of referentie.
+  - Licentie-instellingen: registratietermijnen (standaard 1920 dagen na aanschaf, 40 dagen vooruit,
+    95 dagen vooruit na garantie), aantal letters en verboden lettercombinaties, interne ontvangers van
+    registraties en de teksten van de wizard.
+- **Registratiewizard** (`/registreren/`, ook gelinkt vanaf de homepage): licentienummer → eindklant →
+  reseller (alleen als de klant geen reseller is) → apparaat (merk/type, artikel- en serienummer,
+  aanschaf- of ingangsdatum) → beeldscherm (als het pack dat heeft) → opties (binnen de maxima) →
+  controle → klaar. Pas bij de laatste stap wordt opgeslagen. De einddatum volgt de regels van de oude
+  shop; opties krijgen serienummer `<serienummer>/001`, `/002`, ... Het servicecertificaat gaat per
+  e-mail naar de eindklant, met interne ontvangers in bcc. Categorieën kunnen ook op "registreren via
+  contact" staan.
+- **Democatalogus:** `docker compose exec web python manage.py load_demo_catalogue` maakt een kleine
+  catalogus en testlicenties aan om de wizard te proberen (alleen als er nog geen packs zijn).
 - **Inloggen** met e-mailadres.
 - **Admin** op `/beheer/`.
 - **Rollen en rechten** (Gebruikers → Rollen): maak zelf rollen aan en vink per onderdeel aan wat
