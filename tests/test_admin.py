@@ -7,7 +7,14 @@ SETTINGS_URL = "/beheer/siteconfig/sitesettings/"
 
 
 def settings_form(**overrides):
-    data = {"name": "Testshop", "language": "nl", "primary_color": "#112233", "accent_color": "#ffffff", "country": "NL"}
+    data = {
+        "name": "Testshop",
+        "language": "nl",
+        "languages": ["nl", "en", "de"],
+        "primary_color": "#112233",
+        "accent_color": "#ffffff",
+        "country": "NL",
+    }
     data.update(overrides)
     return data
 
@@ -81,3 +88,26 @@ def test_colour_fields_use_colour_picker(client, site, beheerder):
     client.force_login(beheerder)
     page = client.get(SETTINGS_URL + "1/change/").content.decode()
     assert page.count('type="color"') == 2
+
+
+def test_tagline_can_be_entered_per_language(client, site, beheerder):
+    client.force_login(beheerder)
+    client.post(
+        SETTINGS_URL + "1/change/",
+        settings_form(tagline_nl="Zorgeloos", tagline_en="Carefree", tagline_de="Sorglos"),
+    )
+    site = SiteSettings.load()
+    assert (site.tagline_nl, site.tagline_en, site.tagline_de) == ("Zorgeloos", "Carefree", "Sorglos")
+
+
+def test_default_language_must_be_available(client, site, beheerder):
+    client.force_login(beheerder)
+    response = client.post(SETTINGS_URL + "1/change/", settings_form(language="de", languages=["nl", "en"]))
+    assert response.status_code == 200
+    assert SiteSettings.load().language == "nl"
+
+
+def test_available_languages_are_saved(client, site, beheerder):
+    client.force_login(beheerder)
+    client.post(SETTINGS_URL + "1/change/", settings_form(languages=["nl", "de"]))
+    assert SiteSettings.load().language_codes == ["nl", "de"]
