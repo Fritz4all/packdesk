@@ -33,3 +33,12 @@ def site(db):
 @pytest.fixture
 def beheerder(db):
     return make_user("beheer@example.test", staff=True, role="Beheerder")
+
+
+@pytest.fixture(autouse=True)
+def plain_static_storage(settings):
+    """Tests do not run collectstatic, so skip the hashed-manifest storage used in production."""
+    settings.STORAGES = {
+        **settings.STORAGES,
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    }
