@@ -16,7 +16,7 @@
             </button>
         </div>
     </div>
-    <p id="dashboard-help" class="hidden mb-3 text-sm text-base-500">{% translate "Drag blocks to change the order. Use the eye to hide or show a block. Changes are saved for you only." %}</p>
+    <p id="dashboard-help" class="hidden mb-3 text-sm text-base-500">{% translate "Drag blocks to change the order. Use the eye to hide a block or a tile. Changes are saved for you only." %}</p>
 
     <div id="dashboard-grid" class="grid gap-4 md:grid-cols-2">
         {% for block in dashboard_blocks %}
@@ -26,20 +26,36 @@
                     <h2>{{ block.widget.title }}</h2>
                     <button type="button" class="pd-toggle hidden" title="{% translate 'Hide' %}"><span class="material-symbols-outlined text-[18px]">visibility_off</span></button>
                 </header>
-                {% include block.widget.template with data=block.data %}
+                {% translate "Hide" as hide_label %}{% include block.widget.template with data=block.data hide_label=hide_label %}
             </section>
         {% endfor %}
     </div>
 
-    <div id="dashboard-hidden" class="hidden mt-6">
-        <h2 class="font-semibold mb-2">{% translate "Hidden blocks" %}</h2>
-        <div class="flex flex-wrap gap-2">
-            {% for widget in dashboard_hidden %}
-                <button type="button" class="pd-btn pd-show" data-key="{{ widget.key }}"><span class="material-symbols-outlined text-[18px]">visibility</span> {{ widget.title }}</button>
-            {% empty %}
-                <span class="text-sm text-base-500">{% translate "None" %}</span>
-            {% endfor %}
-        </div>
+    <div id="dashboard-hidden" class="hidden mt-6 grid gap-4 md:grid-cols-2">
+        <section class="pd-widget">
+            <h2 class="font-semibold mb-2">{% translate "Hidden blocks and tiles" %}</h2>
+            <div class="flex flex-wrap gap-2">
+                {% for widget in dashboard_hidden %}
+                    <button type="button" class="pd-btn pd-show" data-key="{{ widget.key }}"><span class="material-symbols-outlined text-[18px]">visibility</span> {{ widget.title }}</button>
+                {% endfor %}
+                {% for card in dashboard_hidden_items %}
+                    <button type="button" class="pd-btn pd-show-item" data-item="{{ card.item_key }}"><span class="material-symbols-outlined text-[18px]">visibility</span> {{ card.label }}</button>
+                {% endfor %}
+                {% if not dashboard_hidden and not dashboard_hidden_items %}<span class="text-sm text-base-500">{% translate "None" %}</span>{% endif %}
+            </div>
+        </section>
+        <section class="pd-widget">
+            <h2 class="font-semibold mb-2">{% translate "Order of the menu on the left" %}</h2>
+            <ol id="sidebar-order" class="pd-order">
+                {% for key, title in sidebar_sections %}
+                    <li data-key="{{ key }}"><span>{{ title }}</span>
+                        <button type="button" class="pd-up" title="{% translate 'Up' %}"><span class="material-symbols-outlined text-[18px]">arrow_upward</span></button>
+                        <button type="button" class="pd-down" title="{% translate 'Down' %}"><span class="material-symbols-outlined text-[18px]">arrow_downward</span></button>
+                    </li>
+                {% endfor %}
+            </ol>
+            <p class="text-sm text-base-500 mt-2">{% translate "Sections move with all their items. The menu updates when you click Done." %}</p>
+        </section>
     </div>
 </div>
 <script>
@@ -47,14 +63,21 @@
   const root = document.getElementById("dashboard"), grid = document.getElementById("dashboard-grid");
   const csrf = document.cookie.split("; ").find(c => c.startsWith("csrftoken="))?.split("=")[1] || "";
   const hidden = new Set([{% for w in dashboard_hidden %}"{{ w.key }}",{% endfor %}]);
+  const hiddenItems = new Set([{% for c in dashboard_hidden_items %}"{{ c.item_key }}",{% endfor %}]);
+  let menuChanged = false;
   const toggleEdit = (on) => {
     ["dashboard-done", "dashboard-reset", "dashboard-help", "dashboard-hidden"].forEach(id => document.getElementById(id).classList.toggle("hidden", !on));
     document.getElementById("dashboard-edit").classList.toggle("hidden", on);
     grid.querySelectorAll(".pd-widget").forEach(w => { w.draggable = on; w.classList.toggle("pd-editing", on); });
-    grid.querySelectorAll(".pd-handle, .pd-toggle").forEach(el => el.classList.toggle("hidden", !on));
+    grid.querySelectorAll(".pd-handle, .pd-toggle, .pd-item-toggle").forEach(el => el.classList.toggle("hidden", !on));
   };
   const post = (url, body) => fetch(url, {method: "POST", headers: {"X-CSRFToken": csrf, "Content-Type": "application/json"}, body: JSON.stringify(body || {})});
-  const save = () => post(root.dataset.saveUrl, {order: [...grid.querySelectorAll(".pd-widget")].map(w => w.dataset.key).concat([...hidden]), hidden: [...hidden]});
+  const save = () => post(root.dataset.saveUrl, {
+    order: [...grid.querySelectorAll(".pd-widget")].map(w => w.dataset.key).concat([...hidden]),
+    hidden: [...hidden], hidden_items: [...hiddenItems],
+    sidebar: [...document.querySelectorAll("#sidebar-order li")].map(li => li.dataset.key),
+  });
+  const keepEditing = () => { try { sessionStorage.setItem("pd-dashboard-edit", "1"); } catch (e) {} };
   let dragged = null;
   grid.addEventListener("dragstart", e => { dragged = e.target.closest(".pd-widget"); dragged.classList.add("pd-dragging"); });
   grid.addEventListener("dragend", () => { dragged?.classList.remove("pd-dragging"); dragged = null; save(); });
@@ -72,10 +95,25 @@
   }));
   document.querySelectorAll(".pd-show").forEach(btn => btn.addEventListener("click", () => {
     hidden.delete(btn.dataset.key);
-    save().then(() => { sessionStorage.setItem("pd-dashboard-edit", "1"); location.reload(); });
+    save().then(() => { keepEditing(); location.reload(); });
   }));
+  grid.querySelectorAll(".pd-item-toggle").forEach(btn => btn.addEventListener("click", () => {
+    hiddenItems.add(btn.closest("[data-item]").dataset.item);
+    save().then(() => { keepEditing(); location.reload(); });
+  }));
+  document.querySelectorAll(".pd-show-item").forEach(btn => btn.addEventListener("click", () => {
+    hiddenItems.delete(btn.dataset.item);
+    save().then(() => { keepEditing(); location.reload(); });
+  }));
+  document.querySelectorAll("#sidebar-order li").forEach(li => {
+    li.querySelector(".pd-up").addEventListener("click", () => { if (li.previousElementSibling) { li.parentNode.insertBefore(li, li.previousElementSibling); menuChanged = true; save(); } });
+    li.querySelector(".pd-down").addEventListener("click", () => { if (li.nextElementSibling) { li.parentNode.insertBefore(li.nextElementSibling, li); menuChanged = true; save(); } });
+  });
   document.getElementById("dashboard-edit").addEventListener("click", () => toggleEdit(true));
-  document.getElementById("dashboard-done").addEventListener("click", () => { sessionStorage.removeItem("pd-dashboard-edit"); toggleEdit(false); });
+  document.getElementById("dashboard-done").addEventListener("click", () => {
+    try { sessionStorage.removeItem("pd-dashboard-edit"); } catch (e) {}
+    if (menuChanged) location.reload(); else toggleEdit(false);
+  });
   document.getElementById("dashboard-reset").addEventListener("click", () => {
     if (confirm("{{ _('Restore the default dashboard?')|escapejs }}")) post(root.dataset.resetUrl).then(() => location.reload());
   });

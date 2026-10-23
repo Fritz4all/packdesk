@@ -5,7 +5,7 @@ price minus the customer's service pack discount, and the pack's current cost pr
 """
 
 from collections import OrderedDict, defaultdict
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 
 from django.contrib import admin
@@ -44,6 +44,29 @@ def sale_values(licence):
     return revenue, pack.cost_price
 
 
+def month_range(year, month):
+    last = (date(year + (month == 12), month % 12 + 1, 1) - timedelta(days=1))
+    return date(year, month, 1), last
+
+
+def parse_range(request, today):
+    """Preset (12m, this_year, last_year) or a custom from/to range; returns (key, start, end)."""
+    start, end = request.GET.get("from"), request.GET.get("to")
+    if start or end:
+        try:
+            start = date.fromisoformat(start) if start else today - timedelta(days=365)
+            end = date.fromisoformat(end) if end else today
+        except ValueError:
+            return ("12m", *_period("12m", today))
+        if start > end:
+            start, end = end, start
+        return "custom", start, end
+    choice = request.GET.get("period", "12m")
+    if choice not in ("12m", "this_year", "last_year"):
+        choice = "12m"
+    return (choice, *_period(choice, today))
+
+
 def build_report(start, end):
     licences = (Licence.objects.filter(created_at__date__gte=start, created_at__date__lte=end)
                 .select_related("pack__category", "customer"))
@@ -64,6 +87,11 @@ def build_report(start, end):
         per_customer[lic.customer.name]["revenue"] += revenue
         per_customer[lic.customer.name]["margin"] += revenue - cost
         per_customer[lic.customer.name]["count"] += 1
+    sales = []
+    for lic in sorted(licences, key=lambda lic: lic.created_at, reverse=True)[:500]:
+        revenue, cost = sale_values(lic)
+        sales.append({"licence": lic, "date": timezone.localtime(lic.created_at).date(), "revenue": revenue,
+                      "margin": revenue - cost})
     totals["margin"] = totals["revenue"] - totals["cost"]
     totals["margin_pct"] = (totals["margin"] / totals["revenue"] * HUNDRED) if totals["revenue"] else None
     return {
@@ -71,6 +99,7 @@ def build_report(start, end):
         "months": [{"year": y, "month": m, **v, "margin": v["revenue"] - v["cost"]} for (y, m), v in per_month.items()],
         "categories": sorted(({"name": k, **v} for k, v in per_category.items()), key=lambda r: -r["revenue"]),
         "customers": sorted(({"name": k, **v} for k, v in per_customer.items()), key=lambda r: -r["revenue"])[:10],
+        "sales": sales,
     }
 
 
@@ -82,7 +111,9 @@ def bar_chart(months, height=180):
     for i, m in enumerate(months):
         rev_h = float(m["revenue"] / peak) * height
         mar_h = max(float(m["margin"] / peak) * height, 0)
+        first, last = month_range(m["year"], m["month"])
         bars.append({
+            "url": f"?from={first.isoformat()}&to={last.isoformat()}",
             "x": i * (width + 8), "w": width, "rev_y": height - rev_h, "rev_h": rev_h, "mar_y": height - mar_h, "mar_h": mar_h,
             "label": f"{m['month']:02d}/{m['year'] % 100:02d}", "revenue": m["revenue"], "margin": m["margin"], "count": m["count"],
         })
@@ -93,8 +124,7 @@ def bar_chart(months, height=180):
 def report_view(request):
     if not request.user.has_perm("dashboard.view_reports"):
         raise PermissionDenied
-    choice = request.GET.get("period", "12m")
-    start, end = _period(choice, timezone.localdate())
+    choice, start, end = parse_range(request, timezone.localdate())
     report = build_report(start, end)
     top = max([c["revenue"] for c in report["categories"]] + [Decimal(1)])
     for c in report["categories"]:

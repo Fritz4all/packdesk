@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 hex_color = RegexValidator(r"^#[0-9a-fA-F]{6}$", _("Use a colour like #1f6feb."))
@@ -211,9 +212,9 @@ class Address(models.Model):
         return [str(self._meta.get_field(f).verbose_name) for f in self.USAGES.values() if getattr(self, f)]
 
     def get_inline_title(self):
-        """Title of the collapsed row in the admin: name, address and where it is used."""
+        """Title of the collapsed row in the admin: name and address, then (smaller) where it is used."""
         usages = ", ".join(self.usage_labels()) or str(_("not used yet"))
-        return f"{self.label} · {self.one_line} — {usages}"
+        return format_html('{} · {} <span class="pd-dim">— {}</span>', self.label, self.one_line, usages)
 
     def contact_phone(self):
         return self.phone or self.settings.phone

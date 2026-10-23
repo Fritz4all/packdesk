@@ -33,25 +33,25 @@ def stats(request):
     if request.user.has_perm("customers.view_customer"):
         changelist = reverse("admin:customers_customer_changelist")
         cards += [
-            {"label": _("Active customers"), "value": Customer.objects.filter(status=Customer.Status.ACTIVE).count(),
+            {"key": "active_customers", "label": _("Active customers"), "value": Customer.objects.filter(status=Customer.Status.ACTIVE).count(),
              "url": f"{changelist}?status__exact=active", "icon": "storefront"},
-            {"label": _("Sign-ups to approve"), "value": Customer.objects.filter(status=Customer.Status.PENDING).count(),
+            {"key": "pending", "label": _("Sign-ups to approve"), "value": Customer.objects.filter(status=Customer.Status.PENDING).count(),
              "url": f"{changelist}?status__exact=pending", "icon": "how_to_reg", "warn": True},
         ]
     if request.user.has_perm("licences.view_licence"):
         changelist = reverse("admin:licences_licence_changelist")
         cards += [
-            {"label": _("Licences"), "value": Licence.objects.count(), "url": changelist, "icon": "verified"},
-            {"label": _("Not registered yet"), "value": Licence.objects.filter(registered_on__isnull=True).count(),
+            {"key": "licences", "label": _("Licences"), "value": Licence.objects.count(), "url": changelist, "icon": "verified"},
+            {"key": "unregistered", "label": _("Not registered yet"), "value": Licence.objects.filter(registered_on__isnull=True).count(),
              "url": f"{changelist}?registered_on__isnull=True", "icon": "pending"},
-            {"label": _("Ending within 90 days"),
+            {"key": "ending", "label": _("Ending within 90 days"),
              "value": Licence.objects.filter(end_date__gte=today, end_date__lte=today + timedelta(days=90)).count(),
              "url": f"{changelist}?end_date__gte={today}&end_date__lte={today + timedelta(days=90)}", "icon": "event_busy",
              "warn": True},
         ]
     if request.user.has_perm("numbering.view_numbersequence"):
         problems = sum(1 for seq in NumberSequence.objects.all() if check(seq).has_problem)
-        cards.append({"label": _("Number sequences with problems"), "value": problems,
+        cards.append({"key": "sequences", "label": _("Number sequences with problems"), "value": problems,
                       "url": reverse("admin:numbering_numbersequence_changelist"), "icon": "pin", "warn": True})
     return {"cards": cards}
 

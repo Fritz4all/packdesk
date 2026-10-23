@@ -3,11 +3,20 @@
 {% block content %}
 <div class="flex flex-row flex-wrap gap-3 items-center justify-between mb-4">
     <h1 class="font-semibold text-lg text-font-important-light dark:text-font-important-dark">{% translate "Sales and margin" %}</h1>
-    <form method="get" class="flex gap-2">
-        {% for key, label in periods %}
-            <button name="period" value="{{ key }}" class="pd-btn{% if key == period %} pd-btn-primary{% endif %}">{{ label }}</button>
-        {% endfor %}
-    </form>
+    <div class="flex flex-wrap gap-2 items-center">
+        <form method="get" class="flex gap-2">
+            {% for key, label in periods %}
+                <button name="period" value="{{ key }}" class="pd-btn{% if key == period %} pd-btn-primary{% endif %}"{% if key == period %} aria-pressed="true"{% endif %}>{{ label }}</button>
+            {% endfor %}
+        </form>
+        <form method="get" class="flex gap-2 items-center">
+            <label class="text-sm" for="report-from">{% translate "From" %}</label>
+            <input id="report-from" type="date" name="from" value="{{ start|date:'Y-m-d' }}" class="pd-input">
+            <label class="text-sm" for="report-to">{% translate "to" %}</label>
+            <input id="report-to" type="date" name="to" value="{{ end|date:'Y-m-d' }}" class="pd-input">
+            <button class="pd-btn{% if period == 'custom' %} pd-btn-primary{% endif %}">{% translate "Show" %}</button>
+        </form>
+    </div>
 </div>
 <p class="mb-4 text-sm text-base-500">
     {% blocktranslate with start=start|date:"j F Y" end=end|date:"j F Y" %}Period {{ start }} – {{ end }}.{% endblocktranslate %}
@@ -27,12 +36,12 @@
     <div class="overflow-x-auto">
         <svg class="pd-chart" width="{{ chart.width }}" height="{{ chart.height|add:28 }}" viewBox="0 0 {{ chart.width }} {{ chart.height|add:28 }}" role="img" aria-label="{% translate 'Revenue and margin per month' %}">
             {% for bar in chart.bars %}
-                <g>
+                <a href="{{ bar.url }}"><g class="pd-bar">
                     <title>{{ bar.label }}: € {{ bar.revenue|money }} ({% translate "margin" %} € {{ bar.margin|money }}, {{ bar.count }} {% translate "packs" %})</title>
                     <rect class="pd-bar-rev" x="{{ bar.x }}" y="{{ bar.rev_y|stringformat:'.1f' }}" width="{{ bar.w }}" height="{{ bar.rev_h|stringformat:'.1f' }}" rx="4"></rect>
                     <rect class="pd-bar-mar" x="{{ bar.x|add:8 }}" y="{{ bar.mar_y|stringformat:'.1f' }}" width="{{ bar.w|add:-16 }}" height="{{ bar.mar_h|stringformat:'.1f' }}" rx="3"></rect>
                     <text x="{{ bar.x|add:18 }}" y="{{ chart.height|add:18 }}" text-anchor="middle">{{ bar.label }}</text>
-                </g>
+                </g></a>
             {% endfor %}
         </svg>
     </div>
@@ -55,6 +64,18 @@
         {% empty %}<tr><td colspan="4" class="text-base-500">{% translate "No sales in this period." %}</td></tr>{% endfor %}</tbody></table>
     </section>
 </div>
+
+<section class="pd-widget mb-6">
+    <header class="pd-widget-head"><h2>{% translate "Sales in this period" %}</h2>
+        <span class="text-sm text-base-500">{% translate "Click a month in the chart to see only that month." %}</span></header>
+    <div class="overflow-x-auto">
+    <table class="pd-table"><thead><tr><th>{% translate "Date" %}</th><th>{% translate "Licence" %}</th><th>{% translate "Customer" %}</th><th>{% translate "Service pack" %}</th><th>{% translate "Revenue" %}</th><th>{% translate "Margin" %}</th></tr></thead>
+    <tbody>{% for row in report.sales %}<tr><td>{{ row.date|date:"j M Y" }}</td>
+        <td><a class="underline" href="{% url 'admin:licences_licence_change' row.licence.pk %}">{{ row.licence.full_number }}</a></td>
+        <td>{{ row.licence.customer.name }}</td><td>{{ row.licence.pack }}</td><td>€ {{ row.revenue|money }}</td><td>€ {{ row.margin|money }}</td></tr>
+    {% empty %}<tr><td colspan="6" class="text-base-500">{% translate "No sales in this period." %}</td></tr>{% endfor %}</tbody></table>
+    </div>
+</section>
 
 <section class="pd-widget">
     <header class="pd-widget-head"><h2>{% translate "Prices and margin per pack" %}</h2></header>

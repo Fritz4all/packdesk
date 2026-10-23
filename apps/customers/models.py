@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.utils import timezone
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 
@@ -214,10 +215,10 @@ class Contact(models.Model):
         return f"{given} {self.last_name}".strip()
 
     def get_inline_title(self):
-        """Title of the collapsed row in the admin."""
-        parts = [self.full_name, self.function, self.email]
-        title = " · ".join(p for p in parts if p)
-        return f"★ {title} ({_('primary contact')})" if self.is_primary else title
+        """Title of the collapsed row in the admin: name, then (smaller) job title and email."""
+        details = " · ".join(p for p in [self.function, self.email] if p)
+        star = f"★ {_('primary contact')} · " if self.is_primary else ""
+        return format_html('{} <span class="pd-dim">— {}{}</span>', self.full_name, star, details)
 
 
 def customer_of(user):

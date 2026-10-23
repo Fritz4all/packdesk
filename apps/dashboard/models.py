@@ -9,6 +9,8 @@ class DashboardLayout(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="dashboard_layout")
     order = models.JSONField(default=list)
     hidden = models.JSONField(default=list)
+    hidden_items = models.JSONField(default=list, help_text="Hidden parts of blocks, e.g. 'stats:active_customers'.")
+    sidebar_order = models.JSONField(default=list)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
