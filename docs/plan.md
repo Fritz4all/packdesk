@@ -84,6 +84,7 @@ Per klant (tenant) en per documentsoort een reeks, in te stellen in de admin:
 - Een kopie van `/data/previous-webshop/data/` van de oude webserver (o.a. `invoices/`), aangeleverd als backup; ik maak zelf geen verbinding met productie.
 - Voor de test: een geanonimiseerde dump of alleen het schema. Voor de echte overstap later: een verse dump.
 - De productie-`const.rb`.
+- Een kopie van `/home/app/webapp/public/system/` uit de draaiende productiecontainer (geüploade logo's en artikelfoto's; staan niet op een volume, zie `docs/vorige-webshop/analyse.md` §8).
 
 ## Keuzes
 
