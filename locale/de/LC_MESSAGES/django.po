@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 23:32+0200\n"
+"POT-Creation-Date: 2026-10-24 00:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,8 +27,8 @@ msgid ""
 "have yourself."
 msgstr "Kreuzen Sie an, was Benutzer mit dieser Rolle sehen und tun dürfen. Sie können nur Rechte vergeben, die Sie selbst haben."
 
-#: apps/accounts/admin.py:85 apps/accounts/apps.py:8 packdesk/settings.py:206
-#: packdesk/settings.py:209
+#: apps/accounts/admin.py:85 apps/accounts/apps.py:8 packdesk/settings.py:273
+#: packdesk/settings.py:276
 msgid "Users"
 msgstr "Benutzer"
 
@@ -133,12 +133,10 @@ msgid "Login"
 msgstr "Login"
 
 #: apps/customers/admin.py:42
-#| msgid "No documents yet"
 msgid "No login yet"
 msgstr "Noch kein Login"
 
 #: apps/customers/admin.py:43 apps/customers/models.py:49
-#| msgid "active"
 msgid "Active"
 msgstr "Aktiv"
 
@@ -146,110 +144,106 @@ msgstr "Aktiv"
 msgid "Not active (waiting for approval or blocked)"
 msgstr "Nicht aktiv (wartet auf Freigabe oder gesperrt)"
 
-#: apps/customers/admin.py:56 apps/siteconfig/admin.py:103
+#: apps/customers/admin.py:57 apps/siteconfig/admin.py:103
 msgid "General"
 msgstr "Allgemein"
 
-#: apps/customers/admin.py:59
-#| msgid "Email address"
+#: apps/customers/admin.py:60
 msgid "Email addresses"
 msgstr "E-Mail-Adressen"
 
-#: apps/customers/admin.py:60
+#: apps/customers/admin.py:61
 msgid "Prices and invoices"
 msgstr "Preise und Rechnungen"
 
-#: apps/customers/admin.py:61
-#| msgid "quotes"
+#: apps/customers/admin.py:62
 msgid "Notes"
 msgstr "Notizen"
 
-#: apps/customers/admin.py:78
-#| msgid "Numbering"
+#: apps/customers/admin.py:79
 msgid "Number"
 msgstr "Nummer"
 
-#: apps/customers/admin.py:82 apps/customers/forms.py:40
+#: apps/customers/admin.py:83 apps/customers/forms.py:40
+#: apps/licences/forms.py:37
 msgid "City"
 msgstr "Ort"
 
-#: apps/customers/admin.py:87 apps/numbering/admin.py:120
-#: apps/numbering/admin.py:134
+#: apps/customers/admin.py:88 apps/licences/admin.py:168
+#: apps/numbering/admin.py:120 apps/numbering/admin.py:134
 msgid "Status"
 msgstr "Status"
 
-#: apps/customers/admin.py:91
+#: apps/customers/admin.py:92
 msgid "Contacts"
 msgstr "Ansprechpartner"
 
-#: apps/customers/admin.py:108
+#: apps/customers/admin.py:109
 msgid "Approve selected customers"
 msgstr "Ausgewählte Kunden freigeben"
 
-#: apps/customers/admin.py:112
+#: apps/customers/admin.py:113
 #, python-format
 msgid "%(n)s customer(s) approved."
 msgstr "%(n)s Kunde(n) freigegeben."
 
-#: apps/customers/admin.py:114
+#: apps/customers/admin.py:115
 msgid "Block selected customers"
 msgstr "Ausgewählte Kunden sperren"
 
-#: apps/customers/admin.py:118
+#: apps/customers/admin.py:119
 #, python-format
 msgid "%(n)s customer(s) blocked."
 msgstr "%(n)s Kunde(n) gesperrt."
 
-#: apps/customers/admin.py:123
+#: apps/customers/admin.py:124
 msgid "Approve"
 msgstr "Freigeben"
 
-#: apps/customers/admin.py:127
+#: apps/customers/admin.py:128
 #, python-format
 msgid "Customer approved with number %(n)s."
 msgstr "Kunde mit Nummer %(n)s freigegeben."
 
-#: apps/customers/admin.py:130
+#: apps/customers/admin.py:131
 msgid "Block"
 msgstr "Sperren"
 
-#: apps/customers/admin.py:133
+#: apps/customers/admin.py:134
 msgid "Customer blocked; its contacts can no longer log in."
 msgstr "Kunde gesperrt; die Ansprechpartner können sich nicht mehr anmelden."
 
-#: apps/customers/admin.py:136
+#: apps/customers/admin.py:137
 msgid "Send login to contacts without one"
 msgstr "Login an Ansprechpartner ohne Login senden"
 
-#: apps/customers/admin.py:154
+#: apps/customers/admin.py:155
 #, python-format
 msgid "Logins created; %(n)s invitation(s) sent."
 msgstr "Logins angelegt; %(n)s Einladung(en) gesendet."
 
-#: apps/customers/admin.py:156
+#: apps/customers/admin.py:157
 #, python-format
 msgid "Email address already in use: %(list)s"
 msgstr "E-Mail-Adresse bereits vergeben: %(list)s"
 
-#: apps/customers/admin.py:174
-#| msgid "Customer"
+#: apps/customers/admin.py:175
 msgid "New customers"
 msgstr "Neue Kunden"
 
-#: apps/customers/admin.py:175
+#: apps/customers/admin.py:176
 msgid "Sign-up form"
 msgstr "Anmeldeformular"
 
-#: apps/customers/admin.py:178
+#: apps/customers/admin.py:179
 msgid "Form fields"
 msgstr "Formularfelder"
 
-#: apps/customers/admin.py:184
+#: apps/customers/admin.py:185
 msgid "Activation email"
 msgstr "Aktivierungs-E-Mail"
 
-#: apps/customers/apps.py:7 packdesk/settings.py:176 packdesk/settings.py:179
-#| msgid "Customer"
+#: apps/customers/apps.py:7 packdesk/settings.py:177 packdesk/settings.py:180
 msgid "Customers"
 msgstr "Kunden"
 
@@ -294,48 +288,43 @@ msgid "Your account at %(company)s"
 msgstr "Ihr Konto bei %(company)s"
 
 #: apps/customers/forms.py:31
-#| msgid "Company details"
 msgid "Company name"
 msgstr "Firmenname"
 
-#: apps/customers/forms.py:32 templates/customers/my_details.html:12
-#| msgid "phone"
+#: apps/customers/forms.py:32 apps/licences/forms.py:38
+#: templates/customers/my_details.html:12
 msgid "Phone"
 msgstr "Telefon"
 
 #: apps/customers/forms.py:33 apps/customers/models.py:62
-#: apps/customers/models.py:253 apps/siteconfig/models.py:104
+#: apps/customers/models.py:255 apps/siteconfig/models.py:104
 #: templates/customers/my_details.html:11
 msgid "VAT number"
 msgstr "USt-IdNr."
 
 #: apps/customers/forms.py:34 apps/customers/models.py:63
-#: apps/customers/models.py:255 apps/siteconfig/models.py:103
+#: apps/customers/models.py:257 apps/siteconfig/models.py:103
 msgid "Chamber of Commerce number"
 msgstr "Handelsregisternummer"
 
 #: apps/customers/forms.py:35
-#| msgid "website"
 msgid "Website"
 msgstr "Website"
 
-#: apps/customers/forms.py:37 templates/customers/signup.html:17
-#| msgid "address"
+#: apps/customers/forms.py:37 apps/licences/forms.py:35
+#: templates/customers/signup.html:17
 msgid "Address"
 msgstr "Adresse"
 
 #: apps/customers/forms.py:38
-#| msgid "address line 2"
 msgid "Address line 2"
 msgstr "Adresszeile 2"
 
-#: apps/customers/forms.py:39
-#| msgid "postal code"
+#: apps/customers/forms.py:39 apps/licences/forms.py:36
 msgid "Postal code"
 msgstr "Postleitzahl"
 
 #: apps/customers/forms.py:41
-#| msgid "country"
 msgid "Country"
 msgstr "Land"
 
@@ -352,12 +341,10 @@ msgid "First name"
 msgstr "Vorname"
 
 #: apps/customers/forms.py:46
-#| msgid "legal name"
 msgid "Last name"
 msgstr "Nachname"
 
 #: apps/customers/forms.py:47
-#| msgid "title"
 msgid "Job title"
 msgstr "Funktion"
 
@@ -407,6 +394,8 @@ msgid "The passwords do not match."
 msgstr "Die Passwörter stimmen nicht überein."
 
 #: apps/customers/models.py:13 apps/customers/models.py:30
+#: apps/licences/models.py:32 apps/licences/models.py:57
+#: apps/licences/models.py:71 apps/licences/models.py:112
 #: apps/numbering/models.py:18 apps/siteconfig/models.py:23
 #: apps/siteconfig/models.py:179
 msgid "name"
@@ -417,22 +406,22 @@ msgid "is reseller"
 msgstr "ist Reseller"
 
 #: apps/customers/models.py:15 apps/customers/models.py:35
+#: apps/licences/models.py:43 apps/licences/models.py:59
 #: apps/siteconfig/models.py:195 apps/siteconfig/models.py:234
 #: apps/siteconfig/models.py:254
 msgid "order"
 msgstr "Reihenfolge"
 
 #: apps/customers/models.py:18 apps/customers/models.py:58
-#| msgid "Customer"
 msgid "customer type"
 msgstr "Kundentyp"
 
 #: apps/customers/models.py:19
-#| msgid "Customer"
 msgid "customer types"
 msgstr "Kundentypen"
 
-#: apps/customers/models.py:29 apps/numbering/models.py:17
+#: apps/customers/models.py:29 apps/licences/models.py:158
+#: apps/numbering/models.py:17
 msgid "code"
 msgstr "Code"
 
@@ -441,7 +430,6 @@ msgid "Two letters, e.g. NL."
 msgstr "Zwei Buchstaben, z. B. NL."
 
 #: apps/customers/models.py:32
-#| msgid "VAT number"
 msgid "VAT number required"
 msgstr "USt-IdNr. erforderlich"
 
@@ -460,7 +448,6 @@ msgid "country"
 msgstr "Land"
 
 #: apps/customers/models.py:39
-#| msgid "country"
 msgid "countries"
 msgstr "Länder"
 
@@ -473,7 +460,6 @@ msgid "Blocked"
 msgstr "Gesperrt"
 
 #: apps/customers/models.py:53 templates/core/dashboard.html:7
-#| msgid "to number"
 msgid "customer number"
 msgstr "Kundennummer"
 
@@ -488,28 +474,25 @@ msgid "company name"
 msgstr "Firmenname"
 
 #: apps/customers/models.py:60
-#| msgid "Status"
 msgid "status"
 msgstr "Status"
 
 #: apps/customers/models.py:64 apps/customers/models.py:191
-#: apps/customers/models.py:252 apps/siteconfig/models.py:100
+#: apps/customers/models.py:254 apps/siteconfig/models.py:100
 #: apps/siteconfig/models.py:185
 msgid "phone"
 msgstr "Telefon"
 
 #: apps/customers/models.py:65
-#| msgid "General"
 msgid "general email"
 msgstr "allgemeine E-Mail"
 
-#: apps/customers/models.py:66 apps/customers/models.py:256
+#: apps/customers/models.py:66 apps/customers/models.py:258
 #: apps/siteconfig/models.py:102 apps/siteconfig/models.py:188
 msgid "website"
 msgstr "Website"
 
 #: apps/customers/models.py:68
-#| msgid "email address"
 msgid "email for orders"
 msgstr "E-Mail für Bestellungen"
 
@@ -526,7 +509,6 @@ msgid "Empty = general email."
 msgstr "Leer = allgemeine E-Mail."
 
 #: apps/customers/models.py:70
-#| msgid "invoices"
 msgid "email for invoices"
 msgstr "E-Mail für Rechnungen"
 
@@ -559,7 +541,6 @@ msgid "message with sign-up"
 msgstr "Nachricht bei Anmeldung"
 
 #: apps/customers/models.py:81
-#| msgid "recorded at"
 msgid "approved at"
 msgstr "freigegeben am"
 
@@ -571,7 +552,7 @@ msgstr "freigegeben von"
 msgid "ID in old system"
 msgstr "ID im alten System"
 
-#: apps/customers/models.py:87
+#: apps/customers/models.py:87 apps/licences/models.py:271
 msgid "created"
 msgstr "angelegt"
 
@@ -579,28 +560,23 @@ msgstr "angelegt"
 msgid "updated"
 msgstr "aktualisiert"
 
-#: apps/customers/models.py:91
-#| msgid "Customer"
+#: apps/customers/models.py:91 apps/licences/models.py:245
 msgid "customer"
 msgstr "Kunde"
 
 #: apps/customers/models.py:92
-#| msgid "Customer"
 msgid "customers"
 msgstr "Kunden"
 
 #: apps/customers/models.py:145
-#| msgid "Email address"
 msgid "Main address"
 msgstr "Hauptadresse"
 
 #: apps/customers/models.py:146
-#| msgid "Invoices"
 msgid "Invoice address"
 msgstr "Rechnungsadresse"
 
 #: apps/customers/models.py:147
-#| msgid "email address"
 msgid "Delivery address"
 msgstr "Lieferadresse"
 
@@ -613,7 +589,7 @@ msgstr "zu Händen von"
 msgid "address"
 msgstr "Adresse"
 
-#: apps/customers/models.py:153 apps/customers/models.py:261
+#: apps/customers/models.py:153 apps/customers/models.py:263
 #: apps/siteconfig/models.py:181
 msgid "address line 2"
 msgstr "Adresszeile 2"
@@ -627,12 +603,10 @@ msgid "city"
 msgstr "Ort"
 
 #: apps/customers/models.py:159
-#| msgid "show address"
 msgid "customer address"
 msgstr "Kundenadresse"
 
 #: apps/customers/models.py:160
-#| msgid "addresses"
 msgid "customer addresses"
 msgstr "Kundenadressen"
 
@@ -648,7 +622,7 @@ msgstr "Frau"
 msgid "login"
 msgstr "Login"
 
-#: apps/customers/models.py:185 apps/customers/models.py:257
+#: apps/customers/models.py:185 apps/customers/models.py:259
 msgid "salutation"
 msgstr "Anrede"
 
@@ -661,16 +635,14 @@ msgid "first name"
 msgstr "Vorname"
 
 #: apps/customers/models.py:188
-#| msgid "legal name"
 msgid "last name"
 msgstr "Nachname"
 
-#: apps/customers/models.py:189 apps/customers/models.py:258
-#| msgid "title"
+#: apps/customers/models.py:189 apps/customers/models.py:260
 msgid "job title"
 msgstr "Funktion"
 
-#: apps/customers/models.py:190 apps/customers/models.py:259
+#: apps/customers/models.py:190 apps/customers/models.py:261
 msgid "department"
 msgstr "Abteilung"
 
@@ -680,11 +652,10 @@ msgid "email"
 msgstr "E-Mail"
 
 #: apps/customers/models.py:193
-#| msgid "primary colour"
 msgid "primary contact"
 msgstr "Hauptansprechpartner"
 
-#: apps/customers/models.py:194
+#: apps/customers/models.py:194 apps/licences/models.py:170
 msgid "remark"
 msgstr "Bemerkung"
 
@@ -720,85 +691,681 @@ msgstr "Standardmarge Ersatzteile (%)"
 msgid "sign-up form active"
 msgstr "Anmeldeformular aktiv"
 
-#: apps/customers/models.py:232 apps/siteconfig/models.py:231
+#: apps/customers/models.py:234 apps/siteconfig/models.py:231
 msgid "link text"
 msgstr "Linktext"
 
-#: apps/customers/models.py:233
+#: apps/customers/models.py:235
 msgid "Text of the link to the form on the login page."
 msgstr "Text des Links zum Formular auf der Anmeldeseite."
 
-#: apps/customers/models.py:234 apps/siteconfig/models.py:228
+#: apps/customers/models.py:236 apps/siteconfig/models.py:228
 msgid "title"
 msgstr "Titel"
 
-#: apps/customers/models.py:235 apps/siteconfig/models.py:57
+#: apps/customers/models.py:237 apps/siteconfig/models.py:57
 msgid "introduction"
 msgstr "Einleitung"
 
-#: apps/customers/models.py:236
+#: apps/customers/models.py:238
 msgid "text after sending"
 msgstr "Text nach dem Absenden"
 
-#: apps/customers/models.py:238
+#: apps/customers/models.py:240
 msgid "customer type for sign-ups"
 msgstr "Kundentyp für Anmeldungen"
 
-#: apps/customers/models.py:241
+#: apps/customers/models.py:243
 msgid "approval required"
 msgstr "Freigabe erforderlich"
 
-#: apps/customers/models.py:242
+#: apps/customers/models.py:244
 msgid "New customers can only log in after a staff member approves them."
 msgstr "Neue Kunden können sich erst nach Freigabe durch einen Mitarbeiter anmelden."
 
-#: apps/customers/models.py:244
+#: apps/customers/models.py:246
 msgid "notify about new sign-ups"
 msgstr "Benachrichtigung über neue Anmeldungen an"
 
-#: apps/customers/models.py:245
-#| msgid "Leave empty to use the general email address."
+#: apps/customers/models.py:247
 msgid "Empty = the general email address from the settings."
 msgstr "Leer = die allgemeine E-Mail-Adresse aus den Einstellungen."
 
-#: apps/customers/models.py:246
+#: apps/customers/models.py:248
 msgid "subject of activation email"
 msgstr "Betreff der Aktivierungs-E-Mail"
 
-#: apps/customers/models.py:248
+#: apps/customers/models.py:250
 msgid "text of activation email"
 msgstr "Text der Aktivierungs-E-Mail"
 
-#: apps/customers/models.py:249
+#: apps/customers/models.py:251
 #, python-brace-format
 msgid "Placeholders: {name}, {company}, {number}, {login_url}."
 msgstr "Platzhalter: {name}, {company}, {number}, {login_url}."
 
-#: apps/customers/models.py:254
+#: apps/customers/models.py:256
 msgid "Always required for countries that need a VAT number."
 msgstr "Immer Pflicht für Länder, die eine USt-IdNr. verlangen."
 
-#: apps/customers/models.py:260
+#: apps/customers/models.py:262
 msgid "direct phone of contact"
 msgstr "direkte Telefonnummer des Ansprechpartners"
 
-#: apps/customers/models.py:262
+#: apps/customers/models.py:264
 msgid "message"
 msgstr "Nachricht"
 
-#: apps/customers/models.py:265 apps/customers/models.py:266
-#| msgid "settings"
+#: apps/customers/models.py:267 apps/customers/models.py:268
 msgid "customer settings"
 msgstr "Kundeneinstellungen"
 
-#: apps/customers/models.py:269 packdesk/settings.py:198
-#| msgid "Customer"
+#: apps/customers/models.py:271 packdesk/settings.py:199
 msgid "Customer settings"
 msgstr "Kundeneinstellungen"
 
 #: apps/customers/views.py:53
 msgid "Your details have been saved."
 msgstr "Ihre Daten wurden gespeichert."
+
+#: apps/licences/admin.py:85
+msgid "Registration"
+msgstr "Registrierung"
+
+#: apps/licences/admin.py:102
+msgid "Number of licences"
+msgstr "Anzahl Lizenzen"
+
+#: apps/licences/admin.py:103
+msgid "Each gets its own licence number."
+msgstr "Jede Lizenz erhält eine eigene Nummer."
+
+#: apps/licences/admin.py:122 apps/licences/views.py:20
+#: templates/licences/check.html:11 templates/licences/contact.html:7
+#: templates/licences/done.html:8 templates/licences/options.html:9
+#: templates/licences/step.html:12
+msgid "Licence"
+msgstr "Lizenz"
+
+#: apps/licences/admin.py:125 apps/licences/views.py:23
+#: apps/licences/views.py:137 templates/licences/check.html:15
+msgid "Device"
+msgstr "Gerät"
+
+#: apps/licences/admin.py:128
+msgid "End customer and reseller"
+msgstr "Endkunde und Reseller"
+
+#: apps/licences/admin.py:163
+#, python-format
+msgid "%(n)s licence(s) created: %(list)s"
+msgstr "%(n)s Lizenz(en) angelegt: %(list)s"
+
+#: apps/licences/admin.py:176
+msgid "Rules"
+msgstr "Regeln"
+
+#: apps/licences/admin.py:180
+msgid "Texts"
+msgstr "Texte"
+
+#: apps/licences/apps.py:7 packdesk/settings.py:207
+msgid "Service packs and licences"
+msgstr "Servicepakete und Lizenzen"
+
+#: apps/licences/forms.py:13 templates/licences/email_certificate.txt:7
+msgid "Licence number"
+msgstr "Lizenznummer"
+
+#: apps/licences/forms.py:13
+msgid "For example 26A0001ABC-1"
+msgstr "Zum Beispiel 26A0001ABC-1"
+
+#: apps/licences/forms.py:18
+msgid "No licence with this number was found."
+msgstr "Es wurde keine Lizenz mit dieser Nummer gefunden."
+
+#: apps/licences/forms.py:20
+msgid "This licence does not need to be registered."
+msgstr "Diese Lizenz muss nicht registriert werden."
+
+#: apps/licences/forms.py:22 apps/licences/views.py:179
+msgid "This licence has already been registered."
+msgstr "Diese Lizenz wurde bereits registriert."
+
+#: apps/licences/forms.py:28
+msgid "Email address end customer"
+msgstr "E-Mail-Adresse Endkunde"
+
+#: apps/licences/forms.py:28
+msgid "The service certificate is sent here."
+msgstr "Das Servicezertifikat wird an diese Adresse gesendet."
+
+#: apps/licences/forms.py:29
+msgid "Reference"
+msgstr "Referenz"
+
+#: apps/licences/forms.py:30
+msgid "Memo"
+msgstr "Notiz"
+
+#: apps/licences/forms.py:34
+msgid "Reseller name"
+msgstr "Name des Resellers"
+
+#: apps/licences/forms.py:49
+msgid "Brand and type"
+msgstr "Marke und Typ"
+
+#: apps/licences/forms.py:50 apps/licences/forms.py:101
+#: apps/licences/forms.py:117 templates/licences/email_certificate.txt:17
+#: templates/licences/options.html:16
+msgid "Brand"
+msgstr "Marke"
+
+#: apps/licences/forms.py:51 apps/licences/forms.py:102
+#: apps/licences/forms.py:119 templates/licences/check.html:17
+#: templates/licences/email_certificate.txt:19
+#: templates/licences/options.html:16
+msgid "Article number"
+msgstr "Artikelnummer"
+
+#: apps/licences/forms.py:52 apps/licences/forms.py:103
+#: apps/licences/forms.py:120 templates/licences/email_certificate.txt:20
+#: templates/licences/options.html:16
+msgid "Description"
+msgstr "Beschreibung"
+
+#: apps/licences/forms.py:53 apps/licences/forms.py:104
+#: templates/licences/check.html:16 templates/licences/email_certificate.txt:21
+msgid "Serial number"
+msgstr "Seriennummer"
+
+#: apps/licences/forms.py:54 templates/licences/check.html:18
+#: templates/licences/email_certificate.txt:22
+msgid "Purchase date"
+msgstr "Kaufdatum"
+
+#: apps/licences/forms.py:55
+msgid "Start date of cover"
+msgstr "Beginn der Abdeckung"
+
+#: apps/licences/forms.py:88
+#, python-format
+msgid "This article number is not valid. %(help)s"
+msgstr "Diese Artikelnummer ist ungültig. %(help)s"
+
+#: apps/licences/forms.py:110
+msgid "Choose the brand of the monitor."
+msgstr "Wählen Sie die Marke des Monitors."
+
+#: apps/licences/forms.py:116 templates/licences/email_certificate.txt:18
+#: templates/licences/options.html:16
+msgid "Type"
+msgstr "Typ"
+
+#: apps/licences/forms.py:118 templates/licences/options.html:16
+msgid "Quantity"
+msgstr "Anzahl"
+
+#: apps/licences/forms.py:129
+msgid "Describe the option."
+msgstr "Beschreiben Sie die Option."
+
+#: apps/licences/forms.py:157
+#, python-format
+msgid "At most %(n)s internal options are covered."
+msgstr "Es sind höchstens %(n)s interne Optionen abgedeckt."
+
+#: apps/licences/forms.py:159
+#, python-format
+msgid "At most %(n)s external options are covered."
+msgstr "Es sind höchstens %(n)s externe Optionen abgedeckt."
+
+#: apps/licences/models.py:29
+msgid "Purchase date of the device"
+msgstr "Kaufdatum des Geräts"
+
+#: apps/licences/models.py:30
+msgid "Registration date"
+msgstr "Registrierungsdatum"
+
+#: apps/licences/models.py:33 apps/licences/models.py:58
+#: apps/numbering/models.py:125
+msgid "explanation"
+msgstr "Erklärung"
+
+#: apps/licences/models.py:35
+msgid "cover counts from"
+msgstr "Abdeckung zählt ab"
+
+#: apps/licences/models.py:36
+msgid "For packs bought with a new device (not post-warranty)."
+msgstr "Für Pakete, die mit einem neuen Gerät gekauft wurden (nicht nach Garantie)."
+
+#: apps/licences/models.py:39
+msgid "register by contacting us"
+msgstr "Registrierung über Kontakt"
+
+#: apps/licences/models.py:40
+msgid ""
+"Licences of this category cannot be registered online; the customer is asked "
+"to contact you."
+msgstr "Lizenzen dieser Kategorie können nicht online registriert werden; der Kunde wird gebeten, Kontakt aufzunehmen."
+
+#: apps/licences/models.py:42 apps/licences/models.py:118
+msgid "option types"
+msgstr "Optionstypen"
+
+#: apps/licences/models.py:46
+msgid "pack category"
+msgstr "Paketkategorie"
+
+#: apps/licences/models.py:47
+msgid "pack categories"
+msgstr "Paketkategorien"
+
+#: apps/licences/models.py:62 apps/licences/models.py:94
+#: apps/licences/models.py:160
+msgid "hardware class"
+msgstr "Hardwareklasse"
+
+#: apps/licences/models.py:63
+msgid "hardware classes"
+msgstr "Hardwareklassen"
+
+#: apps/licences/models.py:73
+msgid "check of article number"
+msgstr "Prüfung der Artikelnummer"
+
+#: apps/licences/models.py:74
+msgid "Optional regular expression the article number must match."
+msgstr "Optionaler regulärer Ausdruck, dem die Artikelnummer entsprechen muss."
+
+#: apps/licences/models.py:76
+msgid "explanation of article number"
+msgstr "Erklärung zur Artikelnummer"
+
+#: apps/licences/models.py:77
+msgid "hardware brand"
+msgstr "Hardwaremarke"
+
+#: apps/licences/models.py:78
+msgid "show at top of lists"
+msgstr "oben in Listen anzeigen"
+
+#: apps/licences/models.py:82 apps/licences/models.py:93
+#: apps/licences/models.py:255 apps/licences/models.py:351
+msgid "brand"
+msgstr "Marke"
+
+#: apps/licences/models.py:83
+msgid "brands"
+msgstr "Marken"
+
+#: apps/licences/models.py:95 apps/licences/models.py:350
+msgid "type"
+msgstr "Typ"
+
+#: apps/licences/models.py:96
+msgid "factory warranty (years)"
+msgstr "Herstellergarantie (Jahre)"
+
+#: apps/licences/models.py:97
+msgid "selectable"
+msgstr "auswählbar"
+
+#: apps/licences/models.py:101 apps/licences/models.py:256
+msgid "device type"
+msgstr "Gerätetyp"
+
+#: apps/licences/models.py:102
+msgid "device types"
+msgstr "Gerätetypen"
+
+#: apps/licences/models.py:113
+msgid "internal"
+msgstr "intern"
+
+#: apps/licences/models.py:114
+msgid "is monitor"
+msgstr "ist Monitor"
+
+#: apps/licences/models.py:117
+msgid "option type"
+msgstr "Optionstyp"
+
+#: apps/licences/models.py:126
+msgid "duration (years)"
+msgstr "Laufzeit (Jahre)"
+
+#: apps/licences/models.py:128
+msgid "after factory warranty"
+msgstr "nach Herstellergarantie"
+
+#: apps/licences/models.py:129
+msgid ""
+"The customer chooses the start date; otherwise cover follows the purchase "
+"date."
+msgstr "Der Kunde wählt das Startdatum; sonst richtet sich die Abdeckung nach dem Kaufdatum."
+
+#: apps/licences/models.py:133
+msgid "support period"
+msgstr "Laufzeit"
+
+#: apps/licences/models.py:134
+msgid "support periods"
+msgstr "Laufzeiten"
+
+#: apps/licences/models.py:138
+#, python-format
+msgid "%(n)s year"
+msgid_plural "%(n)s years"
+msgstr[0] "%(n)s Jahr"
+msgstr[1] "%(n)s Jahre"
+
+#: apps/licences/models.py:139
+msgid "post-warranty"
+msgstr "nach Garantie"
+
+#: apps/licences/models.py:143
+msgid "abbreviation"
+msgstr "Abkürzung"
+
+#: apps/licences/models.py:144
+msgid "service"
+msgstr "Service"
+
+#: apps/licences/models.py:145
+msgid "response time"
+msgstr "Reaktionszeit"
+
+#: apps/licences/models.py:146
+msgid "office hours only"
+msgstr "nur zu Bürozeiten"
+
+#: apps/licences/models.py:149 apps/licences/models.py:161
+msgid "service level"
+msgstr "Servicelevel"
+
+#: apps/licences/models.py:150
+msgid "service levels"
+msgstr "Servicelevel"
+
+#: apps/licences/models.py:159
+msgid "category"
+msgstr "Kategorie"
+
+#: apps/licences/models.py:162
+msgid "period"
+msgstr "Laufzeit"
+
+#: apps/licences/models.py:163 apps/licences/models.py:257
+#: apps/licences/models.py:352
+msgid "description"
+msgstr "Beschreibung"
+
+#: apps/licences/models.py:163
+msgid "Shown to customers and in emails."
+msgstr "Wird Kunden und in E-Mails angezeigt."
+
+#: apps/licences/models.py:164
+msgid "price"
+msgstr "Preis"
+
+#: apps/licences/models.py:165
+msgid "for sale"
+msgstr "im Verkauf"
+
+#: apps/licences/models.py:166
+msgid "registration required"
+msgstr "Registrierung erforderlich"
+
+#: apps/licences/models.py:167
+msgid "includes monitor"
+msgstr "inklusive Monitor"
+
+#: apps/licences/models.py:168
+msgid "max. internal options"
+msgstr "max. interne Optionen"
+
+#: apps/licences/models.py:169
+msgid "max. external options"
+msgstr "max. externe Optionen"
+
+#: apps/licences/models.py:174 apps/licences/models.py:244
+msgid "service pack"
+msgstr "Servicepaket"
+
+#: apps/licences/models.py:175
+msgid "service packs"
+msgstr "Servicepakete"
+
+#: apps/licences/models.py:189
+msgid "register up to (days after purchase)"
+msgstr "Registrierung bis (Tage nach Kauf)"
+
+#: apps/licences/models.py:190
+msgid ""
+"Packs bought with a new device can be registered up to this many days after "
+"purchase."
+msgstr "Mit einem neuen Gerät gekaufte Pakete können bis so viele Tage nach dem Kauf registriert werden."
+
+#: apps/licences/models.py:192
+msgid "purchase date at most (days ahead)"
+msgstr "Kaufdatum höchstens (Tage im Voraus)"
+
+#: apps/licences/models.py:193
+msgid "start date post-warranty at most (days ahead)"
+msgstr "Startdatum nach Garantie höchstens (Tage im Voraus)"
+
+#: apps/licences/models.py:195
+msgid "letters after licence number"
+msgstr "Buchstaben nach der Lizenznummer"
+
+#: apps/licences/models.py:195
+msgid "Random letters that make numbers hard to guess; 0 = none."
+msgstr "Zufällige Buchstaben, die Nummern schwer erratbar machen; 0 = keine."
+
+#: apps/licences/models.py:198
+msgid "forbidden letter combinations"
+msgstr "verbotene Buchstabenkombinationen"
+
+#: apps/licences/models.py:199
+msgid "Separated by spaces."
+msgstr "Durch Leerzeichen getrennt."
+
+#: apps/licences/models.py:202
+msgid "internal recipients of registrations"
+msgstr "interne Empfänger von Registrierungen"
+
+#: apps/licences/models.py:202
+msgid "Email addresses separated by commas."
+msgstr "E-Mail-Adressen durch Kommas getrennt."
+
+#: apps/licences/models.py:204
+msgid "introduction of registration"
+msgstr "Einleitung der Registrierung"
+
+#: apps/licences/models.py:205
+msgid "text after registration"
+msgstr "Text nach der Registrierung"
+
+#: apps/licences/models.py:206
+msgid "text for 'register by contacting us'"
+msgstr "Text für 'Registrierung über Kontakt'"
+
+#: apps/licences/models.py:209 apps/licences/models.py:210
+msgid "licence settings"
+msgstr "Lizenzeinstellungen"
+
+#: apps/licences/models.py:213 packdesk/settings.py:265
+msgid "Licence settings"
+msgstr "Lizenzeinstellungen"
+
+#: apps/licences/models.py:235
+msgid "Not registered"
+msgstr "Nicht registriert"
+
+#: apps/licences/models.py:236
+msgid "Registered"
+msgstr "Registriert"
+
+#: apps/licences/models.py:237
+msgid "Ended"
+msgstr "Abgelaufen"
+
+#: apps/licences/models.py:239
+msgid "licence number"
+msgstr "Lizenznummer"
+
+#: apps/licences/models.py:240
+msgid "letters"
+msgstr "Buchstaben"
+
+#: apps/licences/models.py:241
+msgid "sequence number"
+msgstr "laufende Nummer"
+
+#: apps/licences/models.py:242
+msgid "full licence number"
+msgstr "vollständige Lizenznummer"
+
+#: apps/licences/models.py:246
+msgid "order reference"
+msgstr "Auftragsreferenz"
+
+#: apps/licences/models.py:248
+msgid "extension of"
+msgstr "Verlängerung von"
+
+#: apps/licences/models.py:252
+msgid "registered on"
+msgstr "registriert am"
+
+#: apps/licences/models.py:253
+msgid "start date"
+msgstr "Startdatum"
+
+#: apps/licences/models.py:254
+msgid "end date"
+msgstr "Enddatum"
+
+#: apps/licences/models.py:258 apps/licences/models.py:353
+msgid "article number"
+msgstr "Artikelnummer"
+
+#: apps/licences/models.py:259 apps/licences/models.py:354
+#: templates/licences/email_certificate.txt:24
+msgid "serial number"
+msgstr "Seriennummer"
+
+#: apps/licences/models.py:260
+msgid "purchase date"
+msgstr "Kaufdatum"
+
+#: apps/licences/models.py:261
+msgid "email end customer"
+msgstr "E-Mail Endkunde"
+
+#: apps/licences/models.py:262
+msgid "reference end customer"
+msgstr "Referenz Endkunde"
+
+#: apps/licences/models.py:263
+msgid "memo"
+msgstr "Notiz"
+
+#: apps/licences/models.py:264
+msgid "reseller"
+msgstr "Reseller"
+
+#: apps/licences/models.py:265
+msgid "reseller address"
+msgstr "Adresse Reseller"
+
+#: apps/licences/models.py:266
+msgid "reseller postal code"
+msgstr "PLZ Reseller"
+
+#: apps/licences/models.py:267
+msgid "reseller city"
+msgstr "Ort Reseller"
+
+#: apps/licences/models.py:268
+msgid "reseller phone"
+msgstr "Telefon Reseller"
+
+#: apps/licences/models.py:274
+msgid "licence"
+msgstr "Lizenz"
+
+#: apps/licences/models.py:275
+msgid "licences"
+msgstr "Lizenzen"
+
+#: apps/licences/models.py:330
+msgid "Enter the start date."
+msgstr "Geben Sie das Startdatum ein."
+
+#: apps/licences/models.py:332
+msgid "The start date is too far in the future."
+msgstr "Das Startdatum liegt zu weit in der Zukunft."
+
+#: apps/licences/models.py:335
+msgid "Enter the purchase date."
+msgstr "Geben Sie das Kaufdatum ein."
+
+#: apps/licences/models.py:338
+msgid ""
+"The purchase date is too long ago; this device can no longer be registered."
+msgstr "Das Kaufdatum liegt zu weit zurück; dieses Gerät kann nicht mehr registriert werden."
+
+#: apps/licences/models.py:342
+msgid ""
+"The purchase date is too far in the future; this device cannot be registered "
+"yet."
+msgstr "Das Kaufdatum liegt zu weit in der Zukunft; dieses Gerät kann noch nicht registriert werden."
+
+#: apps/licences/models.py:358
+msgid "licence option"
+msgstr "Lizenzoption"
+
+#: apps/licences/models.py:359
+msgid "licence options"
+msgstr "Lizenzoptionen"
+
+#: apps/licences/registration.py:74
+#, python-format
+msgid "Registration licence %(number)s"
+msgstr "Registrierung Lizenz %(number)s"
+
+#: apps/licences/views.py:21 apps/licences/views.py:109
+#: templates/licences/check.html:13
+msgid "End customer"
+msgstr "Endkunde"
+
+#: apps/licences/views.py:22 apps/licences/views.py:113
+#: templates/licences/check.html:14
+msgid "Reseller"
+msgstr "Reseller"
+
+#: apps/licences/views.py:24 apps/licences/views.py:154
+#: templates/licences/check.html:19
+msgid "Monitor"
+msgstr "Monitor"
+
+#: apps/licences/views.py:25 templates/licences/options.html:10
+msgid "Options"
+msgstr "Optionen"
+
+#: apps/licences/views.py:26
+msgid "Check"
+msgstr "Prüfung"
+
+#: apps/licences/views.py:76
+msgid "Start with your licence number."
+msgstr "Beginnen Sie mit Ihrer Lizenznummer."
 
 #: apps/numbering/admin.py:17
 msgid "In order"
@@ -938,107 +1505,106 @@ msgstr "Interner Code der Software, z. B. invoice."
 msgid "pattern"
 msgstr "Muster"
 
-#: apps/numbering/models.py:23
+#: apps/numbering/models.py:24
 #, python-brace-format
+#| msgid ""
+#| "{nr} = counter, {nr:5} = counter with 5 digits, {year}, {yy}, {month}, "
+#| "{letters:2} = random letters."
 msgid ""
-"{nr} = counter, {nr:5} = counter with 5 digits, {year}, {yy}, {month}, "
-"{letters:2} = random letters."
-msgstr "{nr} = Zähler, {nr:5} = Zähler mit 5 Ziffern, {year} = Jahr, {yy} = Jahr zweistellig, {month} = Monat, {letters:2} = zufällige Buchstaben."
+"{nr} = counter, {nr:5} = counter with 5 digits, {block:4} = letter + 4 "
+"digits (A0001), {year}, {yy}, {month}, {letters:2} = random letters."
+msgstr "{nr} = Zähler, {nr:5} = Zähler mit 5 Ziffern, {block:4} = Buchstabe + 4 Ziffern (A0001), {year} = Jahr, {yy} = Jahr zweistellig, {month} = Monat, {letters:2} = zufällige Buchstaben."
 
-#: apps/numbering/models.py:25
+#: apps/numbering/models.py:28
 msgid "next number"
 msgstr "nächste Nummer"
 
-#: apps/numbering/models.py:26
+#: apps/numbering/models.py:29
 msgid "start again every year"
 msgstr "jedes Jahr neu beginnen"
 
-#: apps/numbering/models.py:27
+#: apps/numbering/models.py:30
 msgid "year of counter"
 msgstr "Jahr des Zählers"
 
-#: apps/numbering/models.py:29
+#: apps/numbering/models.py:32
 msgid "file names in archive"
 msgstr "Dateinamen im Archiv"
 
-#: apps/numbering/models.py:33
+#: apps/numbering/models.py:36
 msgid ""
 "Optional. Regular expression for documents in the archive folder; the first "
 "group is the number, e.g. invoice_(\\d+)\\.pdf"
 msgstr "Optional. Regulärer Ausdruck für Dokumente im Archivordner; die erste Gruppe ist die Nummer, z. B. invoice_(\\d+)\\.pdf"
 
-#: apps/numbering/models.py:39
+#: apps/numbering/models.py:42
 msgid "number sequence"
 msgstr "Nummernkreis"
 
-#: apps/numbering/models.py:40
+#: apps/numbering/models.py:43
 msgid "number sequences"
 msgstr "Nummernkreise"
 
-#: apps/numbering/models.py:42
+#: apps/numbering/models.py:45
 msgid "Can correct number counters"
 msgstr "Darf Nummernzähler korrigieren"
 
-#: apps/numbering/models.py:82
+#: apps/numbering/models.py:85
 #, python-format
 msgid ""
 "The next number must be higher than %(highest)s, the highest number already "
 "issued."
 msgstr "Die nächste Nummer muss höher sein als %(highest)s, die höchste bereits vergebene Nummer."
 
-#: apps/numbering/models.py:98
+#: apps/numbering/models.py:101
 msgid "changed at"
 msgstr "geändert am"
 
-#: apps/numbering/models.py:99 apps/numbering/models.py:125
+#: apps/numbering/models.py:102 apps/numbering/models.py:128
 msgid "by"
 msgstr "von"
 
-#: apps/numbering/models.py:100
+#: apps/numbering/models.py:103
 msgid "old next number"
 msgstr "alte nächste Nummer"
 
-#: apps/numbering/models.py:101
+#: apps/numbering/models.py:104
 msgid "new next number"
 msgstr "neue nächste Nummer"
 
-#: apps/numbering/models.py:102
+#: apps/numbering/models.py:105
 msgid "reason"
 msgstr "Grund"
 
-#: apps/numbering/models.py:105
+#: apps/numbering/models.py:108
 msgid "counter change"
 msgstr "Zählerkorrektur"
 
-#: apps/numbering/models.py:106
+#: apps/numbering/models.py:109
 msgid "counter changes"
 msgstr "Zählerkorrekturen"
 
-#: apps/numbering/models.py:120
+#: apps/numbering/models.py:123
 msgid "from number"
 msgstr "von Nummer"
 
-#: apps/numbering/models.py:121
+#: apps/numbering/models.py:124
 msgid "to number"
 msgstr "bis Nummer"
 
-#: apps/numbering/models.py:122
-msgid "explanation"
-msgstr "Erklärung"
-
-#: apps/numbering/models.py:123
+#: apps/numbering/models.py:126
 msgid "recorded at"
 msgstr "erfasst am"
 
-#: apps/numbering/models.py:129
+#: apps/numbering/models.py:132
 msgid "explained gap"
 msgstr "geklärte Lücke"
 
-#: apps/numbering/models.py:130
+#: apps/numbering/models.py:133
 msgid "explained gaps"
 msgstr "geklärte Lücken"
 
-#: apps/numbering/models.py:138
+#: apps/numbering/models.py:141
 msgid "Must be at least the first number."
 msgstr "Muss mindestens die erste Nummer sein."
 
@@ -1091,7 +1657,7 @@ msgid "Maintenance"
 msgstr "Wartung"
 
 #: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:114
-#: packdesk/settings.py:161
+#: packdesk/settings.py:162
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1357,37 +1923,71 @@ msgstr "Menüeintrag"
 msgid "menu items"
 msgstr "Menüeinträge"
 
-#: packdesk/settings.py:94
+#: packdesk/settings.py:95
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: packdesk/settings.py:94
+#: packdesk/settings.py:95
 msgid "English"
 msgstr "Englisch"
 
-#: packdesk/settings.py:94
+#: packdesk/settings.py:95
 msgid "German"
 msgstr "Deutsch"
 
-#: packdesk/settings.py:158
+#: packdesk/settings.py:159
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: packdesk/settings.py:167
+#: packdesk/settings.py:168
 msgid "Number sequences"
 msgstr "Nummernkreise"
 
-#: packdesk/settings.py:186
-#| msgid "Customer"
+#: packdesk/settings.py:187
 msgid "Customer types"
 msgstr "Kundentypen"
 
-#: packdesk/settings.py:192
-#| msgid "Counter"
+#: packdesk/settings.py:193
 msgid "Countries"
 msgstr "Länder"
 
-#: packdesk/settings.py:215
+#: packdesk/settings.py:211 templates/core/dashboard.html:14
+msgid "Licences"
+msgstr "Lizenzen"
+
+#: packdesk/settings.py:217
+msgid "Service packs"
+msgstr "Servicepakete"
+
+#: packdesk/settings.py:223
+msgid "Pack categories"
+msgstr "Paketkategorien"
+
+#: packdesk/settings.py:229
+msgid "Hardware classes"
+msgstr "Hardwareklassen"
+
+#: packdesk/settings.py:235
+msgid "Brands"
+msgstr "Marken"
+
+#: packdesk/settings.py:241
+msgid "Device types"
+msgstr "Gerätetypen"
+
+#: packdesk/settings.py:247
+msgid "Option types"
+msgstr "Optionstypen"
+
+#: packdesk/settings.py:253
+msgid "Support periods"
+msgstr "Laufzeiten"
+
+#: packdesk/settings.py:259
+msgid "Service levels"
+msgstr "Servicelevel"
+
+#: packdesk/settings.py:282
 msgid "Roles"
 msgstr "Rollen"
 
@@ -1437,7 +2037,6 @@ msgstr "Willkommen, %(name)s"
 
 #: templates/core/dashboard.html:11 templates/customers/my_details.html:3
 #: templates/customers/my_details.html:5
-#| msgid "Company details"
 msgid "My details"
 msgstr "Meine Daten"
 
@@ -1453,10 +2052,6 @@ msgstr "Bestellungen"
 #: templates/core/dashboard.html:15
 msgid "Available soon."
 msgstr "Demnächst verfügbar."
-
-#: templates/core/dashboard.html:14
-msgid "Licences"
-msgstr "Lizenzen"
 
 #: templates/core/dashboard.html:15
 msgid "Invoices"
@@ -1481,7 +2076,6 @@ msgid "Expected back: %(until)s"
 msgstr "Voraussichtlich zurück: %(until)s"
 
 #: templates/customers/my_details.html:10
-#| msgid "to number"
 msgid "Customer number"
 msgstr "Kundennummer"
 
@@ -1507,7 +2101,6 @@ msgid "Change password"
 msgstr "Passwort ändern"
 
 #: templates/customers/signup.html:14
-#| msgid "Company details"
 msgid "Company"
 msgstr "Unternehmen"
 
@@ -1524,9 +2117,106 @@ msgid "Thank you"
 msgstr "Vielen Dank"
 
 #: templates/customers/signup_done.html:7
-#| msgid "button text on home page"
 msgid "Back to the home page"
 msgstr "Zurück zur Startseite"
+
+#: templates/licences/_steps.html:2
+msgid "Steps"
+msgstr "Schritte"
+
+#: templates/licences/check.html:3 templates/licences/check.html:5
+#: templates/licences/options.html:3 templates/licences/options.html:5
+#: templates/licences/step.html:3 templates/licences/step.html:6
+msgid "Register a licence"
+msgstr "Lizenz registrieren"
+
+#: templates/licences/check.html:9
+msgid "Check your registration"
+msgstr "Prüfen Sie Ihre Registrierung"
+
+#: templates/licences/check.html:12 templates/licences/done.html:9
+msgid "Cover"
+msgstr "Abdeckung"
+
+#: templates/licences/check.html:20
+msgid "Option"
+msgstr "Option"
+
+#: templates/licences/check.html:23
+msgid "Complete registration"
+msgstr "Registrierung abschließen"
+
+#: templates/licences/check.html:24 templates/licences/options.html:28
+#: templates/licences/step.html:19
+msgid "Start again"
+msgstr "Neu beginnen"
+
+#: templates/licences/contact.html:5
+msgid "Please contact us"
+msgstr "Bitte kontaktieren Sie uns"
+
+#: templates/licences/done.html:5
+msgid "Registration complete"
+msgstr "Registrierung abgeschlossen"
+
+#: templates/licences/done.html:11
+msgid "Register another licence"
+msgstr "Weitere Lizenz registrieren"
+
+#: templates/licences/email_certificate.txt:2
+msgid "Service certificate"
+msgstr "Servicezertifikat"
+
+#: templates/licences/email_certificate.txt:4
+msgid "Thank you for registering your service pack."
+msgstr "Vielen Dank für die Registrierung Ihres Servicepakets."
+
+#: templates/licences/email_certificate.txt:6
+msgid "Support details"
+msgstr "Supportdaten"
+
+#: templates/licences/email_certificate.txt:8
+msgid "Pack"
+msgstr "Paket"
+
+#: templates/licences/email_certificate.txt:9
+msgid "Duration"
+msgstr "Laufzeit"
+
+#: templates/licences/email_certificate.txt:10
+msgid "Service level"
+msgstr "Servicelevel"
+
+#: templates/licences/email_certificate.txt:11
+msgid "Start date"
+msgstr "Startdatum"
+
+#: templates/licences/email_certificate.txt:12
+msgid "End date"
+msgstr "Enddatum"
+
+#: templates/licences/email_certificate.txt:14
+msgid "Your reference"
+msgstr "Ihre Referenz"
+
+#: templates/licences/email_certificate.txt:16
+msgid "Covered products"
+msgstr "Abgedeckte Produkte"
+
+#: templates/licences/options.html:11
+#, python-format
+msgid ""
+"This pack covers up to %(i)s internal and %(e)s external options. Leave rows "
+"empty that you do not need."
+msgstr "Dieses Paket deckt bis zu %(i)s interne und %(e)s externe Optionen ab. Lassen Sie nicht benötigte Zeilen leer."
+
+#: templates/licences/options.html:27 templates/licences/step.html:18
+msgid "Next"
+msgstr "Weiter"
+
+#: templates/licences/step.html:14
+msgid "Optional: fill in the monitor that is covered by this pack."
+msgstr "Optional: Geben Sie den Monitor an, der von diesem Paket abgedeckt ist."
 
 #: templates/registration/login.html:16
 msgid "Forgot password?"
@@ -1537,7 +2227,6 @@ msgid "Sign up"
 msgstr "Registrieren"
 
 #: templates/registration/password_change_done.html:5
-#| msgid "counter change"
 msgid "Password changed"
 msgstr "Passwort geändert"
 
@@ -1567,7 +2256,6 @@ msgid "Request a new link"
 msgstr "Neuen Link anfordern"
 
 #: templates/registration/password_reset_done.html:5
-#| msgid "show email"
 msgid "Check your email"
 msgstr "Prüfen Sie Ihre E-Mails"
 
@@ -1600,7 +2288,6 @@ msgid ""
 msgstr "Geben Sie Ihre E-Mail-Adresse ein. Wenn sie bekannt ist, erhalten Sie einen Link zum Wählen eines neuen Passworts."
 
 #: templates/registration/password_reset_form.html:10
-#| msgid "link"
 msgid "Send link"
 msgstr "Link senden"
 
