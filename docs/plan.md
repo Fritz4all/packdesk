@@ -1,6 +1,6 @@
 # PackDesk – opbouwplan
 
-Status: voorstel, nog niet akkoord. Laatst bijgewerkt: 2026-10-23.
+Status: voorstel; techniekkeuze (Django) besloten. Laatst bijgewerkt: 2026-10-23.
 
 ## Doel
 
@@ -24,7 +24,8 @@ Een nieuwe webshop die functioneel hetzelfde doet als de previous-webshop-shop, 
 
 ### B. Basis PackDesk
 
-Rails 8 / Ruby 3.4, PostgreSQL, Docker, GitHub Actions, inloggen en rollen, multi-tenant, admin-opzet, ontwerp.
+Python + Django, PostgreSQL, Docker, GitHub Actions, inloggen en rollen, multi-tenant, admin-opzet, ontwerp.
+De oude Ruby-code dient alleen als naslag voor de werking; er wordt niets van overgenomen.
 
 ### C. Modules, één voor één
 
@@ -84,8 +85,17 @@ Per klant (tenant) en per documentsoort een reeks, in te stellen in de admin:
 - Voor de test: een geanonimiseerde dump of alleen het schema. Voor de echte overstap later: een verse dump.
 - De productie-`const.rb`.
 
-## Keuzes (aanbevolen)
+## Keuzes
 
-1. Ruby on Rails 8 / Ruby 3.4, achtergrondtaken via de database (geen Redis/Sidekiq).
-2. PostgreSQL.
-3. Eén database, elke regel gekoppeld aan een klant (tenant).
+Besloten (2026-10-23):
+
+1. **Python + Django** (gekozen boven Rails, Laravel, Dolibarr en Odoo: bekende taal, ingebouwde admin, zelfde Docker-werkwijze als apparatenbeheer).
+
+Aanbevolen, nog te bevestigen:
+
+2. Django 5.2 LTS (ondersteund tot april 2028) op Python 3.13, officiële `python`-image.
+3. PostgreSQL.
+4. Eén database, elke regel gekoppeld aan een klant (tenant); klant herkend aan het domein.
+5. Admin-thema voor een moderne look (bijv. django-unfold).
+6. Pdf's uit HTML-sjablonen met WeasyPrint (geen Java).
+7. Achtergrondtaken (herinneringen, mails) via de database, geen Redis.
