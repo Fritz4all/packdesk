@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Log in" %} – {{ tenant.name }}{% endblock %}
+{% block content %}
+<div class="auth">
+  <div class="auth-card">
+    <h1>{% translate "Log in" %}</h1>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}<div class="message message-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+      {% for field in form %}
+        <label class="field">
+          <span>{{ field.label }}</span>
+          {{ field }}
+          {% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}
+        </label>
+      {% endfor %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn btn-primary btn-block" type="submit">{% translate "Log in" %}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

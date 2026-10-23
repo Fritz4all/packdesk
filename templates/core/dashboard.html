@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "My account" %} – {{ tenant.name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>{% blocktranslate with name=user.first_name|default:user.email %}Welcome, {{ name }}{% endblocktranslate %}</h1>
+  <p class="muted">{{ tenant.display_name }}</p>
+</div>
+<section class="cards">
+  <article class="card card-muted"><h2>{% translate "Orders" %}</h2><p>{% translate "Available soon." %}</p></article>
+  <article class="card card-muted"><h2>{% translate "Licences" %}</h2><p>{% translate "Available soon." %}</p></article>
+  <article class="card card-muted"><h2>{% translate "Invoices" %}</h2><p>{% translate "Available soon." %}</p></article>
+</section>
+{% endblock %}

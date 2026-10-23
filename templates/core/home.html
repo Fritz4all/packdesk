@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<section class="hero">
+  <h1>{{ tenant.tagline|default:tenant.name }}</h1>
+  <p class="lead">{% blocktranslate %}Order and extend hardware service packs, register licences and follow your orders – all in one place.{% endblocktranslate %}</p>
+  <div class="hero-actions">
+    {% if user.is_authenticated %}
+      <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}">{% translate "Go to my account" %}</a>
+    {% else %}
+      <a class="btn btn-primary btn-lg" href="{% url 'login' %}">{% translate "Log in" %}</a>
+    {% endif %}
+  </div>
+</section>
+
+<section class="cards">
+  <article class="card">
+    <div class="card-icon">⟳</div>
+    <h2>{% translate "Service packs" %}</h2>
+    <p>{% translate "Order support for servers, desktops, printers and more, and extend it on time." %}</p>
+  </article>
+  <article class="card">
+    <div class="card-icon">✓</div>
+    <h2>{% translate "Register a licence" %}</h2>
+    <p>{% translate "Link your device to a licence so support starts right away." %}</p>
+  </article>
+  <article class="card">
+    <div class="card-icon">⚙</div>
+    <h2>{% translate "Spare parts" %}</h2>
+    <p>{% translate "Request parts, accept quotes and follow deliveries." %}</p>
+  </article>
+</section>
+{% endblock %}

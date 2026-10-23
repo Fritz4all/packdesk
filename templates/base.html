@@ -1,0 +1,47 @@
+{% load static i18n %}<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'nl' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ tenant.name }}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/packdesk.css' %}">
+  <style>:root { --brand: {{ tenant.primary_color|default:'#1f6feb' }}; --accent: {{ tenant.accent_color|default:'#0ea5e9' }}; }</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="{% url 'home' %}">
+        {% if tenant.logo %}<img src="{{ tenant.logo.url }}" alt="{{ tenant.name }}">{% else %}<span class="brand-mark">{{ tenant.name|slice:":1" }}</span><span class="brand-name">{{ tenant.name }}</span>{% endif %}
+      </a>
+      <nav class="nav">
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}">{% translate "My account" %}</a>
+          {% if user.is_staff %}<a href="{% url 'admin:index' %}">{% translate "Admin" %}</a>{% endif %}
+          <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="btn btn-ghost" type="submit">{% translate "Log out" %}</button></form>
+        {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}">{% translate "Log in" %}</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main">
+    {% if messages %}<div class="messages">{% for message in messages %}<div class="message message-{{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>{{ tenant.display_name }}</strong>
+        {% if tenant.address_line %}<br>{{ tenant.address_line }}, {{ tenant.postal_code }} {{ tenant.city }}{% endif %}
+      </div>
+      <div class="footer-meta">
+        {% if tenant.phone %}<span>{{ tenant.phone }}</span>{% endif %}
+        {% if tenant.email %}<a href="mailto:{{ tenant.email }}">{{ tenant.email }}</a>{% endif %}
+        {% if tenant.coc_number %}<span>{% translate "CoC" %} {{ tenant.coc_number }}</span>{% endif %}
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

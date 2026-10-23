@@ -1,0 +1,304 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 22:06+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/accounts/admin.py:45 apps/accounts/admin.py:51
+msgid "Personal info"
+msgstr ""
+
+#: apps/accounts/admin.py:46 apps/accounts/admin.py:52
+msgid "Access"
+msgstr "Toegang"
+
+#: apps/accounts/admin.py:47 apps/accounts/admin.py:53
+msgid "Dates"
+msgstr "Datums"
+
+#: apps/accounts/apps.py:8 packdesk/settings.py:159 packdesk/settings.py:162
+msgid "Users"
+msgstr "Gebruikers"
+
+#: apps/accounts/forms.py:8
+msgid "Email address"
+msgstr "E-mailadres"
+
+#: apps/accounts/forms.py:14
+msgid "Unknown email address or wrong password."
+msgstr "Onbekend e-mailadres of onjuist wachtwoord."
+
+#: apps/accounts/models.py:26
+msgid "Staff"
+msgstr "Medewerker"
+
+#: apps/accounts/models.py:27
+msgid "Customer"
+msgstr "Klant"
+
+#: apps/accounts/models.py:35 apps/tenants/models.py:46
+#: apps/tenants/models.py:62 apps/tenants/models.py:86
+msgid "organisation"
+msgstr "organisatie"
+
+#: apps/accounts/models.py:37
+msgid "kind"
+msgstr "soort"
+
+#: apps/accounts/models.py:38
+msgid "email address"
+msgstr "e-mailadres"
+
+#: apps/accounts/models.py:45
+msgid "user"
+msgstr "gebruiker"
+
+#: apps/accounts/models.py:46
+msgid "users"
+msgstr "gebruikers"
+
+#: apps/core/admin_config.py:10
+msgid "Platform (development)"
+msgstr "Platform (ontwikkeling)"
+
+#: apps/core/admin_config.py:11
+msgid "Platform"
+msgstr "Platform"
+
+#: apps/tenants/admin.py:32
+msgid "Branding"
+msgstr "Huisstijl"
+
+#: apps/tenants/admin.py:34
+msgid "Company details"
+msgstr "Bedrijfsgegevens"
+
+#: apps/tenants/apps.py:7
+msgid "Organisations"
+msgstr "Organisaties"
+
+#: apps/tenants/models.py:6
+msgid "Use a colour like #1f6feb."
+msgstr "Gebruik een kleur zoals #1f6feb."
+
+#: apps/tenants/models.py:20
+msgid "name"
+msgstr "naam"
+
+#: apps/tenants/models.py:21
+msgid "code"
+msgstr "code"
+
+#: apps/tenants/models.py:21
+msgid "Short internal code, e.g. previous-webshop."
+msgstr "Korte interne code, bijv. previous-webshop."
+
+#: apps/tenants/models.py:22
+msgid "active"
+msgstr "actief"
+
+#: apps/tenants/models.py:23
+msgid "language"
+msgstr "taal"
+
+#: apps/tenants/models.py:24
+msgid "created"
+msgstr "aangemaakt"
+
+#: apps/tenants/models.py:27
+msgid "logo"
+msgstr "logo"
+
+#: apps/tenants/models.py:28
+msgid "primary colour"
+msgstr "hoofdkleur"
+
+#: apps/tenants/models.py:29
+msgid "accent colour"
+msgstr "accentkleur"
+
+#: apps/tenants/models.py:30
+msgid "tagline"
+msgstr "slogan"
+
+#: apps/tenants/models.py:33
+msgid "legal name"
+msgstr "statutaire naam"
+
+#: apps/tenants/models.py:34
+msgid "address"
+msgstr "adres"
+
+#: apps/tenants/models.py:35
+msgid "postal code"
+msgstr "postcode"
+
+#: apps/tenants/models.py:36
+msgid "city"
+msgstr "plaats"
+
+#: apps/tenants/models.py:37
+msgid "country"
+msgstr "land"
+
+#: apps/tenants/models.py:38
+msgid "phone"
+msgstr "telefoon"
+
+#: apps/tenants/models.py:39
+msgid "email"
+msgstr "e-mail"
+
+#: apps/tenants/models.py:40
+msgid "website"
+msgstr "website"
+
+#: apps/tenants/models.py:41
+msgid "Chamber of Commerce number"
+msgstr "KvK-nummer"
+
+#: apps/tenants/models.py:42
+msgid "VAT number"
+msgstr "btw-nummer"
+
+#: apps/tenants/models.py:43
+msgid "IBAN"
+msgstr "IBAN"
+
+#: apps/tenants/models.py:47
+msgid "organisations"
+msgstr "organisaties"
+
+#: apps/tenants/models.py:61 apps/tenants/models.py:66
+msgid "domain"
+msgstr "domein"
+
+#: apps/tenants/models.py:63
+msgid "primary"
+msgstr "hoofddomein"
+
+#: apps/tenants/models.py:67
+msgid "domains"
+msgstr "domeinen"
+
+#: packdesk/settings.py:90
+msgid "Dutch"
+msgstr "Nederlands"
+
+#: packdesk/settings.py:90
+msgid "English"
+msgstr "Engels"
+
+#: packdesk/settings.py:143
+msgid "Organisation"
+msgstr "Organisatie"
+
+#: packdesk/settings.py:146
+msgid "Settings"
+msgstr "Instellingen"
+
+#: packdesk/settings.py:151
+msgid "Domains"
+msgstr "Domeinen"
+
+#: packdesk/settings.py:167
+msgid "Roles"
+msgstr "Rollen"
+
+#: templates/base.html:18 templates/core/dashboard.html:3
+msgid "My account"
+msgstr "Mijn omgeving"
+
+#: templates/base.html:19
+msgid "Admin"
+msgstr "Beheer"
+
+#: templates/base.html:20
+msgid "Log out"
+msgstr "Uitloggen"
+
+#: templates/base.html:22 templates/core/home.html:11
+#: templates/registration/login.html:3 templates/registration/login.html:7
+#: templates/registration/login.html:19
+msgid "Log in"
+msgstr "Inloggen"
+
+#: templates/base.html:42
+msgid "CoC"
+msgstr "KvK"
+
+#: templates/core/dashboard.html:6
+#, python-format
+msgid "Welcome, %(name)s"
+msgstr "Welkom, %(name)s"
+
+#: templates/core/dashboard.html:10
+msgid "Orders"
+msgstr "Bestellingen"
+
+#: templates/core/dashboard.html:10 templates/core/dashboard.html:11
+#: templates/core/dashboard.html:12
+msgid "Available soon."
+msgstr "Binnenkort beschikbaar."
+
+#: templates/core/dashboard.html:11
+msgid "Licences"
+msgstr "Licenties"
+
+#: templates/core/dashboard.html:12
+msgid "Invoices"
+msgstr "Facturen"
+
+#: templates/core/home.html:6
+msgid ""
+"Order and extend hardware service packs, register licences and follow your "
+"orders – all in one place."
+msgstr ""
+"Bestel en verleng hardware-servicepacks, registreer licenties en volg uw "
+"bestellingen – alles op één plek."
+
+#: templates/core/home.html:9
+msgid "Go to my account"
+msgstr "Naar mijn omgeving"
+
+#: templates/core/home.html:19
+msgid "Service packs"
+msgstr "Servicepacks"
+
+#: templates/core/home.html:20
+msgid ""
+"Order support for servers, desktops, printers and more, and extend it on "
+"time."
+msgstr ""
+"Bestel ondersteuning voor servers, desktops, printers en meer, en verleng op "
+"tijd."
+
+#: templates/core/home.html:24
+msgid "Register a licence"
+msgstr "Licentie registreren"
+
+#: templates/core/home.html:25
+msgid "Link your device to a licence so support starts right away."
+msgstr ""
+"Koppel uw apparaat aan een licentie, zodat de ondersteuning direct ingaat."
+
+#: templates/core/home.html:29
+msgid "Spare parts"
+msgstr "Onderdelen"
+
+#: templates/core/home.html:30
+msgid "Request parts, accept quotes and follow deliveries."
+msgstr "Vraag onderdelen aan, accepteer offertes en volg leveringen."
