@@ -15,6 +15,17 @@
         {% if site.logo %}<img src="{{ site.logo.url }}" alt="{{ site.name }}">{% else %}<span class="brand-mark">{{ site.name|slice:":1" }}</span><span class="brand-name">{{ site.name }}</span>{% endif %}
       </a>
       <nav class="nav">
+        {% if site.language_choices|length > 1 %}
+        <form class="lang-switch" method="post" action="{% url 'set_language' %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <label class="visually-hidden" for="lang-select">{% translate "Language" %}</label>
+          <select id="lang-select" name="language" onchange="this.form.submit()">
+            {% for code, name in site.language_choices %}<option value="{{ code }}" title="{{ name }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ code|upper }}</option>{% endfor %}
+          </select>
+          <noscript><button type="submit">OK</button></noscript>
+        </form>
+        {% endif %}
         {% if user.is_authenticated %}
           <a href="{% url 'dashboard' %}">{% translate "My account" %}</a>
           {% if user.is_staff %}<a href="{% url 'admin:index' %}">{% translate "Admin" %}</a>{% endif %}

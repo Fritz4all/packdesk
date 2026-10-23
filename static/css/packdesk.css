@@ -67,6 +67,13 @@ h2 { font-size: 1.15rem; }
 .nav form { margin: 0; }
 .nav > a:not(.btn) { color: var(--muted); font-weight: 500; }
 
+.lang-switch select {
+  font: inherit; font-size: 0.85rem; font-weight: 600;
+  padding: 0.35rem 0.5rem; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer;
+}
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
 /* Buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;

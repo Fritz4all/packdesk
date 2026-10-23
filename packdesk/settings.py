@@ -25,6 +25,7 @@ CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 INSTALLED_APPS = [
     "unfold",
     "unfold.contrib.forms",
+    "modeltranslation",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -58,6 +59,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+                "django.template.context_processors.i18n",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "apps.siteconfig.context_processors.site_settings",
@@ -84,8 +86,14 @@ LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "home"
 
 LANGUAGE_CODE = "nl"
-LANGUAGES = [("nl", _("Dutch")), ("en", _("English"))]
-LOCALE_PATHS = [BASE_DIR / "locale"]
+LANGUAGES = [("nl", _("Dutch")), ("en", _("English")), ("de", _("German"))]
+LOCALE_PATHS = [BASE_DIR / "locale", BASE_DIR / "locale_vendor"]
+LANGUAGE_COOKIE_NAME = "packdesk_language"
+
+# Translated content fields (django-modeltranslation): one column per language.
+# An empty translation falls back to the next language in this order.
+MODELTRANSLATION_DEFAULT_LANGUAGE = "nl"
+MODELTRANSLATION_FALLBACK_LANGUAGES = tuple(env.list("FALLBACK_LANGUAGES", default=["nl", "en", "de"]))
 TIME_ZONE = "Europe/Amsterdam"
 USE_I18N = True
 USE_TZ = True

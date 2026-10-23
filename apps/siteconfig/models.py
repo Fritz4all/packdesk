@@ -15,7 +15,19 @@ class SiteSettings(models.Model):
     """
 
     name = models.CharField(_("name"), max_length=120, default="PackDesk")
-    language = models.CharField(_("language"), max_length=8, choices=settings.LANGUAGES, default="nl")
+    language = models.CharField(
+        _("default language"),
+        max_length=8,
+        choices=settings.LANGUAGES,
+        default="nl",
+        help_text=_("Language for visitors who have not chosen one."),
+    )
+    languages = models.CharField(
+        _("available languages"),
+        max_length=64,
+        default=",".join(code for code, _name in settings.LANGUAGES),
+        help_text=_("Languages visitors can choose from."),
+    )
 
     # Branding
     logo = models.ImageField(_("logo"), upload_to="branding/", blank=True)
@@ -63,6 +75,20 @@ class SiteSettings(models.Model):
         # One small query per request; no cache, so every worker sees changes at once.
         obj, _ = cls.objects.get_or_create(pk=1)
         return obj
+
+    @property
+    def language_codes(self):
+        """Available language codes, always including the default language."""
+        known = {code for code, _name in settings.LANGUAGES}
+        codes = [c for c in self.languages.split(",") if c in known]
+        if self.language not in codes:
+            codes.insert(0, self.language)
+        return codes
+
+    @property
+    def language_choices(self):
+        names = dict(settings.LANGUAGES)
+        return [(code, names[code]) for code in self.language_codes]
 
     @property
     def display_name(self):
