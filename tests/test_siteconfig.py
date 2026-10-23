@@ -1,10 +1,12 @@
 from apps.siteconfig.models import Address, SiteSettings
 
 
-def test_settings_are_created_on_first_use(db):
-    assert SiteSettings.objects.count() == 0
-    assert SiteSettings.load().name == "PackDesk"
+def test_fresh_install_has_settings_with_defaults(db):
+    site = SiteSettings.load()
     assert SiteSettings.objects.count() == 1
+    assert site.name == "PackDesk"
+    assert site.intro_text_nl and site.intro_text_en and site.intro_text_de
+    assert site.home_blocks.count() == 3
 
 
 def test_there_is_only_ever_one_settings_row(db):

@@ -166,7 +166,22 @@ h2 { font-size: 1.15rem; }
 .message-error { border-color: color-mix(in srgb, var(--danger) 40%, transparent); color: var(--danger); margin-bottom: 1rem; }
 .message-success { border-color: color-mix(in srgb, var(--success) 40%, transparent); color: var(--success); }
 
+/* Announcement bar */
+.announcement { padding: 0.6rem 0; font-weight: 500; text-align: center; font-size: 0.95rem; }
+.announcement-info { background: color-mix(in srgb, var(--brand) 16%, var(--surface)); color: var(--text); }
+.announcement-warning { background: color-mix(in srgb, #f59e0b 25%, var(--surface)); color: var(--text); }
+.announcement-success { background: color-mix(in srgb, var(--success) 20%, var(--surface)); color: var(--text); }
+
+.card-link { margin-top: 0.8rem !important; }
+.card-link a { font-weight: 600; }
+
+/* Maintenance page */
+.maintenance { display: grid; place-items: center; min-height: 60vh; text-align: center; }
+.maintenance .card { max-width: 560px; }
+.maintenance-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
 /* Footer */
 .site-footer { border-top: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 0.9rem; }
 .footer-inner { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-block: 1.5rem; }
 .footer-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start; }
+.footer-text { flex-basis: 100%; font-size: 0.85rem; }

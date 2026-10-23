@@ -4,10 +4,10 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from modeltranslation.admin import TabbedTranslationAdmin
+from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline
 from unfold.admin import ModelAdmin, StackedInline
 
-from .models import Address, SiteSettings
+from .models import Address, HomeBlock, MenuItem, SiteSettings
 
 
 class SiteSettingsForm(forms.ModelForm):
@@ -76,32 +76,64 @@ class AddressInline(StackedInline):
     ]
 
 
+class HomeBlockInline(StackedInline, TranslationStackedInline):
+    model = HomeBlock
+    extra = 0
+    tab = True
+    fields = ["icon", "title", "text", ("link_url", "link_text"), ("visibility", "is_active"), "position"]
+
+
+class MenuItemInline(StackedInline, TranslationStackedInline):
+    model = MenuItem
+    extra = 0
+    tab = True
+    fields = ["label", ("url", "new_tab"), ("visibility", "is_active"), "position"]
+
+
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
     """Single settings page: the list view jumps straight to the form."""
 
     form = SiteSettingsForm
-    inlines = [AddressInline]
+    inlines = [AddressInline, HomeBlockInline, MenuItemInline]
 
     readonly_fields = ["updated_at"]
     color_fields = {"primary_color", "accent_color"}
     fieldsets = [
-        (None, {"fields": ["name", "language", "languages"]}),
-        (_("Branding"), {"fields": ["logo", "favicon", ("primary_color", "accent_color"), "tagline", "intro_text"]}),
-        (_("Appearance"), {"fields": ["theme", "theme_switch"]}),
+        (_("General"), {"classes": ["tab"], "fields": ["name", "language", "languages", "meta_description", "updated_at"]}),
         (
-            _("Company details"),
+            _("Branding"),
+            {"classes": ["tab"], "fields": ["logo", "favicon", ("primary_color", "accent_color"), "theme", "theme_switch"]},
+        ),
+        (_("Home page"), {"classes": ["tab"], "fields": ["tagline", "intro_text", "hero_button_text"]}),
+        (
+            _("Footer"),
             {
+                "classes": ["tab"],
                 "fields": [
-                    "legal_name",
-                    ("phone", "email"),
-                    "website",
-                    ("coc_number", "vat_number"),
-                    "iban",
-                ]
+                    "footer_text",
+                    ("footer_show_address", "footer_show_phone", "footer_show_email"),
+                    ("footer_show_coc", "footer_show_vat"),
+                ],
             },
         ),
-        (None, {"fields": ["updated_at"]}),
+        (
+            _("Company details"),
+            {"classes": ["tab"], "fields": ["legal_name", ("phone", "email"), "website", ("coc_number", "vat_number"), "iban"]},
+        ),
+        (
+            _("Maintenance"),
+            {
+                "classes": ["tab"],
+                "fields": [
+                    "maintenance_mode",
+                    "maintenance_message",
+                    "maintenance_until",
+                    ("announcement_enabled", "announcement_level"),
+                    "announcement_text",
+                ],
+            },
+        ),
     ]
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):

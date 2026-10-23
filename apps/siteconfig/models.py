@@ -59,6 +59,42 @@ class SiteSettings(models.Model):
         help_text=_("Short text on the home page under the tagline."),
     )
 
+    meta_description = models.CharField(
+        _("description for search engines"), max_length=300, blank=True,
+        help_text=_("Shown by Google and others under the page title."),
+    )
+    hero_button_text = models.CharField(
+        _("button text on home page"), max_length=60, blank=True,
+        help_text=_("Leave empty for the standard text (Log in / Go to my account)."),
+    )
+
+    # Footer
+    footer_text = models.TextField(_("footer text"), blank=True, help_text=_("Extra text at the bottom of every page."))
+    footer_show_address = models.BooleanField(_("show address"), default=True)
+    footer_show_phone = models.BooleanField(_("show phone"), default=True)
+    footer_show_email = models.BooleanField(_("show email"), default=True)
+    footer_show_coc = models.BooleanField(_("show Chamber of Commerce number"), default=True)
+    footer_show_vat = models.BooleanField(_("show VAT number"), default=False)
+
+    # Maintenance and announcements
+    maintenance_mode = models.BooleanField(
+        _("maintenance mode"), default=False,
+        help_text=_("Visitors see the maintenance message and cannot log in. Staff can still use the admin."),
+    )
+    maintenance_message = models.TextField(_("maintenance message"), blank=True)
+    maintenance_until = models.DateTimeField(
+        _("expected back"), null=True, blank=True, help_text=_("Optional; shown in the maintenance message."),
+    )
+    announcement_enabled = models.BooleanField(_("show announcement"), default=False)
+    announcement_text = models.CharField(
+        _("announcement"), max_length=300, blank=True,
+        help_text=_("Bar at the top of every page, e.g. to announce maintenance."),
+    )
+    announcement_level = models.CharField(
+        _("announcement colour"), max_length=8, default="info",
+        choices=[("info", _("Information")), ("warning", _("Warning")), ("success", _("Positive"))],
+    )
+
     # Company details
     legal_name = models.CharField(_("legal name"), max_length=200, blank=True)
     phone = models.CharField(_("phone"), max_length=40, blank=True)
@@ -176,3 +212,61 @@ class Address(models.Model):
 
     def contact_email(self):
         return self.email or self.settings.email
+
+
+class Visibility(models.TextChoices):
+    ALL = "all", _("Everyone")
+    ANONYMOUS = "anonymous", _("Only when not logged in")
+    LOGGED_IN = "logged_in", _("Only when logged in")
+
+
+class HomeBlock(models.Model):
+    """A card on the home page."""
+
+    settings = models.ForeignKey(SiteSettings, on_delete=models.CASCADE, related_name="home_blocks")
+    icon = models.CharField(_("icon"), max_length=8, blank=True, help_text=_("A symbol or emoji, e.g. ✓ or 🛠"))
+    title = models.CharField(_("title"), max_length=100)
+    text = models.TextField(_("text"), blank=True)
+    link_url = models.CharField(_("link"), max_length=300, blank=True, help_text=_("Page address, e.g. /mijn/ or https://…"))
+    link_text = models.CharField(_("link text"), max_length=60, blank=True)
+    visibility = models.CharField(_("visible for"), max_length=12, choices=Visibility.choices, default=Visibility.ALL)
+    is_active = models.BooleanField(_("active"), default=True)
+    position = models.PositiveSmallIntegerField(_("order"), default=0)
+
+    class Meta:
+        verbose_name = _("home page block")
+        verbose_name_plural = _("home page blocks")
+        ordering = ["position", "id"]
+
+    def __str__(self):
+        return self.title
+
+
+class MenuItem(models.Model):
+    """A link in the header menu."""
+
+    settings = models.ForeignKey(SiteSettings, on_delete=models.CASCADE, related_name="menu_items")
+    label = models.CharField(_("text"), max_length=60)
+    url = models.CharField(_("link"), max_length=300, help_text=_("Page address, e.g. /mijn/ or https://…"))
+    new_tab = models.BooleanField(_("open in new tab"), default=False)
+    visibility = models.CharField(_("visible for"), max_length=12, choices=Visibility.choices, default=Visibility.ALL)
+    is_active = models.BooleanField(_("active"), default=True)
+    position = models.PositiveSmallIntegerField(_("order"), default=0)
+
+    class Meta:
+        verbose_name = _("menu item")
+        verbose_name_plural = _("menu items")
+        ordering = ["position", "id"]
+
+    def __str__(self):
+        return self.label
+
+
+def visible_for(items, user):
+    """Active items the current visitor may see."""
+    logged_in = user.is_authenticated
+    return [
+        item for item in items
+        if item.is_active
+        and (item.visibility == Visibility.ALL or (item.visibility == Visibility.LOGGED_IN) == logged_in)
+    ]

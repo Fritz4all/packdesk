@@ -1,0 +1,119 @@
+from datetime import timedelta
+
+from django.utils import timezone
+
+from apps.siteconfig.models import HomeBlock, MenuItem
+
+from .conftest import PASSWORD, make_user
+
+
+# --- Home page, menu and footer -------------------------------------------
+
+def test_home_blocks_come_from_settings(client, site):
+    HomeBlock.objects.filter(settings=site).delete()
+    HomeBlock.objects.create(settings=site, title="Eigen blok", text="Eigen tekst", link_url="/x/", link_text="Lees")
+    HomeBlock.objects.create(settings=site, title="Verborgen", is_active=False)
+    page = client.get("/").content.decode()
+    assert "Eigen blok" in page and "Eigen tekst" in page and 'href="/x/"' in page
+    assert "Verborgen" not in page
+    assert "Servicepacks" not in page
+
+
+def test_block_visibility_depends_on_login(client, site):
+    HomeBlock.objects.create(settings=site, title="Alleen gasten", visibility="anonymous")
+    HomeBlock.objects.create(settings=site, title="Alleen klanten", visibility="logged_in")
+    page = client.get("/").content.decode()
+    assert "Alleen gasten" in page and "Alleen klanten" not in page
+    client.force_login(make_user("klant@example.test"))
+    page = client.get("/").content.decode()
+    assert "Alleen gasten" not in page and "Alleen klanten" in page
+
+
+def test_menu_items_in_header(client, site):
+    MenuItem.objects.create(settings=site, label="Contact", url="/contact/")
+    MenuItem.objects.create(settings=site, label="Extern", url="https://example.test", new_tab=True)
+    MenuItem.objects.create(settings=site, label="Uit", url="/uit/", is_active=False)
+    page = client.get("/").content.decode()
+    assert 'href="/contact/"' in page and 'target="_blank"' in page
+    assert "/uit/" not in page
+
+
+def test_translated_block_title(client, site):
+    block = HomeBlock.objects.create(settings=site, title_nl="Hallo", title_de="Guten Tag")
+    client.post("/taal/", {"language": "de", "next": "/"})
+    assert block.title_de in client.get("/").content.decode()
+
+
+def test_hero_button_meta_and_footer(client, site):
+    site.hero_button_text = "Start hier"
+    site.meta_description = "Beschrijving voor Google"
+    site.footer_text = "Alle prijzen excl. btw"
+    site.vat_number = "NL000099998B57"
+    site.footer_show_vat = True
+    site.footer_show_coc = False
+    site.coc_number = "87654321"
+    site.save()
+    page = client.get("/").content.decode()
+    assert "Start hier" in page
+    assert '<meta name="description" content="Beschrijving voor Google">' in page
+    assert "Alle prijzen excl. btw" in page
+    assert "NL000099998B57" in page and "87654321" not in page
+
+
+def test_announcement_bar(client, site):
+    site.announcement_text = "Vrijdag onderhoud"
+    site.save()
+    assert "Vrijdag onderhoud" not in client.get("/").content.decode()
+    site.announcement_enabled = True
+    site.announcement_level = "warning"
+    site.save()
+    page = client.get("/").content.decode()
+    assert "Vrijdag onderhoud" in page and "announcement-warning" in page
+
+
+# --- Maintenance mode -------------------------------------------------------
+
+def maintenance_on(site, **extra):
+    site.maintenance_mode = True
+    site.maintenance_message = "Even geduld"
+    for key, value in extra.items():
+        setattr(site, key, value)
+    site.save()
+
+
+def test_maintenance_page_for_visitors(client, site):
+    maintenance_on(site, maintenance_until=timezone.now() + timedelta(hours=2))
+    response = client.get("/")
+    assert response.status_code == 503
+    assert "Even geduld" in response.content.decode()
+    assert 7000 < int(response["Retry-After"]) <= 7200
+
+
+def test_login_blocked_during_maintenance(client, site):
+    make_user("klant@example.test")
+    maintenance_on(site)
+    assert client.get("/inloggen/").status_code == 503
+    client.post("/inloggen/", {"username": "klant@example.test", "password": PASSWORD})
+    assert "_auth_user_id" not in client.session
+
+
+def test_logged_in_customer_is_logged_out(client, site):
+    client.force_login(make_user("klant@example.test"))
+    maintenance_on(site)
+    assert client.get("/mijn/").status_code == 503
+    assert "_auth_user_id" not in client.session
+
+
+def test_staff_can_work_during_maintenance(client, site, beheerder):
+    maintenance_on(site)
+    assert client.get("/beheer/login/").status_code == 200
+    client.force_login(beheerder)
+    assert client.get("/").status_code == 200
+    assert client.get("/beheer/siteconfig/sitesettings/1/change/").status_code == 200
+
+
+def test_site_back_after_maintenance(client, site):
+    maintenance_on(site)
+    site.maintenance_mode = False
+    site.save()
+    assert client.get("/").status_code == 200

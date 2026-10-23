@@ -25,20 +25,20 @@ Een nieuwe webshop die functioneel hetzelfde doet als de previous-webshop-shop, 
 
 ### B. Basis PackDesk
 
-Python + Django, PostgreSQL, Docker, GitHub Actions, inloggen en rollen, instellingenpagina (naam, logo, kleuren, bedrijfsgegevens, taal), admin-opzet, ontwerp.
+Python + Django, PostgreSQL, Docker, GitHub Actions, inloggen en rollen, instellingenpagina (naam, logo, kleuren, licht/donker, talen, adressen per documentsoort, homepageblokken, menu, footer, onderhoudsmodus en meldingsbalk), admin-opzet, ontwerp.
 De oude Ruby-code dient alleen als naslag voor de werking; er wordt niets van overgenomen.
 
 ### C. Modules, één voor één
 
 0. **Nummerreeksen** (per documentsoort instelbaar, zie hieronder)
-1. Klanten, resellers, gebruikers
-2. Supportpakketten en licenties
+1. Klanten, resellers, gebruikers, **aanmeldformulier "reseller worden"** (met goedkeuring door beheer)
+2. Supportpakketten en licenties, **registratiewizard** (licentie → reseller → eindklant → apparaat → monitor → interne/externe opties) en **storing melden**
 3. Bestellen en verlengen
 4. Facturen en pdf's (sjabloon instelbaar, zonder Java)
 5. Mails (sjablonen bewerkbaar)
 6. Overzichten: aflopend, herinneringen, verlengingen, omzet
 7. Onderdelen: aanvragen, offertes, orders
-8. Content: homepage, menu, FAQ, artikelen, formulieren
+8. Content: pagina's (over ons, contact, producten), FAQ, artikelen, formulieren – homepage, menu en footer zijn al instelbaar (stap B)
 9. Export naar Exact
 10. **Documentarchief**: oude en nieuwe pdf's opzoeken op nummer, klant, datum, soort (en optioneel op tekst in de pdf)
 
@@ -103,3 +103,7 @@ Aanbevolen, nog te bevestigen:
 
 7. Pdf's uit HTML-sjablonen met WeasyPrint (geen Java).
 8. Achtergrondtaken (herinneringen, mails) via de database, geen Redis.
+
+## Uitgangspunt: alles instelbaar
+
+Alles wat een bezoeker op de site ziet en per klant kan verschillen, komt uit de instellingen of uit beheerbare inhoud, in drie talen. Vaste teksten in de code zijn alleen knoppen en labels van de software zelf (ook vertaald). Bij elke nieuwe module wordt dit gecontroleerd.

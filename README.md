@@ -25,6 +25,13 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   en of bezoekers zelf mogen kiezen. Hun keuze wordt in de browser onthouden. De merkkleur wordt in
   elke weergave automatisch iets lichter of donkerder gemaakt, zodat links leesbaar blijven.
   De admin heeft een eigen keuze voor licht/donker/systeem.
+- **Inhoud van de site:** homepageblokken (pictogram, titel, tekst, link, zichtbaar voor iedereen /
+  gasten / ingelogde klanten), menu-items in de kopregel, knoptekst op de homepage, omschrijving voor
+  zoekmachines en de voettekst (wat er getoond wordt en eigen tekst). Alles per taal.
+- **Onderhoudsmodus:** zet je hem aan, dan zien bezoekers een onderhoudspagina (HTTP 503) met je eigen
+  melding en eventueel een verwachte eindtijd, en kunnen klanten niet inloggen. Medewerkers kunnen het
+  beheer en de site gewoon blijven gebruiken. Daarnaast is er een **meldingsbalk** bovenaan elke pagina,
+  bijvoorbeeld om onderhoud vooraf aan te kondigen.
 - **Inloggen** met e-mailadres.
 - **Admin** op `/beheer/`.
 - **Rollen:** Beheerder, Financieel, Service, Medewerker (`apps/accounts/roles.py`).

@@ -16,11 +16,15 @@ def settings_form(**overrides):
         "country": "NL",
         "theme": "auto",
         "theme_switch": "on",
+        "announcement_level": "info",
         "addresses-TOTAL_FORMS": "0",
         "addresses-INITIAL_FORMS": "0",
         "addresses-MIN_NUM_FORMS": "0",
         "addresses-MAX_NUM_FORMS": "1000",
     }
+    for prefix in ("home_blocks", "menu_items"):
+        data.update({f"{prefix}-TOTAL_FORMS": "0", f"{prefix}-INITIAL_FORMS": "0",
+                     f"{prefix}-MIN_NUM_FORMS": "0", f"{prefix}-MAX_NUM_FORMS": "1000"})
     data.update(overrides)
     return data
 

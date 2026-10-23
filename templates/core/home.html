@@ -3,31 +3,26 @@
 {% block content %}
 <section class="hero">
   <h1>{{ site.tagline|default:site.name }}</h1>
-  <p class="lead">{% if site.intro_text %}{{ site.intro_text|linebreaksbr }}{% else %}{% blocktranslate %}Order and extend hardware service packs, register licences and follow your orders – all in one place.{% endblocktranslate %}{% endif %}</p>
+  {% if site.intro_text %}<p class="lead">{{ site.intro_text|linebreaksbr }}</p>{% endif %}
   <div class="hero-actions">
     {% if user.is_authenticated %}
-      <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}">{% translate "Go to my account" %}</a>
+      <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}">{% firstof site.hero_button_text _("Go to my account") %}</a>
     {% else %}
-      <a class="btn btn-primary btn-lg" href="{% url 'login' %}">{% translate "Log in" %}</a>
+      <a class="btn btn-primary btn-lg" href="{% url 'login' %}">{% firstof site.hero_button_text _("Log in") %}</a>
     {% endif %}
   </div>
 </section>
 
+{% if blocks %}
 <section class="cards">
+  {% for block in blocks %}
   <article class="card">
-    <div class="card-icon">⟳</div>
-    <h2>{% translate "Service packs" %}</h2>
-    <p>{% translate "Order support for servers, desktops, printers and more, and extend it on time." %}</p>
+    {% if block.icon %}<div class="card-icon">{{ block.icon }}</div>{% endif %}
+    <h2>{{ block.title }}</h2>
+    {% if block.text %}<p>{{ block.text|linebreaksbr }}</p>{% endif %}
+    {% if block.link_url %}<p class="card-link"><a href="{{ block.link_url }}">{% firstof block.link_text _("Read more") %} →</a></p>{% endif %}
   </article>
-  <article class="card">
-    <div class="card-icon">✓</div>
-    <h2>{% translate "Register a licence" %}</h2>
-    <p>{% translate "Link your device to a licence so support starts right away." %}</p>
-  </article>
-  <article class="card">
-    <div class="card-icon">⚙</div>
-    <h2>{% translate "Spare parts" %}</h2>
-    <p>{% translate "Request parts, accept quotes and follow deliveries." %}</p>
-  </article>
+  {% endfor %}
 </section>
+{% endif %}
 {% endblock %}
