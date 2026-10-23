@@ -32,6 +32,19 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   melding en eventueel een verwachte eindtijd, en kunnen klanten niet inloggen. Medewerkers kunnen het
   beheer en de site gewoon blijven gebruiken. Daarnaast is er een **meldingsbalk** bovenaan elke pagina,
   bijvoorbeeld om onderhoud vooraf aan te kondigen.
+- **Nummerreeksen** (Configuratie → Nummerreeksen): per documentsoort (facturen, offertes, orders,
+  licenties, klanten, storingsmeldingen) een patroon, bijv. `F{year}-{nr:5}`, en de volgende
+  nummer. Nummers worden veilig uitgegeven (nooit dubbel, nooit hergebruikt).
+  - **Controle tegen documenten:** PackDesk vergelijkt de teller met de documenten die echt bestaan
+    (nu: de pdf's in `DOCUMENT_ARCHIVE_DIR`; straks ook de facturen in PackDesk zelf). Het toont het
+    aantal documenten, het hoogste nummer, en **ontbrekende nummers**. Is de teller te laag, of zijn
+    er nummers weg, dan verschijnt een waarschuwing en een teller in het admin-menu.
+  - **Rechtzetten:** knop *Teller op hoogste nummer + 1 zetten*, of handmatig een nieuw volgende nummer
+    met verplichte reden. De teller kan nooit lager dan een nummer dat al bestaat. Elke correctie komt
+    in het logboek (wie, wanneer, oud → nieuw, reden).
+  - **Gaten verklaren:** ontbrekende nummers kun je verklaren (bijv. "geannuleerd voor verzending");
+    verklaarde gaten tellen niet meer als probleem.
+  - Alleen de rollen Beheerder en Financieel mogen tellers corrigeren.
 - **Inloggen** met e-mailadres.
 - **Admin** op `/beheer/`.
 - **Rollen:** Beheerder, Financieel, Service, Medewerker (`apps/accounts/roles.py`).
@@ -50,6 +63,9 @@ docker compose exec web python manage.py create_user --email admin@example.test 
 - Shop: http://localhost:8000
 - Admin: http://localhost:8000/beheer/ → **Instellingen** voor naam, logo en kleuren
 - Mailpit (verstuurde mails): http://localhost:8025
+
+Bestaande documenten (bijv. het factuurarchief van de vorige webshop) koppel je alleen-lezen met
+`DOCUMENT_ARCHIVE=<map>` in een lokaal `.env`-bestand.
 
 ## Testen
 
