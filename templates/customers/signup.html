@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ signup.title }} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>{{ signup.title }}</h1>
+  {% if signup.intro %}<p class="lead">{{ signup.intro|linebreaksbr }}</p>{% endif %}
+</div>
+<form method="post" class="form-card" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="message message-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+  <div class="hp" aria-hidden="true">{{ form.homepage }}</div>
+  {{ form.started }}
+  <fieldset><legend>{% translate "Company" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=company_fields %}</div>
+  </fieldset>
+  <fieldset><legend>{% translate "Address" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=address_fields %}</div>
+  </fieldset>
+  <fieldset><legend>{% translate "Contact person and login" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=contact_fields %}</div>
+  </fieldset>
+  {% if message_fields %}<fieldset><legend>{% translate "Message" %}</legend>{% include "includes/form_fields.html" with fields=message_fields %}</fieldset>{% endif %}
+  <button class="btn btn-primary btn-lg" type="submit">{% translate "Send sign-up" %}</button>
+</form>
+{% endblock %}

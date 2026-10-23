@@ -8,16 +8,14 @@
     <form method="post" novalidate>
       {% csrf_token %}
       {% if form.non_field_errors %}<div class="message message-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
-      {% for field in form %}
-        <label class="field">
-          <span>{{ field.label }}</span>
-          {{ field }}
-          {% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}
-        </label>
-      {% endfor %}
+      {% include "includes/form_fields.html" with fields=form %}
       <input type="hidden" name="next" value="{{ next }}">
       <button class="btn btn-primary btn-block" type="submit">{% translate "Log in" %}</button>
     </form>
+    <p class="auth-links">
+      <a href="{% url 'password_reset' %}">{% translate "Forgot password?" %}</a>
+      {% if signup_settings.enabled %}<a href="{% url 'signup' %}">{% firstof signup_settings.menu_label _("Sign up") %}</a>{% endif %}
+    </p>
   </div>
 </div>
 {% endblock %}

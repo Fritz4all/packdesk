@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "My details" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "My details" %}</h1></div>
+<div class="two-col">
+  <section class="card">
+    <h2>{{ customer.name }}</h2>
+    <dl class="details">
+      <dt>{% translate "Customer number" %}</dt><dd>{{ customer.number|default:"—" }}</dd>
+      {% if customer.vat_number %}<dt>{% translate "VAT number" %}</dt><dd>{{ customer.vat_number }}</dd>{% endif %}
+      {% if customer.phone %}<dt>{% translate "Phone" %}</dt><dd>{{ customer.phone }}</dd>{% endif %}
+      {% for label, address in addresses %}{% if address %}<dt>{{ label }}</dt><dd>{{ address.one_line }}</dd>{% endif %}{% endfor %}
+    </dl>
+    <p class="muted">{% translate "Company details are wrong? Please contact us." %}</p>
+  </section>
+  <section class="card">
+    <h2>{% translate "Contact person" %}</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include "includes/form_fields.html" with fields=form %}
+      <p class="muted">{% translate "Email / login" %}: {{ user.email }}</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="submit">{% translate "Save" %}</button>
+        <a class="btn btn-ghost" href="{% url 'password_change' %}">{% translate "Change password" %}</a>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}
