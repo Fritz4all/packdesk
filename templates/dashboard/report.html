@@ -1,0 +1,68 @@
+{% extends "admin/base_site.html" %}
+{% load i18n humanize_nl %}
+{% block content %}
+<div class="flex flex-row flex-wrap gap-3 items-center justify-between mb-4">
+    <h1 class="font-semibold text-lg text-font-important-light dark:text-font-important-dark">{% translate "Sales and margin" %}</h1>
+    <form method="get" class="flex gap-2">
+        {% for key, label in periods %}
+            <button name="period" value="{{ key }}" class="pd-btn{% if key == period %} pd-btn-primary{% endif %}">{{ label }}</button>
+        {% endfor %}
+    </form>
+</div>
+<p class="mb-4 text-sm text-base-500">
+    {% blocktranslate with start=start|date:"j F Y" end=end|date:"j F Y" %}Period {{ start }} – {{ end }}.{% endblocktranslate %}
+    {% translate "Based on licences, current pack prices minus the customer's discount, and current cost prices. Becomes exact once orders and invoices are kept in PackDesk." %}
+</p>
+
+<div class="grid gap-3 grid-cols-2 lg:grid-cols-4 mb-6">
+    <div class="pd-stat"><span class="pd-stat-value">{{ report.totals.count }}</span><span class="pd-stat-label">{% translate "Packs sold" %}</span></div>
+    <div class="pd-stat"><span class="pd-stat-value">€ {{ report.totals.revenue|money }}</span><span class="pd-stat-label">{% translate "Revenue" %}</span></div>
+    <div class="pd-stat"><span class="pd-stat-value">€ {{ report.totals.margin|money }}</span><span class="pd-stat-label">{% translate "Gross margin" %}</span></div>
+    <div class="pd-stat"><span class="pd-stat-value">{% if report.totals.margin_pct is not None %}{{ report.totals.margin_pct|floatformat:1 }} %{% else %}–{% endif %}</span><span class="pd-stat-label">{% translate "Margin percentage" %}</span></div>
+</div>
+
+<section class="pd-widget mb-6">
+    <header class="pd-widget-head"><h2>{% translate "Revenue and margin per month" %}</h2>
+        <span class="pd-legend"><i class="pd-sw pd-sw-rev"></i>{% translate "Revenue" %} <i class="pd-sw pd-sw-mar"></i>{% translate "Gross margin" %}</span></header>
+    <div class="overflow-x-auto">
+        <svg class="pd-chart" width="{{ chart.width }}" height="{{ chart.height|add:28 }}" viewBox="0 0 {{ chart.width }} {{ chart.height|add:28 }}" role="img" aria-label="{% translate 'Revenue and margin per month' %}">
+            {% for bar in chart.bars %}
+                <g>
+                    <title>{{ bar.label }}: € {{ bar.revenue|money }} ({% translate "margin" %} € {{ bar.margin|money }}, {{ bar.count }} {% translate "packs" %})</title>
+                    <rect class="pd-bar-rev" x="{{ bar.x }}" y="{{ bar.rev_y|stringformat:'.1f' }}" width="{{ bar.w }}" height="{{ bar.rev_h|stringformat:'.1f' }}" rx="4"></rect>
+                    <rect class="pd-bar-mar" x="{{ bar.x|add:8 }}" y="{{ bar.mar_y|stringformat:'.1f' }}" width="{{ bar.w|add:-16 }}" height="{{ bar.mar_h|stringformat:'.1f' }}" rx="3"></rect>
+                    <text x="{{ bar.x|add:18 }}" y="{{ chart.height|add:18 }}" text-anchor="middle">{{ bar.label }}</text>
+                </g>
+            {% endfor %}
+        </svg>
+    </div>
+</section>
+
+<div class="grid gap-4 md:grid-cols-2 mb-6">
+    <section class="pd-widget">
+        <header class="pd-widget-head"><h2>{% translate "Revenue per category" %}</h2></header>
+        {% for c in report.categories %}
+            <div class="mb-3">
+                <div class="flex justify-between text-sm"><span>{{ c.name }} ({{ c.count }})</span><span>€ {{ c.revenue|money }}</span></div>
+                <div class="pd-hbar"><span style="width: {{ c.pct|stringformat:'.1f' }}%"></span></div>
+            </div>
+        {% empty %}<p class="text-sm text-base-500">{% translate "No sales in this period." %}</p>{% endfor %}
+    </section>
+    <section class="pd-widget">
+        <header class="pd-widget-head"><h2>{% translate "Top customers" %}</h2></header>
+        <table class="pd-table"><thead><tr><th>{% translate "Customer" %}</th><th>{% translate "Packs" %}</th><th>{% translate "Revenue" %}</th><th>{% translate "Margin" %}</th></tr></thead>
+        <tbody>{% for c in report.customers %}<tr><td>{{ c.name }}</td><td>{{ c.count }}</td><td>€ {{ c.revenue|money }}</td><td>€ {{ c.margin|money }}</td></tr>
+        {% empty %}<tr><td colspan="4" class="text-base-500">{% translate "No sales in this period." %}</td></tr>{% endfor %}</tbody></table>
+    </section>
+</div>
+
+<section class="pd-widget">
+    <header class="pd-widget-head"><h2>{% translate "Prices and margin per pack" %}</h2></header>
+    <div class="overflow-x-auto">
+    <table class="pd-table"><thead><tr><th>{% translate "Service pack" %}</th><th>{% translate "Price" %}</th><th>{% translate "Cost price" %}</th><th>{% translate "Margin" %}</th><th>%</th></tr></thead>
+    <tbody>{% for row in price_list %}<tr><td>{{ row.pack }}</td><td>€ {{ row.price|money }}</td><td>€ {{ row.cost|money }}</td><td>€ {{ row.margin|money }}</td>
+        <td>{% if row.margin_pct is not None %}{{ row.margin_pct|floatformat:1 }}{% else %}–{% endif %}</td></tr>
+    {% empty %}<tr><td colspan="5" class="text-base-500">{% translate "No service packs yet." %}</td></tr>{% endfor %}</tbody></table>
+    </div>
+</section>
+{% endblock %}

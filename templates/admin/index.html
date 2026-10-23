@@ -1,0 +1,85 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+{% block content %}
+<div id="dashboard" data-save-url="{% url 'dashboard_save_layout' %}" data-reset-url="{% url 'dashboard_reset_layout' %}">
+    <div class="flex flex-row flex-wrap gap-2 items-center justify-between mb-4">
+        <h1 class="font-semibold text-lg text-font-important-light dark:text-font-important-dark">{% translate "Dashboard" %}</h1>
+        <div class="flex gap-2">
+            <button type="button" id="dashboard-edit" class="pd-btn">
+                <span class="material-symbols-outlined text-[18px]">dashboard_customize</span> {% translate "Customise" %}
+            </button>
+            <button type="button" id="dashboard-done" class="pd-btn pd-btn-primary hidden">
+                <span class="material-symbols-outlined text-[18px]">check</span> {% translate "Done" %}
+            </button>
+            <button type="button" id="dashboard-reset" class="pd-btn hidden">
+                <span class="material-symbols-outlined text-[18px]">restart_alt</span> {% translate "Reset to default" %}
+            </button>
+        </div>
+    </div>
+    <p id="dashboard-help" class="hidden mb-3 text-sm text-base-500">{% translate "Drag blocks to change the order. Use the eye to hide or show a block. Changes are saved for you only." %}</p>
+
+    <div id="dashboard-grid" class="grid gap-4 md:grid-cols-2">
+        {% for block in dashboard_blocks %}
+            <section class="pd-widget{% if block.widget.wide %} md:col-span-2{% endif %}" data-key="{{ block.widget.key }}" draggable="false">
+                <header class="pd-widget-head">
+                    <span class="material-symbols-outlined pd-handle hidden">drag_indicator</span>
+                    <h2>{{ block.widget.title }}</h2>
+                    <button type="button" class="pd-toggle hidden" title="{% translate 'Hide' %}"><span class="material-symbols-outlined text-[18px]">visibility_off</span></button>
+                </header>
+                {% include block.widget.template with data=block.data %}
+            </section>
+        {% endfor %}
+    </div>
+
+    <div id="dashboard-hidden" class="hidden mt-6">
+        <h2 class="font-semibold mb-2">{% translate "Hidden blocks" %}</h2>
+        <div class="flex flex-wrap gap-2">
+            {% for widget in dashboard_hidden %}
+                <button type="button" class="pd-btn pd-show" data-key="{{ widget.key }}"><span class="material-symbols-outlined text-[18px]">visibility</span> {{ widget.title }}</button>
+            {% empty %}
+                <span class="text-sm text-base-500">{% translate "None" %}</span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+(function () {
+  const root = document.getElementById("dashboard"), grid = document.getElementById("dashboard-grid");
+  const csrf = document.cookie.split("; ").find(c => c.startsWith("csrftoken="))?.split("=")[1] || "";
+  const hidden = new Set([{% for w in dashboard_hidden %}"{{ w.key }}",{% endfor %}]);
+  const toggleEdit = (on) => {
+    ["dashboard-done", "dashboard-reset", "dashboard-help", "dashboard-hidden"].forEach(id => document.getElementById(id).classList.toggle("hidden", !on));
+    document.getElementById("dashboard-edit").classList.toggle("hidden", on);
+    grid.querySelectorAll(".pd-widget").forEach(w => { w.draggable = on; w.classList.toggle("pd-editing", on); });
+    grid.querySelectorAll(".pd-handle, .pd-toggle").forEach(el => el.classList.toggle("hidden", !on));
+  };
+  const post = (url, body) => fetch(url, {method: "POST", headers: {"X-CSRFToken": csrf, "Content-Type": "application/json"}, body: JSON.stringify(body || {})});
+  const save = () => post(root.dataset.saveUrl, {order: [...grid.querySelectorAll(".pd-widget")].map(w => w.dataset.key).concat([...hidden]), hidden: [...hidden]});
+  let dragged = null;
+  grid.addEventListener("dragstart", e => { dragged = e.target.closest(".pd-widget"); dragged.classList.add("pd-dragging"); });
+  grid.addEventListener("dragend", () => { dragged?.classList.remove("pd-dragging"); dragged = null; save(); });
+  grid.addEventListener("dragover", e => {
+    e.preventDefault();
+    const over = e.target.closest(".pd-widget");
+    if (!dragged || !over || over === dragged) return;
+    const box = over.getBoundingClientRect();
+    const after = (e.clientY - box.top) > box.height / 2 || (e.clientX - box.left) > box.width / 2;
+    over.parentNode.insertBefore(dragged, after ? over.nextSibling : over);
+  });
+  grid.querySelectorAll(".pd-toggle").forEach(btn => btn.addEventListener("click", () => {
+    hidden.add(btn.closest(".pd-widget").dataset.key);
+    save().then(() => location.reload());
+  }));
+  document.querySelectorAll(".pd-show").forEach(btn => btn.addEventListener("click", () => {
+    hidden.delete(btn.dataset.key);
+    save().then(() => { sessionStorage.setItem("pd-dashboard-edit", "1"); location.reload(); });
+  }));
+  document.getElementById("dashboard-edit").addEventListener("click", () => toggleEdit(true));
+  document.getElementById("dashboard-done").addEventListener("click", () => { sessionStorage.removeItem("pd-dashboard-edit"); toggleEdit(false); });
+  document.getElementById("dashboard-reset").addEventListener("click", () => {
+    if (confirm("{{ _('Restore the default dashboard?')|escapejs }}")) post(root.dataset.resetUrl).then(() => location.reload());
+  });
+  try { if (sessionStorage.getItem("pd-dashboard-edit")) toggleEdit(true); } catch (e) {}
+})();
+</script>
+{% endblock %}

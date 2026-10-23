@@ -92,6 +92,7 @@ ROLES = {
         "licences.delete_licenceoption",
         "licences.view_licencesettings",
         "licences.change_licencesettings",
+        "dashboard.view_reports",
         "accounts.view_user",
         "accounts.add_user",
         "accounts.change_user",
@@ -102,6 +103,7 @@ ROLES = {
         "accounts.delete_role",
     ],
     "Financieel": [
+        "dashboard.view_reports",
         "numbering.view_numbersequence",
         "numbering.change_numbersequence",
         "numbering.correct_numbersequence",

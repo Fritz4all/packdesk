@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 # Apps whose functions can be granted to roles. New modules add their app label here.
-MANAGED_APPS = ["siteconfig", "numbering", "customers", "licences", "accounts"]
+MANAGED_APPS = ["siteconfig", "numbering", "customers", "licences", "dashboard", "accounts"]
 
 ACTIONS = [
     ("view", _("View")),
@@ -16,9 +16,17 @@ ACTIONS = [
 ]
 
 
+# Technical models whose standard permissions make no sense in a role (their special rights still show).
+HIDDEN_MODELS = {("dashboard", "dashboardlayout")}
+
+
 def managed_permissions():
+    hidden = Q(pk__in=[])
+    for app_label, model in HIDDEN_MODELS:
+        hidden |= Q(content_type__app_label=app_label, content_type__model=model,
+                    codename__in=[f"{a}_{model}" for a in ("view", "add", "change", "delete")])
     return (
-        Permission.objects.filter(content_type__app_label__in=MANAGED_APPS)
+        Permission.objects.filter(content_type__app_label__in=MANAGED_APPS).exclude(hidden)
         .select_related("content_type")
         .order_by("content_type__app_label", "content_type__model", "codename")
     )

@@ -1,0 +1,9 @@
+<div class="grid gap-3 grid-cols-2 lg:grid-cols-4">
+  {% for card in data.cards %}
+    <a href="{{ card.url }}" class="pd-stat{% if card.warn and card.value %} pd-stat-warn{% endif %}">
+      <span class="material-symbols-outlined">{{ card.icon }}</span>
+      <span class="pd-stat-value">{{ card.value }}</span>
+      <span class="pd-stat-label">{{ card.label }}</span>
+    </a>
+  {% endfor %}
+</div>
