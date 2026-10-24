@@ -35,6 +35,10 @@ class SiteSettings(models.Model):
         default=",".join(code for code, _name in settings.LANGUAGES),
         help_text=_("Languages visitors can choose from."),
     )
+    setup_completed = models.BooleanField(
+        _("installation finished"), default=False, editable=False,
+        help_text=_("Set by the installation wizard."),
+    )
     admin_language = models.CharField(
         _("admin language"),
         max_length=8,

@@ -1,0 +1,34 @@
+{% extends "setup/_page.html" %}
+{% load i18n %}
+{% block title %}{% translate "Installation" %} – PackDesk{% endblock %}
+{% block content %}
+<ol class="setup-steps">
+  {% for key, label in steps %}<li class="{% if key == step %}is-current{% elif forloop.counter0 < step_index %}is-done{% endif %}">{{ forloop.counter }}. {{ label }}</li>{% endfor %}
+</ol>
+<div class="form-card">
+  {% if step == "code" %}
+    <h1>{% translate "Welcome to PackDesk" %}</h1>
+    <p>{% translate "This installation is new. A few steps set it up; everything can be changed later in the admin." %}</p>
+    <p class="muted">{% if code_from_env %}{% translate "Enter the SETUP_CODE from .env." %}{% else %}{% translate "Enter the installation code. It is shown in the log of the server: docker compose logs web" %}{% endif %}</p>
+  {% elif step == "admin" %}
+    <h1>{% translate "First administrator" %}</h1>
+    <p>{% translate "This account can do everything, including adding staff and roles." %}</p>
+  {% elif step == "basics" %}
+    <h1>{% translate "Basic settings" %}</h1>
+    <p>{% translate "The name and email address appear on the website, in emails and on invoices. Colours, addresses and texts follow later under Settings." %}</p>
+    {% if mail_error %}<p class="notice notice-error">{% translate "The test email could not be sent. Check the mail server settings in .env." %} ({{ mail_error }})</p>{% endif %}
+  {% elif step == "numbering" %}
+    <h1>{% translate "Numbering" %}</h1>
+    <p>{% translate "The first number of each kind of document. Taking over from another system? Choose a number above the highest number there. Patterns can be changed later under Number sequences." %}</p>
+  {% elif step == "demo" %}
+    <h1>{% translate "Almost done" %}</h1>
+    <p>{% translate "For trying PackDesk out you can add a small demo catalogue with test licences. Leave it off for a real installation." %}</p>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for error in form.non_field_errors %}<p class="notice notice-error">{{ error }}</p>{% endfor %}
+    {% include "includes/form_fields.html" with fields=form %}
+    <button class="btn btn-primary" type="submit">{% if step == "demo" %}{% translate "Finish installation" %}{% else %}{% translate "Next" %}{% endif %}</button>
+  </form>
+</div>
+{% endblock %}
