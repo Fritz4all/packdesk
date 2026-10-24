@@ -251,3 +251,11 @@ def test_preset_button_and_mapping_page(client, site, old_db):
     page = client.get(f"/beheer/legacy/tablemapping/{mapping.pk}/change/").content.decode()
     assert 'id="pd-columns"' in page and "number_deb" in page and "Koper BV" in page  # columns and example rows
     assert client.get("/beheer/legacy/tablemapping/add/").status_code == 200
+
+
+def test_highest_number_ignores_notes_in_number_fields():
+    from apps.legacy.compare import _highest
+
+    assert _highest(["400123", "2000693-use other number", "9"]) == "400123"
+    assert _highest(["26A0001", "26A0099"]) == "26A0099"
+    assert _highest(["", ""]) is None

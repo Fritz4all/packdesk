@@ -247,12 +247,14 @@ def part_for(key):
 
 
 def _highest(values):
-    """Highest number: numerically when all are digits, otherwise longest-then-alphabetical (26A0099 > 26A0001)."""
+    """Highest number. Plain numbers win when there are any (a stray note such as "123-use other number" in
+    the old data is ignored); otherwise longest-then-alphabetical (26A0099 > 26A0001)."""
     values = [v for v in values if v]
     if not values:
         return None
-    if all(v.isdigit() for v in values):
-        return str(max(int(v) for v in values))
+    digits = [int(v) for v in values if v.isdigit()]
+    if digits:
+        return str(max(digits))
     return max(values, key=lambda v: (len(v), v.upper()))
 
 
