@@ -1,4 +1,4 @@
-"""Emails around customers. Plain text for now; the mail module makes them editable as templates later."""
+"""Plain-text emails around customers; subject and text of the activation mail come from the settings."""
 
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator

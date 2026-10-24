@@ -1,24 +1,17 @@
-# Local development. Production compose follows in step E.
+# PackDesk for local development and testing (debug mode, test mail server on port 8025).
+# Settings that differ per computer (database, folders) come from .env; see .env.example.
 #
-# Data that must live OUTSIDE the containers (and outside this Git folder):
-#   1. Database (customers, licences, orders, invoices, settings, users)  -> the server in DB_HOST,
-#      or volume "dbdata" / "mariadbdata" when the database runs in a container
-#   2. Files PackDesk keeps (website uploads, invoice PDFs, fault attachments, pending imports)
-#                                                                         -> ${DATA_DIR}, as /data
-#   3. Optional: previous webshop's invoice archive (read-only)                   -> ${DOCUMENT_ARCHIVE}, as /data-sources/archive-invoices
-# DATA_DIR defaults to ../packdesk-data, next to (not inside) the repository.
-# Everything else in a container can be thrown away; see docs/opslag.md.
+# Data lives outside the containers, so containers can be removed or replaced at any time:
+#   database   -> the server in DB_HOST, or volume "dbdata" / "mariadbdata" (database container)
+#   files      -> DATA_DIR (default ../packdesk-data), mounted as /data
+#   old files  -> optional, read-only sources under /data-sources (see the web service)
+# Overview of everything that is stored: docs/opslag.md.
 name: packdesk
 
 services:
-  # --- Database ---------------------------------------------------------------------------------
-  # Which database PackDesk uses is set in .env (see .env.example):
-  #   DB_ENGINE    postgres | mariadb   (mariadb also covers MySQL)
-  #   DB_HOST      ip or name of the database server
-  #   DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
-  # Existing database server: set DB_HOST to it and leave COMPOSE_PROFILES empty.
-  # Database in a container instead: COMPOSE_PROFILES=postgres (DB_HOST=postgres)
-  #                                  or COMPOSE_PROFILES=mariadb (DB_HOST=mariadb).
+  # Database: set in .env with DB_ENGINE (postgres or mariadb), DB_HOST, DB_PORT, DB_NAME, DB_USER
+  # and DB_PASSWORD. On an existing database server leave COMPOSE_PROFILES empty; to run the
+  # database in a container use COMPOSE_PROFILES=postgres (DB_HOST=postgres) or =mariadb (DB_HOST=mariadb).
   postgres:
     profiles: ["postgres"]
     image: postgres:17.11-bookworm
@@ -27,7 +20,6 @@ services:
       POSTGRES_USER: ${DB_USER:-packdesk}
       POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
     volumes:
-      # 1. Database
       - dbdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${DB_USER:-packdesk}"]
@@ -44,13 +36,13 @@ services:
       MARIADB_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD in .env}
     volumes:
-      # 1. Database
       - mariadbdata:/var/lib/mysql
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 3s
       retries: 30
 
+  # Catches every email PackDesk sends; read them at http://localhost:8025.
   mail:
     image: axllent/mailpit:v1.20
     ports:
@@ -79,48 +71,46 @@ services:
       DB_USER: ${DB_USER:-packdesk}
       DB_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
       ALLOWED_HOSTS: localhost,127.0.0.1
+      # Test mail server (the "mail" service), not the one from .env.
       EMAIL_HOST: mail
       EMAIL_PORT: "1025"
+      EMAIL_HOST_USER: ""
+      EMAIL_HOST_PASSWORD: ""
+      EMAIL_USE_TLS: "0"
+      EMAIL_USE_SSL: "0"
       DATA_ROOT: /data
       PYTHONDONTWRITEBYTECODE: "1"
       XDG_CACHE_HOME: /tmp/cache
-      # Only used when /data-sources/archive-invoices is mounted (see the volumes below); otherwise there is no archive.
+      # Only used when this folder is mounted (see below); otherwise there is no archive.
       DOCUMENT_ARCHIVE_DIR: /data-sources/archive-invoices
     ports:
       - "127.0.0.1:8000:8000"
-    # Each line is  <folder on this computer/server> : <folder inside the container>[:ro].
-    # What PackDesk writes there lands in the folder on the host, so it survives when the container
-    # is removed or replaced by a new version. Relative paths start at this file's folder.
+    # Each line is  <folder on this computer> : <folder in the container>[:ro = read-only].
     volumes:
-      # Source code, for development only: edits on the host are visible in the container at once.
-      # The production image contains the code itself and does not use this line.
+      # Source code, so changes are visible at once (the production image contains the code itself).
       - .:/app
 
-      # 2. All files PackDesk keeps, one subfolder per purpose (created when first needed):
-      #      website/            logo, favicon, customer logos; public through /media/
-      #      invoices/<year>/    invoice PDFs made by PackDesk
-      #      fault-attachments/  attachments of fault reports
-      #      imports/            customer imports waiting to be checked (removed afterwards)
-      #    Everything except website/ is never served directly; PackDesk checks who may open a file.
-      #    Host folder: DATA_DIR in .env, default ../packdesk-data (next to the repository, never in it).
-      #    Back it up together with the database.
+      # All files PackDesk keeps, one subfolder per purpose (created when first needed):
+      #   website/            logo, favicon, customer logos; public through /media/
+      #   invoices/<year>/    invoice PDFs made by PackDesk
+      #   fault-attachments/  attachments of fault reports
+      #   imports/            uploaded imports waiting to be checked; removed afterwards
+      # Only website/ is public; PackDesk checks who may open anything else.
+      # Back this folder up together with the database.
       - ${DATA_DIR:-../packdesk-data}:/data
 
-      # 3. Optional sources: folders from other systems, each read-only (":ro") under /data-sources/<name>,
-      #    so PackDesk can read them but never change or delete a file. They are not PackDesk's own data
-      #    and stay outside /data. The first one: /data-sources/archive-invoices, the previous webshop's
-      #    invoice PDFs. Only needed for an installation that takes over the
-      #    previous webshop. To use it, put these lines in docker-compose.override.yml (not in Git; compose
-      #    reads it automatically) with DOCUMENT_ARCHIVE=<folder> in .env:
+      # Optional sources from other systems, read-only under /data-sources/<name>. Only needed when
+      # taking over the previous webshop: its invoice PDFs. Add this to docker-compose.override.yml (not in Git,
+      # read automatically) and set DOCUMENT_ARCHIVE=<folder> in .env:
       #
-      #      services:
-      #        web:
-      #          volumes:
-      #            - ${DOCUMENT_ARCHIVE}:/data-sources/archive-invoices:ro
+      #   services:
+      #     web:
+      #       volumes:
+      #         - ${DOCUMENT_ARCHIVE}:/data-sources/archive-invoices:ro
 
 volumes:
-  # 1. Database in a container (only with COMPOSE_PROFILES=postgres or mariadb).
-  #    Back up: docker compose exec postgres pg_dump -U packdesk packdesk > <file outside Git>
-  #         or: docker compose exec mariadb mariadb-dump -u packdesk -p packdesk > <file outside Git>
+  # Database containers only. Back up with
+  #   docker compose exec postgres pg_dump -U packdesk packdesk > <file outside Git>
+  #   docker compose exec mariadb mariadb-dump -u packdesk -p packdesk > <file outside Git>
   dbdata:
   mariadbdata:

@@ -1,14 +1,13 @@
 .git
 .github
 .env
-media
 staticfiles
 docs
+tests
 **/__pycache__
 *.pyc
 *.pdf
 *.zip
 *.sql
 data
-private
 docker-compose.override.yml

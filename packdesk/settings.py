@@ -158,9 +158,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 DATA_ROOT = Path(env("DATA_ROOT", default=str(BASE_DIR.parent / "packdesk-data")))
 MEDIA_URL = "media/"
 MEDIA_ROOT = DATA_ROOT / "website"
-# Optional, separate from DATA_ROOT: a folder with existing documents (the previous webshop's invoice PDFs),
-# read-only. Empty = no archive. In docker-compose it is /data-sources/archive-invoices: sources from
-# other systems live under /data-sources/<name>, outside DATA_ROOT, and are mounted only when given.
+# Optional and read-only, outside DATA_ROOT: the previous webshop's invoice PDFs. Empty = no archive.
 DOCUMENT_ARCHIVE_DIR = env("DOCUMENT_ARCHIVE_DIR", default="")
 
 STORAGES = {
@@ -179,6 +177,11 @@ WHITENOISE_AUTOREFRESH = DEBUG
 EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = env("EMAIL_HOST", default="localhost")
 EMAIL_PORT = env.int("EMAIL_PORT", default=25)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=False)
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
 
 # Behind a TLS-terminating reverse proxy.
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -195,6 +198,7 @@ LOGGING = {
     "handlers": {"console": {"class": "logging.StreamHandler"}},
     "root": {"handlers": ["console"], "level": env("LOG_LEVEL", default="INFO")},
 }
+
 
 def _versioned(path):
     """Static URL that changes when the file changes, so browsers never keep an old copy.

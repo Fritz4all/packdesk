@@ -1,4 +1,4 @@
-/* PackDesk – base styles. Tenant colours arrive as --brand and --accent. */
+/* PackDesk – website styles. The colours from the settings arrive as --brand and --accent. */
 
 :root {
   --bg: #f6f7f9;
