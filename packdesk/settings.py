@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "apps.invoices",
     "apps.dashboard",
     "apps.legacy",
+    "apps.trash",
     # Last: its post_migrate hook gives roles the permissions of all apps above.
     "apps.accounts",
 ]
@@ -78,6 +79,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "apps.core.middleware.FirstRunMiddleware",
+    "apps.siteconfig.middleware.SessionTimeoutMiddleware",
     "apps.siteconfig.middleware.MaintenanceModeMiddleware",
     "apps.siteconfig.language.AdminLanguageMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",

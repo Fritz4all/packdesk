@@ -128,6 +128,9 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
         (_("General"), {"classes": ["tab"], "fields": [
             "name", "domain", "language", "languages", "admin_language", "meta_description", "updated_at",
         ]}),
+        (_("Security"), {"classes": ["tab"], "fields": [
+            ("session_timeout_staff", "session_timeout_customers"), "trash_retention_days",
+        ]}),
         (_("Mail server"), {"classes": ["tab"], "fields": [
             "mail_host", ("mail_port", "mail_security"), ("mail_user", "mail_password"), "show_mail_source",
         ]}),

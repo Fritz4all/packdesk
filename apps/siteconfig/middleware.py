@@ -63,3 +63,21 @@ class MaintenanceModeMiddleware:
             if seconds > 0:
                 response["Retry-After"] = str(seconds)
         return response
+
+
+class SessionTimeoutMiddleware:
+    """Logs people out after the minutes without activity set under Settings → Security.
+
+    Every request starts the countdown again; staff and customers have their own timeout.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        user = getattr(request, "user", None)
+        if user is not None and user.is_authenticated:
+            site = request.site_settings
+            minutes = site.session_timeout_staff if user.is_staff else site.session_timeout_customers
+            request.session.set_expiry(minutes * 60 if minutes else None)
+        return self.get_response(request)

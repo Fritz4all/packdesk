@@ -51,6 +51,20 @@ class SiteSettings(models.Model):
     mail_user = models.CharField(_("user name"), max_length=200, blank=True)
     mail_password_encrypted = models.TextField(_("password (encrypted)"), blank=True, editable=False)
 
+    # Security and clean-up
+    session_timeout_staff = models.PositiveIntegerField(
+        _("log out staff after (minutes without activity)"), default=120,
+        help_text=_("0 = stay logged in (at most two weeks)."),
+    )
+    session_timeout_customers = models.PositiveIntegerField(
+        _("log out customers after (minutes without activity)"), default=60,
+        help_text=_("0 = stay logged in (at most two weeks)."),
+    )
+    trash_retention_days = models.PositiveIntegerField(
+        _("empty the trash after (days)"), default=30,
+        help_text=_("Deleted items older than this are removed for good. 0 = keep until removed by hand."),
+    )
+
     setup_completed = models.BooleanField(
         _("installation finished"), default=False, editable=False,
         help_text=_("Set by the installation wizard."),
