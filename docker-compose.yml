@@ -1,7 +1,8 @@
 # Local development. Production compose follows in step E.
 #
 # Data that must live OUTSIDE the containers (and outside this Git folder):
-#   1. Database (customers, licences, orders, invoices, settings, users)  -> volume "dbdata"
+#   1. Database (customers, licences, orders, invoices, settings, users)  -> the server in DB_HOST,
+#      or volume "dbdata" / "mariadbdata" when the database runs in a container
 #   2. Website uploads: logos, favicon, customer logos                    -> ${DATA_DIR}/media
 #   3. Private files: invoice PDFs, fault attachments, pending imports   -> ${DATA_DIR}/private
 #   4. Old invoice archive (read-only)                                    -> ${DOCUMENT_ARCHIVE}
@@ -10,17 +11,43 @@
 name: packdesk
 
 services:
-  db:
+  # --- Database ---------------------------------------------------------------------------------
+  # Which database PackDesk uses is set in .env (see .env.example):
+  #   DB_ENGINE    postgres | mariadb   (mariadb also covers MySQL)
+  #   DB_HOST      ip or name of the database server
+  #   DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
+  # Existing database server: set DB_HOST to it and leave COMPOSE_PROFILES empty.
+  # Database in a container instead: COMPOSE_PROFILES=postgres (DB_HOST=postgres)
+  #                                  or COMPOSE_PROFILES=mariadb (DB_HOST=mariadb).
+  postgres:
+    profiles: ["postgres"]
     image: postgres:17.11-bookworm
     environment:
-      POSTGRES_DB: packdesk
-      POSTGRES_USER: packdesk
-      POSTGRES_PASSWORD: packdesk-dev
+      POSTGRES_DB: ${DB_NAME:-packdesk}
+      POSTGRES_USER: ${DB_USER:-packdesk}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
     volumes:
       # 1. Database
       - dbdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "packdesk"]
+      test: ["CMD", "pg_isready", "-U", "${DB_USER:-packdesk}"]
+      interval: 3s
+      retries: 30
+
+  mariadb:
+    profiles: ["mariadb"]
+    image: mariadb:10.6.21
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-packdesk}
+      MARIADB_USER: ${DB_USER:-packdesk}
+      MARIADB_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD in .env}
+    volumes:
+      # 1. Database
+      - mariadbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 3s
       retries: 30
 
@@ -36,12 +63,21 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     command: sh -c "python manage.py compilemessages --ignore=/venv -v0 && python manage.py runserver 0.0.0.0:8000"
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
+        required: false
+      mariadb:
+        condition: service_healthy
+        required: false
     environment:
       DEBUG: "1"
       SECRET_KEY: dev-only-not-secret
-      DATABASE_URL: postgres://packdesk:packdesk-dev@db:5432/packdesk
+      DB_ENGINE: ${DB_ENGINE:-postgres}
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-}
+      DB_NAME: ${DB_NAME:-packdesk}
+      DB_USER: ${DB_USER:-packdesk}
+      DB_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
       ALLOWED_HOSTS: localhost,127.0.0.1
       EMAIL_HOST: mail
       EMAIL_PORT: "1025"
@@ -63,5 +99,8 @@ services:
       - ${DOCUMENT_ARCHIVE:-../packdesk-data/archive}:/data/archive:ro
 
 volumes:
-  # 1. Database. Back up with: docker compose exec db pg_dump -U packdesk packdesk > <file outside Git>
+  # 1. Database in a container (only with COMPOSE_PROFILES=postgres or mariadb).
+  #    Back up: docker compose exec postgres pg_dump -U packdesk packdesk > <file outside Git>
+  #         or: docker compose exec mariadb mariadb-dump -u packdesk -p packdesk > <file outside Git>
   dbdata:
+  mariadbdata:
