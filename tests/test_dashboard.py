@@ -132,7 +132,7 @@ def test_menu_sections_can_be_reordered_per_user(client, site, beheerder, rf):
     from apps.dashboard.navigation import sidebar
 
     client.force_login(beheerder)
-    new = ["configuration", "users", "licences", "customers", "overview"]
+    new = ["configuration", "users", "faults", "licences", "customers", "overview"]
     client.post("/beheer/dashboard/layout/", json.dumps({"sidebar": new + ["bogus"]}), content_type="application/json")
     request = rf.get("/")
     request.user = beheerder

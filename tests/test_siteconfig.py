@@ -6,7 +6,7 @@ def test_fresh_install_has_settings_with_defaults(db):
     assert SiteSettings.objects.count() == 1
     assert site.name == "PackDesk"
     assert site.intro_text_nl and site.intro_text_en and site.intro_text_de
-    assert site.home_blocks.count() == 3
+    assert site.home_blocks.count() == 4  # incl. "report a fault"
 
 
 def test_there_is_only_ever_one_settings_row(db):
