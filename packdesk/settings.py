@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import environ
+from django.core.exceptions import ImproperlyConfigured
 from django.templatetags.static import static
 from django.utils.translation import gettext_lazy as _
 
@@ -84,7 +85,39 @@ WSGI_APPLICATION = "packdesk.wsgi.application"
 # Widgets use the normal template search path, so project templates can override them.
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
-DATABASES = {"default": env.db("DATABASE_URL")}
+# Database: either DATABASE_URL, or the separate DB_* variables (set in .env, used by docker-compose).
+# DB_ENGINE is "postgres" or "mariadb" (MySQL works the same way). PackDesk always gets its own
+# database; on an existing server that means a new database next to the others.
+DB_ENGINES = {
+    "postgres": "django.db.backends.postgresql",
+    "postgresql": "django.db.backends.postgresql",
+    "mariadb": "django.db.backends.mysql",
+    "mysql": "django.db.backends.mysql",
+}
+if env("DATABASE_URL", default=""):
+    DATABASES = {"default": env.db("DATABASE_URL")}
+else:
+    _engine = env("DB_ENGINE", default="postgres").lower()
+    if _engine not in DB_ENGINES:
+        raise ImproperlyConfigured(f"DB_ENGINE must be one of: {', '.join(DB_ENGINES)}")
+    DATABASES = {"default": {
+        "ENGINE": DB_ENGINES[_engine],
+        "HOST": env("DB_HOST", default="localhost"),
+        "PORT": env("DB_PORT", default="3306" if "mysql" in DB_ENGINES[_engine] else "5432"),
+        "NAME": env("DB_NAME", default="packdesk"),
+        "USER": env("DB_USER", default="packdesk"),
+        "PASSWORD": env("DB_PASSWORD", default=""),
+    }}
+if DATABASES["default"]["ENGINE"] == "django.db.backends.mysql":
+    DATABASES["default"].setdefault("OPTIONS", {}).update({
+        "charset": "utf8mb4",
+        "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+        "isolation_level": "read committed",
+    })
+    DATABASES["default"]["TEST"] = {"CHARSET": "utf8mb4", "COLLATION": "utf8mb4_unicode_ci"}
+    # The case-insensitive email constraint cannot be created on MariaDB; the field's own unique
+    # index does the same there, because MariaDB compares text without regard to case.
+    SILENCED_SYSTEM_CHECKS = ["models.W044"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"

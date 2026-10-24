@@ -6,6 +6,7 @@ FROM python:3.13.16-slim-trixie AS build
 ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 RUN apt-get update \
  && apt-get install -y --no-install-recommends gettext \
+      build-essential pkg-config default-libmysqlclient-dev \
       libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core poppler-utils \
  && rm -rf /var/lib/apt/lists/*
 
@@ -27,9 +28,11 @@ RUN pip install -r /app/requirements-dev.txt
 FROM python:3.13.16-slim-trixie
 
 ENV PATH=/venv/bin:$PATH PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 XDG_CACHE_HOME=/tmp/cache
-# Pango/HarfBuzz for WeasyPrint (invoice PDFs), poppler for reading archived PDFs.
+# Pango/HarfBuzz for WeasyPrint (invoice PDFs), poppler for reading archived PDFs,
+# libmariadb for MariaDB/MySQL databases.
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
+      libmariadb3 \
       libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core poppler-utils \
  && rm -rf /var/lib/apt/lists/*
 RUN groupadd --system --gid 10001 app \
