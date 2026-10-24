@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 02:16+0200\n"
+"POT-Creation-Date: 2026-10-24 08:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid ""
 msgstr "Kreuzen Sie an, was Benutzer mit dieser Rolle sehen und tun dürfen. Sie können nur Rechte vergeben, die Sie selbst haben."
 
 #: apps/accounts/admin.py:85 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:182 apps/dashboard/navigation.py:185
+#: apps/dashboard/navigation.py:194 apps/dashboard/navigation.py:197
 msgid "Users"
 msgstr "Benutzer"
 
@@ -105,7 +105,8 @@ msgstr "Rolle"
 msgid "roles"
 msgstr "Rollen"
 
-#: apps/accounts/permissions.py:12
+#: apps/accounts/permissions.py:12 apps/invoices/admin.py:87
+#: templates/invoices/my_invoices.html:14
 msgid "View"
 msgstr "Anzeigen"
 
@@ -183,7 +184,7 @@ msgid "Number"
 msgstr "Nummer"
 
 #: apps/customers/admin.py:95 apps/customers/forms.py:40
-#: apps/licences/forms.py:37 apps/orders/forms.py:57
+#: apps/licences/forms.py:37 apps/orders/forms.py:59
 msgid "City"
 msgstr "Ort"
 
@@ -320,7 +321,7 @@ msgstr "Handelsregisternummer"
 msgid "Website"
 msgstr "Website"
 
-#: apps/customers/forms.py:37 apps/licences/forms.py:35 apps/orders/forms.py:55
+#: apps/customers/forms.py:37 apps/licences/forms.py:35 apps/orders/forms.py:57
 #: templates/customers/signup.html:17
 msgid "Address"
 msgstr "Adresse"
@@ -329,7 +330,7 @@ msgstr "Adresse"
 msgid "Address line 2"
 msgstr "Adresszeile 2"
 
-#: apps/customers/forms.py:39 apps/licences/forms.py:36 apps/orders/forms.py:56
+#: apps/customers/forms.py:39 apps/licences/forms.py:36 apps/orders/forms.py:58
 msgid "Postal code"
 msgstr "Postleitzahl"
 
@@ -416,10 +417,10 @@ msgid "is reseller"
 msgstr "ist Reseller"
 
 #: apps/customers/models.py:16 apps/customers/models.py:36
-#: apps/faults/models.py:22 apps/licences/models.py:43
-#: apps/licences/models.py:59 apps/orders/models.py:84
-#: apps/siteconfig/models.py:196 apps/siteconfig/models.py:243
-#: apps/siteconfig/models.py:263
+#: apps/faults/models.py:22 apps/invoices/models.py:62
+#: apps/licences/models.py:43 apps/licences/models.py:59
+#: apps/orders/models.py:84 apps/siteconfig/models.py:196
+#: apps/siteconfig/models.py:243 apps/siteconfig/models.py:263
 msgid "order"
 msgstr "Reihenfolge"
 
@@ -431,8 +432,8 @@ msgstr "Kundentyp"
 msgid "customer types"
 msgstr "Kundentypen"
 
-#: apps/customers/models.py:30 apps/licences/models.py:158
-#: apps/numbering/models.py:17
+#: apps/customers/models.py:30 apps/invoices/models.py:121
+#: apps/licences/models.py:158 apps/numbering/models.py:17
 msgid "code"
 msgstr "Code"
 
@@ -454,7 +455,7 @@ msgid "active"
 msgstr "aktiv"
 
 #: apps/customers/models.py:39 apps/customers/models.py:160
-#: apps/siteconfig/models.py:185
+#: apps/invoices/models.py:76 apps/siteconfig/models.py:185
 msgid "country"
 msgstr "Land"
 
@@ -470,7 +471,8 @@ msgstr "Wartet auf Freigabe"
 msgid "Blocked"
 msgstr "Gesperrt"
 
-#: apps/customers/models.py:54 templates/core/dashboard.html:7
+#: apps/customers/models.py:54 apps/invoices/models.py:69
+#: templates/core/dashboard.html:7
 msgid "customer number"
 msgstr "Kundennummer"
 
@@ -567,7 +569,8 @@ msgstr "freigegeben von"
 msgid "ID in old system"
 msgstr "ID im alten System"
 
-#: apps/customers/models.py:91 apps/licences/models.py:277
+#: apps/customers/models.py:91 apps/invoices/models.py:91
+#: apps/licences/models.py:277
 msgid "created"
 msgstr "angelegt"
 
@@ -576,7 +579,8 @@ msgid "updated"
 msgstr "aktualisiert"
 
 #: apps/customers/models.py:95 apps/faults/models.py:83
-#: apps/licences/models.py:249 apps/orders/models.py:59
+#: apps/invoices/models.py:60 apps/licences/models.py:249
+#: apps/orders/models.py:59
 msgid "customer"
 msgstr "Kunde"
 
@@ -596,27 +600,28 @@ msgstr "Rechnungsadresse"
 msgid "Delivery address"
 msgstr "Lieferadresse"
 
-#: apps/customers/models.py:155
+#: apps/customers/models.py:155 apps/invoices/models.py:71
 msgid "attention of"
 msgstr "zu Händen von"
 
 #: apps/customers/models.py:156 apps/faults/models.py:103
-#: apps/siteconfig/models.py:181 apps/siteconfig/models.py:199
+#: apps/invoices/models.py:72 apps/siteconfig/models.py:181
+#: apps/siteconfig/models.py:199
 msgid "address"
 msgstr "Adresse"
 
 #: apps/customers/models.py:157 apps/customers/models.py:276
-#: apps/siteconfig/models.py:182
+#: apps/invoices/models.py:73 apps/siteconfig/models.py:182
 msgid "address line 2"
 msgstr "Adresszeile 2"
 
 #: apps/customers/models.py:158 apps/faults/models.py:104
-#: apps/siteconfig/models.py:183
+#: apps/invoices/models.py:74 apps/siteconfig/models.py:183
 msgid "postal code"
 msgstr "Postleitzahl"
 
 #: apps/customers/models.py:159 apps/faults/models.py:105
-#: apps/siteconfig/models.py:184
+#: apps/invoices/models.py:75 apps/siteconfig/models.py:184
 msgid "city"
 msgstr "Ort"
 
@@ -837,75 +842,88 @@ msgstr "Kundentypen"
 msgid "Countries"
 msgstr "Länder"
 
-#: apps/dashboard/navigation.py:72 apps/dashboard/navigation.py:75
-#: apps/orders/apps.py:7
+#: apps/dashboard/navigation.py:72
+#| msgid "Prices and invoices"
+msgid "Orders and invoices"
+msgstr "Bestellungen und Rechnungen"
+
+#: apps/dashboard/navigation.py:75 apps/orders/apps.py:7
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: apps/dashboard/navigation.py:81 apps/orders/models.py:45
-#| msgid "settings"
+#: apps/dashboard/navigation.py:81 apps/invoices/admin.py:101
+#: apps/invoices/apps.py:7
+msgid "Invoices"
+msgstr "Rechnungen"
+
+#: apps/dashboard/navigation.py:87 apps/invoices/models.py:41
+#| msgid "Licence settings"
+msgid "Invoice settings"
+msgstr "Rechnungseinstellungen"
+
+#: apps/dashboard/navigation.py:93 apps/orders/models.py:45
 msgid "Order settings"
 msgstr "Bestelleinstellungen"
 
-#: apps/dashboard/navigation.py:90 apps/licences/apps.py:7
+#: apps/dashboard/navigation.py:102 apps/licences/apps.py:7
 msgid "Service packs and licences"
 msgstr "Servicepakete und Lizenzen"
 
-#: apps/dashboard/navigation.py:94 apps/dashboard/widgets.py:51
-#: apps/orders/admin.py:24 templates/orders/order_detail.html:7
+#: apps/dashboard/navigation.py:106 apps/dashboard/widgets.py:51
+#: apps/orders/admin.py:27 templates/orders/order_detail.html:7
 msgid "Licences"
 msgstr "Lizenzen"
 
-#: apps/dashboard/navigation.py:100 templates/orders/order_form.html:11
+#: apps/dashboard/navigation.py:112 templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepakete"
 
-#: apps/dashboard/navigation.py:106
+#: apps/dashboard/navigation.py:118
 msgid "Pack categories"
 msgstr "Paketkategorien"
 
-#: apps/dashboard/navigation.py:112
+#: apps/dashboard/navigation.py:124
 msgid "Hardware classes"
 msgstr "Hardwareklassen"
 
-#: apps/dashboard/navigation.py:118
+#: apps/dashboard/navigation.py:130
 msgid "Brands"
 msgstr "Marken"
 
-#: apps/dashboard/navigation.py:124
+#: apps/dashboard/navigation.py:136
 msgid "Device types"
 msgstr "Gerätetypen"
 
-#: apps/dashboard/navigation.py:130
+#: apps/dashboard/navigation.py:142
 msgid "Option types"
 msgstr "Optionstypen"
 
-#: apps/dashboard/navigation.py:136
+#: apps/dashboard/navigation.py:148
 msgid "Support periods"
 msgstr "Laufzeiten"
 
-#: apps/dashboard/navigation.py:142
+#: apps/dashboard/navigation.py:154
 msgid "Service levels"
 msgstr "Servicelevel"
 
-#: apps/dashboard/navigation.py:148 apps/licences/models.py:217
+#: apps/dashboard/navigation.py:160 apps/licences/models.py:217
 msgid "Licence settings"
 msgstr "Lizenzeinstellungen"
 
-#: apps/dashboard/navigation.py:157 apps/dashboard/navigation.py:160
+#: apps/dashboard/navigation.py:169 apps/dashboard/navigation.py:172
 #: apps/faults/apps.py:7
 msgid "Fault reports"
 msgstr "Störungsmeldungen"
 
-#: apps/dashboard/navigation.py:167
+#: apps/dashboard/navigation.py:179
 msgid "Handling options"
 msgstr "Bearbeitungsoptionen"
 
-#: apps/dashboard/navigation.py:173 apps/faults/models.py:60
+#: apps/dashboard/navigation.py:185 apps/faults/models.py:60
 msgid "Fault report settings"
 msgstr "Störungseinstellungen"
 
-#: apps/dashboard/navigation.py:191
+#: apps/dashboard/navigation.py:203
 msgid "Roles"
 msgstr "Rollen"
 
@@ -930,7 +948,6 @@ msgid "Sign-ups to approve"
 msgstr "Freizugebende Anmeldungen"
 
 #: apps/dashboard/widgets.py:46
-#| msgid "Order of the menu on the left"
 msgid "Orders this month"
 msgstr "Bestellungen diesen Monat"
 
@@ -1195,7 +1212,7 @@ msgstr "Beschreibung der Störung"
 msgid "desired handling"
 msgstr "gewünschte Bearbeitung"
 
-#: apps/faults/models.py:99 apps/orders/models.py:63
+#: apps/faults/models.py:99 apps/invoices/models.py:65 apps/orders/models.py:63
 msgid "your reference"
 msgstr "Ihre Referenz"
 
@@ -1277,6 +1294,297 @@ msgstr "Höchstens %(n)s Anhänge."
 msgid "The attachments together may be at most %(n)s MB."
 msgstr "Die Anhänge dürfen zusammen höchstens %(n)s MB groß sein."
 
+#: apps/invoices/admin.py:55
+#| msgid "email end customer"
+msgid "Send again to customer"
+msgstr "Erneut an Kunden senden"
+
+#: apps/invoices/admin.py:58 apps/orders/admin.py:61
+#: templates/invoices/invoice_pdf.html:5 templates/invoices/invoice_pdf.html:52
+#| msgid "Invoices"
+msgid "Invoice"
+msgstr "Rechnung"
+
+#: apps/invoices/admin.py:61
+#| msgid "Amount"
+msgid "Amounts"
+msgstr "Beträge"
+
+#: apps/invoices/admin.py:64
+#| msgid "email for invoices"
+msgid "Customer details on invoice"
+msgstr "Kundendaten auf der Rechnung"
+
+#: apps/invoices/admin.py:68
+msgid "Archive"
+msgstr "Archiv"
+
+#: apps/invoices/admin.py:77 apps/numbering/admin.py:135
+msgid "Source"
+msgstr "Quelle"
+
+#: apps/invoices/admin.py:79
+msgid "Old archive"
+msgstr "Altes Archiv"
+
+#: apps/invoices/admin.py:81 apps/invoices/models.py:87
+msgid "PDF"
+msgstr "PDF"
+
+#: apps/invoices/admin.py:87 templates/invoices/my_invoices.html:15
+#| msgid "Down"
+msgid "Download"
+msgstr "Herunterladen"
+
+#: apps/invoices/admin.py:95 apps/invoices/views.py:53
+#, python-format
+msgid "Invoice %(number)s has been sent to %(email)s."
+msgstr "Rechnung %(number)s wurde an %(email)s gesendet."
+
+#: apps/invoices/admin.py:102 apps/licences/admin.py:187
+#: apps/orders/admin.py:87
+msgid "Texts"
+msgstr "Texte"
+
+#: apps/invoices/admin.py:103
+msgid "Layout"
+msgstr "Layout"
+
+#: apps/invoices/models.py:16
+msgid "make invoice when an order is placed"
+msgstr "Rechnung bei Bestellung erstellen"
+
+#: apps/invoices/models.py:17
+#| msgid "no invoice for service packs"
+msgid "Customers with 'no invoice for service packs' never get one."
+msgstr "Kunden mit 'keine Rechnung für Servicepakete' erhalten nie eine."
+
+#: apps/invoices/models.py:19
+msgid "email invoice when it is made"
+msgstr "Rechnung nach Erstellung per E-Mail senden"
+
+#: apps/invoices/models.py:20
+msgid "payment term (days)"
+msgstr "Zahlungsfrist (Tage)"
+
+#: apps/invoices/models.py:22
+msgid "payment text"
+msgstr "Zahlungstext"
+
+#: apps/invoices/models.py:22
+#, python-brace-format
+#| msgid "Placeholders: {number}, {name}, {company}."
+msgid "Placeholders: {days}, {number}, {iban}, {due_date}."
+msgstr "Platzhalter: {days}, {number}, {iban}, {due_date}."
+
+#: apps/invoices/models.py:25
+#| msgid "Prices and invoices"
+msgid "notice on invoice"
+msgstr "Hinweis auf der Rechnung"
+
+#: apps/invoices/models.py:25
+msgid "Highlighted text, e.g. a changed bank account."
+msgstr "Hervorgehobener Text, z. B. eine geänderte Bankverbindung."
+
+#: apps/invoices/models.py:27 apps/siteconfig/models.py:73
+msgid "footer text"
+msgstr "Fußzeilentext"
+
+#: apps/invoices/models.py:28
+#| msgid "emails"
+msgid "email subject"
+msgstr "E-Mail-Betreff"
+
+#: apps/invoices/models.py:29
+#, python-brace-format
+#| msgid "Placeholders: {number}, {name}, {company}."
+msgid "Placeholders: {number}, {company}."
+msgstr "Platzhalter: {number}, {company}."
+
+#: apps/invoices/models.py:30
+#| msgid "email"
+msgid "email text"
+msgstr "E-Mail-Text"
+
+#: apps/invoices/models.py:30
+#, python-brace-format
+#| msgid "Placeholders: {name}, {company}, {number}, {login_url}."
+msgid "Placeholders: {number}, {company}, {name}, {total}."
+msgstr "Platzhalter: {number}, {company}, {name}, {total}."
+
+#: apps/invoices/models.py:32
+msgid "own invoice layout (HTML)"
+msgstr "eigenes Rechnungslayout (HTML)"
+
+#: apps/invoices/models.py:33
+msgid ""
+"Advanced: a Django template that replaces the standard layout. Leave empty "
+"for the standard one."
+msgstr "Fortgeschritten: ein Django-Template, das das Standardlayout ersetzt. Leer lassen für das Standardlayout."
+
+#: apps/invoices/models.py:37 apps/invoices/models.py:38
+#| msgid "Licence settings"
+msgid "invoice settings"
+msgstr "Rechnungseinstellungen"
+
+#: apps/invoices/models.py:58
+#| msgid "Licence number"
+msgid "invoice number"
+msgstr "Rechnungsnummer"
+
+#: apps/invoices/models.py:63
+#| msgid "invoices"
+msgid "invoice date"
+msgstr "Rechnungsdatum"
+
+#: apps/invoices/models.py:64
+#| msgid "end date"
+msgid "due date"
+msgstr "Fälligkeitsdatum"
+
+#: apps/invoices/models.py:68
+#| msgid "customer number"
+msgid "customer name"
+msgstr "Kundenname"
+
+#: apps/invoices/models.py:70
+#| msgid "customer number"
+msgid "customer VAT number"
+msgstr "USt-IdNr. des Kunden"
+
+#: apps/invoices/models.py:77
+#| msgid "invoices"
+msgid "invoice email"
+msgstr "E-Mail für Rechnungen"
+
+#: apps/invoices/models.py:79 apps/orders/models.py:65
+msgid "subtotal"
+msgstr "Zwischensumme"
+
+#: apps/invoices/models.py:80 apps/orders/models.py:66
+msgid "discount (%)"
+msgstr "Rabatt (%)"
+
+#: apps/invoices/models.py:81 apps/orders/models.py:67
+msgid "discount"
+msgstr "Rabatt"
+
+#: apps/invoices/models.py:82 apps/orders/models.py:68
+msgid "total excl. VAT"
+msgstr "Summe netto"
+
+#: apps/invoices/models.py:83 apps/orders/models.py:21 apps/orders/models.py:69
+msgid "VAT rate (%)"
+msgstr "MwSt.-Satz (%)"
+
+#: apps/invoices/models.py:84 apps/orders/models.py:70 templates/base.html:86
+#: templates/invoices/invoice_pdf.html:40
+#: templates/invoices/invoice_pdf.html:74
+#: templates/orders/email_confirmation.txt:16
+#: templates/orders/order_detail.html:15
+msgid "VAT"
+msgstr "USt"
+
+#: apps/invoices/models.py:85 apps/orders/models.py:71
+msgid "total incl. VAT"
+msgstr "Summe brutto"
+
+#: apps/invoices/models.py:88
+msgid "from old archive"
+msgstr "aus altem Archiv"
+
+#: apps/invoices/models.py:89
+#| msgid "file names in archive"
+msgid "file in archive"
+msgstr "Datei im Archiv"
+
+#: apps/invoices/models.py:90
+msgid "paid on"
+msgstr "bezahlt am"
+
+#: apps/invoices/models.py:94
+#| msgid "invoices"
+msgid "invoice"
+msgstr "Rechnung"
+
+#: apps/invoices/models.py:95 apps/siteconfig/models.py:190
+msgid "invoices"
+msgstr "Rechnungen"
+
+#: apps/invoices/models.py:122 apps/licences/models.py:163
+#: apps/licences/models.py:263 apps/licences/models.py:358
+#: apps/orders/models.py:102
+msgid "description"
+msgstr "Beschreibung"
+
+#: apps/invoices/models.py:123 apps/orders/models.py:103
+msgid "quantity"
+msgstr "Anzahl"
+
+#: apps/invoices/models.py:124 apps/orders/models.py:104
+msgid "price each"
+msgstr "Stückpreis"
+
+#: apps/invoices/models.py:125 apps/orders/models.py:105
+msgid "amount"
+msgstr "Betrag"
+
+#: apps/invoices/models.py:128
+#| msgid "invoices"
+msgid "invoice line"
+msgstr "Rechnungsposition"
+
+#: apps/invoices/models.py:129
+#| msgid "invoices"
+msgid "invoice lines"
+msgstr "Rechnungspositionen"
+
+#: apps/invoices/models.py:140
+msgid "sent at"
+msgstr "gesendet am"
+
+#: apps/invoices/models.py:141
+msgid "sent to"
+msgstr "gesendet an"
+
+#: apps/invoices/models.py:143
+msgid "sent by"
+msgstr "gesendet von"
+
+#: apps/invoices/models.py:146
+msgid "sent invoice email"
+msgstr "gesendete Rechnungs-E-Mail"
+
+#: apps/invoices/models.py:147
+#| msgid "service levels"
+msgid "sent invoice emails"
+msgstr "gesendete Rechnungs-E-Mails"
+
+#: apps/invoices/services.py:39
+#, python-format
+msgid ""
+"The invoice counter (%(next)s) is not above the highest existing invoice "
+"number (%(highest)s). Correct it under Number sequences first."
+msgstr "Der Rechnungszähler (%(next)s) liegt nicht über der höchsten vorhandenen Rechnungsnummer (%(highest)s). Korrigieren Sie dies zuerst unter Nummernkreise."
+
+#: apps/invoices/services.py:62
+#, python-format
+#| msgid "Extension of licence %(number)s"
+msgid "Extension of licence %(number)s: %(pack)s"
+msgstr "Verlängerung Lizenz %(number)s: %(pack)s"
+
+#: apps/invoices/services.py:102
+#, python-brace-format
+#| msgid "Licence number"
+msgid "Invoice {number}"
+msgstr "Rechnung {number}"
+
+#: apps/invoices/services.py:103
+#, python-brace-format
+#| msgid "Each gets its own licence number."
+msgid "Attached is invoice {number}."
+msgstr "Anbei die Rechnung {number}."
+
 #: apps/licences/admin.py:89
 msgid "Registration"
 msgstr "Registrierung"
@@ -1317,10 +1625,6 @@ msgstr "%(n)s Lizenz(en) angelegt: %(list)s"
 msgid "Rules"
 msgstr "Regeln"
 
-#: apps/licences/admin.py:187 apps/orders/admin.py:60
-msgid "Texts"
-msgstr "Texte"
-
 #: apps/licences/forms.py:13 templates/licences/email_certificate.txt:7
 msgid "Licence number"
 msgstr "Lizenznummer"
@@ -1349,7 +1653,7 @@ msgstr "E-Mail-Adresse Endkunde"
 msgid "The service certificate is sent here."
 msgstr "Das Servicezertifikat wird an diese Adresse gesendet."
 
-#: apps/licences/forms.py:29 apps/orders/forms.py:22
+#: apps/licences/forms.py:29 apps/orders/forms.py:24
 #: templates/faults/email_report.txt:10 templates/orders/order_form.html:13
 msgid "Reference"
 msgstr "Referenz"
@@ -1381,7 +1685,8 @@ msgid "Article number"
 msgstr "Artikelnummer"
 
 #: apps/licences/forms.py:52 apps/licences/forms.py:103
-#: apps/licences/forms.py:120 templates/licences/email_certificate.txt:20
+#: apps/licences/forms.py:120 templates/invoices/invoice_pdf.html:64
+#: templates/licences/email_certificate.txt:20
 #: templates/licences/options.html:16
 msgid "Description"
 msgstr "Beschreibung"
@@ -1415,9 +1720,10 @@ msgstr "Wählen Sie die Marke des Monitors."
 msgid "Type"
 msgstr "Typ"
 
-#: apps/licences/forms.py:118 apps/orders/forms.py:21
-#: templates/licences/options.html:16 templates/orders/order_detail.html:7
-#: templates/orders/order_form.html:13 templates/orders/review.html:9
+#: apps/licences/forms.py:118 apps/orders/forms.py:23
+#: templates/invoices/invoice_pdf.html:64 templates/licences/options.html:16
+#: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
+#: templates/orders/review.html:9
 msgid "Quantity"
 msgstr "Anzahl"
 
@@ -1608,11 +1914,6 @@ msgstr "Kategorie"
 msgid "period"
 msgstr "Laufzeit"
 
-#: apps/licences/models.py:163 apps/licences/models.py:263
-#: apps/licences/models.py:358 apps/orders/models.py:102
-msgid "description"
-msgstr "Beschreibung"
-
 #: apps/licences/models.py:163
 msgid "Shown to customers and in emails."
 msgstr "Wird Kunden und in E-Mails angezeigt."
@@ -1745,7 +2046,6 @@ msgid "order reference"
 msgstr "Auftragsreferenz"
 
 #: apps/licences/models.py:252 apps/orders/models.py:111
-#| msgid "order"
 msgid "order line"
 msgstr "Bestellposition"
 
@@ -1935,10 +2235,6 @@ msgid "Check against documents"
 msgstr "Prüfung gegen Dokumente"
 
 #: apps/numbering/admin.py:135
-msgid "Source"
-msgstr "Quelle"
-
-#: apps/numbering/admin.py:135
 msgid "No documents to compare with yet."
 msgstr "Noch keine Dokumente zum Vergleichen."
 
@@ -2093,69 +2389,91 @@ msgstr "geklärte Lücken"
 msgid "Must be at least the first number."
 msgstr "Muss mindestens die erste Nummer sein."
 
-#: apps/orders/admin.py:42 templates/orders/order_detail.html:3
+#: apps/orders/admin.py:45
+#| msgid "invoices"
+msgid "Make invoice"
+msgstr "Rechnung erstellen"
+
+#: apps/orders/admin.py:48 templates/orders/order_detail.html:3
 #: templates/orders/order_detail.html:5
-#| msgid "Orders"
 msgid "Order"
 msgstr "Bestellung"
 
-#: apps/orders/admin.py:46
-#| msgid "service packs"
+#: apps/orders/admin.py:52
 msgid "Physical packs"
 msgstr "Physische Pakete"
 
-#: apps/orders/admin.py:59
-#| msgid "Orders"
+#: apps/orders/admin.py:80
+#, python-format
+msgid "Invoice %(number)s made."
+msgstr "Rechnung %(number)s erstellt."
+
+#: apps/orders/admin.py:86
 msgid "Ordering"
 msgstr "Bestellen"
 
 #: apps/orders/emails.py:19
 #, python-format
-#| msgid "Fault report %(number)s – %(company)s – %(prefix)s"
 msgid "Order %(number)s – %(company)s"
 msgstr "Bestellung %(number)s – %(company)s"
 
-#: apps/orders/forms.py:20 templates/dashboard/report.html:73
+#: apps/orders/emails.py:28
+#, python-format
+msgid ""
+"Order %(number)s for %(company)s was placed, but its invoice could not be "
+"made:\n"
+"\n"
+"%(error)s\n"
+"\n"
+"Make the invoice from the order in the admin once this is solved."
+msgstr "Bestellung %(number)s von %(company)s wurde aufgegeben, aber die Rechnung konnte nicht erstellt werden:\n\n%(error)s\n\nErstellen Sie die Rechnung über die Bestellung in der Verwaltung, sobald dies behoben ist."
+
+#: apps/orders/emails.py:31
+#, python-format
+#| msgid "no invoice for service packs"
+msgid "No invoice for order %(number)s"
+msgstr "Keine Rechnung für Bestellung %(number)s"
+
+#: apps/orders/forms.py:22 templates/dashboard/report.html:73
 #: templates/dashboard/report.html:84 templates/orders/my_licences.html:13
 #: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
 #: templates/orders/review.html:9
 msgid "Service pack"
 msgstr "Servicepaket"
 
-#: apps/orders/forms.py:36
+#: apps/orders/forms.py:38
 msgid "Choose at least one service pack."
 msgstr "Wählen Sie mindestens ein Servicepaket."
 
-#: apps/orders/forms.py:50 apps/orders/forms.py:82
+#: apps/orders/forms.py:52 apps/orders/forms.py:84
+#: templates/invoices/invoice_pdf.html:59 templates/invoices/my_invoices.html:7
 #: templates/licences/email_certificate.txt:14
 #: templates/orders/email_confirmation.txt:8 templates/orders/my_orders.html:7
 #: templates/orders/review.html:21
 msgid "Your reference"
 msgstr "Ihre Referenz"
 
-#: apps/orders/forms.py:51 apps/orders/models.py:63
-#| msgid "Location of the device"
+#: apps/orders/forms.py:53 apps/orders/models.py:63
 msgid "Shown on the invoice."
 msgstr "Erscheint auf der Rechnung."
 
-#: apps/orders/forms.py:52
+#: apps/orders/forms.py:54
 msgid "Send physical packs with labels"
 msgstr "Physische Pakete mit Etiketten senden"
 
-#: apps/orders/forms.py:53 templates/customers/signup.html:14
+#: apps/orders/forms.py:55 templates/customers/signup.html:14
 msgid "Company"
 msgstr "Unternehmen"
 
-#: apps/orders/forms.py:54 templates/customers/my_details.html:18
+#: apps/orders/forms.py:56 templates/customers/my_details.html:18
 msgid "Contact person"
 msgstr "Ansprechpartner"
 
-#: apps/orders/forms.py:70
+#: apps/orders/forms.py:72
 msgid "Required when packs are sent."
 msgstr "Pflicht, wenn Pakete versendet werden."
 
-#: apps/orders/forms.py:81
-#| msgid "extension of"
+#: apps/orders/forms.py:83
 msgid "Extension"
 msgstr "Verlängerung"
 
@@ -2163,12 +2481,7 @@ msgstr "Verlängerung"
 msgid "ordering active"
 msgstr "Bestellen aktiv"
 
-#: apps/orders/models.py:21 apps/orders/models.py:69
-msgid "VAT rate (%)"
-msgstr "MwSt.-Satz (%)"
-
 #: apps/orders/models.py:22
-#| msgid "introduction of registration"
 msgid "introduction on order page"
 msgstr "Einleitung auf der Bestellseite"
 
@@ -2193,69 +2506,34 @@ msgid "licences can be extended from (days before end)"
 msgstr "Lizenzen verlängerbar ab (Tage vor Ende)"
 
 #: apps/orders/models.py:34
-#| msgid "internal recipients of registrations"
 msgid "internal recipients of orders"
 msgstr "interne Empfänger von Bestellungen"
 
 #: apps/orders/models.py:37
-#| msgid "text of confirmation"
 msgid "text in order confirmation"
 msgstr "Text in der Auftragsbestätigung"
 
 #: apps/orders/models.py:37
-#| msgid "text of confirmation"
 msgid "Shown at the top of the confirmation email."
 msgstr "Oben in der Bestätigungs-E-Mail."
 
 #: apps/orders/models.py:41 apps/orders/models.py:42
-#| msgid "customer settings"
 msgid "order settings"
 msgstr "Bestelleinstellungen"
 
 #: apps/orders/models.py:58
-#| msgid "to number"
 msgid "order number"
 msgstr "Bestellnummer"
 
 #: apps/orders/models.py:61
-#| msgid "reported by"
 msgid "ordered by"
 msgstr "bestellt von"
 
 #: apps/orders/models.py:62
-#| msgid "recorded at"
 msgid "ordered at"
 msgstr "bestellt am"
 
-#: apps/orders/models.py:65
-msgid "subtotal"
-msgstr "Zwischensumme"
-
-#: apps/orders/models.py:66
-msgid "discount (%)"
-msgstr "Rabatt (%)"
-
-#: apps/orders/models.py:67
-#| msgid "country"
-msgid "discount"
-msgstr "Rabatt"
-
-#: apps/orders/models.py:68
-msgid "total excl. VAT"
-msgstr "Summe netto"
-
-#: apps/orders/models.py:70 templates/base.html:86
-#: templates/orders/email_confirmation.txt:16
-#: templates/orders/order_detail.html:15
-msgid "VAT"
-msgstr "USt"
-
-#: apps/orders/models.py:71
-msgid "total incl. VAT"
-msgstr "Summe brutto"
-
 #: apps/orders/models.py:73
-#| msgid "service packs"
 msgid "send physical packs"
 msgstr "physische Pakete senden"
 
@@ -2264,67 +2542,42 @@ msgid "delivery to (company)"
 msgstr "Lieferung an (Firma)"
 
 #: apps/orders/models.py:75
-#| msgid "primary contact"
 msgid "delivery contact"
 msgstr "Ansprechpartner Lieferung"
 
 #: apps/orders/models.py:76
-#| msgid "Delivery address"
 msgid "delivery address"
 msgstr "Lieferadresse"
 
 #: apps/orders/models.py:77
-#| msgid "reseller postal code"
 msgid "delivery postal code"
 msgstr "PLZ Lieferung"
 
 #: apps/orders/models.py:78
-#| msgid "reseller city"
 msgid "delivery city"
 msgstr "Ort Lieferung"
 
 #: apps/orders/models.py:79
-#| msgid "packs"
 msgid "packs sent"
 msgstr "Pakete versendet"
 
 #: apps/orders/models.py:85
-#| msgid "order"
 msgid "orders"
 msgstr "Bestellungen"
 
-#: apps/orders/models.py:103
-#| msgid "Quantity"
-msgid "quantity"
-msgstr "Anzahl"
-
-#: apps/orders/models.py:104
-#| msgid "price"
-msgid "price each"
-msgstr "Stückpreis"
-
-#: apps/orders/models.py:105
-#| msgid "My account"
-msgid "amount"
-msgstr "Betrag"
-
 #: apps/orders/models.py:106
-#| msgid "Reference"
 msgid "reference"
 msgstr "Referenz"
 
 #: apps/orders/models.py:108
-#| msgid "Register a licence"
 msgid "extends licence"
 msgstr "verlängert Lizenz"
 
 #: apps/orders/models.py:112
-#| msgid "order"
 msgid "order lines"
 msgstr "Bestellpositionen"
 
-#: apps/orders/views.py:60
-#| msgid "The form has expired. Please try again."
+#: apps/orders/views.py:62
 msgid "The order has expired or changed. Please check it again."
 msgstr "Die Bestellung ist abgelaufen oder wurde geändert. Bitte prüfen Sie sie erneut."
 
@@ -2457,10 +2710,6 @@ msgid "Leave empty for the standard text (Log in / Go to my account)."
 msgstr "Leer lassen für den Standardtext (Anmelden / Zu meinem Konto)."
 
 #: apps/siteconfig/models.py:73
-msgid "footer text"
-msgstr "Fußzeilentext"
-
-#: apps/siteconfig/models.py:73
 msgid "Extra text at the bottom of every page."
 msgstr "Zusätzlicher Text unten auf jeder Seite."
 
@@ -2558,10 +2807,6 @@ msgstr "Leer lassen, um die allgemeine Telefonnummer zu verwenden."
 msgid "Leave empty to use the general email address."
 msgstr "Leer lassen, um die allgemeine E-Mail-Adresse zu verwenden."
 
-#: apps/siteconfig/models.py:190
-msgid "invoices"
-msgstr "Rechnungen"
-
 #: apps/siteconfig/models.py:191
 msgid "quotes"
 msgstr "Angebote"
@@ -2642,15 +2887,15 @@ msgstr "Menüeintrag"
 msgid "menu items"
 msgstr "Menüeinträge"
 
-#: packdesk/settings.py:101
+#: packdesk/settings.py:102
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: packdesk/settings.py:101
+#: packdesk/settings.py:102
 msgid "English"
 msgstr "Englisch"
 
-#: packdesk/settings.py:101
+#: packdesk/settings.py:102
 msgid "German"
 msgstr "Deutsch"
 
@@ -2741,7 +2986,7 @@ msgstr "Abmelden"
 msgid "Log in"
 msgstr "Anmelden"
 
-#: templates/base.html:85
+#: templates/base.html:85 templates/invoices/invoice_pdf.html:39
 msgid "CoC"
 msgstr "HRB"
 
@@ -2770,7 +3015,6 @@ msgstr "Melden Sie eine Störung und sehen Sie den Status Ihrer Meldungen."
 
 #: templates/core/dashboard.html:15 templates/orders/my_orders.html:5
 #: templates/orders/order_form.html:3 templates/orders/order_form.html:5
-#| msgid "service packs"
 msgid "Order service packs"
 msgstr "Servicepakete bestellen"
 
@@ -2780,18 +3024,15 @@ msgstr "Pakete wählen, Preis prüfen und bestellen."
 
 #: templates/core/dashboard.html:16 templates/orders/my_orders.html:3
 #: templates/orders/my_orders.html:5
-#| msgid "order"
 msgid "My orders"
 msgstr "Meine Bestellungen"
 
 #: templates/core/dashboard.html:16
-#| msgid "Register another licence"
 msgid "Your orders and their licences."
 msgstr "Ihre Bestellungen und deren Lizenzen."
 
 #: templates/core/dashboard.html:17 templates/orders/done.html:10
 #: templates/orders/my_licences.html:3 templates/orders/my_licences.html:5
-#| msgid "licences"
 msgid "My licences"
 msgstr "Meine Lizenzen"
 
@@ -2799,13 +3040,16 @@ msgstr "Meine Lizenzen"
 msgid "Status, end dates and extending."
 msgstr "Status, Enddaten und Verlängerung."
 
-#: templates/core/dashboard.html:19
-msgid "Invoices"
-msgstr "Rechnungen"
+#: templates/core/dashboard.html:18 templates/invoices/my_invoices.html:3
+#: templates/invoices/my_invoices.html:5
+#| msgid "invoices"
+msgid "My invoices"
+msgstr "Meine Rechnungen"
 
-#: templates/core/dashboard.html:19
-msgid "Available soon."
-msgstr "Demnächst verfügbar."
+#: templates/core/dashboard.html:18
+#| msgid "email for invoices"
+msgid "View, download or email your invoices."
+msgstr "Rechnungen ansehen, herunterladen oder per E-Mail senden."
 
 #: templates/core/home.html:9
 #: templates/registration/password_change_done.html:6
@@ -2826,6 +3070,7 @@ msgid "Expected back: %(until)s"
 msgstr "Voraussichtlich zurück: %(until)s"
 
 #: templates/customers/my_details.html:10
+#: templates/invoices/invoice_pdf.html:57
 msgid "Customer number"
 msgstr "Kundennummer"
 
@@ -2893,8 +3138,12 @@ msgid ""
 msgid_plural ""
 "%(n)s sales without an order (e.g. imported) are estimated at the current "
 "price."
-msgstr[0] "%(n)s Verkauf ohne Bestellung (z. B. importiert) ist zum aktuellen Preis geschätzt."
-msgstr[1] "%(n)s Verkäufe ohne Bestellung (z. B. importiert) sind zum aktuellen Preis geschätzt."
+msgstr[0] ""
+"%(n)s Verkauf ohne Bestellung (z. B. importiert) ist zum aktuellen Preis "
+"geschätzt."
+msgstr[1] ""
+"%(n)s Verkäufe ohne Bestellung (z. B. importiert) sind zum aktuellen Preis "
+"geschätzt."
 
 #: templates/dashboard/report.html:28
 msgid "Packs sold"
@@ -2956,12 +3205,12 @@ msgid "Click a month in the chart to see only that month."
 msgstr "Klicken Sie im Diagramm auf einen Monat, um nur diesen Monat zu sehen."
 
 #: templates/dashboard/report.html:73 templates/faults/my_reports.html:9
+#: templates/invoices/my_invoices.html:7
 #: templates/orders/email_confirmation.txt:7 templates/orders/my_orders.html:7
 msgid "Date"
 msgstr "Datum"
 
 #: templates/dashboard/report.html:73
-#| msgid "Number of licences"
 msgid "Order or licence"
 msgstr "Bestellung oder Lizenz"
 
@@ -3076,6 +3325,86 @@ msgstr "Bis zu %(n)s Dateien, zusammen %(mb)s MB. Fügen Sie sie zuletzt hinzu, 
 msgid "Send fault report"
 msgstr "Störungsmeldung senden"
 
+#: templates/invoices/invoice_pdf.html:7
+#| msgid "Home page"
+msgid "page"
+msgstr "Seite"
+
+#: templates/invoices/invoice_pdf.html:47
+msgid "Attn."
+msgstr "z. Hd."
+
+#: templates/invoices/invoice_pdf.html:54 templates/invoices/my_invoices.html:7
+#| msgid "next number"
+msgid "Invoice number"
+msgstr "Rechnungsnummer"
+
+#: templates/invoices/invoice_pdf.html:55
+#| msgid "Invoice address"
+msgid "Invoice date"
+msgstr "Rechnungsdatum"
+
+#: templates/invoices/invoice_pdf.html:56
+#| msgid "end date"
+msgid "Due date"
+msgstr "Fälligkeitsdatum"
+
+#: templates/invoices/invoice_pdf.html:58
+#| msgid "show VAT number"
+msgid "Your VAT number"
+msgstr "Ihre USt-IdNr."
+
+#: templates/invoices/invoice_pdf.html:60 templates/orders/my_orders.html:7
+msgid "Order number"
+msgstr "Bestellnummer"
+
+#: templates/invoices/invoice_pdf.html:64
+msgid "Code"
+msgstr "Code"
+
+#: templates/invoices/invoice_pdf.html:64 templates/orders/review.html:9
+msgid "Price each"
+msgstr "Stückpreis"
+
+#: templates/invoices/invoice_pdf.html:64 templates/orders/order_detail.html:7
+#: templates/orders/review.html:9
+msgid "Amount"
+msgstr "Betrag"
+
+#: templates/invoices/invoice_pdf.html:71
+#: templates/orders/email_confirmation.txt:13
+#: templates/orders/order_detail.html:13 templates/orders/review.html:15
+msgid "Subtotal"
+msgstr "Zwischensumme"
+
+#: templates/invoices/invoice_pdf.html:72
+#: templates/orders/email_confirmation.txt:14
+#: templates/orders/order_detail.html:14
+msgid "Discount"
+msgstr "Rabatt"
+
+#: templates/invoices/invoice_pdf.html:73
+#: templates/orders/email_confirmation.txt:15 templates/orders/review.html:17
+msgid "Total excl. VAT"
+msgstr "Summe netto"
+
+#: templates/invoices/invoice_pdf.html:75 templates/invoices/my_invoices.html:7
+#: templates/orders/done.html:7 templates/orders/email_confirmation.txt:17
+#: templates/orders/my_orders.html:7 templates/orders/order_detail.html:16
+#: templates/orders/review.html:19
+msgid "Total incl. VAT"
+msgstr "Summe brutto"
+
+#: templates/invoices/my_invoices.html:16
+#| msgid "email end customer"
+msgid "Email to me"
+msgstr "An mich senden"
+
+#: templates/invoices/my_invoices.html:19
+#| msgid "No orders yet."
+msgid "No invoices yet."
+msgstr "Noch keine Rechnungen."
+
 #: templates/licences/_steps.html:2
 msgid "Steps"
 msgstr "Schritte"
@@ -3169,7 +3498,6 @@ msgid "Optional: fill in the monitor that is covered by this pack."
 msgstr "Optional: Geben Sie den Monitor an, der von diesem Paket abgedeckt ist."
 
 #: templates/orders/done.html:5
-#| msgid "Thank you for registering your service pack."
 msgid "Thank you for your order"
 msgstr "Vielen Dank für Ihre Bestellung"
 
@@ -3180,48 +3508,23 @@ msgid ""
 "email."
 msgstr "Ihre Bestellung %(number)s wurde aufgegeben. Sie erhalten eine Bestätigung per E-Mail."
 
-#: templates/orders/done.html:7 templates/orders/email_confirmation.txt:17
-#: templates/orders/my_orders.html:7 templates/orders/order_detail.html:16
-#: templates/orders/review.html:19
-msgid "Total incl. VAT"
-msgstr "Summe brutto"
-
 #: templates/orders/done.html:9
-#| msgid "In order"
 msgid "View order"
 msgstr "Bestellung ansehen"
 
 #: templates/orders/email_confirmation.txt:2
-#| msgid "order confirmations"
 msgid "Order confirmation"
 msgstr "Auftragsbestätigung"
 
 #: templates/orders/email_confirmation.txt:11
-#| msgid "Registered"
 msgid "registered"
 msgstr "registriert"
-
-#: templates/orders/email_confirmation.txt:13
-#: templates/orders/order_detail.html:13 templates/orders/review.html:15
-msgid "Subtotal"
-msgstr "Zwischensumme"
-
-#: templates/orders/email_confirmation.txt:14
-#: templates/orders/order_detail.html:14
-#| msgid "country"
-msgid "Discount"
-msgstr "Rabatt"
-
-#: templates/orders/email_confirmation.txt:15 templates/orders/review.html:17
-msgid "Total excl. VAT"
-msgstr "Summe netto"
 
 #: templates/orders/email_confirmation.txt:19 templates/orders/review.html:22
 msgid "Physical packs are sent to"
 msgstr "Physische Pakete werden gesendet an"
 
 #: templates/orders/extend.html:3 templates/orders/extend.html:5
-#| msgid "licence"
 msgid "Extend licence"
 msgstr "Lizenz verlängern"
 
@@ -3236,7 +3539,6 @@ msgid ""
 msgstr "Die neue Lizenz beginnt am Tag nach dem Ende der aktuellen, für dasselbe Gerät."
 
 #: templates/orders/extend.html:10 templates/orders/order_form.html:20
-#| msgid "Check your email"
 msgid "Check order"
 msgstr "Bestellung prüfen"
 
@@ -3250,17 +3552,14 @@ msgstr "Alle"
 
 #: templates/orders/my_licences.html:8
 #, python-format
-#| msgid "Ending within 90 days"
 msgid "Ending within %(d)s days"
 msgstr "Läuft innerhalb von %(d)s Tagen ab"
 
 #: templates/orders/my_licences.html:10
-#| msgid "Licence number or serial number"
 msgid "Licence, serial number or reference"
 msgstr "Lizenz, Seriennummer oder Referenz"
 
 #: templates/orders/my_licences.html:16
-#| msgid "ended"
 msgid "extended"
 msgstr "verlängert"
 
@@ -3269,32 +3568,18 @@ msgid "Extend"
 msgstr "Verlängern"
 
 #: templates/orders/my_licences.html:17
-#| msgid "Registered"
 msgid "Register"
 msgstr "Registrieren"
 
 #: templates/orders/my_licences.html:18
-#| msgid "No licences ending soon."
 msgid "No licences found."
 msgstr "Keine Lizenzen gefunden."
 
-#: templates/orders/my_orders.html:7
-#| msgid "serial number"
-msgid "Order number"
-msgstr "Bestellnummer"
-
 #: templates/orders/my_orders.html:9
-#| msgid "No registrations yet."
 msgid "No orders yet."
 msgstr "Noch keine Bestellungen."
 
-#: templates/orders/order_detail.html:7 templates/orders/review.html:9
-#| msgid "Country"
-msgid "Amount"
-msgstr "Betrag"
-
 #: templates/orders/order_detail.html:8
-#| msgid "extension of"
 msgid "Extension of"
 msgstr "Verlängerung von"
 
@@ -3303,29 +3588,20 @@ msgid "Unregistered licences can be registered with the licence number."
 msgstr "Nicht registrierte Lizenzen registrieren Sie mit der Lizenznummer."
 
 #: templates/orders/order_form.html:17
-#| msgid "My details"
 msgid "Order details"
 msgstr "Bestelldaten"
 
 #: templates/orders/review.html:3 templates/orders/review.html:5
-#| msgid "Check your email"
 msgid "Check your order"
 msgstr "Prüfen Sie Ihre Bestellung"
 
 #: templates/orders/review.html:6
 #, python-format
-#| msgid "Registration licence %(number)s"
 msgid "Extension of licence %(number)s"
 msgstr "Verlängerung der Lizenz %(number)s"
 
-#: templates/orders/review.html:9
-#| msgid "Price"
-msgid "Price each"
-msgstr "Stückpreis"
-
 #: templates/orders/review.html:16
 #, python-format
-#| msgid "Your account at %(company)s"
 msgid "Your discount (%(pct)s %%)"
 msgstr "Ihr Rabatt (%(pct)s %%)"
 
@@ -3335,7 +3611,6 @@ msgid "VAT %(rate)s %%"
 msgstr "MwSt. %(rate)s %%"
 
 #: templates/orders/review.html:28
-#| msgid "In order"
 msgid "Place order"
 msgstr "Bestellung aufgeben"
 
