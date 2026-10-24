@@ -184,13 +184,16 @@ Bestaande documenten (bijv. het factuurarchief van de vorige webshop) koppel je 
 Niets van klanten komt in Git. `.gitignore` sluit `.env`, `media/`, `private/`, pdf's, zip-bestanden
 en database-dumps uit; `.dockerignore` houdt ze ook buiten de image.
 
-| Wat | Waar (lokaal) | Waar (productie) |
-|---|---|---|
-| Database (klanten, licenties, facturen, …) | Docker-volume `dbdata` | PostgreSQL-volume of -server |
-| Gemaakte factuur-pdf's, storingsbijlagen | `private/` (`PRIVATE_MEDIA_ROOT`), niet via de website bereikbaar | eigen volume |
-| Logo's en andere uploads voor de website | `media/` (`MEDIA_ROOT`) | eigen volume |
-| Oud factuurarchief | buiten de repository, alleen-lezen gekoppeld (`DOCUMENT_ARCHIVE`) | idem |
-| Importbestanden die op controle wachten | `private/imports/`, na import of annuleren verwijderd | idem |
+| Wat | Waar |
+|---|---|
+| Database (klanten, licenties, facturen, instellingen, gebruikers) | Docker-volume `dbdata` |
+| Logo's en andere uploads voor de website | `${DATA_DIR}/media` |
+| Factuur-pdf's, storingsbijlagen, wachtende imports | `${DATA_DIR}/private`, niet via de website bereikbaar |
+| Oud factuurarchief | `DOCUMENT_ARCHIVE`, alleen-lezen gekoppeld |
+| Geheimen en serverinstellingen | `.env` op de server |
+
+`DATA_DIR` staat standaard op `../packdesk-data`, naast de projectmap. Het volledige overzicht, ook van
+waar elke instelling staat, staat in [docs/opslag.md](docs/opslag.md).
 
 Back-ups maak je dus van de database en de volumes, niet van de repository.
 
