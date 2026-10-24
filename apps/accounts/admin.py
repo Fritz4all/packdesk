@@ -1,14 +1,16 @@
 from django import forms
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 from django.db.models import Count
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
 from .models import Role, User
+from .password_reset import force_reset
 from .permissions import grantable_permissions
 from .widgets import PermissionMatrixWidget
 
@@ -140,8 +142,19 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
     add_form = PackDeskUserCreationForm
     change_password_form = AdminPasswordChangeForm
 
-    list_display = ["email", "first_name", "last_name", "kind", "show_role", "is_active", "last_login"]
+    list_display = ["email", "first_name", "last_name", "kind", "show_role", "is_active", "show_password", "last_login"]
     list_filter = ["kind", "is_active", "groups"]
+    actions = ["send_password_reset"]
+
+    @display(description=_("Password"), label={"set": "success", "waiting": "warning"})
+    def show_password(self, obj):
+        if obj.has_usable_password():
+            return "set", gettext("Set")
+        return "waiting", gettext("Must choose a new one")
+
+    @admin.action(description=_("Make selected users choose a new password (email with link)"), permissions=["change"])
+    def send_password_reset(self, request, queryset):
+        report_reset(request, *force_reset(queryset, request))
     search_fields = ["email", "first_name", "last_name"]
     ordering = ["email"]
     readonly_fields = ["last_login", "date_joined"]
@@ -205,3 +218,11 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
             user.groups.set([role])
         elif user.kind != User.Kind.STAFF:
             user.groups.clear()
+
+
+def report_reset(request, sent, skipped):
+    messages.success(request, gettext("%(n)s email(s) sent with a link to choose a new password; the old passwords "
+                                      "no longer work.") % {"n": sent})
+    if skipped:
+        messages.warning(request, gettext("Not sent (no email address or not active): %(list)s")
+                         % {"list": ", ".join(skipped[:20]) + (" …" if len(skipped) > 20 else "")})

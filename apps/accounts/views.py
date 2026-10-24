@@ -8,8 +8,11 @@ from django.views.decorators.http import require_POST
 
 from apps.siteconfig.models import SiteSettings
 
+from .password_reset import ResetFormIncludingUnusable
+
 
 class PasswordResetView(auth_views.PasswordResetView):
+    form_class = ResetFormIncludingUnusable
     email_template_name = "registration/password_reset_email.txt"
     subject_template_name = "registration/password_reset_subject.txt"
 

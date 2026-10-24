@@ -8,7 +8,9 @@ from modeltranslation.admin import TabbedTranslationAdmin
 from unfold.admin import ModelAdmin, StackedInline, TabularInline
 from unfold.decorators import display
 
+from apps.accounts.admin import report_reset
 from apps.accounts.models import User
+from apps.accounts.password_reset import force_reset
 from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
 from . import emails
@@ -58,7 +60,7 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
         "addresses__line1", "addresses__postal_code", "addresses__city",
     ]
     readonly_fields = ["approved_at", "approved_by", "created_at", "updated_at", "signup_message"]
-    actions = ["approve_selected", "block_selected", "export_selected"]
+    actions = ["approve_selected", "block_selected", "export_selected", "send_password_reset"]
     change_list_template = "admin/customers/customer/change_list.html"
     object_actions = [
         ObjectAction("approve", _("Approve"), "check_circle", handler="approve", show_if="can_approve"),
@@ -140,6 +142,12 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
             path("import/", self.admin_site.admin_view(transfer_views.import_view), name="customers_customer_import"),
             path("export/", self.admin_site.admin_view(transfer_views.export_view), name="customers_customer_export"),
         ] + super().get_urls()
+
+    @admin.action(description=_("Make the contacts of the selected customers choose a new password"),
+                  permissions=["change"])
+    def send_password_reset(self, request, queryset):
+        users = User.objects.filter(contact__customer__in=queryset).distinct()
+        report_reset(request, *force_reset(users, request))
 
     def has_export_permission(self, request):
         return request.user.has_perm("customers.export_customer")
@@ -234,3 +242,37 @@ class SignupSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(Contact)
+class ContactAdmin(ModelAdmin):
+    """All contacts of all customers in one list, e.g. to send several of them a password reset."""
+
+    list_display = ["show_name", "customer", "email", "phone", "show_login", "is_primary"]
+    list_filter = ["customer__status", "customer__customer_type", "is_primary", "user__is_active"]
+    search_fields = ["first_name", "last_name", "email", "phone", "customer__name", "customer__number"]
+    list_select_related = ["customer", "user"]
+    autocomplete_fields = ["customer"]
+    readonly_fields = ["user"]
+    actions = ["send_password_reset"]
+    fields = ["customer", ("salutation", "initials", "first_name", "last_name"), ("function", "department"),
+              ("email", "phone"), "is_primary", "remark", "user"]
+
+    @display(description=_("Name"), ordering="last_name")
+    def show_name(self, obj):
+        return obj.full_name
+
+    @display(description=_("Login"), label={"none": "info", "set": "success", "waiting": "warning", "off": "danger"})
+    def show_login(self, obj):
+        if not obj.user:
+            return "none", gettext("No login")
+        if not obj.user.is_active:
+            return "off", gettext("Not active")
+        if not obj.user.has_usable_password():
+            return "waiting", gettext("Must choose a new password")
+        return "set", gettext("Active")
+
+    @admin.action(description=_("Make selected contacts choose a new password (email with link)"), permissions=["change"])
+    def send_password_reset(self, request, queryset):
+        users = User.objects.filter(contact__in=queryset)
+        report_reset(request, *force_reset(users, request))
