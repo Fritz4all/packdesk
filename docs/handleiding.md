@@ -124,6 +124,25 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
   een SELECT-query voor gegevens uit meerdere tabellen. Daarna koppel je per veld een kolom. De pagina
   toont de tabellen en kolommen en de eerste rijen zoals PackDesk ze leest. Voor de vorige webshop is er
   een kant-en-klare koppeling (*Koppeling voor de vorige webshop laden*).
+- **Importeren uit de vorige webshop** (bij de externe database: *Importeren*; recht *Mag gegevens importeren*):
+  neemt alles over wat PackDesk kent: catalogus, klanten met adressen, contactpersonen met hun login
+  (met hun eigen wachtwoord uit de vorige webshop), medewerkers met een passende rol, bestellingen, licenties
+  met opties en verlengingen, facturen met betalingen, en de nummertellers.
+  - Start eerst een **proefimport**: die doet alles en draait het daarna terug, zodat je het verslag
+    kunt bekijken zonder dat er iets verandert. Daarna **importeren** (eerst een back-up maken).
+  - Opnieuw importeren werkt bij wat eerder is overgenomen en maakt niets dubbel aan; er wordt niets
+    verwijderd. Zo kun je nu testen en bij de echte overstap opnieuw importeren.
+  - Het **verslag** (CSV) heeft één regel per rij van de oude database: nieuw, bijgewerkt, ongewijzigd of
+    overgeslagen, met de reden. Het bevat persoonsgegevens; bewaar het zorgvuldig.
+  - Wat bewust niet meekomt: contactpersonen en opties die in de vorige webshop verwijderd waren, een tweede
+    login met een e-mailadres dat al gebruikt wordt (de contactpersoon komt wel mee), en licenties met
+    een nummer dat al bestaat. Catalogusitems waar de oude gegevens naar verwijzen maar die niet meer
+    bestonden, komen mee als "Onbekend (vorige webshop)".
+- **Nieuw wachtwoord laten kiezen:** bij *Contactpersonen*, *Klanten* (voor alle contactpersonen van de
+  geselecteerde klanten) en *Gebruikers* vink je mensen aan en kies je *… een nieuw wachtwoord laten
+  kiezen*. Hun huidige wachtwoord werkt dan niet meer en ze krijgen een e-mail met een link. Is de link
+  verlopen, dan werkt *Wachtwoord vergeten* gewoon. De kolom *Login* / *Wachtwoord* laat zien wie nog
+  een nieuw wachtwoord moet kiezen.
 - **Databases vergelijken:** zet de externe database en PackDesk naast elkaar, per onderdeel: hoeveel
   er alleen oud, alleen nieuw, verschillend en gelijk zijn. Klik door voor de lijst met verschillen per
   veld, of download die als CSV. Daarnaast de hoogste nummers tegenover de tellers van PackDesk, de
