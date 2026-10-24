@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 02:05+0200\n"
+"POT-Creation-Date: 2026-10-24 02:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid ""
 msgstr "Vink aan wat gebruikers met deze rol mogen zien en doen. U kunt alleen rechten toekennen die u zelf hebt."
 
 #: apps/accounts/admin.py:85 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:164 apps/dashboard/navigation.py:167
+#: apps/dashboard/navigation.py:182 apps/dashboard/navigation.py:185
 msgid "Users"
 msgstr "Gebruikers"
 
@@ -76,8 +76,8 @@ msgstr "Onbekend e-mailadres of onjuist wachtwoord."
 msgid "Staff"
 msgstr "Medewerker"
 
-#: apps/accounts/models.py:25 templates/dashboard/report.html:62
-#: templates/dashboard/report.html:72
+#: apps/accounts/models.py:25 templates/dashboard/report.html:63
+#: templates/dashboard/report.html:73 templates/orders/email_confirmation.txt:6
 msgid "Customer"
 msgstr "Klant"
 
@@ -113,7 +113,7 @@ msgstr "Bekijken"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: apps/accounts/permissions.py:14
+#: apps/accounts/permissions.py:14 templates/orders/review.html:29
 msgid "Change"
 msgstr "Wijzigen"
 
@@ -183,13 +183,14 @@ msgid "Number"
 msgstr "Nummer"
 
 #: apps/customers/admin.py:95 apps/customers/forms.py:40
-#: apps/licences/forms.py:37
+#: apps/licences/forms.py:37 apps/orders/forms.py:57
 msgid "City"
 msgstr "Plaats"
 
 #: apps/customers/admin.py:100 apps/faults/admin.py:70
 #: apps/licences/admin.py:175 apps/numbering/admin.py:119
 #: apps/numbering/admin.py:133 templates/faults/my_reports.html:9
+#: templates/orders/my_licences.html:13
 msgid "Status"
 msgstr "Status"
 
@@ -319,7 +320,7 @@ msgstr "KvK-nummer"
 msgid "Website"
 msgstr "Website"
 
-#: apps/customers/forms.py:37 apps/licences/forms.py:35
+#: apps/customers/forms.py:37 apps/licences/forms.py:35 apps/orders/forms.py:55
 #: templates/customers/signup.html:17
 msgid "Address"
 msgstr "Adres"
@@ -328,7 +329,7 @@ msgstr "Adres"
 msgid "Address line 2"
 msgstr "Adresregel 2"
 
-#: apps/customers/forms.py:39 apps/licences/forms.py:36
+#: apps/customers/forms.py:39 apps/licences/forms.py:36 apps/orders/forms.py:56
 msgid "Postal code"
 msgstr "Postcode"
 
@@ -402,7 +403,7 @@ msgid "The passwords do not match."
 msgstr "De wachtwoorden komen niet overeen."
 
 #: apps/customers/models.py:14 apps/customers/models.py:31
-#: apps/faults/models.py:24 apps/faults/models.py:144
+#: apps/faults/models.py:21 apps/faults/models.py:141
 #: apps/licences/models.py:32 apps/licences/models.py:57
 #: apps/licences/models.py:71 apps/licences/models.py:112
 #: apps/numbering/models.py:18 apps/siteconfig/models.py:24
@@ -415,9 +416,10 @@ msgid "is reseller"
 msgstr "is reseller"
 
 #: apps/customers/models.py:16 apps/customers/models.py:36
-#: apps/faults/models.py:25 apps/licences/models.py:43
-#: apps/licences/models.py:59 apps/siteconfig/models.py:196
-#: apps/siteconfig/models.py:243 apps/siteconfig/models.py:263
+#: apps/faults/models.py:22 apps/licences/models.py:43
+#: apps/licences/models.py:59 apps/orders/models.py:84
+#: apps/siteconfig/models.py:196 apps/siteconfig/models.py:243
+#: apps/siteconfig/models.py:263
 msgid "order"
 msgstr "volgorde"
 
@@ -446,7 +448,7 @@ msgstr "btw-nummer verplicht"
 msgid "E.g. for customers outside your own country."
 msgstr "Bijv. voor klanten buiten uw eigen land."
 
-#: apps/customers/models.py:35 apps/faults/models.py:26
+#: apps/customers/models.py:35 apps/faults/models.py:23
 #: apps/siteconfig/models.py:242 apps/siteconfig/models.py:262
 msgid "active"
 msgstr "actief"
@@ -482,12 +484,12 @@ msgstr "Debiteurnummer. Wordt bij goedkeuring automatisch ingevuld als het leeg 
 msgid "company name"
 msgstr "bedrijfsnaam"
 
-#: apps/customers/models.py:61 apps/faults/models.py:82
+#: apps/customers/models.py:61 apps/faults/models.py:79
 msgid "status"
 msgstr "status"
 
 #: apps/customers/models.py:65 apps/customers/models.py:198
-#: apps/customers/models.py:267 apps/faults/models.py:109
+#: apps/customers/models.py:267 apps/faults/models.py:106
 #: apps/siteconfig/models.py:101 apps/siteconfig/models.py:186
 msgid "phone"
 msgstr "telefoon"
@@ -565,7 +567,7 @@ msgstr "goedgekeurd door"
 msgid "ID in old system"
 msgstr "ID in oud systeem"
 
-#: apps/customers/models.py:91 apps/licences/models.py:275
+#: apps/customers/models.py:91 apps/licences/models.py:277
 msgid "created"
 msgstr "aangemaakt"
 
@@ -573,8 +575,8 @@ msgstr "aangemaakt"
 msgid "updated"
 msgstr "bijgewerkt"
 
-#: apps/customers/models.py:95 apps/faults/models.py:86
-#: apps/licences/models.py:249
+#: apps/customers/models.py:95 apps/faults/models.py:83
+#: apps/licences/models.py:249 apps/orders/models.py:59
 msgid "customer"
 msgstr "klant"
 
@@ -598,7 +600,7 @@ msgstr "Afleveradres"
 msgid "attention of"
 msgstr "ter attentie van"
 
-#: apps/customers/models.py:156 apps/faults/models.py:106
+#: apps/customers/models.py:156 apps/faults/models.py:103
 #: apps/siteconfig/models.py:181 apps/siteconfig/models.py:199
 msgid "address"
 msgstr "adres"
@@ -608,12 +610,12 @@ msgstr "adres"
 msgid "address line 2"
 msgstr "adresregel 2"
 
-#: apps/customers/models.py:158 apps/faults/models.py:107
+#: apps/customers/models.py:158 apps/faults/models.py:104
 #: apps/siteconfig/models.py:183
 msgid "postal code"
 msgstr "postcode"
 
-#: apps/customers/models.py:159 apps/faults/models.py:108
+#: apps/customers/models.py:159 apps/faults/models.py:105
 #: apps/siteconfig/models.py:184
 msgid "city"
 msgstr "plaats"
@@ -662,7 +664,7 @@ msgstr "functie"
 msgid "department"
 msgstr "afdeling"
 
-#: apps/customers/models.py:199 apps/faults/models.py:110
+#: apps/customers/models.py:199 apps/faults/models.py:107
 #: apps/siteconfig/models.py:102 apps/siteconfig/models.py:187
 msgid "email"
 msgstr "e-mail"
@@ -719,12 +721,12 @@ msgstr "Tekst van de link naar het formulier op de inlogpagina."
 msgid "title"
 msgstr "titel"
 
-#: apps/customers/models.py:250 apps/faults/models.py:41
+#: apps/customers/models.py:250 apps/faults/models.py:38
 #: apps/siteconfig/models.py:58
 msgid "introduction"
 msgstr "introductie"
 
-#: apps/customers/models.py:251 apps/faults/models.py:45
+#: apps/customers/models.py:251 apps/faults/models.py:42
 msgid "text after sending"
 msgstr "tekst na verzenden"
 
@@ -809,7 +811,7 @@ msgstr "Overzicht"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: apps/dashboard/navigation.py:13 apps/dashboard/reports.py:139
+#: apps/dashboard/navigation.py:13 apps/dashboard/reports.py:159
 #: templates/dashboard/report.html:5
 msgid "Sales and margin"
 msgstr "Verkoop en marge"
@@ -835,79 +837,87 @@ msgstr "Klanttypes"
 msgid "Countries"
 msgstr "Landen"
 
-#: apps/dashboard/navigation.py:72 apps/licences/apps.py:7
+#: apps/dashboard/navigation.py:72 apps/dashboard/navigation.py:75
+#: apps/orders/apps.py:7
+msgid "Orders"
+msgstr "Bestellingen"
+
+#: apps/dashboard/navigation.py:81 apps/orders/models.py:45
+#| msgid "settings"
+msgid "Order settings"
+msgstr "Bestelinstellingen"
+
+#: apps/dashboard/navigation.py:90 apps/licences/apps.py:7
 msgid "Service packs and licences"
 msgstr "Servicepacks en licenties"
 
-#: apps/dashboard/navigation.py:76 apps/dashboard/widgets.py:44
-#: templates/core/dashboard.html:15
+#: apps/dashboard/navigation.py:94 apps/dashboard/widgets.py:51
+#: apps/orders/admin.py:24 templates/orders/order_detail.html:7
 msgid "Licences"
 msgstr "Licenties"
 
-#: apps/dashboard/navigation.py:82
+#: apps/dashboard/navigation.py:100 templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepacks"
 
-#: apps/dashboard/navigation.py:88
+#: apps/dashboard/navigation.py:106
 msgid "Pack categories"
 msgstr "Packcategorieën"
 
-#: apps/dashboard/navigation.py:94
+#: apps/dashboard/navigation.py:112
 msgid "Hardware classes"
 msgstr "Hardwareklassen"
 
-#: apps/dashboard/navigation.py:100
+#: apps/dashboard/navigation.py:118
 msgid "Brands"
 msgstr "Merken"
 
-#: apps/dashboard/navigation.py:106
+#: apps/dashboard/navigation.py:124
 msgid "Device types"
 msgstr "Apparaattypes"
 
-#: apps/dashboard/navigation.py:112
+#: apps/dashboard/navigation.py:130
 msgid "Option types"
 msgstr "Optietypes"
 
-#: apps/dashboard/navigation.py:118
+#: apps/dashboard/navigation.py:136
 msgid "Support periods"
 msgstr "Looptijden"
 
-#: apps/dashboard/navigation.py:124
+#: apps/dashboard/navigation.py:142
 msgid "Service levels"
 msgstr "Serviceniveaus"
 
-#: apps/dashboard/navigation.py:130 apps/licences/models.py:217
+#: apps/dashboard/navigation.py:148 apps/licences/models.py:217
 msgid "Licence settings"
 msgstr "Licentie-instellingen"
 
-#: apps/dashboard/navigation.py:139 apps/dashboard/navigation.py:142
+#: apps/dashboard/navigation.py:157 apps/dashboard/navigation.py:160
 #: apps/faults/apps.py:7
 msgid "Fault reports"
 msgstr "Storingsmeldingen"
 
-#: apps/dashboard/navigation.py:149
-#| msgid "licence options"
+#: apps/dashboard/navigation.py:167
 msgid "Handling options"
 msgstr "Afhandelopties"
 
-#: apps/dashboard/navigation.py:155 apps/faults/models.py:63
-#| msgid "customer settings"
+#: apps/dashboard/navigation.py:173 apps/faults/models.py:60
 msgid "Fault report settings"
 msgstr "Storingsinstellingen"
 
-#: apps/dashboard/navigation.py:173
+#: apps/dashboard/navigation.py:191
 msgid "Roles"
 msgstr "Rollen"
 
-#: apps/dashboard/reports.py:142
+#: apps/dashboard/reports.py:162
 msgid "Last 12 months"
 msgstr "Laatste 12 maanden"
 
-#: apps/dashboard/reports.py:142
+#: apps/dashboard/reports.py:162
 msgid "This year"
 msgstr "Dit jaar"
 
-#: apps/dashboard/reports.py:142
+#: apps/dashboard/reports.py:162
 msgid "Last year"
 msgstr "Vorig jaar"
 
@@ -915,51 +925,56 @@ msgstr "Vorig jaar"
 msgid "Active customers"
 msgstr "Actieve klanten"
 
-#: apps/dashboard/widgets.py:38 apps/dashboard/widgets.py:90
+#: apps/dashboard/widgets.py:38 apps/dashboard/widgets.py:97
 msgid "Sign-ups to approve"
 msgstr "Te keuren aanmeldingen"
 
-#: apps/dashboard/widgets.py:45
+#: apps/dashboard/widgets.py:46
+#| msgid "Order of the menu on the left"
+msgid "Orders this month"
+msgstr "Bestellingen deze maand"
+
+#: apps/dashboard/widgets.py:52 templates/orders/my_licences.html:9
 msgid "Not registered yet"
 msgstr "Nog niet geregistreerd"
 
-#: apps/dashboard/widgets.py:47
+#: apps/dashboard/widgets.py:54
 msgid "Ending within 90 days"
 msgstr "Loopt af binnen 90 dagen"
 
-#: apps/dashboard/widgets.py:54
+#: apps/dashboard/widgets.py:61
 msgid "Number sequences with problems"
 msgstr "Nummerreeksen met problemen"
 
-#: apps/dashboard/widgets.py:62
+#: apps/dashboard/widgets.py:69
 msgid "No sign-ups waiting."
 msgstr "Geen aanmeldingen die wachten."
 
-#: apps/dashboard/widgets.py:69
+#: apps/dashboard/widgets.py:76
 msgid "No registrations yet."
 msgstr "Nog geen registraties."
 
-#: apps/dashboard/widgets.py:78
+#: apps/dashboard/widgets.py:85
 msgid "No licences ending soon."
 msgstr "Geen licenties die binnenkort aflopen."
 
-#: apps/dashboard/widgets.py:85
+#: apps/dashboard/widgets.py:92
 msgid "Nothing yet."
 msgstr "Nog niets."
 
-#: apps/dashboard/widgets.py:89
+#: apps/dashboard/widgets.py:96
 msgid "Totals"
 msgstr "Totalen"
 
-#: apps/dashboard/widgets.py:91
+#: apps/dashboard/widgets.py:98
 msgid "Recently registered licences"
 msgstr "Recent geregistreerde licenties"
 
-#: apps/dashboard/widgets.py:93
+#: apps/dashboard/widgets.py:100
 msgid "Licences ending soon"
 msgstr "Binnenkort aflopende licenties"
 
-#: apps/dashboard/widgets.py:94
+#: apps/dashboard/widgets.py:101
 msgid "My recent changes"
 msgstr "Mijn recente wijzigingen"
 
@@ -993,7 +1008,6 @@ msgid "Reseller"
 msgstr "Reseller"
 
 #: apps/faults/admin.py:61
-#| msgid "Information"
 msgid "Location"
 msgstr "Locatie"
 
@@ -1009,7 +1023,6 @@ msgstr "Gedekt t/m %(date)s"
 
 #: apps/faults/admin.py:78 apps/faults/emails.py:20
 #: templates/faults/done.html:9 templates/faults/email_report.txt:2
-#| msgid "Documents found"
 msgid "No cover found"
 msgstr "Geen dekking gevonden"
 
@@ -1023,7 +1036,6 @@ msgid "Form"
 msgstr "Formulier"
 
 #: apps/faults/admin.py:115
-#| msgid "emails"
 msgid "Emails"
 msgstr "E-mails"
 
@@ -1038,7 +1050,6 @@ msgstr "Storingsmelding %(number)s – %(company)s – %(prefix)s"
 
 #: apps/faults/emails.py:34
 #, python-brace-format
-#| msgid "explanation of article number"
 msgid "Confirmation of fault report {number}"
 msgstr "Ontvangstbevestiging storingsmelding {number}"
 
@@ -1048,237 +1059,211 @@ msgid "We have received your fault report {number}."
 msgstr "Wij hebben uw storingsmelding {number} ontvangen."
 
 #: apps/faults/forms.py:9
-#| msgid "Licence number"
 msgid "Licence number or serial number"
 msgstr "Licentie- of serienummer"
 
 #: apps/faults/forms.py:10
-#| msgid "Optional: fill in the monitor that is covered by this pack."
 msgid "Optional. We fill in the device and check whether it is covered."
 msgstr "Optioneel. Wij vullen het apparaat in en controleren of het gedekt is."
 
-#: apps/faults/models.py:29
-#| msgid "licence option"
+#: apps/faults/models.py:26
 msgid "handling option"
 msgstr "afhandeloptie"
 
-#: apps/faults/models.py:30
-#| msgid "licence options"
+#: apps/faults/models.py:27
 msgid "handling options"
 msgstr "afhandelopties"
 
-#: apps/faults/models.py:40
-#| msgid "sign-up form active"
+#: apps/faults/models.py:37
 msgid "fault report form active"
 msgstr "storingsformulier actief"
 
-#: apps/faults/models.py:43
+#: apps/faults/models.py:40
 msgid "text about reporting by phone"
 msgstr "tekst over telefonisch melden"
 
-#: apps/faults/models.py:43
+#: apps/faults/models.py:40
 msgid "E.g. outside office hours call ..."
 msgstr "Bijv. buiten kantoortijden belt u ..."
 
-#: apps/faults/models.py:47
-#| msgid "Dashboard and reports"
+#: apps/faults/models.py:44
 msgid "send reports to"
 msgstr "meldingen sturen naar"
 
-#: apps/faults/models.py:48
-#| msgid "Empty = the general email address from the settings."
+#: apps/faults/models.py:45
 msgid ""
 "Email addresses separated by commas. Empty = the general email address from "
 "the settings."
 msgstr "E-mailadressen gescheiden door komma's. Leeg = het algemene e-mailadres uit de instellingen."
 
-#: apps/faults/models.py:50
+#: apps/faults/models.py:47
 msgid "copy to"
 msgstr "kopie naar"
 
-#: apps/faults/models.py:50 apps/licences/models.py:206
+#: apps/faults/models.py:47 apps/licences/models.py:206
+#: apps/orders/models.py:34
 msgid "Email addresses separated by commas."
 msgstr "E-mailadressen gescheiden door komma's."
 
-#: apps/faults/models.py:51
-#| msgid "subject of activation email"
+#: apps/faults/models.py:48
 msgid "subject of confirmation"
 msgstr "onderwerp bevestiging"
 
-#: apps/faults/models.py:53
-#| msgid "order confirmations"
+#: apps/faults/models.py:50
 msgid "text of confirmation"
 msgstr "tekst bevestiging"
 
-#: apps/faults/models.py:53
+#: apps/faults/models.py:50
 #, python-brace-format
-#| msgid "Placeholders: {name}, {company}, {number}, {login_url}."
 msgid "Placeholders: {number}, {name}, {company}."
 msgstr "Invulvelden: {number}, {name}, {company}."
 
-#: apps/faults/models.py:55
+#: apps/faults/models.py:52
 msgid "max. size of attachments (MB, total)"
 msgstr "max. grootte bijlagen (MB, totaal)"
 
-#: apps/faults/models.py:56
+#: apps/faults/models.py:53
 msgid "max. number of attachments"
 msgstr "max. aantal bijlagen"
 
-#: apps/faults/models.py:59 apps/faults/models.py:60
-#| msgid "customer settings"
+#: apps/faults/models.py:56 apps/faults/models.py:57
 msgid "fault report settings"
 msgstr "storingsinstellingen"
 
-#: apps/faults/models.py:77
+#: apps/faults/models.py:74
 msgid "New"
 msgstr "Nieuw"
 
-#: apps/faults/models.py:78
+#: apps/faults/models.py:75
 msgid "In progress"
 msgstr "In behandeling"
 
-#: apps/faults/models.py:79
+#: apps/faults/models.py:76
 msgid "Closed"
 msgstr "Afgesloten"
 
-#: apps/faults/models.py:81
-#| msgid "Number"
+#: apps/faults/models.py:78
 msgid "number"
 msgstr "nummer"
 
-#: apps/faults/models.py:83
-#| msgid "recorded at"
+#: apps/faults/models.py:80
 msgid "reported at"
 msgstr "gemeld op"
 
-#: apps/faults/models.py:88
-#| msgid "approved by"
+#: apps/faults/models.py:85
 msgid "reported by"
 msgstr "gemeld door"
 
-#: apps/faults/models.py:90 apps/licences/models.py:278
+#: apps/faults/models.py:87 apps/licences/models.py:280
 #: templates/faults/email_report.txt:2
 msgid "licence"
 msgstr "licentie"
 
-#: apps/faults/models.py:91
-#| msgid "Covered products"
+#: apps/faults/models.py:88
 msgid "covered until"
 msgstr "gedekt t/m"
 
-#: apps/faults/models.py:92
+#: apps/faults/models.py:89
 msgid ""
 "End date of the licence at the time of reporting; empty = no cover found."
 msgstr "Einddatum van de licentie op het moment van melden; leeg = geen dekking gevonden."
 
-#: apps/faults/models.py:95 apps/licences/models.py:82
-#: apps/licences/models.py:93 apps/licences/models.py:259
-#: apps/licences/models.py:355
+#: apps/faults/models.py:92 apps/licences/models.py:82
+#: apps/licences/models.py:93 apps/licences/models.py:261
+#: apps/licences/models.py:357
 msgid "brand"
 msgstr "merk"
 
-#: apps/faults/models.py:96
-#| msgid "Device"
+#: apps/faults/models.py:93
 msgid "device"
 msgstr "apparaat"
 
-#: apps/faults/models.py:97 apps/licences/models.py:263
-#: apps/licences/models.py:358 templates/licences/email_certificate.txt:24
+#: apps/faults/models.py:94 apps/licences/models.py:265
+#: apps/licences/models.py:360 templates/licences/email_certificate.txt:24
 msgid "serial number"
 msgstr "serienummer"
 
-#: apps/faults/models.py:98
+#: apps/faults/models.py:95
 msgid "operating system"
 msgstr "besturingssysteem"
 
-#: apps/faults/models.py:99
-#| msgid "description"
+#: apps/faults/models.py:96
 msgid "description of the fault"
 msgstr "omschrijving van de storing"
 
-#: apps/faults/models.py:101
+#: apps/faults/models.py:98
 msgid "desired handling"
 msgstr "gewenste afhandeling"
 
-#: apps/faults/models.py:102
-#| msgid "Your reference"
+#: apps/faults/models.py:99 apps/orders/models.py:63
 msgid "your reference"
 msgstr "uw referentie"
 
-#: apps/faults/models.py:105
-#| msgid "Company"
+#: apps/faults/models.py:102
 msgid "company"
 msgstr "bedrijf"
 
-#: apps/faults/models.py:113
+#: apps/faults/models.py:110
 msgid "company at location"
 msgstr "bedrijf op locatie"
 
-#: apps/faults/models.py:114
-#| msgid "Contact person and login"
+#: apps/faults/models.py:111
 msgid "contact person at location"
 msgstr "contactpersoon op locatie"
 
-#: apps/faults/models.py:115
-#| msgid "address line 2"
+#: apps/faults/models.py:112
 msgid "address of location"
 msgstr "adres locatie"
 
-#: apps/faults/models.py:116
-#| msgid "postal code"
+#: apps/faults/models.py:113
 msgid "postal code of location"
 msgstr "postcode locatie"
 
-#: apps/faults/models.py:117
+#: apps/faults/models.py:114
 msgid "city of location"
 msgstr "plaats locatie"
 
-#: apps/faults/models.py:118
-#| msgid "counter change"
+#: apps/faults/models.py:115
 msgid "country of location"
 msgstr "land locatie"
 
-#: apps/faults/models.py:119
+#: apps/faults/models.py:116
 msgid "phone at location"
 msgstr "telefoon op locatie"
 
-#: apps/faults/models.py:120
-#| msgid "Email / login"
+#: apps/faults/models.py:117
 msgid "email at location"
 msgstr "e-mail op locatie"
 
-#: apps/faults/models.py:120
-#| msgid "The service certificate is sent here."
+#: apps/faults/models.py:117
 msgid "The confirmation is sent here."
 msgstr "De bevestiging wordt hierheen gestuurd."
 
-#: apps/faults/models.py:122
-#| msgid "internal"
+#: apps/faults/models.py:119
 msgid "internal notes"
 msgstr "interne notities"
 
-#: apps/faults/models.py:125
+#: apps/faults/models.py:122
 msgid "fault report"
 msgstr "storingsmelding"
 
-#: apps/faults/models.py:126
+#: apps/faults/models.py:123
 msgid "fault reports"
 msgstr "storingsmeldingen"
 
-#: apps/faults/models.py:143
+#: apps/faults/models.py:140
 msgid "file"
 msgstr "bestand"
 
-#: apps/faults/models.py:145
+#: apps/faults/models.py:142
 msgid "size"
 msgstr "grootte"
 
-#: apps/faults/models.py:148
-#| msgid "Department"
+#: apps/faults/models.py:145
 msgid "attachment"
 msgstr "bijlage"
 
-#: apps/faults/models.py:149
+#: apps/faults/models.py:146
 msgid "attachments"
 msgstr "bijlagen"
 
@@ -1305,16 +1290,17 @@ msgid "Each gets its own licence number."
 msgstr "Elke licentie krijgt een eigen nummer."
 
 #: apps/licences/admin.py:129 apps/licences/views.py:20
-#: templates/dashboard/report.html:72 templates/licences/check.html:11
-#: templates/licences/contact.html:7 templates/licences/done.html:8
-#: templates/licences/options.html:9 templates/licences/step.html:12
+#: templates/licences/check.html:11 templates/licences/contact.html:7
+#: templates/licences/done.html:8 templates/licences/options.html:9
+#: templates/licences/step.html:12 templates/orders/email_confirmation.txt:11
+#: templates/orders/my_licences.html:13
 msgid "Licence"
 msgstr "Licentie"
 
 #: apps/licences/admin.py:132 apps/licences/views.py:23
 #: apps/licences/views.py:137 templates/faults/email_report.txt:4
 #: templates/faults/email_report.txt:6 templates/faults/my_reports.html:9
-#: templates/licences/check.html:15
+#: templates/licences/check.html:15 templates/orders/my_licences.html:13
 msgid "Device"
 msgstr "Apparaat"
 
@@ -1331,7 +1317,7 @@ msgstr "%(n)s licentie(s) aangemaakt: %(list)s"
 msgid "Rules"
 msgstr "Regels"
 
-#: apps/licences/admin.py:187
+#: apps/licences/admin.py:187 apps/orders/admin.py:60
 msgid "Texts"
 msgstr "Teksten"
 
@@ -1363,7 +1349,8 @@ msgstr "E-mailadres eindklant"
 msgid "The service certificate is sent here."
 msgstr "Het servicecertificaat wordt hierheen gestuurd."
 
-#: apps/licences/forms.py:29 templates/faults/email_report.txt:10
+#: apps/licences/forms.py:29 apps/orders/forms.py:22
+#: templates/faults/email_report.txt:10 templates/orders/order_form.html:13
 msgid "Reference"
 msgstr "Referentie"
 
@@ -1428,7 +1415,9 @@ msgstr "Kies het merk van het beeldscherm."
 msgid "Type"
 msgstr "Type"
 
-#: apps/licences/forms.py:118 templates/licences/options.html:16
+#: apps/licences/forms.py:118 apps/orders/forms.py:21
+#: templates/licences/options.html:16 templates/orders/order_detail.html:7
+#: templates/orders/order_form.html:13 templates/orders/review.html:9
 msgid "Quantity"
 msgstr "Aantal"
 
@@ -1522,7 +1511,7 @@ msgstr "bovenaan lijsten tonen"
 msgid "brands"
 msgstr "merken"
 
-#: apps/licences/models.py:95 apps/licences/models.py:354
+#: apps/licences/models.py:95 apps/licences/models.py:356
 msgid "type"
 msgstr "type"
 
@@ -1534,7 +1523,7 @@ msgstr "fabrieksgarantie (jaar)"
 msgid "selectable"
 msgstr "selecteerbaar"
 
-#: apps/licences/models.py:101 apps/licences/models.py:260
+#: apps/licences/models.py:101 apps/licences/models.py:262
 msgid "device type"
 msgstr "apparaattype"
 
@@ -1619,8 +1608,8 @@ msgstr "categorie"
 msgid "period"
 msgstr "looptijd"
 
-#: apps/licences/models.py:163 apps/licences/models.py:261
-#: apps/licences/models.py:356
+#: apps/licences/models.py:163 apps/licences/models.py:263
+#: apps/licences/models.py:358 apps/orders/models.py:102
 msgid "description"
 msgstr "omschrijving"
 
@@ -1661,6 +1650,7 @@ msgid "max. external options"
 msgstr "max. externe opties"
 
 #: apps/licences/models.py:178 apps/licences/models.py:248
+#: apps/orders/models.py:101
 msgid "service pack"
 msgstr "servicepack"
 
@@ -1754,94 +1744,99 @@ msgstr "volledig licentienummer"
 msgid "order reference"
 msgstr "orderreferentie"
 
-#: apps/licences/models.py:252
+#: apps/licences/models.py:252 apps/orders/models.py:111
+#| msgid "order"
+msgid "order line"
+msgstr "orderregel"
+
+#: apps/licences/models.py:254
 msgid "extension of"
 msgstr "verlenging van"
 
-#: apps/licences/models.py:256
+#: apps/licences/models.py:258
 msgid "registered on"
 msgstr "geregistreerd op"
 
-#: apps/licences/models.py:257
+#: apps/licences/models.py:259
 msgid "start date"
 msgstr "ingangsdatum"
 
-#: apps/licences/models.py:258
+#: apps/licences/models.py:260
 msgid "end date"
 msgstr "einddatum"
 
-#: apps/licences/models.py:262 apps/licences/models.py:357
+#: apps/licences/models.py:264 apps/licences/models.py:359
 msgid "article number"
 msgstr "artikelnummer"
 
-#: apps/licences/models.py:264
+#: apps/licences/models.py:266
 msgid "purchase date"
 msgstr "aanschafdatum"
 
-#: apps/licences/models.py:265
+#: apps/licences/models.py:267
 msgid "email end customer"
 msgstr "e-mail eindklant"
 
-#: apps/licences/models.py:266
+#: apps/licences/models.py:268
 msgid "reference end customer"
 msgstr "referentie eindklant"
 
-#: apps/licences/models.py:267
+#: apps/licences/models.py:269
 msgid "memo"
 msgstr "memo"
 
-#: apps/licences/models.py:268
+#: apps/licences/models.py:270
 msgid "reseller"
 msgstr "reseller"
 
-#: apps/licences/models.py:269
+#: apps/licences/models.py:271
 msgid "reseller address"
 msgstr "adres reseller"
 
-#: apps/licences/models.py:270
+#: apps/licences/models.py:272
 msgid "reseller postal code"
 msgstr "postcode reseller"
 
-#: apps/licences/models.py:271
+#: apps/licences/models.py:273
 msgid "reseller city"
 msgstr "plaats reseller"
 
-#: apps/licences/models.py:272
+#: apps/licences/models.py:274
 msgid "reseller phone"
 msgstr "telefoon reseller"
 
-#: apps/licences/models.py:279
+#: apps/licences/models.py:281
 msgid "licences"
 msgstr "licenties"
 
-#: apps/licences/models.py:334
+#: apps/licences/models.py:336
 msgid "Enter the start date."
 msgstr "Vul de ingangsdatum in."
 
-#: apps/licences/models.py:336
+#: apps/licences/models.py:338
 msgid "The start date is too far in the future."
 msgstr "De ingangsdatum ligt te ver in de toekomst."
 
-#: apps/licences/models.py:339
+#: apps/licences/models.py:341
 msgid "Enter the purchase date."
 msgstr "Vul de aanschafdatum in."
 
-#: apps/licences/models.py:342
+#: apps/licences/models.py:344
 msgid ""
 "The purchase date is too long ago; this device can no longer be registered."
 msgstr "De aanschafdatum ligt te ver in het verleden; dit apparaat kan niet meer worden geregistreerd."
 
-#: apps/licences/models.py:346
+#: apps/licences/models.py:348
 msgid ""
 "The purchase date is too far in the future; this device cannot be registered "
 "yet."
 msgstr "De aanschafdatum ligt te ver in de toekomst; dit apparaat kan nog niet worden geregistreerd."
 
-#: apps/licences/models.py:362
+#: apps/licences/models.py:364
 msgid "licence option"
 msgstr "licentieoptie"
 
-#: apps/licences/models.py:363
+#: apps/licences/models.py:365
 msgid "licence options"
 msgstr "licentieopties"
 
@@ -2097,6 +2092,241 @@ msgstr "verklaarde gaten"
 #: apps/numbering/models.py:141
 msgid "Must be at least the first number."
 msgstr "Moet minstens gelijk zijn aan het eerste nummer."
+
+#: apps/orders/admin.py:42 templates/orders/order_detail.html:3
+#: templates/orders/order_detail.html:5
+#| msgid "Orders"
+msgid "Order"
+msgstr "Bestelling"
+
+#: apps/orders/admin.py:46
+#| msgid "service packs"
+msgid "Physical packs"
+msgstr "Fysieke packs"
+
+#: apps/orders/admin.py:59
+#| msgid "Orders"
+msgid "Ordering"
+msgstr "Bestellen"
+
+#: apps/orders/emails.py:19
+#, python-format
+#| msgid "Fault report %(number)s – %(company)s – %(prefix)s"
+msgid "Order %(number)s – %(company)s"
+msgstr "Bestelling %(number)s – %(company)s"
+
+#: apps/orders/forms.py:20 templates/dashboard/report.html:73
+#: templates/dashboard/report.html:84 templates/orders/my_licences.html:13
+#: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
+#: templates/orders/review.html:9
+msgid "Service pack"
+msgstr "Servicepack"
+
+#: apps/orders/forms.py:36
+msgid "Choose at least one service pack."
+msgstr "Kies minstens één servicepack."
+
+#: apps/orders/forms.py:50 apps/orders/forms.py:82
+#: templates/licences/email_certificate.txt:14
+#: templates/orders/email_confirmation.txt:8 templates/orders/my_orders.html:7
+#: templates/orders/review.html:21
+msgid "Your reference"
+msgstr "Uw referentie"
+
+#: apps/orders/forms.py:51 apps/orders/models.py:63
+#| msgid "Location of the device"
+msgid "Shown on the invoice."
+msgstr "Komt op de factuur."
+
+#: apps/orders/forms.py:52
+msgid "Send physical packs with labels"
+msgstr "Fysieke packs met labels sturen"
+
+#: apps/orders/forms.py:53 templates/customers/signup.html:14
+msgid "Company"
+msgstr "Bedrijf"
+
+#: apps/orders/forms.py:54 templates/customers/my_details.html:18
+msgid "Contact person"
+msgstr "Contactpersoon"
+
+#: apps/orders/forms.py:70
+msgid "Required when packs are sent."
+msgstr "Verplicht als packs worden verstuurd."
+
+#: apps/orders/forms.py:81
+#| msgid "extension of"
+msgid "Extension"
+msgstr "Verlenging"
+
+#: apps/orders/models.py:20
+msgid "ordering active"
+msgstr "bestellen actief"
+
+#: apps/orders/models.py:21 apps/orders/models.py:69
+msgid "VAT rate (%)"
+msgstr "btw-percentage (%)"
+
+#: apps/orders/models.py:22
+#| msgid "introduction of registration"
+msgid "introduction on order page"
+msgstr "introductie op bestelpagina"
+
+#: apps/orders/models.py:24
+msgid "terms shown before ordering"
+msgstr "voorwaarden vóór het bestellen"
+
+#: apps/orders/models.py:24
+msgid "E.g. which terms and conditions apply."
+msgstr "Bijv. welke voorwaarden van toepassing zijn."
+
+#: apps/orders/models.py:27
+msgid "customers can ask for physical packs"
+msgstr "klanten kunnen fysieke packs vragen"
+
+#: apps/orders/models.py:28
+msgid "Shows the option to receive boxes with labels at a delivery address."
+msgstr "Toont de optie om doosjes met labels op een afleveradres te ontvangen."
+
+#: apps/orders/models.py:31
+msgid "licences can be extended from (days before end)"
+msgstr "licenties verlengen vanaf (dagen voor einde)"
+
+#: apps/orders/models.py:34
+#| msgid "internal recipients of registrations"
+msgid "internal recipients of orders"
+msgstr "interne ontvangers van bestellingen"
+
+#: apps/orders/models.py:37
+#| msgid "text of confirmation"
+msgid "text in order confirmation"
+msgstr "tekst in orderbevestiging"
+
+#: apps/orders/models.py:37
+#| msgid "text of confirmation"
+msgid "Shown at the top of the confirmation email."
+msgstr "Bovenaan de bevestigingsmail."
+
+#: apps/orders/models.py:41 apps/orders/models.py:42
+#| msgid "customer settings"
+msgid "order settings"
+msgstr "bestelinstellingen"
+
+#: apps/orders/models.py:58
+#| msgid "to number"
+msgid "order number"
+msgstr "ordernummer"
+
+#: apps/orders/models.py:61
+#| msgid "reported by"
+msgid "ordered by"
+msgstr "besteld door"
+
+#: apps/orders/models.py:62
+#| msgid "recorded at"
+msgid "ordered at"
+msgstr "besteld op"
+
+#: apps/orders/models.py:65
+msgid "subtotal"
+msgstr "subtotaal"
+
+#: apps/orders/models.py:66
+msgid "discount (%)"
+msgstr "korting (%)"
+
+#: apps/orders/models.py:67
+#| msgid "country"
+msgid "discount"
+msgstr "korting"
+
+#: apps/orders/models.py:68
+msgid "total excl. VAT"
+msgstr "totaal excl. btw"
+
+#: apps/orders/models.py:70 templates/base.html:86
+#: templates/orders/email_confirmation.txt:16
+#: templates/orders/order_detail.html:15
+msgid "VAT"
+msgstr "Btw"
+
+#: apps/orders/models.py:71
+msgid "total incl. VAT"
+msgstr "totaal incl. btw"
+
+#: apps/orders/models.py:73
+#| msgid "service packs"
+msgid "send physical packs"
+msgstr "fysieke packs sturen"
+
+#: apps/orders/models.py:74
+msgid "delivery to (company)"
+msgstr "afleveren bij (bedrijf)"
+
+#: apps/orders/models.py:75
+#| msgid "primary contact"
+msgid "delivery contact"
+msgstr "contactpersoon aflevering"
+
+#: apps/orders/models.py:76
+#| msgid "Delivery address"
+msgid "delivery address"
+msgstr "afleveradres"
+
+#: apps/orders/models.py:77
+#| msgid "reseller postal code"
+msgid "delivery postal code"
+msgstr "postcode aflevering"
+
+#: apps/orders/models.py:78
+#| msgid "reseller city"
+msgid "delivery city"
+msgstr "plaats aflevering"
+
+#: apps/orders/models.py:79
+#| msgid "packs"
+msgid "packs sent"
+msgstr "packs verstuurd"
+
+#: apps/orders/models.py:85
+#| msgid "order"
+msgid "orders"
+msgstr "bestellingen"
+
+#: apps/orders/models.py:103
+#| msgid "Quantity"
+msgid "quantity"
+msgstr "aantal"
+
+#: apps/orders/models.py:104
+#| msgid "price"
+msgid "price each"
+msgstr "prijs per stuk"
+
+#: apps/orders/models.py:105
+#| msgid "My account"
+msgid "amount"
+msgstr "bedrag"
+
+#: apps/orders/models.py:106
+#| msgid "Reference"
+msgid "reference"
+msgstr "referentie"
+
+#: apps/orders/models.py:108
+#| msgid "Register a licence"
+msgid "extends licence"
+msgstr "verlengt licentie"
+
+#: apps/orders/models.py:112
+#| msgid "order"
+msgid "order lines"
+msgstr "orderregels"
+
+#: apps/orders/views.py:60
+#| msgid "The form has expired. Please try again."
+msgid "The order has expired or changed. Please check it again."
+msgstr "De bestelling is verlopen of gewijzigd. Controleer haar opnieuw."
 
 #: apps/siteconfig/admin.py:15
 msgid "Available languages"
@@ -2412,15 +2642,15 @@ msgstr "menu-item"
 msgid "menu items"
 msgstr "menu-items"
 
-#: packdesk/settings.py:100
+#: packdesk/settings.py:101
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: packdesk/settings.py:100
+#: packdesk/settings.py:101
 msgid "English"
 msgstr "Engels"
 
-#: packdesk/settings.py:100
+#: packdesk/settings.py:101
 msgid "German"
 msgstr "Duits"
 
@@ -2515,10 +2745,6 @@ msgstr "Inloggen"
 msgid "CoC"
 msgstr "KvK"
 
-#: templates/base.html:86
-msgid "VAT"
-msgstr "Btw"
-
 #: templates/core/dashboard.html:6
 #, python-format
 msgid "Welcome, %(name)s"
@@ -2542,18 +2768,44 @@ msgstr "Mijn storingsmeldingen"
 msgid "Report a fault and see the status of your reports."
 msgstr "Meld een storing en bekijk de status van uw meldingen."
 
-#: templates/core/dashboard.html:14
-msgid "Orders"
-msgstr "Bestellingen"
+#: templates/core/dashboard.html:15 templates/orders/my_orders.html:5
+#: templates/orders/order_form.html:3 templates/orders/order_form.html:5
+#| msgid "service packs"
+msgid "Order service packs"
+msgstr "Servicepacks bestellen"
 
-#: templates/core/dashboard.html:14 templates/core/dashboard.html:15
-#: templates/core/dashboard.html:16
-msgid "Available soon."
-msgstr "Binnenkort beschikbaar."
+#: templates/core/dashboard.html:15
+msgid "Choose packs, check the price and order."
+msgstr "Kies packs, bekijk de prijs en bestel."
+
+#: templates/core/dashboard.html:16 templates/orders/my_orders.html:3
+#: templates/orders/my_orders.html:5
+#| msgid "order"
+msgid "My orders"
+msgstr "Mijn bestellingen"
 
 #: templates/core/dashboard.html:16
+#| msgid "Register another licence"
+msgid "Your orders and their licences."
+msgstr "Uw bestellingen en hun licenties."
+
+#: templates/core/dashboard.html:17 templates/orders/done.html:10
+#: templates/orders/my_licences.html:3 templates/orders/my_licences.html:5
+#| msgid "licences"
+msgid "My licences"
+msgstr "Mijn licenties"
+
+#: templates/core/dashboard.html:17
+msgid "Status, end dates and extending."
+msgstr "Status, einddatums en verlengen."
+
+#: templates/core/dashboard.html:19
 msgid "Invoices"
 msgstr "Facturen"
+
+#: templates/core/dashboard.html:19
+msgid "Available soon."
+msgstr "Binnenkort beschikbaar."
 
 #: templates/core/home.html:9
 #: templates/registration/password_change_done.html:6
@@ -2581,10 +2833,6 @@ msgstr "Klantnummer"
 msgid "Company details are wrong? Please contact us."
 msgstr "Kloppen de bedrijfsgegevens niet? Neem contact met ons op."
 
-#: templates/customers/my_details.html:18
-msgid "Contact person"
-msgstr "Contactpersoon"
-
 #: templates/customers/my_details.html:22
 msgid "Email / login"
 msgstr "E-mail / login"
@@ -2597,10 +2845,6 @@ msgstr "Opslaan"
 #: templates/registration/password_change_form.html:5
 msgid "Change password"
 msgstr "Wachtwoord wijzigen"
-
-#: templates/customers/signup.html:14
-msgid "Company"
-msgstr "Bedrijf"
 
 #: templates/customers/signup.html:20
 msgid "Contact person and login"
@@ -2637,91 +2881,103 @@ msgstr "Periode %(start)s – %(end)s."
 
 #: templates/dashboard/report.html:23
 msgid ""
-"Based on licences, current pack prices minus the customer's discount, and "
-"current cost prices. Becomes exact once orders and invoices are kept in "
-"PackDesk."
-msgstr "Op basis van licenties, de huidige packprijs min de korting van de klant, en de huidige inkoopprijs. Wordt exact zodra bestellingen en facturen in PackDesk staan."
+"Orders count with their actual prices. Costs use the current cost price of "
+"each pack."
+msgstr "Bestellingen tellen met hun werkelijke prijs. Kosten volgen de huidige inkoopprijs per pack."
 
-#: templates/dashboard/report.html:27
+#: templates/dashboard/report.html:24
+#, python-format
+msgid ""
+"%(n)s sale without an order (e.g. imported) is estimated at the current "
+"price."
+msgid_plural ""
+"%(n)s sales without an order (e.g. imported) are estimated at the current "
+"price."
+msgstr[0] "%(n)s verkoop zonder bestelling (bijv. geïmporteerd) is geschat tegen de huidige prijs."
+msgstr[1] "%(n)s verkopen zonder bestelling (bijv. geïmporteerd) zijn geschat tegen de huidige prijs."
+
+#: templates/dashboard/report.html:28
 msgid "Packs sold"
 msgstr "Verkochte packs"
 
-#: templates/dashboard/report.html:28 templates/dashboard/report.html:35
-#: templates/dashboard/report.html:62 templates/dashboard/report.html:72
+#: templates/dashboard/report.html:29 templates/dashboard/report.html:36
+#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
 msgid "Revenue"
 msgstr "Omzet"
 
-#: templates/dashboard/report.html:29 templates/dashboard/report.html:35
+#: templates/dashboard/report.html:30 templates/dashboard/report.html:36
 msgid "Gross margin"
 msgstr "Brutomarge"
 
-#: templates/dashboard/report.html:30
+#: templates/dashboard/report.html:31
 msgid "Margin percentage"
 msgstr "Margepercentage"
 
-#: templates/dashboard/report.html:34 templates/dashboard/report.html:37
+#: templates/dashboard/report.html:35 templates/dashboard/report.html:38
 msgid "Revenue and margin per month"
 msgstr "Omzet en marge per maand"
 
-#: templates/dashboard/report.html:40
+#: templates/dashboard/report.html:41
 msgid "margin"
 msgstr "marge"
 
-#: templates/dashboard/report.html:40
+#: templates/dashboard/report.html:41
 msgid "packs"
 msgstr "packs"
 
-#: templates/dashboard/report.html:52
+#: templates/dashboard/report.html:53
 msgid "Revenue per category"
 msgstr "Omzet per categorie"
 
-#: templates/dashboard/report.html:58 templates/dashboard/report.html:64
-#: templates/dashboard/report.html:76
+#: templates/dashboard/report.html:59 templates/dashboard/report.html:65
+#: templates/dashboard/report.html:77
 msgid "No sales in this period."
 msgstr "Geen verkopen in deze periode."
 
-#: templates/dashboard/report.html:61
+#: templates/dashboard/report.html:62
 msgid "Top customers"
 msgstr "Beste klanten"
 
-#: templates/dashboard/report.html:62
+#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
 msgid "Packs"
 msgstr "Packs"
 
-#: templates/dashboard/report.html:62 templates/dashboard/report.html:72
-#: templates/dashboard/report.html:83
+#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
+#: templates/dashboard/report.html:84
 msgid "Margin"
 msgstr "Marge"
 
-#: templates/dashboard/report.html:69
+#: templates/dashboard/report.html:70
 msgid "Sales in this period"
 msgstr "Verkopen in deze periode"
 
-#: templates/dashboard/report.html:70
+#: templates/dashboard/report.html:71
 msgid "Click a month in the chart to see only that month."
 msgstr "Klik op een maand in de grafiek om alleen die maand te zien."
 
-#: templates/dashboard/report.html:72 templates/faults/my_reports.html:9
+#: templates/dashboard/report.html:73 templates/faults/my_reports.html:9
+#: templates/orders/email_confirmation.txt:7 templates/orders/my_orders.html:7
 msgid "Date"
 msgstr "Datum"
 
-#: templates/dashboard/report.html:72 templates/dashboard/report.html:83
-msgid "Service pack"
-msgstr "Servicepack"
+#: templates/dashboard/report.html:73
+#| msgid "Number of licences"
+msgid "Order or licence"
+msgstr "Bestelling of licentie"
 
-#: templates/dashboard/report.html:81
+#: templates/dashboard/report.html:82
 msgid "Prices and margin per pack"
 msgstr "Prijzen en marge per pack"
 
-#: templates/dashboard/report.html:83
+#: templates/dashboard/report.html:84
 msgid "Price"
 msgstr "Prijs"
 
-#: templates/dashboard/report.html:83
+#: templates/dashboard/report.html:84
 msgid "Cost price"
 msgstr "Inkoopprijs"
 
-#: templates/dashboard/report.html:86
+#: templates/dashboard/report.html:87
 msgid "No service packs yet."
 msgstr "Nog geen servicepacks."
 
@@ -2744,7 +3000,6 @@ msgid "Under contract: licence %(number)s, covered until %(until)s"
 msgstr "Onder contract: licentie %(number)s, gedekt t/m %(until)s"
 
 #: templates/faults/email_report.txt:2
-#| msgid "Ended"
 msgid "ended"
 msgstr "afgelopen"
 
@@ -2757,28 +3012,23 @@ msgid "Desired handling"
 msgstr "Gewenste afhandeling"
 
 #: templates/faults/email_report.txt:12
-#| msgid "Description"
 msgid "Description of the fault"
 msgstr "Omschrijving van de storing"
 
 #: templates/faults/email_report.txt:15 templates/faults/report.html:32
-#| msgid "approved by"
 msgid "Reported by"
 msgstr "Gemeld door"
 
 #: templates/faults/email_report.txt:20 templates/faults/report.html:35
-#| msgid "Purchase date of the device"
 msgid "Location of the device"
 msgstr "Locatie van het apparaat"
 
 #: templates/faults/my_reports.html:6 templates/faults/report.html:3
 #: templates/faults/report.html:6
-#| msgid "Reset to default"
 msgid "Report a fault"
 msgstr "Storing melden"
 
 #: templates/faults/my_reports.html:12
-#| msgid "No registrations yet."
 msgid "No fault reports yet."
 msgstr "Nog geen storingsmeldingen."
 
@@ -2787,7 +3037,6 @@ msgid "Please check the fields marked below."
 msgstr "Controleer de gemarkeerde velden hieronder."
 
 #: templates/faults/report.html:13
-#| msgid "Contacts"
 msgid "Contract"
 msgstr "Contract"
 
@@ -2834,6 +3083,7 @@ msgstr "Stappen"
 #: templates/licences/check.html:3 templates/licences/check.html:5
 #: templates/licences/options.html:3 templates/licences/options.html:5
 #: templates/licences/step.html:3 templates/licences/step.html:6
+#: templates/orders/order_detail.html:18
 msgid "Register a licence"
 msgstr "Licentie registreren"
 
@@ -2895,12 +3145,9 @@ msgid "Start date"
 msgstr "Ingangsdatum"
 
 #: templates/licences/email_certificate.txt:12
+#: templates/orders/my_licences.html:13
 msgid "End date"
 msgstr "Einddatum"
-
-#: templates/licences/email_certificate.txt:14
-msgid "Your reference"
-msgstr "Uw referentie"
 
 #: templates/licences/email_certificate.txt:16
 msgid "Covered products"
@@ -2920,6 +3167,177 @@ msgstr "Volgende"
 #: templates/licences/step.html:14
 msgid "Optional: fill in the monitor that is covered by this pack."
 msgstr "Optioneel: vul het beeldscherm in dat onder dit pack valt."
+
+#: templates/orders/done.html:5
+#| msgid "Thank you for registering your service pack."
+msgid "Thank you for your order"
+msgstr "Bedankt voor uw bestelling"
+
+#: templates/orders/done.html:6
+#, python-format
+msgid ""
+"Your order %(number)s has been placed. You will receive a confirmation by "
+"email."
+msgstr "Uw bestelling %(number)s is geplaatst. U ontvangt een bevestiging per e-mail."
+
+#: templates/orders/done.html:7 templates/orders/email_confirmation.txt:17
+#: templates/orders/my_orders.html:7 templates/orders/order_detail.html:16
+#: templates/orders/review.html:19
+msgid "Total incl. VAT"
+msgstr "Totaal incl. btw"
+
+#: templates/orders/done.html:9
+#| msgid "In order"
+msgid "View order"
+msgstr "Bestelling bekijken"
+
+#: templates/orders/email_confirmation.txt:2
+#| msgid "order confirmations"
+msgid "Order confirmation"
+msgstr "Orderbevestiging"
+
+#: templates/orders/email_confirmation.txt:11
+#| msgid "Registered"
+msgid "registered"
+msgstr "geregistreerd"
+
+#: templates/orders/email_confirmation.txt:13
+#: templates/orders/order_detail.html:13 templates/orders/review.html:15
+msgid "Subtotal"
+msgstr "Subtotaal"
+
+#: templates/orders/email_confirmation.txt:14
+#: templates/orders/order_detail.html:14
+#| msgid "country"
+msgid "Discount"
+msgstr "Korting"
+
+#: templates/orders/email_confirmation.txt:15 templates/orders/review.html:17
+msgid "Total excl. VAT"
+msgstr "Totaal excl. btw"
+
+#: templates/orders/email_confirmation.txt:19 templates/orders/review.html:22
+msgid "Physical packs are sent to"
+msgstr "Fysieke packs worden gestuurd naar"
+
+#: templates/orders/extend.html:3 templates/orders/extend.html:5
+#| msgid "licence"
+msgid "Extend licence"
+msgstr "Licentie verlengen"
+
+#: templates/orders/extend.html:6
+msgid "ends on"
+msgstr "loopt af op"
+
+#: templates/orders/extend.html:9
+msgid ""
+"The new licence starts the day after the current one ends, for the same "
+"device."
+msgstr "De nieuwe licentie gaat in op de dag na het einde van de huidige, voor hetzelfde apparaat."
+
+#: templates/orders/extend.html:10 templates/orders/order_form.html:20
+#| msgid "Check your email"
+msgid "Check order"
+msgstr "Bestelling controleren"
+
+#: templates/orders/extend.html:11
+msgid "Back"
+msgstr "Terug"
+
+#: templates/orders/my_licences.html:7
+msgid "All"
+msgstr "Alle"
+
+#: templates/orders/my_licences.html:8
+#, python-format
+#| msgid "Ending within 90 days"
+msgid "Ending within %(d)s days"
+msgstr "Loopt af binnen %(d)s dagen"
+
+#: templates/orders/my_licences.html:10
+#| msgid "Licence number or serial number"
+msgid "Licence, serial number or reference"
+msgstr "Licentie, serienummer of referentie"
+
+#: templates/orders/my_licences.html:16
+#| msgid "ended"
+msgid "extended"
+msgstr "verlengd"
+
+#: templates/orders/my_licences.html:17
+msgid "Extend"
+msgstr "Verlengen"
+
+#: templates/orders/my_licences.html:17
+#| msgid "Registered"
+msgid "Register"
+msgstr "Registreren"
+
+#: templates/orders/my_licences.html:18
+#| msgid "No licences ending soon."
+msgid "No licences found."
+msgstr "Geen licenties gevonden."
+
+#: templates/orders/my_orders.html:7
+#| msgid "serial number"
+msgid "Order number"
+msgstr "Ordernummer"
+
+#: templates/orders/my_orders.html:9
+#| msgid "No registrations yet."
+msgid "No orders yet."
+msgstr "Nog geen bestellingen."
+
+#: templates/orders/order_detail.html:7 templates/orders/review.html:9
+#| msgid "Country"
+msgid "Amount"
+msgstr "Bedrag"
+
+#: templates/orders/order_detail.html:8
+#| msgid "extension of"
+msgid "Extension of"
+msgstr "Verlenging van"
+
+#: templates/orders/order_detail.html:18
+msgid "Unregistered licences can be registered with the licence number."
+msgstr "Niet-geregistreerde licenties registreert u met het licentienummer."
+
+#: templates/orders/order_form.html:17
+#| msgid "My details"
+msgid "Order details"
+msgstr "Bestelgegevens"
+
+#: templates/orders/review.html:3 templates/orders/review.html:5
+#| msgid "Check your email"
+msgid "Check your order"
+msgstr "Controleer uw bestelling"
+
+#: templates/orders/review.html:6
+#, python-format
+#| msgid "Registration licence %(number)s"
+msgid "Extension of licence %(number)s"
+msgstr "Verlenging van licentie %(number)s"
+
+#: templates/orders/review.html:9
+#| msgid "Price"
+msgid "Price each"
+msgstr "Prijs per stuk"
+
+#: templates/orders/review.html:16
+#, python-format
+#| msgid "Your account at %(company)s"
+msgid "Your discount (%(pct)s %%)"
+msgstr "Uw korting (%(pct)s %%)"
+
+#: templates/orders/review.html:18
+#, python-format
+msgid "VAT %(rate)s %%"
+msgstr "Btw %(rate)s %%"
+
+#: templates/orders/review.html:28
+#| msgid "In order"
+msgid "Place order"
+msgstr "Bestelling plaatsen"
 
 #: templates/registration/login.html:16
 msgid "Forgot password?"
