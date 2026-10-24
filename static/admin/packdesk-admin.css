@@ -31,7 +31,7 @@ html.dark .pd-list li { border-color: rgb(31 41 55); }
 .pd-list li span { opacity: .65; white-space: nowrap; }
 .pd-list a:hover { text-decoration: underline; }
 
-#dashboard .hidden { display: none !important; }
+#dashboard .hidden, #pd-customer .hidden { display: none !important; }
 
 /* Reports */
 .pd-chart text { font-size: 11px; fill: currentColor; opacity: .7; }

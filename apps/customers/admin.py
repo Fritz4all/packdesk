@@ -1,23 +1,34 @@
 from django.contrib import admin, messages
 from django.db.models import Count
+from django import forms
 from django.shortcuts import redirect
+from django.template.response import TemplateResponse
 from django.urls import path, reverse
+from django.utils import timezone
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin
 from unfold.admin import ModelAdmin, StackedInline, TabularInline
 from unfold.decorators import display
+from unfold.widgets import UnfoldAdminSelectWidget
 
 from apps.accounts.admin import report_reset
 from apps.accounts.models import User
 from apps.accounts.password_reset import force_reset
 from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
-from . import emails
+from . import emails, overview
 from . import transfer_views
 from .models import Contact, Country, Customer, CustomerAddress, CustomerType, SignupSettings
 
 STATUS_COLOURS = {"pending": "warning", "active": "success", "blocked": "danger"}
+
+
+class CustomerTypeChoiceForm(forms.Form):
+    customer_type = forms.ModelChoiceField(
+        label=_("customer type"), queryset=CustomerType.objects.all(), required=False, widget=UnfoldAdminSelectWidget,
+        empty_label=_("(none)"),
+    )
 
 
 class AddressInline(TabularInline):
@@ -60,7 +71,7 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
         "addresses__line1", "addresses__postal_code", "addresses__city",
     ]
     readonly_fields = ["approved_at", "approved_by", "created_at", "updated_at", "signup_message"]
-    actions = ["approve_selected", "block_selected", "export_selected", "send_password_reset"]
+    actions = ["approve_selected", "block_selected", "change_type_selected", "export_selected", "send_password_reset"]
     change_list_template = "admin/customers/customer/change_list.html"
     object_actions = [
         ObjectAction("approve", _("Approve"), "check_circle", handler="approve", show_if="can_approve"),
@@ -134,6 +145,65 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
         for customer in queryset:
             customer.block()
         messages.success(request, gettext("%(n)s customer(s) blocked.") % {"n": queryset.count()})
+
+    @admin.action(description=_("Change customer type of selected customers"), permissions=["change"])
+    def change_type_selected(self, request, queryset):
+        form = CustomerTypeChoiceForm(request.POST if "apply" in request.POST else None)
+        if form.is_valid():
+            new_type = form.cleaned_data["customer_type"]
+            n = queryset.update(customer_type=new_type)
+            messages.success(request, gettext("Customer type of %(n)s customer(s) set to %(type)s.")
+                             % {"n": n, "type": new_type or "–"})
+            return None
+        return TemplateResponse(request, "admin/customers/customer/change_type.html", {
+            **self.admin_site.each_context(request),
+            "title": gettext("Change customer type"), "form": form, "customers": queryset,
+            "opts": self.model._meta, "action_checkbox_name": admin.helpers.ACTION_CHECKBOX_NAME,
+        })
+
+    # --- the customer page: overview first, edit on request -----------------
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        """Opening a customer shows everything about it, read-only; the edit form only after "Edit"."""
+        if request.method == "GET" and "edit" not in request.GET and admin.options.IS_POPUP_VAR not in request.GET:
+            customer = self.get_object(request, object_id)
+            if customer is not None and self.has_view_or_change_permission(request, customer):
+                return self.overview_view(request, customer)
+        return super().change_view(request, object_id, form_url, extra_context)
+
+    def overview_view(self, request, customer):
+        info = self.model._meta.app_label, self.model._meta.model_name
+        context = {
+            **self.admin_site.each_context(request),
+            "title": customer.name, "customer": customer, "opts": self.model._meta,
+            "can_change": self.has_change_permission(request, customer),
+            "changelist_url": reverse("admin:%s_%s_changelist" % info),
+            "object_actions": [
+                {**a.__dict__, "url": reverse("admin:%s_%s_object_action" % info, args=[customer.pk, a.name])}
+                for a in self._available_actions(request, customer)
+            ],
+            "addresses": sorted(customer.addresses.select_related("country"), key=lambda a: list(CustomerAddress.Kind).index(a.kind)),
+            "general": [
+                (gettext("Phone"), customer.phone), (gettext("Email"), customer.email),
+                (gettext("Website"), customer.website), (gettext("VAT number"), customer.vat_number),
+                (gettext("Chamber of Commerce number"), customer.coc_number),
+                (gettext("Customer since"), timezone.localtime(customer.created_at).date() if customer.created_at else ""),
+            ],
+            "mail_and_prices": [
+                (gettext("email for orders"), customer.email_orders), (gettext("email for spare parts"), customer.email_parts),
+                (gettext("email for invoices"), customer.email_invoices),
+                (gettext("margin service packs (%)"), customer.margin_packs),
+                (gettext("margin spare parts (%)"), customer.margin_parts),
+            ],
+            "sections": overview.sections(request, customer),
+        }
+        return TemplateResponse(request, "admin/customers/customer/overview.html", context)
+
+    def response_change(self, request, obj):
+        response = super().response_change(request, obj)
+        if "_continue" in request.POST:
+            response["Location"] = f"{response['Location'].split('?')[0]}?edit=1"
+        return response
 
     # --- export / import ----------------------------------------------------
 

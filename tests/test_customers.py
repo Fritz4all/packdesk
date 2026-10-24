@@ -223,3 +223,36 @@ def test_signup_texts_in_default_language(client, signup_settings):
     """Regression: a translated text equal to the field default fell back to English."""
     page = client.get("/aanmelden/").content.decode()
     assert "<h1>Reseller worden</h1>" in page and "Become a reseller" not in page
+
+
+# --- customer page: overview first, edit on request ---------------------------------------------
+
+
+def test_customer_opens_as_overview_with_edit_button(client, site, beheerder):
+    from apps.customers.models import CustomerType
+
+    customer = Customer.objects.create(name="Overzicht BV", number="77", status=Customer.Status.ACTIVE)
+    client.force_login(beheerder)
+    url = f"/beheer/customers/customer/{customer.pk}/change/"
+    page = client.get(url)
+    assert [t.name for t in page.templates][0] == "admin/customers/customer/overview.html"
+    assert "?edit=1" in page.content.decode() and 'name="_save"' not in page.content.decode()
+    assert 'name="_save"' in client.get(f"{url}?edit=1").content.decode()
+
+    data = {"number": "77", "status": "active", "name": "Overzicht BV", "margin_packs": "0", "margin_parts": "0",
+            "_continue": "1"}
+    for prefix in ("addresses", "contacts"):
+        data.update({f"{prefix}-TOTAL_FORMS": "0", f"{prefix}-INITIAL_FORMS": "0", f"{prefix}-MIN_NUM_FORMS": "0",
+                     f"{prefix}-MAX_NUM_FORMS": "1000"})
+    response = client.post(f"{url}?edit=1", data)
+    assert response.status_code == 302 and response["Location"].endswith("?edit=1")
+
+    reseller = CustomerType.objects.create(name="Reseller")
+    other = Customer.objects.create(name="Tweede", number="78")
+    form = client.post("/beheer/customers/customer/", {"action": "change_type_selected",
+                                                       "_selected_action": [customer.pk, other.pk]})
+    assert form.status_code == 200 and b"Tweede" in form.content
+    client.post("/beheer/customers/customer/", {"action": "change_type_selected", "apply": "1",
+                                                "_selected_action": [customer.pk, other.pk],
+                                                "customer_type": reseller.pk})
+    assert Customer.objects.filter(customer_type=reseller).count() == 2

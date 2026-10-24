@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div class="max-w-2xl">
+  <h1 class="font-semibold text-lg mb-3 text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
+  <form method="post" class="pd-widget">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="change_type_selected">
+    {% for customer in customers %}<input type="hidden" name="{{ action_checkbox_name }}" value="{{ customer.pk }}">{% endfor %}
+    <p class="text-sm mb-3">{% blocktranslate count n=customers|length %}Give {{ n }} customer a new customer type:{% plural %}Give {{ n }} customers a new customer type:{% endblocktranslate %}</p>
+    <ul class="text-sm mb-4 list-disc ml-5 max-h-48 overflow-y-auto">
+      {% for customer in customers %}<li>{{ customer }}{% if customer.customer_type %} <span class="text-base-500">({{ customer.customer_type }})</span>{% endif %}</li>{% endfor %}
+    </ul>
+    <label class="block text-sm font-semibold mb-1" for="{{ form.customer_type.id_for_label }}">{{ form.customer_type.label|capfirst }}</label>
+    <div class="mb-4">{{ form.customer_type }}</div>
+    <div class="flex gap-2">
+      <button type="submit" name="apply" value="1" class="pd-btn pd-btn-primary"><span class="material-symbols-outlined text-[18px]">check</span>{% translate "Change" %}</button>
+      <a class="pd-btn" href="">{% translate "Cancel" %}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

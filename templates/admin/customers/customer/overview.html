@@ -1,0 +1,83 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block breadcrumbs %}{% endblock %}
+{% block content %}
+<div id="pd-customer">
+  <div class="flex flex-wrap items-start gap-3 mb-4">
+    <div class="flex-1 min-w-0">
+      <h1 class="font-semibold text-xl text-font-important-light dark:text-font-important-dark">{{ customer.name }}</h1>
+      <p class="text-sm text-base-500">
+        {% if customer.number %}{% translate "Number" %} {{ customer.number }} · {% endif %}{{ customer.customer_type|default:"" }}{% if customer.customer_type %} · {% endif %}{{ customer.get_status_display }}
+      </p>
+    </div>
+    {% if can_change %}
+    <a class="pd-btn pd-btn-primary" href="?edit=1"><span class="material-symbols-outlined text-[18px]">edit</span>{% translate "Edit" %}</a>
+    {% endif %}
+    <a class="pd-btn" href="{{ changelist_url }}"><span class="material-symbols-outlined text-[18px]">arrow_back</span>{% translate "All customers" %}</a>
+  </div>
+
+  {% include "admin/packdesk/object_actions.html" %}
+
+  <div class="grid gap-3 md:grid-cols-3 mb-6">
+    <section class="pd-widget">
+      <h2 class="font-semibold mb-2">{% translate "General" %}</h2>
+      <table class="pd-table"><tbody>
+        {% for label, value in general %}<tr><th>{{ label }}</th><td>{{ value|default:"–"|linebreaksbr }}</td></tr>{% endfor %}
+      </tbody></table>
+    </section>
+    <section class="pd-widget">
+      <h2 class="font-semibold mb-2">{% translate "Addresses" %}</h2>
+      {% for address in addresses %}
+        <p class="text-sm mb-2"><span class="font-semibold">{{ address.get_kind_display }}</span><br>
+          {% if address.attention %}{{ address.attention }}<br>{% endif %}{{ address.line1 }}<br>{% if address.line2 %}{{ address.line2 }}<br>{% endif %}{{ address.postal_code }} {{ address.city }}{% if address.country %}<br>{{ address.country }}{% endif %}</p>
+      {% empty %}<p class="text-sm text-base-500">{% translate "No address yet." %}</p>{% endfor %}
+    </section>
+    <section class="pd-widget">
+      <h2 class="font-semibold mb-2">{% translate "Email and prices" %}</h2>
+      <table class="pd-table"><tbody>
+        {% for label, value in mail_and_prices %}<tr><th>{{ label|capfirst }}</th><td>{{ value|default:"–" }}</td></tr>{% endfor %}
+      </tbody></table>
+      {% if customer.remark %}<h3 class="font-semibold mt-3 mb-1 text-sm">{% translate "internal remark" as remark_label %}{{ remark_label|capfirst }}</h3><p class="text-sm">{{ customer.remark|linebreaksbr }}</p>{% endif %}
+    </section>
+  </div>
+
+  <nav class="flex flex-wrap gap-2 mb-3" id="pd-customer-tabs">
+    {% for s in sections %}
+      <button type="button" class="pd-btn" data-tab="{{ s.key }}">{{ s.title }} <span class="text-base-500">{{ s.count }}</span></button>
+    {% endfor %}
+  </nav>
+  {% for s in sections %}
+  <section class="pd-widget hidden" data-panel="{{ s.key }}">
+    {% if s.rows %}
+    <div class="overflow-x-auto">
+    <table class="pd-table">
+      <thead><tr>{% for c in s.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+      <tbody>
+      {% for row in s.rows %}
+        <tr>{% for cell in row.cells %}<td>{% if forloop.first and row.url %}<a class="underline" href="{{ row.url }}">{{ cell }}</a>{% else %}{{ cell|default:"" }}{% endif %}</td>{% endfor %}</tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% if s.all_url %}<p class="mt-3 text-sm"><a class="underline" href="{{ s.all_url }}">{% blocktranslate with n=s.more %}Show all ({{ n }} more){% endblocktranslate %}</a></p>{% endif %}
+    {% else %}<p class="text-sm text-base-500">{% translate "Nothing yet." %}</p>{% endif %}
+  </section>
+  {% endfor %}
+</div>
+<script>
+(function () {
+  var key = "pd-customer-tab", buttons = document.querySelectorAll("#pd-customer-tabs [data-tab]");
+  function show(name) {
+    var found = false;
+    buttons.forEach(function (b) { var on = b.dataset.tab === name; found = found || on; b.classList.toggle("pd-btn-primary", on); });
+    if (!found && buttons.length) return show(buttons[0].dataset.tab);
+    document.querySelectorAll("#pd-customer [data-panel]").forEach(function (p) { p.classList.toggle("hidden", p.dataset.panel !== name); });
+    try { localStorage.setItem(key, name); } catch (e) {}
+  }
+  buttons.forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.tab); }); });
+  var start = null;
+  try { start = localStorage.getItem(key); } catch (e) {}
+  show(start || "");
+})();
+</script>
+{% endblock %}

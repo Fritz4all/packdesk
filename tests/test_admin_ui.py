@@ -50,7 +50,7 @@ def test_inline_titles_summarise_rows(site):
 def test_related_menu_has_short_labels_and_no_delete(client, site, beheerder):
     customer = Customer.objects.create(name="Klant")
     client.force_login(beheerder)
-    page = client.get(f"/beheer/customers/customer/{customer.pk}/change/").content.decode()
+    page = client.get(f"/beheer/customers/customer/{customer.pk}/change/?edit=1").content.decode()
     assert 'title="klanttype toevoegen"' in page
     assert 'title="Geselecteerde klanttype' not in page and 'title="Nog een klanttype' not in page
     assert 'id="delete_id_customer_type"' not in page
