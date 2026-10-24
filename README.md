@@ -76,6 +76,14 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   shop; opties krijgen serienummer `<serienummer>/001`, `/002`, ... Het servicecertificaat gaat per
   e-mail naar de eindklant, met interne ontvangers in bcc. Categorieën kunnen ook op "registreren via
   contact" staan.
+- **Storing melden** (`/storing-melden/`, ook op de homepage en in het klantportaal): optioneel een
+  licentie- of serienummer opzoeken (ook serienummers van opties); het apparaat en de reseller worden
+  ingevuld en je ziet direct of het onder contract valt. Daarna storing, gewenste afhandeling,
+  gegevens van melder en locatie, en bijlagen (aantal en grootte instelbaar). Elke melding krijgt een
+  nummer uit de nummerreeks *Storingsmeldingen*, gaat per mail (met bijlagen) naar de ingestelde
+  ontvangers en de melder krijgt een bevestiging. Bijlagen staan in `PRIVATE_MEDIA_ROOT` en zijn alleen
+  via het beheer te downloaden. In het beheer: status nieuw / in behandeling / afgesloten, interne
+  notities, dekking, en een teller in het menu. Klanten zien hun meldingen onder *Mijn storingsmeldingen*.
 - **Democatalogus:** `docker compose exec web python manage.py load_demo_catalogue` maakt een kleine
   catalogus en testlicenties aan om de wizard te proberen (alleen als er nog geen packs zijn).
 - **Dashboard** (beheer-startpagina): totalen (actieve klanten, te keuren aanmeldingen, licenties, nog
