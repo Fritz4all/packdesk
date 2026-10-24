@@ -33,6 +33,8 @@ ROLES = {
         "customers.change_customer",
         "customers.delete_customer",
         "customers.export_customer",
+        "legacy.view_importrun",
+        "legacy.import_data",
         "trash.view_trashentry",
         "trash.restore_trashentry",
         "trash.delete_trashentry",

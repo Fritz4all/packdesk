@@ -56,6 +56,12 @@ SECTIONS = [
                 "permission": lambda request: request.user.has_perm("legacy.view_tablemapping"),
             },
             {
+                "title": _("Imports"),
+                "icon": "input",
+                "link": reverse_lazy("admin:legacy_importrun_changelist"),
+                "permission": lambda request: request.user.has_perm("legacy.import_data"),
+            },
+            {
                 "title": _("Compare databases"),
                 "icon": "compare_arrows",
                 "link": reverse_lazy("legacy_choose"),
@@ -74,6 +80,12 @@ SECTIONS = [
                 "link": reverse_lazy("admin:customers_customer_changelist"),
                 "badge": "apps.customers.admin_badge.pending",
                 "permission": lambda request: request.user.has_perm("customers.view_customer"),
+            },
+            {
+                "title": _("Contacts"),
+                "icon": "contacts",
+                "link": reverse_lazy("admin:customers_contact_changelist"),
+                "permission": lambda request: request.user.has_perm("customers.view_contact"),
             },
             {
                 "title": _("Customer types"),
