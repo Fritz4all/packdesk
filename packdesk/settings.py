@@ -189,13 +189,22 @@ LOGGING = {
     "root": {"handlers": ["console"], "level": env("LOG_LEVEL", default="INFO")},
 }
 
+def _versioned(path):
+    """Static URL that changes when the file changes, so browsers never keep an old copy.
+    (In production the file name itself carries a hash; the query then does no harm.)"""
+    try:
+        return f"{static(path)}?v={int((BASE_DIR / 'static' / path).stat().st_mtime)}"
+    except OSError:
+        return static(path)
+
+
 UNFOLD = {
     "SITE_TITLE": "PackDesk",
     "SITE_HEADER": "PackDesk",
     "SITE_SYMBOL": "inventory_2",
     "SHOW_HISTORY": True,
-    "STYLES": [lambda request: static("admin/packdesk-admin.css")],
-    "SCRIPTS": [lambda request: static("admin/packdesk-admin.js")],
+    "STYLES": [lambda request: _versioned("admin/packdesk-admin.css")],
+    "SCRIPTS": [lambda request: _versioned("admin/packdesk-admin.js")],
     "COMMAND": {"search_callback": "apps.dashboard.search.search_everything", "show_history": True},
     "DASHBOARD_CALLBACK": "apps.dashboard.views.dashboard_callback",
     "SIDEBAR": {

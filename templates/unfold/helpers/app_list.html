@@ -4,6 +4,25 @@ and two buttons expand or collapse every section. Without a remembered choice, t
 current page is open.{% endcomment %}
 
 {% if sidebar_navigation %}
+    <script>
+        // Defined here, before Alpine starts, so the menu never depends on a separately cached script.
+        window.pdNavInitial = function (key, activeDefault) {
+            try {
+                var saved = localStorage.getItem("packdesk-nav-" + key);
+                if (saved !== null) return saved === "1";
+            } catch (e) {}
+            return activeDefault;
+        };
+        window.pdNavSave = function (key, open) {
+            try { localStorage.setItem("packdesk-nav-" + key, open ? "1" : "0"); } catch (e) {}
+        };
+        window.pdNavAll = function (open) {
+            document.querySelectorAll("[data-pd-nav]").forEach(function (section) {
+                if (window.Alpine) window.Alpine.$data(section).navigationOpen = open;
+                window.pdNavSave(section.dataset.pdNav, open);
+            });
+        };
+    </script>
     <div id="nav-sidebar-apps" class="h-0 grow overflow-auto scrollbar-default-hover">
         <div class="pd-nav-all mx-3 mb-1 px-3">
             <button type="button" onclick="pdNavAll(true)" title="{% translate 'Expand all' %}" aria-label="{% translate 'Expand all' %}"><span class="material-symbols-outlined">unfold_more</span>{% translate "Expand all" %}</button>

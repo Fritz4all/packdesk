@@ -1,4 +1,4 @@
-{% load static i18n %}<!doctype html>
+{% load static i18n packdesk_static %}<!doctype html>
 <html lang="{{ LANGUAGE_CODE|default:'nl' }}" data-theme-default="{{ site_settings.theme|default:'auto' }}" data-theme-switch="{{ site_settings.theme_switch|yesno:'1,0' }}"{% if site_settings.theme and site_settings.theme != 'auto' %} data-theme="{{ site_settings.theme }}"{% endif %}>
 <head>
   <meta charset="utf-8">
@@ -18,7 +18,7 @@
     })();
   </script>
   {% if site_settings.favicon %}<link rel="icon" href="{{ site_settings.favicon.url }}">{% endif %}
-  <link rel="stylesheet" href="{% static 'css/packdesk.css' %}">
+  <link rel="stylesheet" href="{% vstatic 'css/packdesk.css' %}">
   <style>:root { --brand: {{ site_settings.primary_color|default:'#1f6feb' }}; --accent: {{ site_settings.accent_color|default:'#0ea5e9' }}; }</style>
 </head>
 <body>
