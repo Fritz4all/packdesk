@@ -99,3 +99,6 @@ html.dark .pd-obj-btn:hover { background: rgb(31 41 55); }
 .pd-obj-btn-danger, html.dark .pd-obj-btn-danger { border-color: rgb(220 38 38); color: rgb(220 38 38); background: transparent; }
 .pd-obj-btn-danger:hover, html.dark .pd-obj-btn-danger:hover { background: rgb(220 38 38 / .1); }
 html.dark .pd-obj-btn-danger { border-color: rgb(239 68 68); color: rgb(239 68 68); }
+
+/* Number columns: header and values both right-aligned (the table's own left alignment would win otherwise) */
+.pd-table th.text-right, .pd-table td.text-right { text-align: right; }
