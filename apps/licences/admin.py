@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import display
+from unfold.widgets import UnfoldAdminIntegerFieldWidget
 
 from .models import (
     Category,
@@ -103,7 +104,7 @@ class OptionInline(TabularInline):
 
 class LicenceAddForm(forms.ModelForm):
     quantity = forms.IntegerField(
-        label=_("Number of licences"), min_value=1, max_value=500, initial=1,
+        label=_("Number of licences"), min_value=1, max_value=500, initial=1, widget=UnfoldAdminIntegerFieldWidget,
         help_text=_("Each gets its own licence number."),
     )
 

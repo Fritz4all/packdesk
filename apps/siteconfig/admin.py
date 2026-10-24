@@ -8,6 +8,7 @@ from django.conf import settings
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline
 from unfold.admin import ModelAdmin, StackedInline
 from unfold.decorators import display
+from unfold.widgets import UnfoldAdminCheckboxSelectMultipleWidget, UnfoldAdminPasswordWidget
 
 from .models import Address, HomeBlock, MenuItem, SiteSettings
 
@@ -16,12 +17,12 @@ class SiteSettingsForm(forms.ModelForm):
     languages = forms.MultipleChoiceField(
         label=_("Available languages"),
         choices=settings.LANGUAGES,
-        widget=forms.CheckboxSelectMultiple,
+        widget=UnfoldAdminCheckboxSelectMultipleWidget,
         help_text=_("Languages visitors can choose from."),
     )
     mail_password = forms.CharField(
         label=_("password"), required=False, strip=False,
-        widget=forms.PasswordInput(render_value=False, attrs={"autocomplete": "new-password"}),
+        widget=UnfoldAdminPasswordWidget(attrs={"autocomplete": "new-password"}),
         help_text=_("Stored encrypted and never shown again. Leave empty to keep the current password."),
     )
 

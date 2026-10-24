@@ -8,7 +8,9 @@ from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
 from django.utils.html import format_html
 from unfold.admin import ModelAdmin, TabularInline
-from unfold.widgets import UnfoldAdminSelectWidget, UnfoldAdminTextareaWidget, UnfoldAdminTextInputWidget
+from unfold.widgets import (
+    UnfoldAdminPasswordWidget, UnfoldAdminSelectWidget, UnfoldAdminTextareaWidget, UnfoldAdminTextInputWidget,
+)
 from unfold.decorators import display
 
 from apps.core.object_actions import ObjectAction, ObjectActionsMixin
@@ -24,7 +26,7 @@ from .parts import OLD_SHOP_PRESET, PARTS_BY_KEY, apply_preset
 class ExternalDatabaseForm(forms.ModelForm):
     password = forms.CharField(
         label=_("password"), required=False, strip=False,
-        widget=forms.PasswordInput(render_value=False, attrs={"autocomplete": "new-password"}),
+        widget=UnfoldAdminPasswordWidget(attrs={"autocomplete": "new-password"}),
         help_text=_("Stored encrypted and never shown again. Leave empty to keep the current password."),
     )
 

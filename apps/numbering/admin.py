@@ -2,11 +2,13 @@ from django import forms
 from django.contrib import admin, messages
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.utils.html import format_html, format_html_join
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import display
+from unfold.widgets import UnfoldAdminBigIntegerFieldWidget, UnfoldAdminTextareaWidget
 
 from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
@@ -22,6 +24,35 @@ STATUS_LABELS = {
 }
 
 
+# Shows the next number while the name or pattern is being changed, before saving. Same tokens as
+# patterns.render; random letters show as X.
+PREVIEW_SCRIPT = """
+(function () {
+  var box = document.currentScript.previousElementSibling, nr = +box.dataset.pdNumber;
+  var name = document.getElementById("id_name"), pattern = document.getElementById("id_pattern");
+  if (!pattern) return;
+  function pad(v, w) { v = String(v); while (v.length < w) v = "0" + v; return v; }
+  function render(p) {
+    var d = new Date();
+    return p.replace(/\\{(nr|block|year|yy|month|letters)(?::(\\d+))?\\}/g, function (m, t, w) {
+      if (t === "nr") return w ? pad(nr, +w) : String(nr);
+      if (t === "block") { var size = Math.pow(10, +(w || 4)); return String.fromCharCode(65 + Math.floor(nr / size)) + pad(nr % size, +(w || 4)); }
+      if (t === "year") return String(d.getFullYear());
+      if (t === "yy") return pad(d.getFullYear() % 100, 2);
+      if (t === "month") return pad(d.getMonth() + 1, 2);
+      return "XXXXXXXXXX".slice(0, +(w || 1));
+    });
+  }
+  function update() {
+    if (name) box.children[0].textContent = name.value;
+    box.children[1].textContent = render(pattern.value);
+  }
+  pattern.addEventListener("input", update);
+  if (name) name.addEventListener("input", update);
+})();
+"""
+
+
 def gap_text(first, last):
     return f"{first}" if first == last else f"{first} – {last}"
 
@@ -31,12 +62,13 @@ class NumberSequenceForm(forms.ModelForm):
         label=_("Correct next number"),
         required=False,
         min_value=1,
+        widget=UnfoldAdminBigIntegerFieldWidget,
         help_text=_("Only to fix the counter. It can never be set to a number that was already issued."),
     )
     correction_reason = forms.CharField(
         label=_("Reason for correction"),
         required=False,
-        widget=forms.Textarea(attrs={"rows": 2}),
+        widget=UnfoldAdminTextareaWidget(attrs={"rows": 2}),
         help_text=_("Required when you correct the counter; stored in the log."),
     )
 
@@ -68,18 +100,23 @@ class GapNoteInline(TabularInline):
 
 
 class CounterChangeInline(TabularInline):
+    """The log of manual corrections. Someone who may correct counters may also fix the reason or remove
+    an entry (it goes to the trash); what the counter was and became stays as it happened."""
+
     model = CounterChange
     extra = 0
     tab = True
     fields = ["changed_at", "user", "old_value", "new_value", "reason"]
-    readonly_fields = fields
-    can_delete = False
+    readonly_fields = ["changed_at", "user", "old_value", "new_value"]
 
     def has_add_permission(self, request, obj=None):
         return False
 
     def has_change_permission(self, request, obj=None):
-        return False
+        return request.user.has_perm("numbering.correct_numbersequence")
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.has_perm("numbering.correct_numbersequence")
 
 
 @admin.register(NumberSequence)
@@ -88,14 +125,14 @@ class NumberSequenceAdmin(ObjectActionsMixin, ModelAdmin, TabbedTranslationAdmin
     inlines = [GapNoteInline, CounterChangeInline]
     list_display = ["name", "show_preview", "next_number", "show_status"]
     search_fields = ["name", "key", "pattern"]
-    readonly_fields = ["key", "next_number", "show_preview", "status_overview"]
+    readonly_fields = ["key", "next_number", "show_preview", "show_next_name", "status_overview"]
     object_actions = [
         ObjectAction("set-to-highest", _("Set counter to highest number + 1"), "sync", handler="set_to_highest",
                      show_if="counter_differs"),
     ]
     fieldsets = [
         (None, {"fields": ["status_overview"]}),
-        (None, {"fields": ["name", "key", "pattern", "show_preview", "reset_yearly", "archive_regex"]}),
+        (None, {"fields": ["name", "key", "pattern", "show_next_name", "reset_yearly", "archive_regex"]}),
         (_("Counter"), {"fields": ["next_number", "new_next_number", "correction_reason"]}),
     ]
 
@@ -115,6 +152,17 @@ class NumberSequenceAdmin(ObjectActionsMixin, ModelAdmin, TabbedTranslationAdmin
     @display(description=_("Next number looks like"))
     def show_preview(self, obj):
         return obj.preview() if obj.pk else "–"
+
+    @display(description=_("Next number looks like"))
+    def show_next_name(self, obj):
+        """What the next document will be called, from the name and the pattern; follows the form while typing."""
+        if not obj.pk:
+            return "–"
+        return format_html(
+            '<span data-pd-preview data-pd-number="{}"><span class="font-semibold">{}</span>: <span>{}</span></span>'
+            '<script>{}</script>',
+            obj._number_for_today(), obj.name, obj.preview(), mark_safe(PREVIEW_SCRIPT),
+        )
 
     @display(description=_("Status"), label={"success": "success", "info": "info", "warning": "warning", "danger": "danger"})
     def show_status(self, obj):

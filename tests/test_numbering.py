@@ -213,3 +213,19 @@ def test_block_token_like_old_licence_numbers():
     assert patterns.render("{yy}{block:4}", 10000, day) == "26B0000"
     assert patterns.number_from("{yy}{block:4}", "26B0007") == 10007
     patterns.validate("{yy}{block:4}")
+
+
+def test_counter_change_reason_can_be_fixed_or_removed(client, site, invoices):
+    from apps.trash.models import TrashEntry
+
+    invoices.correct(5, None, "Typfout")
+    change = CounterChange.objects.get()
+    client.force_login(make_user("fin@example.test", staff=True, role="Financieel"))
+    data = admin_form(**{"changes-TOTAL_FORMS": "1", "changes-INITIAL_FORMS": "1", "changes-0-id": str(change.pk),
+                         "changes-0-sequence": str(invoices.pk), "changes-0-reason": "Gelijkgezet"})
+    assert client.post(f"{URL}{invoices.pk}/change/", data).status_code == 302
+    change.refresh_from_db()
+    assert change.reason == "Gelijkgezet" and change.new_value == 5
+    data["changes-0-DELETE"] = "on"
+    client.post(f"{URL}{invoices.pk}/change/", data)
+    assert not CounterChange.objects.exists() and TrashEntry.objects.get().model == "numbering.counterchange"

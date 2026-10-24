@@ -33,8 +33,10 @@ class NumberSequence(models.Model):
         max_length=120,
         blank=True,
         help_text=_(
-            "Optional. Regular expression for documents in the archive folder; the first group is the number, "
-            r"e.g. invoice_(\d+)\.pdf"
+            "Optional. Only needed when documents from a previous system are in the archive folder. Tells "
+            "PackDesk how those files are named, so it can read their numbers: to check the counter and to "
+            r"import old invoices. (\d+) stands for the number, e.g. invoice_(\d+)\.pdf matches invoice_1030953.pdf. "
+            "Leave empty when there is no archive."
         ),
     )
 
