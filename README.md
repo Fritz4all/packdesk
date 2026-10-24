@@ -96,6 +96,23 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   binnen de verlengtermijn aflopen hebben een knop *Verlengen*: kies een verlengpack (zelfde categorie
   en hardwareklasse, "na garantie" voorrang), controleer en bestel. De nieuwe licentie sluit aan op de
   oude, met hetzelfde apparaat en dezelfde opties, en is meteen geregistreerd.
+- **Facturen** (menu *Bestellingen en facturen*): bij elke bestelling wordt een factuur gemaakt (instelbaar;
+  klanten met "geen factuur voor servicepacks" krijgen er geen), met een nummer uit de nummerreeks
+  *Facturen*, als pdf opgeslagen (niet openbaar) en gemaild naar het factuur-e-mailadres van de klant.
+  De opmaak is een HTML-sjabloon met logo, kleuren en bedrijfsgegevens uit de instellingen; teksten
+  (betaaltekst, mededeling, voettekst, e-mail) staan in *Factuurinstellingen* en een eigen sjabloon kan
+  het standaardsjabloon vervangen. Pdf's worden gemaakt met WeasyPrint.
+  - **Veiligheid van nummers:** staat de factuurteller niet boven het hoogste bestaande factuurnummer
+    (ook uit het archief), dan wordt er géén factuur gemaakt; de bestelling blijft staan, intern komt een
+    melding, en na het corrigeren maak je de factuur met *Factuur maken* bij de bestelling.
+  - **Bekijken, downloaden, opnieuw versturen:** in het beheer per factuur (met logboek van verzonden
+    mails) en voor de klant onder *Mijn facturen* (*Naar mij mailen*). Facturen kunnen niet worden
+    verwijderd.
+- **Oud factuurarchief:** `docker compose exec web python manage.py import_invoice_archive` registreert de
+  pdf's uit `DOCUMENT_ARCHIVE_DIR` als facturen (nummer, datum, debiteurnummer, naam, adres, btw, totaal,
+  uitgelezen met `pdftotext`) en koppelt ze op debiteurnummer aan klanten. De originele pdf's blijven
+  ongewijzigd en worden zo getoond. Opnieuw draaien slaat bestaande over; `--relink` koppelt opnieuw
+  (na het importeren van klanten), `--fix-dates` vult ontbrekende datums aan.
 - **Democatalogus:** `docker compose exec web python manage.py load_demo_catalogue` maakt een kleine
   catalogus en testlicenties aan om de wizard te proberen (alleen als er nog geen packs zijn).
 - **Dashboard** (beheer-startpagina): totalen (actieve klanten, te keuren aanmeldingen, licenties, nog
