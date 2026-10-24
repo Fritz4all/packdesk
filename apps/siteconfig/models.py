@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
@@ -293,7 +295,11 @@ class HomeBlock(models.Model):
     icon = models.CharField(_("icon"), max_length=8, blank=True, help_text=_("A symbol or emoji, e.g. ✓ or 🛠"))
     title = models.CharField(_("title"), max_length=100)
     text = models.TextField(_("text"), blank=True)
-    link_url = models.CharField(_("link"), max_length=300, blank=True, help_text=_("Page address, e.g. /mijn/ or https://…"))
+    link_url = models.CharField(
+        _("link"), max_length=300, blank=True,
+        help_text=_("Page address, e.g. /mijn/ or https://…; or just mailto: for an email to the general email "
+                    "address, with the title as subject."),
+    )
     link_text = models.CharField(_("link text"), max_length=60, blank=True)
     visibility = models.CharField(_("visible for"), max_length=12, choices=Visibility.choices, default=Visibility.ALL)
     is_active = models.BooleanField(_("active"), default=True)
@@ -306,6 +312,13 @@ class HomeBlock(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def href(self):
+        """The link; a bare "mailto:" becomes an email to the general address about this block."""
+        if self.link_url.strip().lower() == "mailto:":
+            return f"mailto:{self.settings.email}?subject={quote(self.title)}" if self.settings.email else ""
+        return self.link_url
 
     def get_inline_title(self):
         """Collapsed row in the admin: icon and title, then (smaller) who sees it."""

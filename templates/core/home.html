@@ -20,7 +20,7 @@
     {% if block.icon %}<div class="card-icon">{{ block.icon }}</div>{% endif %}
     <h2>{{ block.title }}</h2>
     {% if block.text %}<p>{{ block.text|linebreaksbr }}</p>{% endif %}
-    {% if block.link_url %}<p class="card-link"><a href="{{ block.link_url }}">{% firstof block.link_text _("Read more") %} →</a></p>{% endif %}
+    {% with href=block.href %}{% if href %}<p class="card-link"><a href="{{ href }}">{% firstof block.link_text _("Read more") %} →</a></p>{% endif %}{% endwith %}
   </article>
   {% endfor %}
 </section>
