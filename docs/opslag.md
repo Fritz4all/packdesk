@@ -11,9 +11,8 @@ buiten de container: in de database of in een map op de server. Niets daarvan st
 | # | Wat | Waar | Buiten de container? | In Git? | Back-up? |
 |---|---|---|---|---|---|
 | 1 | Alle bedrijfsgegevens en de meeste instellingen | eigen database van PackDesk (PostgreSQL of MariaDB/MySQL) | ja: de server in `DB_HOST`, of volume `dbdata` / `mariadbdata` | nee | **ja** |
-| 2 | Uploads voor de website (logo, favicon, klantlogo's) | `MEDIA_ROOT` → `${DATA_DIR}/media` | ja | nee | **ja** |
-| 3 | Privébestanden (factuur-pdf's, storingsbijlagen, wachtende imports) | `PRIVATE_MEDIA_ROOT` → `${DATA_DIR}/private` | ja | nee | **ja** |
-| 4 | Oud factuurarchief (pdf's van de vorige webshop) | `DOCUMENT_ARCHIVE` → `/data/archive`, alleen-lezen | ja | nee | ja (eenmalig, verandert niet) |
+| 2 | Bestanden van PackDesk: website-uploads, factuur-pdf's, storingsbijlagen, wachtende imports | `${DATA_DIR}` op de server, in de container `/data` (`DATA_ROOT`) | ja | nee | **ja** |
+| 3 | Oud factuurarchief (pdf's van de vorige webshop), alleen als je het opgeeft | `DOCUMENT_ARCHIVE` op de server, in de container `/data-archive`, alleen-lezen | ja | nee | ja (eenmalig, verandert niet) |
 | 5 | Serverinstellingen (geheime sleutel, databaseadres, mailserver, domein) | `.env` of omgevingsvariabelen | ja, op de server | nee (`.env` staat in `.gitignore`) | **ja** |
 | 6 | Programmacode, vaste teksten en vertalingen | in de image (lokaal: de projectmap) | n.v.t. | ja | via Git |
 | 7 | Keuzes van een bezoeker (taal, licht/donker) | browser van de bezoeker | n.v.t. | nee | nee |
@@ -72,27 +71,37 @@ Het wachtwoord van een externe database is versleuteld met een sleutel die van `
 afgeleid. Een kopie van de database alleen geeft het dus niet prijs. Na een andere `SECRET_KEY` vul je
 het opnieuw in.
 
-## 2. Uploads voor de website: `${DATA_DIR}/media`
+## 2. Bestanden van PackDesk: `${DATA_DIR}` → `/data`
 
-Logo en favicon uit de instellingen, en logo's van klanten. Deze bestanden zijn via `/media/` op de
-website te zien; zet hier dus niets vertrouwelijks.
+Eén map op de server, in de container `/data` (`DATA_ROOT`), met een submap per doel. De submappen
+worden aangemaakt zodra ze nodig zijn.
 
-## 3. Privébestanden: `${DATA_DIR}/private`
+| Submap | Inhoud | Via de website te zien? |
+|---|---|---|
+| `website/` | Logo en favicon uit de instellingen, logo's van klanten | ja, via `/media/`; zet hier niets vertrouwelijks |
+| `invoices/<jaar>/` | Factuur-pdf's die PackDesk maakt, en kopieën van oude facturen die via een klantimport binnenkwamen | nee |
+| `fault-attachments/<id>/` | Bijlagen bij storingsmeldingen | nee |
+| `imports/` | Een geüpload importbestand dat op controle wacht; verwijderd na importeren of annuleren, anders na een dag | nee |
 
-| Submap | Inhoud |
-|---|---|
-| `invoices/<jaar>/` | Factuur-pdf's die PackDesk zelf maakt, en kopieën van oude facturen die via een klantimport binnenkwamen |
-| `faults/<id>/` | Bijlagen bij storingsmeldingen |
-| `imports/` | Een geüpload importbestand dat op controle wacht. Wordt verwijderd na importeren of annuleren, en anders na een dag. |
+Wat niet via de website te zien is, opent alleen de eigen klant of een medewerker met het juiste
+recht, en altijd via PackDesk.
 
-Niet via de website bereikbaar. Alleen de eigen klant of een medewerker met het juiste recht kan een
-bestand openen, en dan altijd via PackDesk.
+## 3. Oud factuurarchief (optioneel): `DOCUMENT_ARCHIVE` → `/data-archive`
 
-## 4. Oud factuurarchief: `DOCUMENT_ARCHIVE`
+Alleen voor een installatie die de vorige webshop overneemt: de pdf's van de vorige webshop (13.456 facturen,
+5,3 GB). De map staat los van `/data` en wordt alleen-lezen gekoppeld, via een
+`docker-compose.override.yml` (staat niet in Git; compose leest dat bestand vanzelf):
 
-De pdf's van de vorige webshop (13.456 facturen, 5,3 GB). PackDesk leest ze alleen; ze worden nooit
-gewijzigd. In de database staat per factuur alleen de bestandsnaam, en PackDesk opent alleen bestanden
-binnen deze map.
+```yaml
+services:
+  web:
+    volumes:
+      - ${DOCUMENT_ARCHIVE}:/data-archive:ro
+```
+
+met `DOCUMENT_ARCHIVE=<map>` in `.env`. Zonder deze koppeling is er geen archief en werkt de rest
+gewoon. PackDesk leest de pdf's alleen en wijzigt ze nooit. In de database staat per factuur alleen
+de bestandsnaam, en PackDesk opent alleen bestanden binnen deze map.
 
 ## 5. Serverinstellingen: `.env` / omgevingsvariabelen
 
@@ -108,9 +117,9 @@ Instellingen die per server verschillen of geheim zijn. Ze staan niet in het beh
 | `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` | domeinnaam van de shop |
 | `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_BACKEND` | mailserver |
 | `SECURE_COOKIES`, `SECURE_SSL_REDIRECT`, `SECURE_HSTS_SECONDS` | HTTPS |
-| `DATA_DIR` | map op de server voor 2 en 3 (docker-compose) |
-| `MEDIA_ROOT`, `PRIVATE_MEDIA_ROOT` | dezelfde mappen, gezien vanuit de container |
-| `DOCUMENT_ARCHIVE` / `DOCUMENT_ARCHIVE_DIR` | archiefmap op de server / in de container |
+| `DATA_DIR` | map op de server voor alle bestanden van PackDesk (docker-compose koppelt hem als `/data`) |
+| `DATA_ROOT` | dezelfde map, gezien vanuit de container (`/data`) |
+| `DOCUMENT_ARCHIVE` / `DOCUMENT_ARCHIVE_DIR` | optioneel: archiefmap op de server / in de container (`/data-archive`) |
 | `FALLBACK_LANGUAGES`, `LOG_LEVEL`, `DEBUG` | gedrag |
 
 ## 6. Code: Git en de image
@@ -132,6 +141,6 @@ kan altijd worden weggegooid en opnieuw gebouwd.
 | Wat | Waar |
 |---|---|
 | Database | Docker-volume `packdesk_dbdata` (PostgreSQL) of `packdesk_mariadbdata` (MariaDB) |
-| Media en privébestanden | `../packdesk-data/media` en `../packdesk-data/private` |
+| Bestanden van PackDesk | `../packdesk-data/` met `website/`, `invoices/`, `fault-attachments/`, `imports/` |
 | Factuurarchief | `DOCUMENT_ARCHIVE` in `.env`; lokaal een kopie in `Source/extra/data/invoices` |
 | Verstuurde mails | Mailpit, alleen in het geheugen (http://localhost:8025) |

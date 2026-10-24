@@ -81,7 +81,7 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17 of MariaDB 10.6+ / MySQL, admin met d
   ingevuld en je ziet direct of het onder contract valt. Daarna storing, gewenste afhandeling,
   gegevens van melder en locatie, en bijlagen (aantal en grootte instelbaar). Elke melding krijgt een
   nummer uit de nummerreeks *Storingsmeldingen*, gaat per mail (met bijlagen) naar de ingestelde
-  ontvangers en de melder krijgt een bevestiging. Bijlagen staan in `PRIVATE_MEDIA_ROOT` en zijn alleen
+  ontvangers en de melder krijgt een bevestiging. Bijlagen staan in `/data/fault-attachments` en zijn alleen
   via het beheer te downloaden. In het beheer: status nieuw / in behandeling / afgesloten, interne
   notities, dekking, en een teller in het menu. Klanten zien hun meldingen onder *Mijn storingsmeldingen*.
 - **Bestellen** (klantportaal → *Servicepacks bestellen*): packs kiezen met aantal en referentie,
@@ -233,20 +233,26 @@ docker compose exec web python manage.py create_user --email admin@example.test 
 - Admin: http://localhost:8000/beheer/ → **Instellingen** voor naam, logo en kleuren
 - Mailpit (verstuurde mails): http://localhost:8025
 
-Bestaande documenten (bijv. het factuurarchief van de vorige webshop) koppel je alleen-lezen met
-`DOCUMENT_ARCHIVE=<map>` in een lokaal `.env`-bestand.
+Het factuurarchief van de vorige webshop koppel je (optioneel) alleen-lezen als `/data-archive`: zet
+`DOCUMENT_ARCHIVE=<map>` in `.env` en maak een `docker-compose.override.yml` (niet in Git) met:
+
+```yaml
+services:
+  web:
+    volumes:
+      - ${DOCUMENT_ARCHIVE}:/data-archive:ro
+```
 
 ## Waar staan de gegevens?
 
-Niets van klanten komt in Git. `.gitignore` sluit `.env`, `media/`, `private/`, pdf's, zip-bestanden
+Niets van klanten komt in Git. `.gitignore` sluit `.env`, datamappen, pdf's, zip-bestanden
 en database-dumps uit; `.dockerignore` houdt ze ook buiten de image.
 
 | Wat | Waar |
 |---|---|
 | Database (klanten, licenties, facturen, instellingen, gebruikers) | Docker-volume `dbdata` |
-| Logo's en andere uploads voor de website | `${DATA_DIR}/media` |
-| Factuur-pdf's, storingsbijlagen, wachtende imports | `${DATA_DIR}/private`, niet via de website bereikbaar |
-| Oud factuurarchief | `DOCUMENT_ARCHIVE`, alleen-lezen gekoppeld |
+| Bestanden van PackDesk, één submap per doel: `website/` (logo's), `invoices/`, `fault-attachments/`, `imports/` | `${DATA_DIR}` → `/data`; alleen `website/` is via de website te zien |
+| Oud factuurarchief (optioneel) | `DOCUMENT_ARCHIVE` → `/data-archive`, alleen-lezen, via `docker-compose.override.yml` |
 | Geheimen en serverinstellingen | `.env` op de server |
 
 `DATA_DIR` staat standaard op `../packdesk-data`, naast de projectmap. Het volledige overzicht, ook van
@@ -303,7 +309,7 @@ docker build -t packdesk:<versie> .
 - Draait als non-root gebruiker `app` met gunicorn op poort 8000.
 - Configuratie via environment-variabelen, zie [.env.example](.env.example).
 - Migraties draaien alleen met `RUN_MIGRATIONS=1`, zodat een nieuwe image de database niet ongemerkt wijzigt.
-- Geüploade bestanden in `/data/media` (volume).
+- Alle bestanden van PackDesk in `/data` (`DATA_ROOT`, een volume); het oude archief optioneel in `/data-archive`.
 
 Een productie-`docker-compose.yml` volgt in stap E van het plan.
 
