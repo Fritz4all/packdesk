@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 21:59+0200\n"
+"POT-Creation-Date: 2026-10-24 23:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,51 +17,80 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/accounts/admin.py:36 apps/accounts/admin.py:89
+#: apps/accounts/admin.py:38 apps/accounts/admin.py:91
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: apps/accounts/admin.py:40
+#: apps/accounts/admin.py:42
 msgid ""
 "Tick what users with this role may see and do. You can only grant rights you "
 "have yourself."
 msgstr "Kreuzen Sie an, was Benutzer mit dieser Rolle sehen und tun dürfen. Sie können nur Rechte vergeben, die Sie selbst haben."
 
-#: apps/accounts/admin.py:85 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:228
+#: apps/accounts/admin.py:87 apps/accounts/apps.py:8
+#: apps/dashboard/navigation.py:240
 msgid "Users"
 msgstr "Benutzer"
 
-#: apps/accounts/admin.py:103 apps/accounts/admin.py:188
+#: apps/accounts/admin.py:105 apps/accounts/admin.py:201
 msgid "Role"
 msgstr "Rolle"
 
-#: apps/accounts/admin.py:106
+#: apps/accounts/admin.py:108
 msgid ""
 "Required for staff. The role decides what this user sees and may do in the "
 "admin."
 msgstr "Pflicht für Mitarbeiter. Die Rolle bestimmt, was dieser Benutzer in der Verwaltung sieht und tun darf."
 
-#: apps/accounts/admin.py:121
+#: apps/accounts/admin.py:123
 msgid "Staff users need a role."
 msgstr "Mitarbeiter benötigen eine Rolle."
 
-#: apps/accounts/admin.py:151 apps/accounts/admin.py:157
+#: apps/accounts/admin.py:149 apps/core/setup_views.py:51
+#: apps/core/setup_views.py:96 apps/customers/forms.py:51
+msgid "Password"
+msgstr "Passwort"
+
+#: apps/accounts/admin.py:152
+msgid "Set"
+msgstr "Gesetzt"
+
+#: apps/accounts/admin.py:153
+msgid "Must choose a new one"
+msgstr "Muss ein neues wählen"
+
+#: apps/accounts/admin.py:155
+msgid "Make selected users choose a new password (email with link)"
+msgstr "Ausgewählte Benutzer ein neues Passwort wählen lassen (E-Mail mit Link)"
+
+#: apps/accounts/admin.py:164 apps/accounts/admin.py:170
 msgid "Personal info"
 msgstr "Persönliche Daten"
 
-#: apps/accounts/admin.py:152 apps/accounts/admin.py:158
-#: apps/accounts/admin.py:163
+#: apps/accounts/admin.py:165 apps/accounts/admin.py:171
+#: apps/accounts/admin.py:176
 msgid "Access"
 msgstr "Zugang"
 
-#: apps/accounts/admin.py:153 apps/accounts/admin.py:159
+#: apps/accounts/admin.py:166 apps/accounts/admin.py:172
 msgid "Dates"
 msgstr "Daten"
 
-#: apps/accounts/admin.py:191
+#: apps/accounts/admin.py:204
 msgid "Superuser"
 msgstr "Superuser"
+
+#: apps/accounts/admin.py:224
+#, python-format
+msgid ""
+"%(n)s email(s) sent with a link to choose a new password; the old passwords "
+"no longer work."
+msgstr "%(n)s E-Mail(s) mit einem Link zum Wählen eines neuen Passworts gesendet; die alten Passwörter funktionieren nicht mehr."
+
+#: apps/accounts/admin.py:227
+#, python-format
+msgid "Not sent (no email address or not active): %(list)s"
+msgstr "Nicht gesendet (keine E-Mail-Adresse oder nicht aktiv): %(list)s"
 
 #: apps/accounts/forms.py:9 apps/accounts/forms.py:21
 #: apps/core/setup_views.py:48 apps/customers/forms.py:50
@@ -115,6 +144,25 @@ msgstr "Rolle"
 #: apps/accounts/models.py:62
 msgid "roles"
 msgstr "Rollen"
+
+#: apps/accounts/password_reset.py:23
+#, python-format
+msgid ""
+"Dear %(name)s,\n"
+"\n"
+"For your account at %(company)s you need to choose a new password; your "
+"current password no longer works.\n"
+"\n"
+"Choose your new password here (the link is valid for a few days):\n"
+"%(link)s\n"
+"\n"
+"Expired? Use 'Forgot password' on the login page.\n"
+msgstr "Guten Tag %(name)s,\n\nfür Ihr Konto bei %(company)s müssen Sie ein neues Passwort wählen; Ihr aktuelles Passwort funktioniert nicht mehr.\n\nWählen Sie hier Ihr neues Passwort (der Link ist einige Tage gültig):\n%(link)s\n\nAbgelaufen? Verwenden Sie 'Passwort vergessen' auf der Anmeldeseite.\n"
+
+#: apps/accounts/password_reset.py:27
+#, python-format
+msgid "Choose a new password for %(company)s"
+msgstr "Wählen Sie ein neues Passwort für %(company)s"
 
 #: apps/accounts/permissions.py:12 apps/invoices/admin.py:87
 #: templates/invoices/my_invoices.html:14
@@ -232,11 +280,6 @@ msgstr "Vorname"
 msgid "Last name"
 msgstr "Nachname"
 
-#: apps/core/setup_views.py:51 apps/core/setup_views.py:96
-#: apps/customers/forms.py:51
-msgid "Password"
-msgstr "Passwort"
-
 #: apps/core/setup_views.py:52
 msgid "Password again"
 msgstr "Passwort wiederholen"
@@ -301,140 +344,167 @@ msgstr "Test-E-Mail an %(email)s gesendet."
 msgid "PackDesk is ready. Everything can be changed later in the admin."
 msgstr "PackDesk ist bereit. Alles lässt sich später in der Verwaltung ändern."
 
-#: apps/customers/admin.py:42
+#: apps/customers/admin.py:44 apps/customers/admin.py:265
 msgid "Login"
 msgstr "Login"
 
-#: apps/customers/admin.py:45
+#: apps/customers/admin.py:47
 msgid "No login yet"
 msgstr "Noch kein Login"
 
-#: apps/customers/admin.py:46 apps/customers/models.py:50
-#: apps/legacy/parts.py:117
+#: apps/customers/admin.py:48 apps/customers/admin.py:273
+#: apps/customers/models.py:50 apps/legacy/parts.py:117
 msgid "Active"
 msgstr "Aktiv"
 
-#: apps/customers/admin.py:46
+#: apps/customers/admin.py:48
 msgid "Not active (waiting for approval or blocked)"
 msgstr "Nicht aktiv (wartet auf Freigabe oder gesperrt)"
 
-#: apps/customers/admin.py:64
+#: apps/customers/admin.py:66
 msgid "Approve"
 msgstr "Freigeben"
 
-#: apps/customers/admin.py:65
+#: apps/customers/admin.py:67
 msgid "Send login to contacts without one"
 msgstr "Login an Ansprechpartner ohne Login senden"
 
-#: apps/customers/admin.py:67
+#: apps/customers/admin.py:69
 msgid "Block"
 msgstr "Sperren"
 
-#: apps/customers/admin.py:68
+#: apps/customers/admin.py:70
 msgid "Block this customer? Its contacts can no longer log in."
 msgstr "Diesen Kunden sperren? Die Ansprechpartner können sich dann nicht mehr anmelden."
 
-#: apps/customers/admin.py:69
+#: apps/customers/admin.py:71
 #: templates/admin/customers/customer/change_list.html:5
 msgid "Export"
 msgstr "Exportieren"
 
-#: apps/customers/admin.py:72 apps/siteconfig/admin.py:128
+#: apps/customers/admin.py:74 apps/siteconfig/admin.py:128
 msgid "General"
 msgstr "Allgemein"
 
-#: apps/customers/admin.py:75
+#: apps/customers/admin.py:77
 msgid "Email addresses"
 msgstr "E-Mail-Adressen"
 
-#: apps/customers/admin.py:76
+#: apps/customers/admin.py:78
 msgid "Prices and invoices"
 msgstr "Preise und Rechnungen"
 
-#: apps/customers/admin.py:77
+#: apps/customers/admin.py:79
 msgid "Notes"
 msgstr "Notizen"
 
-#: apps/customers/admin.py:94 templates/faults/done.html:8
+#: apps/customers/admin.py:96 templates/faults/done.html:8
 #: templates/faults/my_reports.html:9 templates/legacy/overview.html:42
 msgid "Number"
 msgstr "Nummer"
 
-#: apps/customers/admin.py:98 apps/customers/forms.py:40
+#: apps/customers/admin.py:100 apps/customers/forms.py:40
 #: apps/legacy/parts.py:118 apps/licences/forms.py:37 apps/orders/forms.py:59
 msgid "City"
 msgstr "Ort"
 
-#: apps/customers/admin.py:103 apps/faults/admin.py:70
-#: apps/licences/admin.py:175 apps/numbering/admin.py:119
-#: apps/numbering/admin.py:133 templates/faults/my_reports.html:9
-#: templates/orders/my_licences.html:13
+#: apps/customers/admin.py:105 apps/faults/admin.py:70 apps/legacy/admin.py:226
+#: apps/legacy/admin.py:230 apps/licences/admin.py:175
+#: apps/numbering/admin.py:119 apps/numbering/admin.py:133
+#: templates/faults/my_reports.html:9 templates/orders/my_licences.html:13
 msgid "Status"
 msgstr "Status"
 
-#: apps/customers/admin.py:107 apps/legacy/parts.py:122
+#: apps/customers/admin.py:109 apps/dashboard/navigation.py:85
+#: apps/legacy/old_shop/importer.py:100 apps/legacy/parts.py:122
 msgid "Contacts"
 msgstr "Ansprechpartner"
 
-#: apps/customers/admin.py:124
+#: apps/customers/admin.py:126
 msgid "Approve selected customers"
 msgstr "Ausgewählte Kunden freigeben"
 
-#: apps/customers/admin.py:128
+#: apps/customers/admin.py:130
 #, python-format
 msgid "%(n)s customer(s) approved."
 msgstr "%(n)s Kunde(n) freigegeben."
 
-#: apps/customers/admin.py:130
+#: apps/customers/admin.py:132
 msgid "Block selected customers"
 msgstr "Ausgewählte Kunden sperren"
 
-#: apps/customers/admin.py:134
+#: apps/customers/admin.py:136
 #, python-format
 msgid "%(n)s customer(s) blocked."
 msgstr "%(n)s Kunde(n) gesperrt."
 
-#: apps/customers/admin.py:147
+#: apps/customers/admin.py:146
+msgid "Make the contacts of the selected customers choose a new password"
+msgstr "Ansprechpartner der ausgewählten Kunden ein neues Passwort wählen lassen"
+
+#: apps/customers/admin.py:155
 msgid "Export selected customers"
 msgstr "Ausgewählte Kunden exportieren"
 
-#: apps/customers/admin.py:173
+#: apps/customers/admin.py:181
 #, python-format
 msgid "Customer approved with number %(n)s."
 msgstr "Kunde mit Nummer %(n)s freigegeben."
 
-#: apps/customers/admin.py:177
+#: apps/customers/admin.py:185
 msgid "Customer blocked; its contacts can no longer log in."
 msgstr "Kunde gesperrt; die Ansprechpartner können sich nicht mehr anmelden."
 
-#: apps/customers/admin.py:195
+#: apps/customers/admin.py:203
 #, python-format
 msgid "Logins created; %(n)s invitation(s) sent."
 msgstr "Logins angelegt; %(n)s Einladung(en) gesendet."
 
-#: apps/customers/admin.py:197
+#: apps/customers/admin.py:205
 #, python-format
 msgid "Email address already in use: %(list)s"
 msgstr "E-Mail-Adresse bereits vergeben: %(list)s"
 
-#: apps/customers/admin.py:216
+#: apps/customers/admin.py:224
 msgid "New customers"
 msgstr "Neue Kunden"
 
-#: apps/customers/admin.py:217
+#: apps/customers/admin.py:225
 msgid "Sign-up form"
 msgstr "Anmeldeformular"
 
-#: apps/customers/admin.py:220
+#: apps/customers/admin.py:228
 msgid "Form fields"
 msgstr "Formularfelder"
 
-#: apps/customers/admin.py:226
+#: apps/customers/admin.py:234
 msgid "Activation email"
 msgstr "Aktivierungs-E-Mail"
 
-#: apps/customers/apps.py:7 apps/dashboard/navigation.py:69
-#: apps/dashboard/navigation.py:72 apps/legacy/parts.py:107
+#: apps/customers/admin.py:261 apps/legacy/old_shop/importer.py:116
+#: apps/legacy/parts.py:110
+msgid "Name"
+msgstr "Name"
+
+#: apps/customers/admin.py:268
+msgid "No login"
+msgstr "Kein Login"
+
+#: apps/customers/admin.py:270
+msgid "Not active"
+msgstr "Nicht aktiv"
+
+#: apps/customers/admin.py:272
+msgid "Must choose a new password"
+msgstr "Muss ein neues Passwort wählen"
+
+#: apps/customers/admin.py:275
+msgid "Make selected contacts choose a new password (email with link)"
+msgstr "Ausgewählte Ansprechpartner ein neues Passwort wählen lassen (E-Mail mit Link)"
+
+#: apps/customers/apps.py:7 apps/dashboard/navigation.py:75
+#: apps/dashboard/navigation.py:78 apps/legacy/old_shop/importer.py:99
+#: apps/legacy/parts.py:107
 msgid "Customers"
 msgstr "Kunden"
 
@@ -659,6 +729,7 @@ msgid "company name"
 msgstr "Firmenname"
 
 #: apps/customers/models.py:63 apps/faults/models.py:72
+#: apps/legacy/models.py:130
 msgid "status"
 msgstr "Status"
 
@@ -743,12 +814,13 @@ msgid "ID in old system"
 msgstr "ID im alten System"
 
 #: apps/customers/models.py:93 apps/invoices/models.py:91
-#: apps/legacy/models.py:28 apps/licences/models.py:277
+#: apps/legacy/models.py:28 apps/legacy/old_shop/importer.py:107
+#: apps/licences/models.py:277
 msgid "created"
 msgstr "angelegt"
 
 #: apps/customers/models.py:94 apps/legacy/models.py:29
-#: apps/siteconfig/models.py:151
+#: apps/legacy/old_shop/importer.py:107 apps/siteconfig/models.py:151
 msgid "updated"
 msgstr "aktualisiert"
 
@@ -966,7 +1038,7 @@ msgstr "Nachricht"
 msgid "customer settings"
 msgstr "Kundeneinstellungen"
 
-#: apps/customers/models.py:287 apps/dashboard/navigation.py:91
+#: apps/customers/models.py:287 apps/dashboard/navigation.py:103
 msgid "Customer settings"
 msgstr "Kundeneinstellungen"
 
@@ -1160,110 +1232,115 @@ msgstr "Papierkorb"
 msgid "External databases"
 msgstr "Externe Datenbanken"
 
-#: apps/dashboard/navigation.py:53 apps/legacy/admin.py:55
+#: apps/dashboard/navigation.py:53 apps/legacy/admin.py:58
 #: templates/legacy/overview.html:49
 msgid "Table mappings"
 msgstr "Zuordnungen"
 
-#: apps/dashboard/navigation.py:59 apps/legacy/views.py:68
+#: apps/dashboard/navigation.py:59
+msgid "Imports"
+msgstr "Importe"
+
+#: apps/dashboard/navigation.py:65 apps/legacy/views.py:68
 #: apps/legacy/views.py:80 templates/legacy/choose.html:4
 msgid "Compare databases"
 msgstr "Datenbanken vergleichen"
 
-#: apps/dashboard/navigation.py:79
+#: apps/dashboard/navigation.py:91
 msgid "Customer types"
 msgstr "Kundentypen"
 
-#: apps/dashboard/navigation.py:85
+#: apps/dashboard/navigation.py:97
 msgid "Countries"
 msgstr "Länder"
 
-#: apps/dashboard/navigation.py:101
+#: apps/dashboard/navigation.py:113
 msgid "Orders and invoices"
 msgstr "Bestellungen und Rechnungen"
 
-#: apps/dashboard/navigation.py:104 apps/legacy/parts.py:137
-#: apps/orders/apps.py:7
+#: apps/dashboard/navigation.py:116 apps/legacy/old_shop/importer.py:101
+#: apps/legacy/parts.py:137 apps/orders/apps.py:7
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: apps/dashboard/navigation.py:110 apps/invoices/admin.py:101
-#: apps/invoices/apps.py:7 apps/legacy/parts.py:170
+#: apps/dashboard/navigation.py:122 apps/invoices/admin.py:101
+#: apps/invoices/apps.py:7 apps/legacy/old_shop/importer.py:103
+#: apps/legacy/parts.py:170
 msgid "Invoices"
 msgstr "Rechnungen"
 
-#: apps/dashboard/navigation.py:116 apps/invoices/models.py:41
+#: apps/dashboard/navigation.py:128 apps/invoices/models.py:41
 msgid "Invoice settings"
 msgstr "Rechnungseinstellungen"
 
-#: apps/dashboard/navigation.py:122 apps/orders/models.py:45
+#: apps/dashboard/navigation.py:134 apps/orders/models.py:45
 msgid "Order settings"
 msgstr "Bestelleinstellungen"
 
-#: apps/dashboard/navigation.py:132 apps/licences/apps.py:7
+#: apps/dashboard/navigation.py:144 apps/licences/apps.py:7
 msgid "Service packs and licences"
 msgstr "Servicepakete und Lizenzen"
 
-#: apps/dashboard/navigation.py:135 apps/dashboard/widgets.py:51
-#: apps/legacy/parts.py:146 apps/orders/admin.py:27
-#: templates/orders/order_detail.html:7
+#: apps/dashboard/navigation.py:147 apps/dashboard/widgets.py:51
+#: apps/legacy/old_shop/importer.py:101 apps/legacy/parts.py:146
+#: apps/orders/admin.py:27 templates/orders/order_detail.html:7
 msgid "Licences"
 msgstr "Lizenzen"
 
-#: apps/dashboard/navigation.py:141 templates/orders/order_form.html:11
+#: apps/dashboard/navigation.py:153 templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepakete"
 
-#: apps/dashboard/navigation.py:147
+#: apps/dashboard/navigation.py:159
 msgid "Pack categories"
 msgstr "Paketkategorien"
 
-#: apps/dashboard/navigation.py:153
+#: apps/dashboard/navigation.py:165
 msgid "Hardware classes"
 msgstr "Hardwareklassen"
 
-#: apps/dashboard/navigation.py:159
+#: apps/dashboard/navigation.py:171
 msgid "Brands"
 msgstr "Marken"
 
-#: apps/dashboard/navigation.py:165
+#: apps/dashboard/navigation.py:177
 msgid "Device types"
 msgstr "Gerätetypen"
 
-#: apps/dashboard/navigation.py:171
+#: apps/dashboard/navigation.py:183
 msgid "Option types"
 msgstr "Optionstypen"
 
-#: apps/dashboard/navigation.py:177
+#: apps/dashboard/navigation.py:189
 msgid "Support periods"
 msgstr "Laufzeiten"
 
-#: apps/dashboard/navigation.py:183
+#: apps/dashboard/navigation.py:195
 msgid "Service levels"
 msgstr "Servicelevel"
 
-#: apps/dashboard/navigation.py:189 apps/licences/models.py:217
+#: apps/dashboard/navigation.py:201 apps/licences/models.py:217
 msgid "Licence settings"
 msgstr "Lizenzeinstellungen"
 
-#: apps/dashboard/navigation.py:199 apps/dashboard/navigation.py:202
+#: apps/dashboard/navigation.py:211 apps/dashboard/navigation.py:214
 #: apps/faults/apps.py:7
 msgid "Fault reports"
 msgstr "Störungsmeldungen"
 
-#: apps/dashboard/navigation.py:209
+#: apps/dashboard/navigation.py:221
 msgid "Handling options"
 msgstr "Bearbeitungsoptionen"
 
-#: apps/dashboard/navigation.py:215 apps/faults/models.py:53
+#: apps/dashboard/navigation.py:227 apps/faults/models.py:53
 msgid "Fault report settings"
 msgstr "Störungseinstellungen"
 
-#: apps/dashboard/navigation.py:225
+#: apps/dashboard/navigation.py:237
 msgid "Users and roles"
 msgstr "Benutzer und Rollen"
 
-#: apps/dashboard/navigation.py:234
+#: apps/dashboard/navigation.py:246
 msgid "Roles"
 msgstr "Rollen"
 
@@ -1351,7 +1428,7 @@ msgstr "Abschließen"
 msgid "Reopen"
 msgstr "Wieder öffnen"
 
-#: apps/faults/admin.py:51
+#: apps/faults/admin.py:51 apps/legacy/admin.py:246
 msgid "Report"
 msgstr "Meldung"
 
@@ -1651,7 +1728,7 @@ msgstr "Kundendaten auf der Rechnung"
 msgid "Archive"
 msgstr "Archiv"
 
-#: apps/invoices/admin.py:77 apps/legacy/admin.py:156
+#: apps/invoices/admin.py:77 apps/legacy/admin.py:163
 #: apps/numbering/admin.py:135
 msgid "Source"
 msgstr "Quelle"
@@ -1837,7 +1914,8 @@ msgstr "Anzahl"
 msgid "price each"
 msgstr "Stückpreis"
 
-#: apps/invoices/models.py:133 apps/orders/models.py:105
+#: apps/invoices/models.py:133 apps/invoices/models.py:148
+#: apps/orders/models.py:105
 msgid "amount"
 msgstr "Betrag"
 
@@ -1849,23 +1927,39 @@ msgstr "Rechnungsposition"
 msgid "invoice lines"
 msgstr "Rechnungspositionen"
 
-#: apps/invoices/models.py:148
+#: apps/invoices/models.py:149
+msgid "paid at"
+msgstr "bezahlt am"
+
+#: apps/invoices/models.py:151
+msgid "recorded by"
+msgstr "erfasst von"
+
+#: apps/invoices/models.py:154
+msgid "payment"
+msgstr "Zahlung"
+
+#: apps/invoices/models.py:155
+msgid "payments"
+msgstr "Zahlungen"
+
+#: apps/invoices/models.py:166
 msgid "sent at"
 msgstr "gesendet am"
 
-#: apps/invoices/models.py:149
+#: apps/invoices/models.py:167
 msgid "sent to"
 msgstr "gesendet an"
 
-#: apps/invoices/models.py:151
+#: apps/invoices/models.py:169
 msgid "sent by"
 msgstr "gesendet von"
 
-#: apps/invoices/models.py:154
+#: apps/invoices/models.py:172
 msgid "sent invoice email"
 msgstr "gesendete Rechnungs-E-Mail"
 
-#: apps/invoices/models.py:155
+#: apps/invoices/models.py:173
 msgid "sent invoice emails"
 msgstr "gesendete Rechnungs-E-Mails"
 
@@ -1891,98 +1985,121 @@ msgstr "Rechnung {number}"
 msgid "Attached is invoice {number}."
 msgstr "Anbei die Rechnung {number}."
 
-#: apps/legacy/admin.py:23 apps/siteconfig/admin.py:23
+#: apps/legacy/admin.py:26 apps/siteconfig/admin.py:23
 msgid "password"
 msgstr "Passwort"
 
-#: apps/legacy/admin.py:25 apps/siteconfig/admin.py:25
+#: apps/legacy/admin.py:28 apps/siteconfig/admin.py:25
 msgid ""
 "Stored encrypted and never shown again. Leave empty to keep the current "
 "password."
 msgstr "Wird verschlüsselt gespeichert und nie wieder angezeigt. Leer lassen, um das aktuelle Passwort zu behalten."
 
-#: apps/legacy/admin.py:49
+#: apps/legacy/admin.py:52
 msgid ""
 "PackDesk only reads from this database and never changes it. For extra "
 "safety, give this user read rights only."
 msgstr "PackDesk liest nur aus dieser Datenbank und ändert nie etwas. Geben Sie diesem Benutzer zur Sicherheit nur Leserechte."
 
-#: apps/legacy/admin.py:51
+#: apps/legacy/admin.py:54
 msgid "Last test"
 msgstr "Letzter Test"
 
-#: apps/legacy/admin.py:54
+#: apps/legacy/admin.py:57
 msgid "Test connection"
 msgstr "Verbindung testen"
 
-#: apps/legacy/admin.py:56
+#: apps/legacy/admin.py:59
 msgid "Load mapping for the previous webshop"
 msgstr "Zuordnung für den vorherigen Webshop laden"
 
-#: apps/legacy/admin.py:58
+#: apps/legacy/admin.py:61
 msgid "Compare with PackDesk"
 msgstr "Mit PackDesk vergleichen"
 
-#: apps/legacy/admin.py:62
+#: apps/legacy/admin.py:63 apps/legacy/models.py:147
+#: templates/admin/customers/customer/change_list.html:4
+#: templates/admin/customers/import_review.html:51
+#: templates/legacy/import_start.html:20
+msgid "Import"
+msgstr "Importieren"
+
+#: apps/legacy/admin.py:66
 msgid "Connection"
 msgstr "Verbindung"
 
-#: apps/legacy/admin.py:65
+#: apps/legacy/admin.py:69
 msgid "Not tested"
 msgstr "Nicht getestet"
 
-#: apps/legacy/admin.py:66
+#: apps/legacy/admin.py:70
 msgid "Works"
 msgstr "Funktioniert"
 
-#: apps/legacy/admin.py:66
+#: apps/legacy/admin.py:70
 msgid "No connection"
 msgstr "Keine Verbindung"
 
-#: apps/legacy/admin.py:84
+#: apps/legacy/admin.py:88
 #, python-format
 msgid ""
 "%(n)s table mapping(s) for the previous webshop added. Existing mappings were kept."
 msgstr "%(n)s Zuordnung(en) für den vorherigen Webshop hinzugefügt. Bestehende Zuordnungen wurden beibehalten."
 
-#: apps/legacy/admin.py:111 apps/legacy/models.py:107
+#: apps/legacy/admin.py:118 apps/legacy/models.py:107
 msgid "PackDesk field"
 msgstr "PackDesk-Feld"
 
-#: apps/legacy/admin.py:121
+#: apps/legacy/admin.py:128
 msgid "field"
 msgstr "Feld"
 
-#: apps/legacy/admin.py:122
+#: apps/legacy/admin.py:129
 msgid "fields"
 msgstr "Felder"
 
-#: apps/legacy/admin.py:147
+#: apps/legacy/admin.py:154
 msgid "Source in the external database"
 msgstr "Quelle in der externen Datenbank"
 
-#: apps/legacy/admin.py:152 apps/legacy/models.py:69
+#: apps/legacy/admin.py:159 apps/legacy/models.py:69
 msgid "PackDesk part"
 msgstr "PackDesk-Bereich"
 
-#: apps/legacy/admin.py:160
+#: apps/legacy/admin.py:167
 msgid "Fields"
 msgstr "Felder"
 
-#: apps/legacy/admin.py:179
+#: apps/legacy/admin.py:186
 msgid "Tables and columns"
 msgstr "Tabellen und Spalten"
 
-#: apps/legacy/admin.py:183
+#: apps/legacy/admin.py:190
 msgid ""
 "Save first; then the tables, columns and example rows of the external "
 "database appear here."
 msgstr "Zuerst speichern; danach erscheinen hier die Tabellen, Spalten und Beispielzeilen der externen Datenbank."
 
-#: apps/legacy/admin.py:190 apps/legacy/connection.py:138
+#: apps/legacy/admin.py:197 apps/legacy/connection.py:138
 #, python-format
 msgid "No connection: %(error)s"
 msgstr "Keine Verbindung: %(error)s"
+
+#: apps/legacy/admin.py:234
+msgid "Busy with"
+msgstr "Beschäftigt mit"
+
+#: apps/legacy/admin.py:238
+msgid "Result per part"
+msgstr "Ergebnis je Bereich"
+
+#: apps/legacy/admin.py:252
+msgid "Download report (CSV)"
+msgstr "Bericht herunterladen (CSV)"
+
+#: apps/legacy/admin.py:253
+msgid "one line per row of the old database; contains personal data"
+msgstr "eine Zeile je Zeile der alten Datenbank; enthält personenbezogene Daten"
 
 #: apps/legacy/compare.py:218 apps/legacy/compare.py:245
 msgid "Invoice PDFs in archive"
@@ -2015,6 +2132,19 @@ msgstr "Keine Tabellen des vorherigen Webshops gefunden; mit dieser Datenbank is
 #, python-format
 msgid "Connected to %(version)s, %(n)s tables. %(kind)s"
 msgstr "Verbunden mit %(version)s, %(n)s Tabellen. %(kind)s"
+
+#: apps/legacy/import_views.py:39
+msgid "An import of this database is still running."
+msgstr "Ein Import dieser Datenbank läuft noch."
+
+#: apps/legacy/import_views.py:43
+msgid "Tick that you have made a backup before importing."
+msgstr "Bestätigen Sie vor dem Import, dass Sie eine Sicherung erstellt haben."
+
+#: apps/legacy/import_views.py:49
+#, python-format
+msgid "Import from %(name)s"
+msgstr "Import aus %(name)s"
 
 #: apps/legacy/models.py:13
 msgid "MariaDB / MySQL"
@@ -2061,7 +2191,7 @@ msgstr "Verwenden Sie einen Benutzer, der nur lesen darf."
 msgid "password (encrypted)"
 msgstr "Passwort (verschlüsselt)"
 
-#: apps/legacy/models.py:23
+#: apps/legacy/models.py:23 apps/legacy/models.py:137
 msgid "notes"
 msgstr "Notizen"
 
@@ -2077,7 +2207,7 @@ msgstr "Verbindung funktioniert"
 msgid "result of last test"
 msgstr "Ergebnis des letzten Tests"
 
-#: apps/legacy/models.py:32 apps/legacy/models.py:68
+#: apps/legacy/models.py:32 apps/legacy/models.py:68 apps/legacy/models.py:128
 msgid "external database"
 msgstr "externe Datenbank"
 
@@ -2160,16 +2290,185 @@ msgstr "Feldzuordnung"
 msgid "field mappings"
 msgstr "Feldzuordnungen"
 
+#: apps/legacy/models.py:123
+msgid "Running"
+msgstr "Läuft"
+
+#: apps/legacy/models.py:124 templates/admin/index.html:12
+msgid "Done"
+msgstr "Fertig"
+
+#: apps/legacy/models.py:125
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+#: apps/legacy/models.py:129
+msgid "trial (nothing saved)"
+msgstr "Probe (nichts gespeichert)"
+
+#: apps/legacy/models.py:131
+msgid "started"
+msgstr "gestartet"
+
+#: apps/legacy/models.py:132
+msgid "finished"
+msgstr "beendet"
+
+#: apps/legacy/models.py:134
+msgid "started by"
+msgstr "gestartet von"
+
+#: apps/legacy/models.py:135
+msgid "progress"
+msgstr "Fortschritt"
+
+#: apps/legacy/models.py:136
+msgid "counts"
+msgstr "Anzahlen"
+
+#: apps/legacy/models.py:138
+msgid "report"
+msgstr "Bericht"
+
+#: apps/legacy/models.py:141
+msgid "import"
+msgstr "Import"
+
+#: apps/legacy/models.py:142
+msgid "imports"
+msgstr "Importe"
+
+#: apps/legacy/models.py:144
+msgid "Can import data from external databases"
+msgstr "Darf Daten aus externen Datenbanken importieren"
+
+#: apps/legacy/models.py:147 templates/legacy/import_start.html:13
+msgid "Trial import"
+msgstr "Probeimport"
+
+#: apps/legacy/old_shop/importer.py:99
+msgid "Catalogue"
+msgstr "Katalog"
+
+#: apps/legacy/old_shop/importer.py:99
+#| msgid "addresses"
+msgid "Addresses"
+msgstr "Adressen"
+
+#: apps/legacy/old_shop/importer.py:100 apps/legacy/parts.py:131
+msgid "Logins"
+msgstr "Logins"
+
+#: apps/legacy/old_shop/importer.py:100
+#| msgid "Staff"
+msgid "Staff roles"
+msgstr "Rollen der Mitarbeiter"
+
+#: apps/legacy/old_shop/importer.py:101
+#| msgid "order lines"
+msgid "Order lines"
+msgstr "Bestellpositionen"
+
+#: apps/legacy/old_shop/importer.py:102
+#| msgid "Licence options"
+msgid "Licence extensions"
+msgstr "Lizenzverlängerungen"
+
+#: apps/legacy/old_shop/importer.py:102 apps/legacy/parts.py:160
+msgid "Licence options"
+msgstr "Lizenzoptionen"
+
+#: apps/legacy/old_shop/importer.py:103
+#| msgid "payments"
+msgid "Payments"
+msgstr "Zahlungen"
+
+#: apps/legacy/old_shop/importer.py:104
+#| msgid "Number sequences"
+msgid "Number counters"
+msgstr "Nummernzähler"
+
+#: apps/legacy/old_shop/importer.py:107
+#| msgid "%(n)s unchanged"
+msgid "unchanged"
+msgstr "unverändert"
+
+#: apps/legacy/old_shop/importer.py:108
+#| msgid "Skipped"
+msgid "skipped"
+msgstr "übersprungen"
+
+#: apps/legacy/old_shop/importer.py:108
+#| msgid "link"
+msgid "linked"
+msgstr "verknüpft"
+
+#: apps/legacy/old_shop/importer.py:115 templates/legacy/import_counts.html:3
+#: templates/legacy/overview.html:21
+msgid "Part"
+msgstr "Bereich"
+
+#: apps/legacy/old_shop/importer.py:115
+#| msgid "Old database"
+msgid "Old table"
+msgstr "Alte Tabelle"
+
+#: apps/legacy/old_shop/importer.py:115
+#| msgid "Old ID"
+msgid "Old id"
+msgstr "Alte ID"
+
+#: apps/legacy/old_shop/importer.py:115
+#| msgid "Function"
+msgid "Action"
+msgstr "Aktion"
+
+#: apps/legacy/old_shop/importer.py:116
+#| msgid "PackDesk field"
+msgid "PackDesk id"
+msgstr "PackDesk-ID"
+
+#: apps/legacy/old_shop/importer.py:116
+#| msgid "Notes"
+msgid "Note"
+msgstr "Hinweis"
+
+#: apps/legacy/old_shop/importer.py:267
+#, python-format
+msgid ""
+"Created '%(name)s' for %(kind)s: old rows refer to one that no longer "
+"exists. Check these items after the import."
+msgstr "'%(name)s' für %(kind)s angelegt: alte Zeilen verweisen auf etwas, das nicht mehr existiert. Prüfen Sie diese Elemente nach dem Import."
+
+#: apps/legacy/old_shop/importer.py:306
+msgid ""
+"hw_type_vendor (which brands supply which option types) is not used by "
+"PackDesk; not imported."
+msgstr "hw_type_vendor (welche Marken welche Optionsarten liefern) nutzt PackDesk nicht; nicht importiert."
+
+#: apps/legacy/old_shop/importer.py:349
+msgid ""
+"hw_pack_prolongation (which pack extends which) is not imported: PackDesk "
+"chooses extension packs itself (same category and hardware class)."
+msgstr "hw_pack_prolongation (welches Paket welches verlängert) wurde nicht importiert: PackDesk wählt Verlängerungspakete selbst (gleiche Kategorie und Hardwareklasse)."
+
+#: apps/legacy/old_shop/importer.py:734
+#, python-format
+msgid "Counter %(key)s: not changed (pattern %(pattern)s); check it yourself."
+msgstr "Zähler %(key)s: nicht geändert (Muster %(pattern)s); prüfen Sie ihn selbst."
+
+#: apps/legacy/old_shop/importer.py:746
+msgid ""
+"Licence numbers of the previous webshop have different formats; the licence counter "
+"is not changed. Check it under Number sequences."
+msgstr "Die Lizenznummern des vorherigen Webshops haben unterschiedliche Formate; der Lizenzzähler wurde nicht geändert. Prüfen Sie ihn unter Nummernkreise."
+
 #: apps/legacy/parts.py:110 apps/legacy/parts.py:127 apps/legacy/parts.py:176
 #: templates/admin/customers/_import_outcome.html:3
 #: templates/customers/my_details.html:10
 #: templates/invoices/invoice_pdf.html:57
 msgid "Customer number"
 msgstr "Kundennummer"
-
-#: apps/legacy/parts.py:110
-msgid "Name"
-msgstr "Name"
 
 #: apps/legacy/parts.py:112 apps/legacy/parts.py:125 apps/legacy/parts.py:134
 msgid "Email"
@@ -2202,10 +2501,6 @@ msgstr "Keine Rechnung für Servicepakete"
 #: apps/legacy/parts.py:127 apps/legacy/parts.py:142 apps/legacy/parts.py:156
 msgid "Customer (old ID)"
 msgstr "Kunde (alte ID)"
-
-#: apps/legacy/parts.py:131
-msgid "Logins"
-msgstr "Logins"
 
 #: apps/legacy/parts.py:133
 msgid "Matched on email address. Both sides include staff logins."
@@ -2290,10 +2585,6 @@ msgstr "Notiz"
 #: apps/legacy/parts.py:156
 msgid "Extension of (old ID)"
 msgstr "Verlängerung von (alte ID)"
-
-#: apps/legacy/parts.py:160
-msgid "Licence options"
-msgstr "Lizenzoptionen"
 
 #: apps/legacy/parts.py:162
 msgid "Matched on licence, serial number and article number."
@@ -3814,11 +4105,6 @@ msgstr "Nur die Kundendaten."
 msgid "Show what is skipped and why"
 msgstr "Anzeigen, was übersprungen wird und warum"
 
-#: templates/admin/customers/customer/change_list.html:4
-#: templates/admin/customers/import_review.html:51
-msgid "Import"
-msgstr "Importieren"
-
 #: templates/admin/customers/export.html:6
 #, python-format
 msgid ""
@@ -3982,7 +4268,6 @@ msgid ""
 msgstr "Wählen Sie eine Datei, die mit „Exportieren“ in PackDesk erstellt wurde. Es wird noch nichts geändert: Sie sehen zuerst, was neu ist und was bereits existiert, und wählen pro Kunde, was passiert."
 
 #: templates/admin/customers/import_upload.html:13
-#| msgid "Check file"
 msgid "Choose file"
 msgstr "Datei auswählen"
 
@@ -3991,7 +4276,6 @@ msgid "or drag it here"
 msgstr "oder hierher ziehen"
 
 #: templates/admin/customers/import_upload.html:14
-#| msgid "No login yet"
 msgid "No file chosen yet"
 msgstr "Noch keine Datei ausgewählt"
 
@@ -4002,10 +4286,6 @@ msgstr "Datei prüfen"
 #: templates/admin/index.html:9
 msgid "Customise"
 msgstr "Anpassen"
-
-#: templates/admin/index.html:12
-msgid "Done"
-msgstr "Fertig"
 
 #: templates/admin/index.html:15
 msgid "Reset to default"
@@ -4522,6 +4802,59 @@ msgstr "Alt → PackDesk"
 msgid "Nothing found."
 msgstr "Nichts gefunden."
 
+#: templates/legacy/import_counts.html:3
+msgid "Result"
+msgstr "Ergebnis"
+
+#: templates/legacy/import_start.html:6
+msgid ""
+"Imports everything from the previous webshop that PackDesk knows: the catalogue, "
+"customers with addresses, contacts and logins (with their own passwords), "
+"orders, licences with options and extensions, invoices with payments, and "
+"the number counters."
+msgstr "Importiert alles aus dem vorherigen Webshop, was PackDesk kennt: den Katalog, Kunden mit Adressen, Ansprechpartner und Logins (mit ihrem eigenen Passwort), Bestellungen, Lizenzen mit Optionen und Verlängerungen, Rechnungen mit Zahlungen und die Nummernzähler."
+
+#: templates/legacy/import_start.html:7
+msgid ""
+"Uses the table mappings of this database. Running it again updates what was "
+"imported before and never creates anything twice; nothing in PackDesk is "
+"deleted. Every row of the old database ends up in the report, with what "
+"happened to it."
+msgstr "Verwendet die Zuordnungen dieser Datenbank. Erneutes Ausführen aktualisiert früher Importiertes und legt nie etwas doppelt an; in PackDesk wird nichts gelöscht. Jede Zeile der alten Datenbank erscheint im Bericht, mit dem, was mit ihr geschah."
+
+#: templates/legacy/import_start.html:8
+msgid ""
+"This database has no table mappings yet. Load the mapping for the previous webshop "
+"first."
+msgstr "Diese Datenbank hat noch keine Zuordnungen. Laden Sie zuerst die Zuordnung für den vorherigen Webshop."
+
+#: templates/legacy/import_start.html:14
+msgid ""
+"Does everything and writes the report, then undoes it. Nothing changes in "
+"PackDesk."
+msgstr "Führt alles aus und schreibt den Bericht, macht es dann rückgängig. In PackDesk ändert sich nichts."
+
+#: templates/legacy/import_start.html:15
+msgid "Start trial import"
+msgstr "Probeimport starten"
+
+#: templates/legacy/import_start.html:21
+msgid ""
+"Saves everything in PackDesk. Make a backup of the PackDesk database first."
+msgstr "Speichert alles in PackDesk. Erstellen Sie zuerst eine Sicherung der PackDesk-Datenbank."
+
+#: templates/legacy/import_start.html:22 templates/setup/update.html:16
+msgid "I have made a backup"
+msgstr "Ich habe eine Sicherung erstellt"
+
+#: templates/legacy/import_start.html:23
+msgid "Start import"
+msgstr "Import starten"
+
+#: templates/legacy/import_start.html:28
+msgid "Earlier runs"
+msgstr "Frühere Läufe"
+
 #: templates/legacy/mapping_help.html:5
 msgid "Columns in the source"
 msgstr "Spalten in der Quelle"
@@ -4557,10 +4890,6 @@ msgstr "Verglichen am %(when)s."
 #: templates/legacy/overview.html:17
 msgid "Compare again"
 msgstr "Erneut vergleichen"
-
-#: templates/legacy/overview.html:21
-msgid "Part"
-msgstr "Bereich"
 
 #: templates/legacy/overview.html:21
 msgid "Old"
@@ -5011,10 +5340,6 @@ msgid ""
 "Make a backup of the database first (see the installation guide). The update "
 "usually takes less than a minute."
 msgstr "Erstellen Sie zuerst eine Sicherung der Datenbank (siehe Installationsanleitung). Die Aktualisierung dauert meist weniger als eine Minute."
-
-#: templates/setup/update.html:16
-msgid "I have made a backup"
-msgstr "Ich habe eine Sicherung erstellt"
 
 #: templates/setup/update.html:19
 msgid "Changes"
