@@ -1,0 +1,28 @@
+{% load i18n static packdesk_static %}<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'nl' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>{% block title %}PackDesk{% endblock %}</title>
+  <link rel="stylesheet" href="{% vstatic 'css/packdesk.css' %}">
+  <style>
+    :root { --brand: #1f6feb; --accent: #0ea5e9; }
+    .setup { max-width: 640px; margin: 3rem auto; padding: 0 1rem; }
+    .setup-brand { font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; }
+    .setup-steps { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0 0 1.25rem; font-size: .85rem; }
+    .setup-steps li { padding: .2rem .6rem; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+    .setup-steps li.is-done { color: var(--text); }
+    .setup-steps li.is-current { background: var(--brand); border-color: var(--brand); color: #fff; }
+    .setup .notice { padding: .8rem 1rem; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 1rem; }
+    .setup .notice-error { border-color: var(--danger); color: var(--danger); }
+    .setup code { font-size: .9em; }
+  </style>
+</head>
+<body>
+  <main class="setup">
+    <div class="setup-brand">PackDesk</div>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

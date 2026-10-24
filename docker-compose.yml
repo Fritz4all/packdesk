@@ -53,7 +53,8 @@ services:
       context: .
       target: dev
     user: "${UID:-1000}:${GID:-1000}"
-    command: sh -c "python manage.py compilemessages --ignore=/venv -v0 && python manage.py runserver 0.0.0.0:8000"
+    # Translations, then the tables of a new database (or a note about waiting changes), then the site.
+    command: sh -c "python manage.py compilemessages --ignore=/venv -v0 && python manage.py setup_database && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       postgres:
         condition: service_healthy

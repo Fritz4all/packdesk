@@ -1,10 +1,9 @@
 #!/bin/sh
 set -e
 
-# Database migrations run only when asked (RUN_MIGRATIONS=1), so a new image never changes the
-# database by surprise.
-if [ "${RUN_MIGRATIONS:-0}" = "1" ]; then
-  python manage.py migrate --noinput
-fi
+# A new (empty) database gets its tables right away. Changes of a new version are only applied
+# with RUN_MIGRATIONS=1, or with the "Update database" button in the browser after a backup, so an
+# update never changes the database by surprise.
+python manage.py setup_database
 
 exec "$@"

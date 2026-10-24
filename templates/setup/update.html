@@ -1,0 +1,21 @@
+{% extends "setup/_page.html" %}
+{% load i18n %}
+{% block title %}{% translate "Update database" %} – PackDesk{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>{% translate "Update database" %}</h1>
+  <p>{% blocktranslate count n=pending|length %}This version of PackDesk brings {{ n }} change to the database. Until it is applied, the website and the admin are not available.{% plural %}This version of PackDesk brings {{ n }} changes to the database. Until they are applied, the website and the admin are not available.{% endblocktranslate %}</p>
+  <p class="muted">{% translate "Make a backup of the database first (see the installation guide). The update usually takes less than a minute." %}</p>
+  {% if error %}<p class="notice notice-error">{{ error }}</p>{% endif %}
+  <form method="post" action="{{ update_path }}">
+    <label class="field">
+      <span>{% translate "Installation code" %} <span class="req" aria-hidden="true">*</span></span>
+      <input name="code" required autocomplete="off">
+      <small class="muted">{% if code_from_env %}{% translate "The SETUP_CODE from .env." %}{% else %}{% translate "Shown in the log of the server: docker compose logs web" %}{% endif %}</small>
+    </label>
+    <label class="field field-check"><input type="checkbox" name="backup" value="1"> <span>{% translate "I have made a backup" %}</span></label>
+    <button class="btn btn-primary" type="submit">{% translate "Update database" %}</button>
+  </form>
+  <details class="muted" style="margin-top:1rem"><summary>{% translate "Changes" %}</summary><ul>{% for name in pending %}<li><code>{{ name }}</code></li>{% endfor %}</ul></details>
+</div>
+{% endblock %}

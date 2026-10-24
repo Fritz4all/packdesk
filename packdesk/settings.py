@@ -51,11 +51,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "apps.core.middleware.DatabaseUpdateMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "apps.siteconfig.middleware.SiteSettingsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.core.middleware.FirstRunMiddleware",
     "apps.siteconfig.middleware.MaintenanceModeMiddleware",
     "apps.siteconfig.language.AdminLanguageMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -160,6 +162,12 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = DATA_ROOT / "website"
 # Optional and read-only, outside DATA_ROOT: the previous webshop's invoice PDFs. Empty = no archive.
 DOCUMENT_ARCHIVE_DIR = env("DOCUMENT_ARCHIVE_DIR", default="")
+
+# Installation code for the first-run wizard and the database update page. Empty = a random code,
+# shown in the container log at start-up.
+SETUP_CODE = env("SETUP_CODE", default="")
+# The wizard opens while the installation is not finished (tests switch it off).
+SETUP_WIZARD = env.bool("SETUP_WIZARD", default=True)
 
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
