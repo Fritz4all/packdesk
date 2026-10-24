@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h1 class="font-semibold text-lg mb-4 text-font-important-light dark:text-font-important-dark">{% translate "Compare databases" %}</h1>
+{% if databases %}
+    <div class="flex flex-col gap-2 max-w-2xl">
+    {% for db in databases %}
+        <a class="pd-widget hover:opacity-80" href="{% url 'legacy_compare' db.pk %}"><strong>{{ db.name }}</strong> <span class="pd-dim">{{ db.host }}/{{ db.database }}</span></a>
+    {% endfor %}
+    </div>
+{% else %}
+    <p class="mb-4">{% translate "No old database has been added yet." %}</p>
+{% endif %}
+{% if perms.legacy.add_externaldatabase %}<a class="pd-btn mt-4" href="{% url 'admin:legacy_externaldatabase_add' %}"><span class="material-symbols-outlined">add</span>{% translate "Add database server" %}</a>{% endif %}
+{% endblock %}

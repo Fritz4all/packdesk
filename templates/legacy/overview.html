@@ -1,0 +1,43 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+{% include "legacy/_head.html" %}
+{% if data %}
+    <form method="post" class="mb-4 flex flex-wrap gap-3 items-center text-sm">
+        {% csrf_token %}
+        <span class="text-base-500">{% blocktranslate with when=data.compared_at|date:"j F Y H:i" %}Compared on {{ when }}.{% endblocktranslate %}</span>
+        <button class="pd-btn"><span class="material-symbols-outlined">refresh</span>{% translate "Compare again" %}</button>
+    </form>
+    <section class="pd-widget mb-6 overflow-x-auto">
+        <table class="pd-table">
+            <thead><tr><th>{% translate "Part" %}</th><th class="text-right">{% translate "Old" %}</th><th class="text-right">PackDesk</th>
+                <th class="text-right">{% translate "Only old" %}</th><th class="text-right">{% translate "Only new" %}</th>
+                <th class="text-right">{% translate "Different" %}</th><th class="text-right">{% translate "Same" %}</th></tr></thead>
+            <tbody>
+            {% for s in summaries %}
+                <tr>
+                    <td><strong>{{ s.label }}</strong>{% if s.note %}<br><span class="pd-dim">{{ s.note }}</span>{% endif %}
+                        {% if s.error %}<br><span class="text-red-600 text-sm">{{ s.error }}</span>{% endif %}</td>
+                    <td class="text-right">{{ s.old }}</td><td class="text-right">{{ s.new }}</td>
+                    <td class="text-right">{% if s.only_old %}<a class="underline text-amber-600" href="{% url 'legacy_detail' db.pk s.key 'only_old' %}">{{ s.only_old }}</a>{% else %}0{% endif %}</td>
+                    <td class="text-right">{% if s.only_new %}<a class="underline text-amber-600" href="{% url 'legacy_detail' db.pk s.key 'only_new' %}">{{ s.only_new }}</a>{% else %}0{% endif %}</td>
+                    <td class="text-right">{% if s.different %}<a class="underline text-amber-600" href="{% url 'legacy_detail' db.pk s.key 'different' %}">{{ s.different }}</a>{% else %}0{% endif %}</td>
+                    <td class="text-right">{{ s.same }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <section class="pd-widget mb-6 overflow-x-auto">
+        <h2 class="font-semibold mb-2">{% translate "Highest numbers" %}</h2>
+        <table class="pd-table">
+            <thead><tr><th>{% translate "Number" %}</th><th class="text-right">{% translate "Highest in old database" %}</th><th class="text-right">{% translate "Next number in PackDesk" %}</th><th></th></tr></thead>
+            <tbody>{% for t in data.tops %}
+                <tr><td>{{ t.label }}</td><td class="text-right">{{ t.old|default:"—" }}</td><td class="text-right">{% if t.url %}<a class="underline" href="{{ t.url }}">{{ t.next|default:"—" }}</a>{% else %}{{ t.next|default:"—" }}{% endif %}</td>
+                    <td>{% if t.ok is None %}<span class="pd-badge">{% translate "Check yourself (different format)" %}</span>{% elif t.ok %}<span class="pd-badge pd-badge-success">{% translate "OK" %}</span>{% else %}<span class="pd-badge pd-badge-warning">{% translate "Counter must be higher" %}</span>{% endif %}</td></tr>
+            {% endfor %}</tbody>
+        </table>
+    </section>
+    <p class="text-sm text-base-500">{% translate "Rows are matched on the ID from the old system, otherwise on number or email address. Rows deleted in the previous webshop are not counted." %}</p>
+{% endif %}
+{% endblock %}

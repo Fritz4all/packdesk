@@ -34,6 +34,18 @@ SECTIONS = [
                 "badge": "apps.numbering.admin_badge.problems",
                 "permission": lambda request: request.user.has_perm("numbering.view_numbersequence"),
             },
+            {
+                "title": _("External databases"),
+                "icon": "database",
+                "link": reverse_lazy("admin:legacy_externaldatabase_changelist"),
+                "permission": lambda request: request.user.has_perm("legacy.view_externaldatabase"),
+            },
+            {
+                "title": _("Compare databases"),
+                "icon": "compare_arrows",
+                "link": reverse_lazy("legacy_choose"),
+                "permission": lambda request: request.user.has_perm("legacy.compare_databases"),
+            },
         ],
     },
     {

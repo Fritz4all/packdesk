@@ -1,0 +1,21 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+{% include "legacy/_head.html" %}
+<div class="flex flex-wrap gap-3 items-center mb-4">
+    <span class="text-sm">{% blocktranslate count n=total %}{{ n }} row{% plural %}{{ n }} rows{% endblocktranslate %}{% if total > 500 %} · {% translate "the first 500 are shown; the CSV has all" %}{% endif %}</span>
+    <a class="pd-btn" href="?format=csv"><span class="material-symbols-outlined">download</span>CSV</a>
+</div>
+<section class="pd-widget overflow-x-auto">
+    <table class="pd-table">
+        <thead><tr><th>{{ part.label }}</th><th>{% if category == "different" %}{% translate "Old → PackDesk" %}{% else %}{% translate "Details" %}{% endif %}</th></tr></thead>
+        <tbody>
+        {% for label, link, details in rows %}
+            <tr><td class="align-top whitespace-nowrap">{% if link %}<a class="underline" href="{{ link }}" target="_blank" rel="noopener">{{ label }}</a>{% else %}{{ label }}{% endif %}</td>
+                <td class="text-sm">{% for key, value in details %}<span class="inline-block mr-3"><span class="pd-dim">{{ key }}:</span> {{ value }}</span>{% endfor %}</td></tr>
+        {% empty %}<tr><td colspan="2">{% translate "Nothing found." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

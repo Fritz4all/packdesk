@@ -8,12 +8,17 @@ from apps.accounts import views as account_views
 from apps.accounts.forms import EmailAdminAuthenticationForm
 from apps.dashboard import reports as dashboard_reports
 from apps.dashboard import views as dashboard_views
+from apps.legacy import views as legacy_views
 
 admin.site.login_form = EmailAdminAuthenticationForm
 
 urlpatterns = [
     path("beheer/dashboard/layout/", dashboard_views.save_layout, name="dashboard_save_layout"),
     path("beheer/dashboard/reset/", dashboard_views.reset_layout, name="dashboard_reset_layout"),
+    path("beheer/vergelijken/", legacy_views.choose, name="legacy_choose"),
+    path("beheer/vergelijken/<int:pk>/", legacy_views.overview, name="legacy_compare"),
+    path("beheer/vergelijken/<int:pk>/zoeken/", legacy_views.search_view, name="legacy_search"),
+    path("beheer/vergelijken/<int:pk>/<str:part_key>/<str:category>/", legacy_views.detail, name="legacy_detail"),
     path("beheer/taal/", account_views.set_admin_language, name="admin_language"),
     path("beheer/rapportage/", dashboard_reports.report_view, name="reports"),
     path("beheer/", admin.site.urls),
