@@ -49,6 +49,28 @@ De oude Ruby-code dient alleen als naslag voor de werking; er wordt niets van ov
 - **Nummerreeksen laten doorlopen**: het volgende nummer wordt per reeks op het hoogste bestaande nummer + 1 gezet.
 - Eerst testen op geanonimiseerde data; de echte import pas bij de overstap.
 
+### D2. Importeren uit andere systemen (later)
+
+Afgesproken op 24-10-2026; nog niet gebouwd. Nog geen concrete systemen bekend, dus algemeen opzetten.
+
+- **Eén importroute voor elke bron**, met per soort bron een vaste plek:
+  - database van een ander systeem: *Externe databases* + *Koppelingen* (bestaat al, alleen-lezen);
+  - bestanden met gegevens (CSV, Excel, PackDesk-export): uploaden in het beheer, tijdelijk in
+    `/data/imports/<importnummer>/`, na afloop verwijderd;
+  - grote verzamelingen documenten (pdf's): alleen-lezen gekoppeld als `/data-sources/<naam>`, buiten
+    `/data`; de eerste is `/data-sources/archive-invoices`. Documenten worden aan gegevens gekoppeld
+    via een nummer in de bestandsnaam (patroon per bron instelbaar).
+- **Koppelscherm uitbreiden** met "bestand" als bron naast tabel en query, zodat CSV/Excel dezelfde
+  veldkoppeling gebruiken.
+- **Altijd dezelfde stappen:** koppelen → proefrun (wat is nieuw, bestaat al, verschilt, wordt
+  overgeslagen) → per record kiezen (overslaan, overschrijven, als nieuw) → importeren → verslag in de
+  database. Nooit stil overschrijven.
+- **Terugkerend wanneer nodig, instelbaar per koppeling:** handmatig, of automatisch op een
+  ingesteld moment (bijv. elke nacht). Bij automatisch draaien geldt een vooraf gekozen regel per
+  onderdeel (nieuwe toevoegen, wijzigingen overnemen of alleen melden); conflicten worden niet
+  automatisch beslist maar komen als melding in het beheer. Wijzigingen sinds de vorige keer worden
+  herkend aan het oude ID plus een vingerafdruk van de gekoppelde velden.
+
 ### E. Livegang en documentatie
 
 Productie-compose, README, beheerdocumentatie, draaiboek voor de overstap, en een **installatiehandleiding voor een nieuwe klant** (on-site neerzetten, eerste instellingen).
