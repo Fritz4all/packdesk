@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div class="max-w-2xl">
+    <h1 class="font-semibold text-lg mb-2 text-font-important-light dark:text-font-important-dark">{% translate "Export customers" %}</h1>
+    <p class="mb-4 text-sm">{% blocktranslate count n=total %}The export contains {{ n }} customer with its addresses, contacts, orders, licences, fault reports and invoices.{% plural %}The export contains all {{ n }} customers with their addresses, contacts, orders, licences, fault reports and invoices.{% endblocktranslate %}
+        {% translate "Passwords are never exported." %}
+        {% translate "To export only some customers: tick them in the list and choose “Export selected customers”." %}</p>
+    <form method="post" class="pd-widget">
+        {% csrf_token %}
+        <label class="flex gap-2 items-start">{{ form.include_files }}<span>{{ form.include_files.label }}<br><span class="text-sm text-base-500">{{ form.include_files.help_text }}</span></span></label>
+        <div class="mt-4 flex gap-2">
+            <button class="pd-btn pd-btn-primary"><span class="material-symbols-outlined">download</span>{% translate "Download export" %}</button>
+            <a class="pd-btn" href="{% url 'admin:customers_customer_changelist' %}">{% translate "Back" %}</a>
+        </div>
+    </form>
+    <p class="mt-4 text-sm text-base-500">{% translate "The file contains personal data. Store it safely and delete it when you no longer need it." %}</p>
+</div>
+{% endblock %}

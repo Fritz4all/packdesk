@@ -95,6 +95,10 @@ class Customer(models.Model):
         verbose_name = _("customer")
         verbose_name_plural = _("customers")
         ordering = ["name"]
+        permissions = [
+            ("export_customer", _("Can export customers")),
+            ("import_customer", _("Can import customers")),
+        ]
         constraints = [
             models.UniqueConstraint(fields=["number"], condition=~models.Q(number=""), name="unique_customer_number"),
         ]

@@ -1,0 +1,63 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h1 class="font-semibold text-lg mb-2 text-font-important-light dark:text-font-important-dark">{% translate "Check the import" %}</h1>
+<p class="mb-1 text-sm">{% blocktranslate count n=rows|length %}The file contains {{ n }} customer.{% plural %}The file contains {{ n }} customers.{% endblocktranslate %}
+    {% if conflicts %}<strong>{% blocktranslate count n=conflicts %}{{ n }} of them already exists here.{% plural %}{{ n }} of them already exist here.{% endblocktranslate %}</strong>{% endif %}
+    {% if not includes_files %}{% translate "The file has no PDFs or attachments; only the data is imported." %}{% endif %}</p>
+<p class="mb-4 text-sm text-base-500">{% translate "Nothing has been changed yet. Existing customers are skipped unless you choose otherwise. Overwriting never deletes anything: items that are only here are kept." %}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="token" value="{{ token }}">
+    <div class="flex flex-col gap-4">
+    {% for row in rows %}
+        <section class="pd-widget{% if row.existing %} pd-import-conflict{% endif %}">
+            <header class="flex flex-wrap gap-2 items-center justify-between mb-2">
+                <h2 class="font-semibold">{{ row.name }}{% if row.number %} <span class="pd-dim">{{ row.number }}</span>{% endif %}</h2>
+                {% if row.existing %}
+                    <span class="pd-badge pd-badge-warning">{% blocktranslate with matched=row.existing.matched %}Already exists (same {{ matched }}){% endblocktranslate %}</span>
+                {% else %}
+                    <span class="pd-badge pd-badge-success">{% translate "New customer" %}</span>
+                {% endif %}
+            </header>
+            <p class="text-sm text-base-500 mb-2">{% translate "In the file" %}: {% for kind, n in row.totals.items %}{{ n }} {{ kind }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+
+            {% if row.existing %}
+                <p class="text-sm mb-2">{% translate "Existing customer here" %}:
+                    <a class="underline" target="_blank" rel="noopener" href="{% url 'admin:customers_customer_change' row.existing.pk %}">{{ row.existing.name }} ({{ row.existing.number|default:"—" }})</a></p>
+                {% if row.changes %}
+                    <div class="overflow-x-auto mb-3"><table class="pd-table text-sm">
+                        <thead><tr><th>{% translate "Field" %}</th><th>{% translate "Now" %}</th><th>{% translate "In the file" %}</th></tr></thead>
+                        <tbody>{% for c in row.changes %}<tr><td>{{ c.field }}</td><td>{{ c.old }}</td><td><strong>{{ c.new }}</strong></td></tr>{% endfor %}</tbody>
+                    </table></div>
+                {% else %}
+                    <p class="text-sm mb-3">{% translate "The customer details are the same." %}</p>
+                {% endif %}
+                <div class="grid gap-3 md:grid-cols-2 mb-3">
+                    <div class="pd-import-option"><h3 class="font-medium mb-1">{% translate "When overwriting" %}</h3>{% include "admin/customers/_import_outcome.html" with outcome=row.overwrite %}</div>
+                    <div class="pd-import-option"><h3 class="font-medium mb-1">{% translate "When importing as a new customer" %}</h3>{% include "admin/customers/_import_outcome.html" with outcome=row.new %}</div>
+                </div>
+                <fieldset class="flex flex-wrap gap-4 text-sm">
+                    <legend class="sr-only">{% translate "What to do" %}</legend>
+                    <label class="flex gap-1 items-center"><input type="radio" name="choice-{{ row.index }}" value="skip" checked> {% translate "Skip (keep existing)" %}</label>
+                    <label class="flex gap-1 items-center"><input type="radio" name="choice-{{ row.index }}" value="overwrite"> {% translate "Overwrite existing" %}</label>
+                    <label class="flex gap-1 items-center"><input type="radio" name="choice-{{ row.index }}" value="new"> {% translate "Import as a new customer" %}</label>
+                </fieldset>
+            {% else %}
+                <div class="pd-import-option mb-3">{% include "admin/customers/_import_outcome.html" with outcome=row.new %}</div>
+                <fieldset class="flex flex-wrap gap-4 text-sm">
+                    <legend class="sr-only">{% translate "What to do" %}</legend>
+                    <label class="flex gap-1 items-center"><input type="radio" name="choice-{{ row.index }}" value="new" checked> {% translate "Import" %}</label>
+                    <label class="flex gap-1 items-center"><input type="radio" name="choice-{{ row.index }}" value="skip"> {% translate "Skip" %}</label>
+                </fieldset>
+            {% endif %}
+        </section>
+    {% endfor %}
+    </div>
+    <div class="flex gap-2 mt-4 sticky bottom-0 py-3 bg-white dark:bg-base-900">
+        <button name="step" value="run" class="pd-btn pd-btn-primary"><span class="material-symbols-outlined">upload</span>{% translate "Import with these choices" %}</button>
+        <button name="step" value="cancel" class="pd-btn">{% translate "Cancel" %}</button>
+    </div>
+</form>
+{% endblock %}

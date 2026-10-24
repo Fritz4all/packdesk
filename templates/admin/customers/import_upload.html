@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div class="max-w-2xl">
+    <h1 class="font-semibold text-lg mb-2 text-font-important-light dark:text-font-important-dark">{% translate "Import customers" %}</h1>
+    <p class="mb-4 text-sm">{% translate "Choose a file made with “Export” in PackDesk. Nothing is changed yet: you first get an overview of what is new and what already exists, and you choose per customer what happens." %}</p>
+    <form method="post" enctype="multipart/form-data" class="pd-widget">
+        {% csrf_token %}
+        <input type="hidden" name="step" value="upload">
+        <label class="block font-medium mb-1" for="{{ form.file.id_for_label }}">{{ form.file.label }}</label>
+        {{ form.file }}
+        {% for error in form.file.errors %}<p class="mt-2 text-sm text-red-600">{{ error }}</p>{% endfor %}
+        <div class="mt-4 flex gap-2">
+            <button class="pd-btn pd-btn-primary"><span class="material-symbols-outlined">fact_check</span>{% translate "Check file" %}</button>
+            <a class="pd-btn" href="{% url 'admin:customers_customer_changelist' %}">{% translate "Back" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

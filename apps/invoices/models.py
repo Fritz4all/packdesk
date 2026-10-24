@@ -99,17 +99,25 @@ class Invoice(models.Model):
         return f"{self.number} · {self.customer_name}"
 
     def pdf_bytes(self):
-        """The invoice as PDF: the original file for archived invoices, otherwise the stored PDF."""
-        if self.is_archive:
-            with open(os.path.join(settings.DOCUMENT_ARCHIVE_DIR, self.archive_file), "rb") as f:
+        """The invoice as PDF: the original file for archived invoices, otherwise the stored PDF.
+
+        An archived invoice brought in by a customer import may carry its own copy instead."""
+        if self.is_archive and self._archive_path():
+            with open(self._archive_path(), "rb") as f:
                 return f.read()
         with self.pdf.open("rb") as f:
             return f.read()
 
+    def _archive_path(self):
+        if not (self.archive_file and settings.DOCUMENT_ARCHIVE_DIR):
+            return ""
+        root = os.path.realpath(settings.DOCUMENT_ARCHIVE_DIR)
+        path = os.path.realpath(os.path.join(root, self.archive_file))
+        # Only files inside the archive folder (archive_file can come from an imported file).
+        return path if path.startswith(root + os.sep) and os.path.isfile(path) else ""
+
     def has_pdf(self):
-        if self.is_archive:
-            return bool(self.archive_file) and os.path.isfile(os.path.join(settings.DOCUMENT_ARCHIVE_DIR, self.archive_file))
-        return bool(self.pdf)
+        return bool(self.is_archive and self._archive_path()) or bool(self.pdf)
 
     @property
     def filename(self):

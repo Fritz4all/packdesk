@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h1 class="font-semibold text-lg mb-4 text-font-important-light dark:text-font-important-dark">{% translate "Import finished" %}</h1>
+<div class="flex flex-col gap-3">
+{% for row in rows %}
+    <section class="pd-widget">
+        <header class="flex flex-wrap gap-2 items-center justify-between mb-2">
+            <h2 class="font-semibold">{% if row.customer_pk %}<a class="underline" href="{% url 'admin:customers_customer_change' row.customer_pk %}">{{ row.name }}</a>{% else %}{{ row.name }}{% endif %}</h2>
+            <span class="pd-badge{% if row.action == 'skip' %}{% else %} pd-badge-success{% endif %}">{% if row.action == "skip" %}{% translate "Skipped" %}{% elif row.action == "overwrite" %}{% translate "Overwritten" %}{% else %}{% translate "Imported as new" %}{% endif %}</span>
+        </header>
+        {% if row.action != "skip" %}{% include "admin/customers/_import_outcome.html" with outcome=row %}{% endif %}
+    </section>
+{% endfor %}
+</div>
+<p class="mt-4 text-sm text-base-500">{% translate "Imported numbers can be higher than the counters here. Check Number sequences; it shows when a counter must be corrected." %}</p>
+<a class="pd-btn mt-4" href="{{ changelist }}">{% translate "To the customers" %}</a>
+{% endblock %}

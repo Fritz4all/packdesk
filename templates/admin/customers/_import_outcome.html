@@ -1,0 +1,17 @@
+{% load i18n %}
+<ul class="text-sm space-y-0.5">
+    {% if outcome.number %}<li>{% translate "Customer number" %}: <strong>{{ outcome.number }}</strong></li>{% endif %}
+    {% for c in outcome.counts %}
+        <li><span class="capitalize">{{ c.kind }}</span>:
+            {% blocktranslate with n=c.created %}{{ n }} new{% endblocktranslate %}{% if c.updated %}, {% blocktranslate with n=c.updated %}{{ n }} updated{% endblocktranslate %}{% endif %}{% if c.unchanged %}, <span class="text-base-500">{% blocktranslate with n=c.unchanged %}{{ n }} unchanged{% endblocktranslate %}</span>{% endif %}{% if c.skipped %}, <strong class="text-amber-700 dark:text-amber-400">{% blocktranslate with n=c.skipped %}{{ n }} skipped{% endblocktranslate %}</strong>{% endif %}</li>
+    {% empty %}<li class="text-base-500">{% translate "Only the customer details." %}</li>
+    {% endfor %}
+</ul>
+{% if outcome.skipped %}
+    <details class="mt-2 text-sm"><summary class="cursor-pointer text-amber-700 dark:text-amber-400">{% translate "Show what is skipped and why" %}</summary>
+        <ul class="mt-1 ml-4 list-disc">{% for s in outcome.skipped %}<li>{{ s.kind|capfirst }} {{ s.label }} — {{ s.reason }}</li>{% endfor %}</ul>
+    </details>
+{% endif %}
+{% if outcome.warnings %}
+    <ul class="mt-2 text-sm text-amber-700 dark:text-amber-400 list-disc ml-4">{% for w in outcome.warnings %}<li>{{ w }}</li>{% endfor %}</ul>
+{% endif %}

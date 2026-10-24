@@ -6,8 +6,9 @@ Usage on a ModelAdmin:
         ObjectAction("approve", _("Approve"), "check_circle", handler="do_approve", show_if="can_approve"),
     ]
 
-The handler is a method `(request, obj) -> None` that adds its own messages. Buttons post to
-`<object_id>/action/<name>/` with a CSRF token; the user needs change permission.
+The handler is a method `(request, obj)` that adds its own messages; it may return a response
+(e.g. a download) instead of going back to the form. Buttons post to `<object_id>/action/<name>/`
+with a CSRF token; the user needs change permission, or `permission` when that is set.
 """
 
 from dataclasses import dataclass
@@ -27,6 +28,7 @@ class ObjectAction:
     show_if: str | None = None
     variant: str = "default"  # default | danger
     confirm: str = ""
+    permission: str = ""  # e.g. "customers.export_customer"; empty = change permission
 
 
 class ObjectActionsMixin:
@@ -45,9 +47,14 @@ class ObjectActionsMixin:
         return extra + super().get_urls()
 
     def _available_actions(self, request, obj):
-        if obj is None or not self.has_change_permission(request, obj):
+        if obj is None:
             return []
-        return [a for a in self.object_actions if not a.show_if or getattr(self, a.show_if)(obj)]
+        can_change = self.has_change_permission(request, obj)
+        return [
+            a for a in self.object_actions
+            if (request.user.has_perm(a.permission) if a.permission else can_change)
+            and (not a.show_if or getattr(self, a.show_if)(obj))
+        ]
 
     def run_object_action(self, request, object_id, name):
         if request.method != "POST":
@@ -56,7 +63,9 @@ class ObjectActionsMixin:
         action = next((a for a in self._available_actions(request, obj) if a.name == name), None)
         if action is None:
             raise PermissionDenied
-        getattr(self, action.handler)(request, obj)
+        response = getattr(self, action.handler)(request, obj)
+        if response is not None:
+            return response
         info = self.model._meta.app_label, self.model._meta.model_name
         return redirect(reverse("admin:%s_%s_change" % info, args=[obj.pk]))
 

@@ -32,6 +32,8 @@ ROLES = {
         "customers.add_customer",
         "customers.change_customer",
         "customers.delete_customer",
+        "customers.export_customer",
+        "customers.import_customer",
         "customers.view_customeraddress",
         "customers.add_customeraddress",
         "customers.change_customeraddress",

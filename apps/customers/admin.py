@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.db.models import Count
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import path, reverse
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin
@@ -12,6 +12,7 @@ from apps.accounts.models import User
 from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
 from . import emails
+from . import transfer_views
 from .models import Contact, Country, Customer, CustomerAddress, CustomerType, SignupSettings
 
 STATUS_COLOURS = {"pending": "warning", "active": "success", "blocked": "danger"}
@@ -57,13 +58,15 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
         "addresses__line1", "addresses__postal_code", "addresses__city",
     ]
     readonly_fields = ["approved_at", "approved_by", "created_at", "updated_at", "signup_message"]
-    actions = ["approve_selected", "block_selected"]
+    actions = ["approve_selected", "block_selected", "export_selected"]
+    change_list_template = "admin/customers/customer/change_list.html"
     object_actions = [
         ObjectAction("approve", _("Approve"), "check_circle", handler="approve", show_if="can_approve"),
         ObjectAction("invite", _("Send login to contacts without one"), "mail", handler="send_invites",
                      show_if="has_contacts_without_login"),
         ObjectAction("block", _("Block"), "block", handler="block", show_if="can_block", variant="danger",
                      confirm=_("Block this customer? Its contacts can no longer log in.")),
+        ObjectAction("export", _("Export"), "download", handler="export_one", permission="customers.export_customer"),
     ]
     fieldsets = [
         (_("General"), {"classes": ["tab"], "fields": [
@@ -129,6 +132,32 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
         for customer in queryset:
             customer.block()
         messages.success(request, gettext("%(n)s customer(s) blocked.") % {"n": queryset.count()})
+
+    # --- export / import ----------------------------------------------------
+
+    def get_urls(self):
+        return [
+            path("import/", self.admin_site.admin_view(transfer_views.import_view), name="customers_customer_import"),
+            path("export/", self.admin_site.admin_view(transfer_views.export_view), name="customers_customer_export"),
+        ] + super().get_urls()
+
+    def has_export_permission(self, request):
+        return request.user.has_perm("customers.export_customer")
+
+    @admin.action(description=_("Export selected customers"), permissions=["export"])
+    def export_selected(self, request, queryset):
+        return transfer_views.export_response(queryset, include_files=True)
+
+    def export_one(self, request, customer):
+        return transfer_views.export_response(Customer.objects.filter(pk=customer.pk), include_files=True)
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {
+            **(extra_context or {}),
+            "can_import": request.user.has_perm("customers.import_customer"),
+            "can_export": self.has_export_permission(request),
+        }
+        return super().changelist_view(request, extra_context)
 
     def can_approve(self, obj):
         return obj.status != Customer.Status.ACTIVE
