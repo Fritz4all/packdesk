@@ -24,7 +24,7 @@ from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.db import connection, transaction
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
@@ -38,6 +38,7 @@ from apps.orders.models import Order, OrderLine, money
 
 from ..connection import open_reader
 from ..models import ImportedRecord, ImportRun
+from .parts_import import import_spare_parts
 from .passwords import decrypt
 
 log = logging.getLogger(__name__)
@@ -91,6 +92,17 @@ def _date(value):
     return value if isinstance(value, date) else None
 
 
+def _keep_rank(current, original):
+    """Sort key so that numbers given in an earlier run stay: the plain number first, then dup2, dup3, ...,
+    then rows not imported yet."""
+    if current is None:
+        return 10 ** 6
+    if current == original:
+        return 0
+    match = re.search(r"dup(\d+)", current)
+    return int(match.group(1)) if match else 10 ** 5
+
+
 def _decimal(value, default="0"):
     return Decimal(str(value)) if value not in (None, "") else Decimal(default)
 
@@ -101,6 +113,12 @@ PARTS = {
     "orders": gettext_lazy("Orders"), "order lines": gettext_lazy("Order lines"), "licences": gettext_lazy("Licences"),
     "licence extensions": gettext_lazy("Licence extensions"), "licence options": gettext_lazy("Licence options"),
     "invoices": gettext_lazy("Invoices"), "payments": gettext_lazy("Payments"),
+    "spare parts settings": gettext_lazy("Spare parts settings"),
+    "spare parts requests": gettext_lazy("Spare parts requests"), "requested parts": gettext_lazy("Requested parts"),
+    "spare parts history": gettext_lazy("Spare parts history"), "spare parts remarks": gettext_lazy("Spare parts remarks"),
+    "spare parts orders": gettext_lazy("Spare parts orders"), "ordered parts": gettext_lazy("Ordered parts"),
+    "deliveries": gettext_lazy("Deliveries"), "corrections": gettext_lazy("Corrections"),
+    "spare parts invoices": gettext_lazy("Spare parts invoices"),
     "number counters": gettext_lazy("Number counters"),
 }
 ACTIONS = {
@@ -243,6 +261,7 @@ class OldShopImport:
                         self.licences()
                         self.options()
                         self.invoices()
+                        import_spare_parts(self)
                         self.counters()
                         if self.dry:
                             raise _Rollback
@@ -602,7 +621,22 @@ class OldShopImport:
                   .values_list("full_number", flat=True))
         order_customers = dict(Order.objects.filter(pk__in=self.map["hw_support_order"].values())
                                .values_list("pk", "customer_id"))
-        seen = set()
+        # The previous webshop used some numbers (2003-2004, without letters) for several licences. PackDesk needs
+        # unique numbers, so the first keeps the number and the others get "dup2", "dup3", ... after it,
+        # e.g. 04NBH015dup2-1. One imported before keeps what it got.
+        groups = defaultdict(list)
+        for r in rows:
+            groups[self._licence_number(r)].append(r)
+        renumbered = {}
+        current = dict(Licence.objects.filter(pk__in=self.map["hw_support_pack_license"].values())
+                       .values_list("pk", "full_number"))
+        for full, group in groups.items():
+            group.sort(key=lambda r: (_keep_rank(current.get(self.pk("hw_support_pack_license", r["id"])), full),
+                                      str(r["start_date"] or ""), _text(r["id"])))
+            offset = 1 if full in taken and full not in own else 0
+            for i, r in enumerate(group):
+                if i + offset:
+                    renumbered[_text(r["id"])] = (i + offset + 1, full, len(group) + offset)
 
         def licence(r):
             entry = self.entry_rows.get(_text(r["hw_support_order_entry_id"]))
@@ -611,14 +645,20 @@ class OldShopImport:
             customer_pk = order_customers.get(order_pk)
             if not (pack_pk and customer_pk):
                 return None, "order, service pack or customer not found"
-            full = f"{_text(r['license_nr'])}{_text(r['license_nr_suffix'])}-{r['license_sequence_nr']}"
-            if full in seen or (full in taken and full not in own and self.pk("hw_support_pack_license", r["id"]) is None):
-                return None, f"licence number {full} occurs more than once"
-            seen.add(full)
+            suffix, memo, note = _text(r["license_nr_suffix"]), _text(r["memo"]), ""
+            if _text(r["id"]) in renumbered:
+                n, original, times = renumbered[_text(r["id"])]
+                suffix = f"{suffix}dup{n}"
+                with translation.override(settings.LANGUAGE_CODE):
+                    remark = _("Licence number %(nr)s was used %(n)s times in the previous webshop; renumbered on import.") % {
+                        "nr": original, "n": times}
+                memo = f"{memo}\n{remark}".strip()
+                note = f"number {original} occurs {times} times; imported as {_text(r['license_nr'])}{suffix}-{r['license_sequence_nr'] or 1}"
+            full = f"{_text(r['license_nr'])}{suffix}-{r['license_sequence_nr'] or 1}"
             system_pk = self.pk("hw_system", r["hw_system_id"])
             reseller = resellers.get(_text(r["hw_support_pack_license_reseller_id"]))
             address = self.addresses.get(_text(reseller["address_id"])) if reseller else None
-            return {"legacy_id": _text(r["id"]), "number": _text(r["license_nr"]), "suffix": _text(r["license_nr_suffix"]),
+            return {"legacy_id": _text(r["id"]), "number": _text(r["license_nr"]), "suffix": suffix,
                     "sequence": r["license_sequence_nr"] or 1, "full_number": full, "pack_id": pack_pk,
                     "customer_id": customer_pk, "order_line_id": self.pk("hw_support_order_entry", r["hw_support_order_entry_id"]),
                     "registered_on": _aware(r["registered_on"]), "start_date": _date(r["start_date"]),
@@ -626,12 +666,12 @@ class OldShopImport:
                     "system_id": system_pk, "vendor_id": systems.get(system_pk) if system_pk else None,
                     "description": _text(r["description"]), "product_nr": _text(r["product_nr"]),
                     "serial_nr": _text(r["serial_nr"]), "end_customer_email": _text(r["email"]),
-                    "end_customer_reference": _text(r["reference"]), "memo": _text(r["memo"]),
+                    "end_customer_reference": _text(r["reference"]), "memo": memo,
                     "reseller_name": _text(reseller["name"]) if reseller else "",
                     "reseller_phone": _text(reseller["phone"]) if reseller else "",
                     "reseller_address": _text(address["line1"]) if address else "",
                     "reseller_postal_code": _text(address["zipcode"]) if address else "",
-                    "reseller_city": _text(address["city"]) if address else ""}, ""
+                    "reseller_city": _text(address["city"]) if address else ""}, note
 
         self.sync("licences", "hw_support_pack_license", Licence, rows, licence, name=lambda r, v: v.get("full_number", ""))
         # Extensions: licence → licence it continues, and the order line that extended it.
@@ -650,6 +690,10 @@ class OldShopImport:
         Licence.objects.bulk_update(links, ["prolongation_of"], batch_size=BATCH)
         OrderLine.objects.bulk_update(line_links, ["extends"], batch_size=BATCH)
         self.report.counts["licence extensions"]["linked"] += len(links)
+
+    @staticmethod
+    def _licence_number(r):
+        return f"{_text(r['license_nr'])}{_text(r['license_nr_suffix'])}-{r['license_sequence_nr'] or 1}"
 
     def options(self):
         self.progress("licence options")
@@ -690,7 +734,7 @@ class OldShopImport:
             customer = customers.get(customer_pk)
             values = {"number": _text(r["invoice_id"]), "order_id": order_pk, "customer_id": customer_pk,
                       "paid_on": _date(r["payed_at"])}
-            note = "spare parts order: linked to the order in phase 2" if _text(r["part_order_id"]) else ""
+            note = "spare parts order (see spare parts invoices)" if _text(r["part_order_id"]) else ""
             existing = archive.get(values["number"])
             if existing is None:
                 values.update({"issued_on": _date(r["created_at"]) or date(1970, 1, 1),

@@ -14,6 +14,7 @@ from apps.legacy.old_shop.passwords import decrypt
 from apps.licences.models import Category, HardwareClass, Licence, LicenceOption, SupportPack
 from apps.numbering.models import NumberSequence
 from apps.orders.models import Order, OrderLine
+from apps.parts.models import PartOrder, PartRequest, Remark
 
 from .conftest import make_user
 from .old_shop import make_old_shop
@@ -81,10 +82,45 @@ OLD = {
         {"id": "o1", "hw_support_pack_license_id": "l1", "vendor_id": "v1", "hw_type_id": "t1", "serial_nr": "D1", "is_deleted": 0},
         {"id": "o2", "hw_support_pack_license_id": "l1", "vendor_id": "v1", "hw_type_id": "t1", "serial_nr": "D2", "is_deleted": 1},
     ],
-    "part_order": [],
+    "part_deliver_time": [{"id": "dt1", "name": "instock", "description": "op voorraad", "position": 0}],
+    "part_payment_type": [{"id": 1, "description": "op rekening"}, {"id": 3, "description": "proforma factuur"}],
+    "part_request_status": [{"id": "1", "name": "open"}, {"id": "5", "name": "agreed"}],
+    "part_address_delivery": [{"id": "ad1", "name": "Koper BV", "name_contact": "Ina", "line1": "Straat 1",
+                               "zipcode": "1000 AA", "city": "Stad", "country": "Nederland"}],
+    "part_tender": [{"id": "tn1", "number": "WS17005AB", "reference": "Accu's", "fast": 0, "valid_until": "2016-03-01",
+                     "status": "complete", "employee_id": "e1", "created_at": "2016-02-01 09:00:00"}],
+    "part": [{"id": "pt1", "number": "KT.123", "description": "Accu"}],
+    "part_request": [
+        {"id": "pr1", "number": "KT.123", "count": 2, "price_new": "10.00", "deliver_time_new": "dt1",
+         "part_request_status_id": "5", "part_tender_id": "tn1", "vendor_id": "v1", "part_id": "pt1",
+         "created_at": "2016-02-01 09:00:00"},
+        {"id": "pr2", "number": "XY-9", "count": 1, "description": "Kabel", "part_request_status_id": "1",
+         "part_tender_id": "tn1", "vendor_id": "v1", "created_at": "2016-02-01 09:00:00"},
+    ],
+    "part_request_machine": [{"id": "m1", "number": "Aspire 5", "number_serial": "SN-M", "part_request_id": "pr1"}],
+    "part_request_history": [{"id": "h1", "number": "KT.123", "price_new": "10.00", "part_request_status_id": "5",
+                              "part_request_id": "pr1", "user_id": "u9", "created_at": "2016-02-01 10:00:00"}],
+    "part_remark": [{"id": "rm1", "content": "Welke kleur?", "user_id": "u9", "part_request_id": "pr2",
+                     "created_at": "2016-02-01 10:00:00"},
+                    {"id": "rm2", "content": "Zwart", "employee_id": "e1", "part_request_id": "pr2",
+                     "created_at": "2016-02-01 11:00:00"}],
+    "part_order": [
+        {"id": "po1", "number": "WS17005AB-1", "reference": "PO-P", "price": "61.71", "margin": "10.00", "fast": 0,
+         "low": 1, "low_costs": "15.00", "tax_percentage": "21.00", "status": "archive", "part_address_delivery_id": "ad1",
+         "part_payment_type_id": 1, "part_tender_id": "tn1", "employee_id": "e1", "created_at": "2016-02-02 09:00:00"},
+        {"id": "po2", "number": "WS17005AB-1", "margin": "10.00", "fast": 0, "low": 0, "tax_percentage": "21.00",
+         "status": "deliver", "cancelled_at": "2016-02-04 09:00:00", "part_payment_type_id": 3, "part_tender_id": "tn1",
+         "employee_id": "e1", "created_at": "2016-02-03 09:00:00"},
+    ],
+    "part_ordered": [{"id": "od1", "count": 2, "price_original": "10.00", "price": "20.00", "packing": "nieuw",
+                      "part_request_id": "pr1", "part_order_id": "po1", "created_at": "2016-02-02 09:00:00"}],
+    "part_delivered": [{"id": "dv1", "amount": 2, "part_ordered_id": "od1", "user_id": "u9",
+                        "created_at": "2016-02-03 09:00:00"}],
     "invoice": [{"id": 1, "invoice_id": "1017494", "payed_at": "2016-02-01 12:00:00", "hw_support_order_id": "7",
                  "created_at": "2016-01-05 12:00:00"},
-                {"id": 2, "invoice_id": "1000001", "payed_at": None, "created_at": "2013-01-05 12:00:00"}],
+                {"id": 2, "invoice_id": "1000001", "payed_at": None, "created_at": "2013-01-05 12:00:00"},
+                {"id": 3, "invoice_id": "1000002", "payed_at": None, "part_order_id": "po1",
+                 "created_at": "2016-02-02 09:00:00"}],
     "invoice_payment": [{"id": "pay1", "amount": "100.00", "created_at": "2016-02-01 12:00:00", "invoice_id": 1, "user_id": "u9"}],
 }
 
@@ -117,7 +153,7 @@ def test_password_decryption_matches_the_old_shop():
 def test_trial_run_changes_nothing_but_reports_everything(old_db, settings):
     run = _run(old_db, apply=False)
     assert not Customer.objects.exists() and not Licence.objects.exists() and not ImportedRecord.objects.exists()
-    assert run.counts["customers"]["created"] == 1 and run.counts["licences"]["created"] == 3
+    assert run.counts["customers"]["created"] == 1 and run.counts["licences"]["created"] == 4
     report = (settings.DATA_ROOT / run.report_file).read_text()
     assert report.count("\n") > 20 and "deleted in the previous webshop" in report
 
@@ -142,7 +178,9 @@ def test_import_keeps_every_link(old_db, archived):
     first, second = Licence.objects.get(full_number="900001AB-1"), Licence.objects.get(full_number="900001AB-2")
     assert first.order_line.order == order and first.system.name == "R740" and first.vendor.name == "Dell"
     assert second.prolongation_of == first and OrderLine.objects.get(pk=second.order_line_id).extends == first
-    assert Licence.objects.filter(full_number="04NBH015-1").count() == 1 and run.counts["licences"]["skipped"] == 1
+    # The previous webshop used 04NBH015-1 twice: the second one gets a recognisable number.
+    assert Licence.objects.filter(full_number="04NBH015-1").count() == 1 and "skipped" not in run.counts["licences"]
+    assert "04NBH015-1" in Licence.objects.get(full_number="04NBH015dup2-1").memo  # says why
     assert LicenceOption.objects.get().serial_nr == "D1"  # the deleted option is left out
 
     assert SupportPack.objects.get(code="OLD").hardware_class.name == "Onbekend (vorige webshop)"
@@ -165,7 +203,7 @@ def test_importing_again_creates_nothing_twice(old_db, archived):
     run = _run(old_db, apply=True)
     assert counts == (Customer.objects.count(), Contact.objects.count(), User.objects.count(), Order.objects.count(),
                       Licence.objects.count(), LicenceOption.objects.count(), Invoice.objects.count())
-    assert run.counts["licences"].get("created", 0) == 0 and run.counts["licences"]["unchanged"] == 3
+    assert run.counts["licences"].get("created", 0) == 0 and run.counts["licences"]["unchanged"] == 4
 
 
 # --- admin -------------------------------------------------------------------------------------
@@ -219,3 +257,27 @@ def test_password_reset_for_the_contacts_of_selected_customers(client, site):
     client.force_login(make_user("root@example.test", superuser=True))
     client.post("/beheer/customers/customer/", {"action": "send_password_reset", "_selected_action": [customer.pk]})
     assert len(mail.outbox) == 2 and not User.objects.get(email="k0@example.test").has_usable_password()
+
+
+def test_spare_parts_come_along(old_db):
+    run = _run(old_db, apply=True)
+    request = PartRequest.objects.get(number="WS17005AB")
+    assert request.customer.number == "400123" and request.status == PartRequest.Status.ANSWERED
+    accu = request.lines.get(article_number="KT.123")
+    assert accu.description == "Accu" and accu.machine_serial == "SN-M"  # description from the old catalogue
+    assert accu.time_new.code == "in_stock" and accu.price_new == Decimal("10.00") and accu.changes.count() == 1
+    assert Remark.objects.get(text="Zwart").from_customer and not Remark.objects.get(text="Welke kleur?").from_customer
+
+    order = PartOrder.objects.get(number="WS17005AB-1")
+    assert order.status == PartOrder.Status.DONE and order.small_order_costs == Decimal("15.00")
+    assert order.total == Decimal("61.71") and order.payment_method.code == "on_account"
+    assert order.lines.get().delivered() == 2 and order.delivery_city == "Stad"
+    # The previous webshop used the order number twice: the later one is renumbered.
+    assert PartOrder.objects.get(number="WS17005AB-1dup2").status == PartOrder.Status.CANCELLED
+    invoice = Invoice.objects.get(number="1000002")
+    assert invoice.part_order == order and invoice.total == Decimal("61.71")
+    assert NumberSequence.objects.get(key="part_request").next_number == 17006
+    assert run.counts["spare parts orders"]["created"] == 2 and run.counts["spare parts invoices"]["linked"] == 1
+
+    again = _run(old_db, apply=True)
+    assert again.counts["spare parts orders"] == {"unchanged": 2} and PartOrder.objects.count() == 2

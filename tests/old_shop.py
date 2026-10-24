@@ -51,7 +51,44 @@ SCHEMA = [
     "CREATE TABLE `hw_support_pack_license_option` (`id` VARCHAR(36), `hw_support_pack_license_id` VARCHAR(36), "
     "`vendor_id` VARCHAR(36), `hw_type_id` VARCHAR(36), `serial_nr` VARCHAR(64), `product_nr` VARCHAR(64), "
     "`description` VARCHAR(128), `created_at` DATETIME, `is_deleted` TINYINT DEFAULT 0)",
-    "CREATE TABLE `part_order` (`id` VARCHAR(36), `employee_id` VARCHAR(36))",
+    "CREATE TABLE `part_order` (`id` VARCHAR(36), `reference` VARCHAR(255), `number` VARCHAR(64), `price` DECIMAL(8,2), "
+    "`margin` DECIMAL(5,2), `fast` TINYINT, `fast_costs` DECIMAL(8,2), `low` TINYINT DEFAULT 0, `low_costs` DECIMAL(8,2), "
+    "`payment_costs` DECIMAL(8,2), `delivery_costs` DECIMAL(8,2), `handling_costs` DECIMAL(8,2), "
+    "`tax_percentage` DECIMAL(5,2), `released_at` DATETIME, `cancelled_at` DATETIME, `status` VARCHAR(64), "
+    "`processing_delivery` TINYINT DEFAULT 0, `part_address_delivery_id` VARCHAR(36), `part_payment_type_id` INT, "
+    "`part_tender_id` VARCHAR(36), `employee_id` VARCHAR(36), `created_at` DATETIME, `updated_at` DATETIME)",
+    "CREATE TABLE `part_address_delivery` (`id` VARCHAR(36), `name` VARCHAR(255), `name_contact` VARCHAR(255), "
+    "`line1` VARCHAR(255), `zipcode` VARCHAR(16), `city` VARCHAR(128), `country` VARCHAR(128), `telephone` VARCHAR(16), "
+    "`fax` VARCHAR(16))",
+    "CREATE TABLE `part_deliver_time` (`id` VARCHAR(36), `name` VARCHAR(32), `description` VARCHAR(255), `position` INT)",
+    "CREATE TABLE `part_payment_type` (`id` INT, `description` VARCHAR(128))",
+    "CREATE TABLE `part_request_status` (`id` VARCHAR(36), `name` VARCHAR(32), `description_bo` VARCHAR(128), "
+    "`description_fo` VARCHAR(128))",
+    "CREATE TABLE `part_tender` (`id` VARCHAR(36), `number` VARCHAR(32), `reference` TEXT, `fast` TINYINT, "
+    "`fast_possible` TINYINT, `fast_costs` DECIMAL(8,2), `valid_until` DATE, `status` VARCHAR(64), "
+    "`employee_id` VARCHAR(36), `part_address_delivery_id` VARCHAR(36), `created_at` DATETIME, `updated_at` DATETIME)",
+    "CREATE TABLE `part_request` (`id` VARCHAR(36), `number` VARCHAR(64), `count` INT, `description` TEXT, `info` TEXT, "
+    "`price_new` DECIMAL(8,2), `price_pack` DECIMAL(8,2), `price_refurbished` DECIMAL(8,2), `deliver_time_new` VARCHAR(36), "
+    "`deliver_time_pack` VARCHAR(36), `deliver_time_refurbished` VARCHAR(36), `part_request_status_id` VARCHAR(36), "
+    "`part_tender_id` VARCHAR(36), `vendor_id` VARCHAR(36), `part_id` VARCHAR(36), `created_at` DATETIME, "
+    "`updated_at` DATETIME)",
+    "CREATE TABLE `part_request_machine` (`id` VARCHAR(36), `number` VARCHAR(64), `number_serial` VARCHAR(64), "
+    "`description` TEXT, `part_request_id` VARCHAR(36))",
+    "CREATE TABLE `part_request_history` (`id` VARCHAR(36), `number` VARCHAR(255), `price_new` DECIMAL(8,2), "
+    "`price_pack` DECIMAL(8,2), `price_refurbished` DECIMAL(8,2), `deliver_time_new` VARCHAR(36), "
+    "`deliver_time_pack` VARCHAR(36), `deliver_time_refurbished` VARCHAR(36), `part_request_status_id` VARCHAR(36), "
+    "`part_request_id` VARCHAR(36), `user_id` VARCHAR(36), `vendor_id` VARCHAR(36), `created_at` DATETIME)",
+    "CREATE TABLE `part_remark` (`id` VARCHAR(36), `content` TEXT, `employee_id` VARCHAR(36), `user_id` VARCHAR(36), "
+    "`part_request_id` VARCHAR(36), `created_at` DATETIME)",
+    "CREATE TABLE `part_ordered` (`id` VARCHAR(36), `count` INT, `price_original` DECIMAL(8,2), `price` DECIMAL(8,2), "
+    "`packing` VARCHAR(64), `part_request_id` VARCHAR(36), `part_order_id` VARCHAR(36), `created_at` DATETIME, "
+    "`updated_at` DATETIME)",
+    "CREATE TABLE `part_delivered` (`id` VARCHAR(36), `amount` INT, `part_ordered_id` VARCHAR(36), `user_id` VARCHAR(36), "
+    "`created_at` DATETIME)",
+    "CREATE TABLE `part_correct` (`id` VARCHAR(36), `amount` INT, `part_ordered_id` VARCHAR(36), `user_id` VARCHAR(36), "
+    "`created_at` DATETIME)",
+    "CREATE TABLE `part` (`id` VARCHAR(36), `number` VARCHAR(64), `description` VARCHAR(255), `vendor_id` VARCHAR(36), "
+    "`part_type_id` VARCHAR(36))",
     "CREATE TABLE `invoice` (`id` INT, `invoice_id` VARCHAR(255), `payed_at` DATETIME, `created_at` DATETIME, "
     "`hw_support_order_id` VARCHAR(36), `part_order_id` VARCHAR(36))",
     "CREATE TABLE `invoice_payment` (`id` VARCHAR(36), `amount` DECIMAL(8,2), `created_at` DATETIME, `invoice_id` INT, "
