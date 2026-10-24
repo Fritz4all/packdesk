@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import HttpResponseBadRequest
 from django.contrib.auth import logout
 from django.shortcuts import render
 from django.utils import timezone
@@ -17,9 +18,16 @@ class SiteSettingsMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
+    LOCAL_HOSTS = {"localhost", "127.0.0.1", "[::1]"}
+
     def __call__(self, request):
         site = SiteSettings.load()
         request.site_settings = site
+        if site.domain and settings.ALLOWED_HOSTS == ["*"]:
+            # No fixed host list on the server: only the domain from the settings (and localhost) is answered.
+            host = request.get_host().rsplit(":", 1)[0].lower()
+            if host not in self.LOCAL_HOSTS and host != site.domain.strip().lower():
+                return HttpResponseBadRequest("Unknown host name.")
         chosen = request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)
         language = chosen if chosen in site.language_codes else site.language
         translation.activate(language)

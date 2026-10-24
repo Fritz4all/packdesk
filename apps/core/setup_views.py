@@ -28,6 +28,7 @@ STEPS = [
     ("code", gettext_lazy("Installation code")),
     ("admin", gettext_lazy("Administrator")),
     ("basics", gettext_lazy("Basic settings")),
+    ("mail", gettext_lazy("Mail server")),
     ("numbering", gettext_lazy("Numbering")),
     ("demo", gettext_lazy("Demo data")),
 ]
@@ -73,11 +74,9 @@ class BasicsForm(forms.ModelForm):
     languages = forms.MultipleChoiceField(
         label=gettext_lazy("Available languages"), choices=settings.LANGUAGES, widget=forms.CheckboxSelectMultiple,
     )
-    test_mail = forms.BooleanField(label=gettext_lazy("Send a test email to me"), required=False)
-
     class Meta:
         model = SiteSettings
-        fields = ["name", "language", "languages", "admin_language", "email", "logo"]
+        fields = ["name", "domain", "language", "languages", "admin_language", "email", "logo"]
         labels = {"name": gettext_lazy("Company or shop name"), "email": gettext_lazy("General email address")}
 
     def __init__(self, *args, **kwargs):
@@ -91,6 +90,29 @@ class BasicsForm(forms.ModelForm):
             self.add_error("languages", _("The default language must be one of the available languages."))
         cleaned["languages"] = ",".join(languages)
         return cleaned
+
+
+class MailForm(forms.ModelForm):
+    mail_password = forms.CharField(label=gettext_lazy("Password"), required=False, strip=False,
+                                    widget=forms.PasswordInput(render_value=False))
+    test_mail = forms.BooleanField(label=gettext_lazy("Send a test email to me"), required=False, initial=True)
+
+    class Meta:
+        model = SiteSettings
+        fields = ["mail_host", "mail_port", "mail_security", "mail_user"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if settings.MAIL_SERVER_FROM_ENV:
+            for name in ("mail_host", "mail_port", "mail_security", "mail_user", "mail_password"):
+                del self.fields[name]
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        if self.cleaned_data.get("mail_password"):
+            obj.set_mail_password(self.cleaned_data["mail_password"])
+        obj.save()
+        return obj
 
 
 class NumberingForm(forms.Form):
@@ -142,7 +164,8 @@ def wizard(request, step=None):
             return redirect(f"{reverse('admin:login')}?next={reverse('setup')}")
         if step in (None, "code", "admin"):
             return redirect("setup_step", "basics")
-    handler = {"code": _code, "admin": _admin, "basics": _basics, "numbering": _numbering, "demo": _demo}.get(step)
+    handler = {"code": _code, "admin": _admin, "basics": _basics, "mail": _mail, "numbering": _numbering,
+               "demo": _demo}.get(step)
     if handler is None:
         raise Http404
     return handler(request, site)
@@ -173,17 +196,32 @@ def _admin(request, site):
     return _render(request, "admin", form)
 
 
+def _suggested_domain(request):
+    host = request.get_host().rsplit(":", 1)[0]
+    return "" if host in ("localhost", "127.0.0.1") or host.replace(".", "").isdigit() else host
+
+
 def _basics(request, site):
-    form = BasicsForm(_posted(request), request.FILES or None, instance=site)
+    initial = {} if site.domain else {"domain": _suggested_domain(request)}
+    form = BasicsForm(_posted(request), request.FILES or None, instance=site, initial=initial)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect("setup_step", "mail")
+    return _render(request, "basics", form)
+
+
+def _mail(request, site):
+    form = MailForm(_posted(request), instance=site)
     if request.method == "POST" and form.is_valid():
         form.save()
         if form.cleaned_data.get("test_mail"):
             try:
                 send_mail(_("Test email from PackDesk"), _("Sending email works."), None, [request.user.email])
-            except Exception as exc:  # the wizard goes on; the mail settings live in .env
-                return _render(request, "basics", form, mail_error=str(exc))
+            except Exception as exc:  # stay on this step, so the settings can be corrected
+                return _render(request, "mail", form, mail_error=str(exc))
+            messages.success(request, _("Test email sent to %(email)s.") % {"email": request.user.email})
         return redirect("setup_step", "numbering")
-    return _render(request, "basics", form)
+    return _render(request, "mail", form, mail_from_env=settings.MAIL_SERVER_FROM_ENV)
 
 
 def _numbering(request, site):

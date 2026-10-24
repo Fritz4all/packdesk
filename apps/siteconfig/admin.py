@@ -2,10 +2,12 @@ from django import forms
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline
 from unfold.admin import ModelAdmin, StackedInline
+from unfold.decorators import display
 
 from .models import Address, HomeBlock, MenuItem, SiteSettings
 
@@ -17,10 +19,24 @@ class SiteSettingsForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple,
         help_text=_("Languages visitors can choose from."),
     )
+    mail_password = forms.CharField(
+        label=_("password"), required=False, strip=False,
+        widget=forms.PasswordInput(render_value=False, attrs={"autocomplete": "new-password"}),
+        help_text=_("Stored encrypted and never shown again. Leave empty to keep the current password."),
+    )
 
     class Meta:
         model = SiteSettings
         fields = "__all__"
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        if self.cleaned_data.get("mail_password"):
+            obj.set_mail_password(self.cleaned_data["mail_password"])
+        if commit:
+            obj.save()
+            self.save_m2m()
+        return obj
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -100,10 +116,21 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
     form = SiteSettingsForm
     inlines = [AddressInline, HomeBlockInline, MenuItemInline]
 
-    readonly_fields = ["updated_at"]
+    readonly_fields = ["updated_at", "show_mail_source"]
+
+    @display(description=_("In use"))
+    def show_mail_source(self, obj):
+        if settings.MAIL_SERVER_FROM_ENV:
+            return gettext("The mail server from the server settings (.env) is used; the values here are ignored.")
+        return gettext("The values above are used.") if obj.mail_host else gettext("No mail server entered yet.")
     color_fields = {"primary_color", "accent_color"}
     fieldsets = [
-        (_("General"), {"classes": ["tab"], "fields": ["name", "language", "languages", "admin_language", "meta_description", "updated_at"]}),
+        (_("General"), {"classes": ["tab"], "fields": [
+            "name", "domain", "language", "languages", "admin_language", "meta_description", "updated_at",
+        ]}),
+        (_("Mail server"), {"classes": ["tab"], "fields": [
+            "mail_host", ("mail_port", "mail_security"), ("mail_user", "mail_password"), "show_mail_source",
+        ]}),
         (
             _("Branding"),
             {"classes": ["tab"], "fields": ["logo", "favicon", ("primary_color", "accent_color"), "theme", "theme_switch"]},

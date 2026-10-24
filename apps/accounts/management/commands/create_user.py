@@ -31,4 +31,9 @@ class Command(BaseCommand):
         user.save()
         if options["role"]:
             user.groups.add(Group.objects.get(name=options["role"]))
+        if user.is_superuser:
+            # Installing without the browser: with an administrator the installation counts as finished.
+            from apps.siteconfig.models import SiteSettings
+
+            SiteSettings.objects.filter(pk=SiteSettings.load().pk).update(setup_completed=True)
         self.stdout.write(self.style.SUCCESS(f"Created {user.email}"))

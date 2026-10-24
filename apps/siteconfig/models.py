@@ -35,6 +35,22 @@ class SiteSettings(models.Model):
         default=",".join(code for code, _name in settings.LANGUAGES),
         help_text=_("Languages visitors can choose from."),
     )
+    domain = models.CharField(
+        _("domain name"), max_length=200, blank=True,
+        help_text=_("E.g. shop.company.com. When filled in, the website only answers on this name (and on "
+                    "localhost). Empty = any name or IP address."),
+    )
+
+    # Outgoing mail (when the server settings give no mail server)
+    mail_host = models.CharField(_("mail server"), max_length=200, blank=True, help_text=_("E.g. smtp.company.com"))
+    mail_port = models.PositiveIntegerField(_("port"), null=True, blank=True, help_text=_("Usually 587 (STARTTLS) or 465 (SSL)."))
+    mail_security = models.CharField(
+        _("encryption"), max_length=8, default="starttls",
+        choices=[("starttls", "STARTTLS"), ("ssl", "SSL/TLS"), ("none", _("none"))],
+    )
+    mail_user = models.CharField(_("user name"), max_length=200, blank=True)
+    mail_password_encrypted = models.TextField(_("password (encrypted)"), blank=True, editable=False)
+
     setup_completed = models.BooleanField(
         _("installation finished"), default=False, editable=False,
         help_text=_("Set by the installation wizard."),
@@ -131,6 +147,16 @@ class SiteSettings(models.Model):
 
     def delete(self, *args, **kwargs):
         raise RuntimeError("Site settings cannot be deleted.")
+
+    def set_mail_password(self, raw):
+        from apps.core import crypto
+
+        self.mail_password_encrypted = crypto.encrypt(raw, "mail.password")
+
+    def get_mail_password(self):
+        from apps.core import crypto
+
+        return crypto.decrypt(self.mail_password_encrypted, "mail.password") or ""
 
     @classmethod
     def load(cls):

@@ -5,6 +5,7 @@
 <ol class="setup-steps">
   {% for key, label in steps %}<li class="{% if key == step %}is-current{% elif forloop.counter0 < step_index %}is-done{% endif %}">{{ forloop.counter }}. {{ label }}</li>{% endfor %}
 </ol>
+{% for message in messages %}<p class="notice">{{ message }}</p>{% endfor %}
 <div class="form-card">
   {% if step == "code" %}
     <h1>{% translate "Welcome to PackDesk" %}</h1>
@@ -16,7 +17,11 @@
   {% elif step == "basics" %}
     <h1>{% translate "Basic settings" %}</h1>
     <p>{% translate "The name and email address appear on the website, in emails and on invoices. Colours, addresses and texts follow later under Settings." %}</p>
-    {% if mail_error %}<p class="notice notice-error">{% translate "The test email could not be sent. Check the mail server settings in .env." %} ({{ mail_error }})</p>{% endif %}
+  {% elif step == "mail" %}
+    <h1>{% translate "Mail server" %}</h1>
+    {% if mail_from_env %}<p>{% translate "The mail server is set in the server settings (.env). Send a test email to check it." %}</p>
+    {% else %}<p>{% translate "The server PackDesk sends email with (order confirmations, invoices, passwords). Ask your email provider or IT department for these details." %}</p>{% endif %}
+    {% if mail_error %}<p class="notice notice-error">{% translate "The test email could not be sent. Check the details and try again." %} ({{ mail_error }})</p>{% endif %}
   {% elif step == "numbering" %}
     <h1>{% translate "Numbering" %}</h1>
     <p>{% translate "The first number of each kind of document. Taking over from another system? Choose a number above the highest number there. Patterns can be changed later under Number sequences." %}</p>
