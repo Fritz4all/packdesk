@@ -6,7 +6,9 @@ staticfiles
 docs
 **/__pycache__
 *.pyc
-private
 *.pdf
 *.zip
 *.sql
+data
+private
+docker-compose.override.yml

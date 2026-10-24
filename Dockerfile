@@ -27,7 +27,8 @@ RUN pip install -r /app/requirements-dev.txt
 # --- runtime: no compilers, non-root user
 FROM python:3.13.16-slim-trixie
 
-ENV PATH=/venv/bin:$PATH PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 XDG_CACHE_HOME=/tmp/cache
+ENV PATH=/venv/bin:$PATH PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 XDG_CACHE_HOME=/tmp/cache \
+    DATA_ROOT=/data
 # Pango/HarfBuzz for WeasyPrint (invoice PDFs), poppler for reading archived PDFs,
 # libmariadb for MariaDB/MySQL databases.
 RUN apt-get update \
@@ -37,8 +38,8 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 RUN groupadd --system --gid 10001 app \
  && useradd --system --uid 10001 --gid app --home-dir /app app \
- && mkdir -p /data/media /data/private \
- && chown app:app /data/media /data/private
+ && mkdir -p /data \
+ && chown app:app /data
 
 COPY --from=build /venv /venv
 COPY --from=build --chown=app:app /app /app

@@ -3,9 +3,9 @@
 # Data that must live OUTSIDE the containers (and outside this Git folder):
 #   1. Database (customers, licences, orders, invoices, settings, users)  -> the server in DB_HOST,
 #      or volume "dbdata" / "mariadbdata" when the database runs in a container
-#   2. Website uploads: logos, favicon, customer logos                    -> ${DATA_DIR}/media
-#   3. Private files: invoice PDFs, fault attachments, pending imports   -> ${DATA_DIR}/private
-#   4. Old invoice archive (read-only)                                    -> ${DOCUMENT_ARCHIVE}
+#   2. Files PackDesk keeps (website uploads, invoice PDFs, fault attachments, pending imports)
+#                                                                         -> ${DATA_DIR}, as /data
+#   3. Optional: previous webshop's invoice archive (read-only)                   -> ${DOCUMENT_ARCHIVE}, as /data-archive
 # DATA_DIR defaults to ../packdesk-data, next to (not inside) the repository.
 # Everything else in a container can be thrown away; see docs/opslag.md.
 name: packdesk
@@ -81,35 +81,40 @@ services:
       ALLOWED_HOSTS: localhost,127.0.0.1
       EMAIL_HOST: mail
       EMAIL_PORT: "1025"
-      MEDIA_ROOT: /data/media
-      PRIVATE_MEDIA_ROOT: /data/private
+      DATA_ROOT: /data
       PYTHONDONTWRITEBYTECODE: "1"
       XDG_CACHE_HOME: /tmp/cache
-      DOCUMENT_ARCHIVE_DIR: /data/archive
+      # Only used when /data-archive is mounted (see the volumes below); otherwise there is no archive.
+      DOCUMENT_ARCHIVE_DIR: /data-archive
     ports:
       - "127.0.0.1:8000:8000"
     # Each line is  <folder on this computer/server> : <folder inside the container>[:ro].
-    # What PackDesk writes to /data/... lands in the folder on the host, so it survives when the
-    # container is removed or replaced by a new version. Relative paths start at this file's folder.
+    # What PackDesk writes there lands in the folder on the host, so it survives when the container
+    # is removed or replaced by a new version. Relative paths start at this file's folder.
     volumes:
       # Source code, for development only: edits on the host are visible in the container at once.
       # The production image contains the code itself and does not use this line.
       - .:/app
 
-      # 2. Website uploads: logo, favicon and customer logos uploaded in the admin.
-      #    Shown on the website through /media/, so nothing confidential belongs here.
-      #    Default host folder: ../packdesk-data/media (next to the repository, never inside it).
-      - ${DATA_DIR:-../packdesk-data}/media:/data/media
+      # 2. All files PackDesk keeps, one subfolder per purpose (created when first needed):
+      #      website/            logo, favicon, customer logos; public through /media/
+      #      invoices/<year>/    invoice PDFs made by PackDesk
+      #      fault-attachments/  attachments of fault reports
+      #      imports/            customer imports waiting to be checked (removed afterwards)
+      #    Everything except website/ is never served directly; PackDesk checks who may open a file.
+      #    Host folder: DATA_DIR in .env, default ../packdesk-data (next to the repository, never in it).
+      #    Back it up together with the database.
+      - ${DATA_DIR:-../packdesk-data}:/data
 
-      # 3. Private files: invoice PDFs that PackDesk makes, fault report attachments and import
-      #    files waiting to be checked. Never served directly; PackDesk checks who may open a file.
-      #    Default host folder: ../packdesk-data/private. Include it in the backup with the database.
-      - ${DATA_DIR:-../packdesk-data}/private:/data/private
-
-      # 4. Existing documents: the folder with the previous webshop's invoice PDFs. ":ro" = read-only, so
-      #    PackDesk can show and search them but never change or delete one. Point DOCUMENT_ARCHIVE
-      #    in .env at the copy of the archive; without it an (empty) folder in packdesk-data is used.
-      - ${DOCUMENT_ARCHIVE:-../packdesk-data/archive}:/data/archive:ro
+      # 3. Optional: the previous webshop's invoice PDFs, read-only (":ro"), so PackDesk can show and search
+      #    them but never change or delete one. Only needed for an installation that takes over the
+      #    previous webshop. To use it, put these lines in docker-compose.override.yml (not in Git; compose
+      #    reads it automatically) with DOCUMENT_ARCHIVE=<folder> in .env:
+      #
+      #      services:
+      #        web:
+      #          volumes:
+      #            - ${DOCUMENT_ARCHIVE}:/data-archive:ro
 
 volumes:
   # 1. Database in a container (only with COMPOSE_PROFILES=postgres or mariadb).
