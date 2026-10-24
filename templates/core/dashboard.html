@@ -9,6 +9,7 @@
 <section class="cards">
   {% if current_customer %}
   <a class="card card-link-block" href="{% url 'my_details' %}"><h2>{% translate "My details" %}</h2><p>{% translate "Company details, contact person and password." %}</p></a>
+  <a class="card card-link-block" href="{% url 'my_fault_reports' %}"><h2>{% translate "My fault reports" %}</h2><p>{% translate "Report a fault and see the status of your reports." %}</p></a>
   {% endif %}
   <article class="card card-muted"><h2>{% translate "Orders" %}</h2><p>{% translate "Available soon." %}</p></article>
   <article class="card card-muted"><h2>{% translate "Licences" %}</h2><p>{% translate "Available soon." %}</p></article>

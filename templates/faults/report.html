@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Report a fault" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>{% translate "Report a fault" %}</h1>
+  {% if rules.intro %}<p class="lead">{{ rules.intro|linebreaksbr }}</p>{% endif %}
+  {% if rules.office_hours_text %}<p class="muted">{{ rules.office_hours_text|linebreaksbr }}</p>{% endif %}
+</div>
+<form method="post" enctype="multipart/form-data" class="form-card" novalidate>
+  {% csrf_token %}
+  {% if form.errors or file_error %}<div class="message message-error">{% translate "Please check the fields marked below." %}{% if file_error %} {{ file_error }}{% endif %}</div>{% endif %}
+  <fieldset><legend>{% translate "Contract" %}</legend>
+    <div class="lookup-row">
+      {% include "includes/form_fields.html" with fields=lookup_fields %}
+      <button class="btn btn-ghost" type="submit" name="action" value="lookup" formnovalidate>{% translate "Look up" %}</button>
+    </div>
+    {% if cover %}
+      {% if cover.found and cover.covered %}<div class="message message-success">{% blocktranslate with number=cover.licence.full_number until=cover.until|date:"j F Y" %}Licence {{ number }} found: covered until {{ until }}. We filled in the device below.{% endblocktranslate %}</div>
+      {% elif cover.found %}<div class="message message-error">{% blocktranslate with number=cover.licence.full_number until=cover.until|date:"j F Y" %}Licence {{ number }} found, but its cover ended on {{ until }}.{% endblocktranslate %}</div>
+      {% else %}<div class="message">{% translate "No registered licence found for this number. You can still report the fault." %}</div>{% endif %}
+    {% endif %}
+  </fieldset>
+  <fieldset><legend>{% translate "Device and fault" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=device_fields %}</div>
+    {% include "includes/form_fields.html" with fields=fault_fields %}
+    <label class="field"><span>{% translate "Attachments" %}</span>
+      <input type="file" name="attachments" multiple>
+      <small class="muted">{% blocktranslate with n=rules.max_attachments mb=rules.max_attachment_mb %}Up to {{ n }} files, {{ mb }} MB in total. Add them in the last step, after looking up.{% endblocktranslate %}</small>
+    </label>
+  </fieldset>
+  <fieldset><legend>{% translate "Reported by" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=reseller_fields %}</div>
+  </fieldset>
+  <fieldset><legend>{% translate "Location of the device" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=location_fields %}</div>
+  </fieldset>
+  <button class="btn btn-primary btn-lg" type="submit" name="action" value="send">{% translate "Send fault report" %}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="auth"><div class="auth-card">
+  <h1>{% translate "Fault report sent" %}</h1>
+  <p>{{ rules.thanks|linebreaksbr }}</p>
+  <dl class="details">
+    <dt>{% translate "Number" %}</dt><dd>{{ fault.number }}</dd>
+    <dt>{% translate "Cover" %}</dt><dd>{% if fault.is_covered %}{% blocktranslate with until=fault.covered_until|date:"j F Y" %}Covered until {{ until }}{% endblocktranslate %}{% else %}{% translate "No cover found" %}{% endif %}</dd>
+  </dl>
+  <a class="btn btn-primary" href="{% url 'home' %}">{% translate "Back to the home page" %}</a>
+</div></div>
+{% endblock %}

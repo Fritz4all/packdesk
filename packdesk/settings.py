@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "apps.numbering",
     "apps.customers",
     "apps.licences",
+    "apps.faults",
     "apps.dashboard",
     # Last: its post_migrate hook gives roles the permissions of all apps above.
     "apps.accounts",
@@ -113,6 +114,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "media/"
 MEDIA_ROOT = Path(env("MEDIA_ROOT", default=str(BASE_DIR / "media")))
+# Never served directly: attachments and other private files, only via checked views.
+PRIVATE_MEDIA_ROOT = Path(env("PRIVATE_MEDIA_ROOT", default=str(BASE_DIR / "private")))
 # Folder with existing documents (e.g. the previous webshop's invoice PDFs), read-only.
 DOCUMENT_ARCHIVE_DIR = env("DOCUMENT_ARCHIVE_DIR", default="")
 

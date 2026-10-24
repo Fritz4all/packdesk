@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 # Apps whose functions can be granted to roles. New modules add their app label here.
-MANAGED_APPS = ["siteconfig", "numbering", "customers", "licences", "dashboard", "accounts"]
+MANAGED_APPS = ["siteconfig", "numbering", "customers", "licences", "faults", "dashboard", "accounts"]
 
 ACTIONS = [
     ("view", _("View")),

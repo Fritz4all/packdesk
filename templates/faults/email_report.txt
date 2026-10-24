@@ -1,0 +1,24 @@
+{% load i18n %}{% autoescape off %}{% translate "Fault report" %} {{ fault.number }}
+{% if fault.is_covered %}{% blocktranslate with until=fault.covered_until|date:"j F Y" number=fault.licence.full_number %}Under contract: licence {{ number }}, covered until {{ until }}{% endblocktranslate %}{% else %}{% translate "No cover found" %}{% if fault.licence %} ({% translate "licence" %} {{ fault.licence.full_number }}, {% translate "ended" %} {{ fault.covered_until|date:"j F Y" }}){% endif %}{% endif %}
+
+{% translate "Device" %}
+  {% translate "Brand" %}: {{ fault.vendor }}
+  {% translate "Device" %}: {{ fault.device }}
+  {% translate "Serial number" %}: {{ fault.serial_nr }}
+  {% if fault.operating_system %}{% translate "Operating system" %}: {{ fault.operating_system }}
+  {% endif %}{% translate "Desired handling" %}: {{ fault.repair_option|default:"-" }}
+  {% if fault.reference %}{% translate "Reference" %}: {{ fault.reference }}{% endif %}
+
+{% translate "Description of the fault" %}
+{{ fault.description }}
+
+{% translate "Reported by" %}
+  {{ fault.reseller_name }}
+  {{ fault.reseller_address }}, {{ fault.reseller_postal_code }} {{ fault.reseller_city }}
+  {{ fault.reseller_phone }} {{ fault.reseller_email }}
+
+{% translate "Location of the device" %}
+  {{ fault.location_name }} – {{ fault.location_contact }}
+  {{ fault.location_address }}, {{ fault.location_postal_code }} {{ fault.location_city }} {{ fault.location_country }}
+  {{ fault.location_phone }} {{ fault.location_email }}
+{% endautoescape %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "My fault reports" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "My fault reports" %}</h1>
+  <a class="btn btn-primary" href="{% url 'fault_report' %}">{% translate "Report a fault" %}</a></div>
+<div class="card table-wrap">
+<table class="table">
+  <thead><tr><th>{% translate "Number" %}</th><th>{% translate "Date" %}</th><th>{% translate "Device" %}</th><th>{% translate "Serial number" %}</th><th>{% translate "Status" %}</th></tr></thead>
+  <tbody>
+  {% for r in reports %}<tr><td>{{ r.number }}</td><td>{{ r.created_at|date:"j M Y" }}</td><td>{{ r.device }}</td><td>{{ r.serial_nr }}</td><td>{{ r.get_status_display }}</td></tr>
+  {% empty %}<tr><td colspan="5" class="muted">{% translate "No fault reports yet." %}</td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

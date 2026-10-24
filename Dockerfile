@@ -28,8 +28,8 @@ FROM python:3.13.16-slim-trixie
 ENV PATH=/venv/bin:$PATH PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 RUN groupadd --system --gid 10001 app \
  && useradd --system --uid 10001 --gid app --home-dir /app app \
- && mkdir -p /data/media \
- && chown app:app /data/media
+ && mkdir -p /data/media /data/private \
+ && chown app:app /data/media /data/private
 
 COPY --from=build /venv /venv
 COPY --from=build --chown=app:app /app /app

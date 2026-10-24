@@ -135,6 +135,31 @@ SECTIONS = [
         ],
     },
     {
+        "key": "faults",
+        "title": _("Fault reports"),
+        "items": [
+            {
+                "title": _("Fault reports"),
+                "icon": "build",
+                "link": reverse_lazy("admin:faults_faultreport_changelist"),
+                "badge": "apps.faults.admin_badge.new_reports",
+                "permission": lambda request: request.user.has_perm("faults.view_faultreport"),
+            },
+            {
+                "title": _("Handling options"),
+                "icon": "list",
+                "link": reverse_lazy("admin:faults_repairoption_changelist"),
+                "permission": lambda request: request.user.has_perm("faults.view_repairoption"),
+            },
+            {
+                "title": _("Fault report settings"),
+                "icon": "tune",
+                "link": reverse_lazy("admin:faults_faultsettings_changelist"),
+                "permission": lambda request: request.user.has_perm("faults.view_faultsettings"),
+            },
+        ],
+    },
+    {
         "key": "users",
         "title": _("Users"),
         "items": [
@@ -154,7 +179,7 @@ SECTIONS = [
     },
 ]
 
-DEFAULT_ORDER = ["overview", "customers", "licences", "users", "configuration"]
+DEFAULT_ORDER = ["overview", "customers", "licences", "faults", "users", "configuration"]
 
 
 def ordered_keys(user):
