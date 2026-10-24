@@ -44,6 +44,12 @@ SECTIONS = [
                 "permission": lambda request: request.user.has_perm("legacy.view_externaldatabase"),
             },
             {
+                "title": _("Table mappings"),
+                "icon": "link",
+                "link": reverse_lazy("admin:legacy_tablemapping_changelist"),
+                "permission": lambda request: request.user.has_perm("legacy.view_tablemapping"),
+            },
+            {
                 "title": _("Compare databases"),
                 "icon": "compare_arrows",
                 "link": reverse_lazy("legacy_choose"),
@@ -210,7 +216,7 @@ SECTIONS = [
     {
         "key": "users",
         "collapsible": True,
-        "title": _("Users"),
+        "title": _("Users and roles"),
         "items": [
             {
                 "title": _("Users"),
