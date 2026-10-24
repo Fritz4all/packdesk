@@ -1,4 +1,12 @@
 # Local development. Production compose follows in step E.
+#
+# Data that must live OUTSIDE the containers (and outside this Git folder):
+#   1. Database (customers, licences, orders, invoices, settings, users)  -> volume "dbdata"
+#   2. Website uploads: logos, favicon, customer logos                    -> ${DATA_DIR}/media
+#   3. Private files: invoice PDFs, fault attachments, pending imports   -> ${DATA_DIR}/private
+#   4. Old invoice archive (read-only)                                    -> ${DOCUMENT_ARCHIVE}
+# DATA_DIR defaults to ../packdesk-data, next to (not inside) the repository.
+# Everything else in a container can be thrown away; see docs/opslag.md.
 name: packdesk
 
 services:
@@ -9,6 +17,7 @@ services:
       POSTGRES_USER: packdesk
       POSTGRES_PASSWORD: packdesk-dev
     volumes:
+      # 1. Database
       - dbdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "packdesk"]
@@ -36,16 +45,23 @@ services:
       ALLOWED_HOSTS: localhost,127.0.0.1
       EMAIL_HOST: mail
       EMAIL_PORT: "1025"
-      MEDIA_ROOT: /app/media
+      MEDIA_ROOT: /data/media
+      PRIVATE_MEDIA_ROOT: /data/private
       PYTHONDONTWRITEBYTECODE: "1"
       XDG_CACHE_HOME: /tmp/cache
       DOCUMENT_ARCHIVE_DIR: /data/archive
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
+      # Source code (development only; the production image contains the code itself)
       - .:/app
-      # Existing documents (e.g. old invoice PDFs), read-only. Set DOCUMENT_ARCHIVE in .env.
-      - ${DOCUMENT_ARCHIVE:-./media/archive}:/data/archive:ro
+      # 2. Website uploads
+      - ${DATA_DIR:-../packdesk-data}/media:/data/media
+      # 3. Private files
+      - ${DATA_DIR:-../packdesk-data}/private:/data/private
+      # 4. Existing documents (old invoice PDFs), read-only. Set DOCUMENT_ARCHIVE in .env.
+      - ${DOCUMENT_ARCHIVE:-../packdesk-data/archive}:/data/archive:ro
 
 volumes:
+  # 1. Database. Back up with: docker compose exec db pg_dump -U packdesk packdesk > <file outside Git>
   dbdata:
