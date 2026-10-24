@@ -14,6 +14,7 @@ Wat PackDesk nu kan en wat er nog komt.
 - PostgreSQL en MariaDB/MySQL.
 - Externe databases, koppelingen en vergelijken.
 - Installatiewizard voor een nieuwe installatie en database bijwerken via de browser.
+- Prullenbak met terugzetten, en instelbaar automatisch uitloggen.
 
 ## Nog te doen
 

@@ -98,6 +98,17 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
     facturen, offertes, orderbevestigingen, mails, afzender op labels).
   - *Homepageblokken* en *menu-items:* de vakjes op de homepage en de links in de kopregel, per taal,
     zichtbaar voor iedereen, alleen gasten of alleen ingelogde klanten.
+- **Instellingen → Beveiliging:** na hoeveel minuten zonder activiteit medewerkers en klanten
+  automatisch worden uitgelogd (standaard 120 en 60 minuten; 0 = ingelogd blijven, hooguit twee
+  weken), en na hoeveel dagen de prullenbak wordt geleegd.
+- **Prullenbak:** alles wat je in het beheer verwijdert, komt hier terecht, samen met wat er automatisch
+  mee verwijderd werd (bijv. de adressen en contactpersonen van een klant). Zoeken, sorteren op elke
+  kolom en filteren op soort, datum en wie het verwijderde. Vink items aan om ze in één keer
+  **terug te zetten** of **definitief te verwijderen**; bij een item staan dezelfde knoppen. Terugzetten
+  zet alles terug met dezelfde nummers en koppelingen. Lukt dat niet omdat er intussen iets met hetzelfde
+  nummer is aangemaakt, dan blijft het item in de prullenbak en zie je waarom. Bestanden (zoals bijlagen)
+  worden pas weggegooid bij definitief verwijderen. Na het ingestelde aantal dagen (standaard 30) wordt
+  de prullenbak vanzelf geleegd.
 - **Nummerreeksen:** per documentsoort een patroon (bijv. `F{year}-{nr:5}`) en het volgende nummer.
   PackDesk geeft nummers nooit dubbel uit en controleert de teller tegen de documenten die bestaan.
   Klopt iets niet (teller te laag, ontbrekende nummers), dan zie je een waarschuwing. *Teller op hoogste

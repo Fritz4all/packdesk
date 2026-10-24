@@ -53,6 +53,7 @@ uit *Instellingen* (het wachtwoord van de mailserver versleuteld).
 | Rollen en rechten | Django-groepen en -rechten |
 | Externe databases (zoals die van de vorige webshop): server, gebruiker, versleuteld wachtwoord | `ExternalDatabase` |
 | Koppelingen: welke tabel en kolommen bij welk PackDesk-onderdeel en -veld horen | `TableMapping`, `FieldMapping` |
+| Prullenbak: verwijderde items met alles wat mee verwijderd werd | `TrashEntry` |
 | Dashboardindeling en volgorde van het menu, per medewerker | `DashboardLayout` |
 | Beheertaal per medewerker | veld op de gebruiker |
 
