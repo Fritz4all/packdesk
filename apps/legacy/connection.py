@@ -48,6 +48,17 @@ class Reader:
         finally:
             cursor.close()
 
+    def columns(self, sql):
+        """Column names of a query's result."""
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(self._sql(sql))
+            return [c[0] for c in cursor.description]
+        except Exception as exc:
+            raise ExternalDatabaseError(str(exc)) from exc
+        finally:
+            cursor.close()
+
     def value(self, sql, params=()):
         rows = self.rows(sql, params)
         return next(iter(rows[0].values())) if rows else None
