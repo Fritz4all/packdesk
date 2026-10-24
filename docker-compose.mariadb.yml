@@ -1,0 +1,51 @@
+# PackDesk with its own MariaDB database. Start with:  docker compose -f docker-compose.mariadb.yml up -d
+# Then open http://<server>:8000 and follow the installation wizard (the installation code is shown
+# with: docker compose -f docker-compose.mariadb.yml logs web | grep "Installation code").
+# Settings can be put in .env (see .env.example); none are required.
+name: packdesk
+
+services:
+  db:
+    image: mariadb:10.6.21
+    restart: unless-stopped
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    environment:
+      MARIADB_DATABASE: packdesk
+      MARIADB_USER: packdesk
+      # Only reachable by PackDesk inside this setup; set your own DB_PASSWORD in .env if you like.
+      MARIADB_PASSWORD: ${DB_PASSWORD:-packdesk-internal}
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      retries: 30
+
+  web:
+    build: .
+    image: packdesk:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DB_ENGINE: mariadb
+      DB_HOST: db
+      DB_NAME: packdesk
+      DB_USER: packdesk
+      DB_PASSWORD: ${DB_PASSWORD:-packdesk-internal}
+      DATA_ROOT: /data
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      # All files PackDesk keeps (logos, invoice PDFs, attachments, the settings of the wizard).
+      # Back this folder up together with the database.
+      - ${DATA_DIR:-../packdesk-data}:/data
+
+volumes:
+  # The database. Back up with: docker compose -f docker-compose.mariadb.yml exec db mariadb-dump -u packdesk -p packdesk > packdesk.sql
+  mariadb-data:

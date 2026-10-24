@@ -24,7 +24,7 @@ RUN SECRET_KEY=build DATABASE_URL=sqlite:////tmp/build.db python manage.py compi
 FROM build AS dev
 RUN pip install -r /app/requirements-dev.txt
 
-# --- runtime: no compilers, non-root user
+# --- runtime: no compilers; runs as the unprivileged user "app"
 FROM python:3.13.16-slim-trixie
 
 ENV PATH=/venv/bin:$PATH PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 XDG_CACHE_HOME=/tmp/cache \
@@ -45,7 +45,7 @@ COPY --from=build /venv /venv
 COPY --from=build --chown=app:app /app /app
 
 WORKDIR /app
-USER app
+# Starts as root only to give the data folder to "app"; the entrypoint then runs everything as "app".
 EXPOSE 8000
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
 CMD ["gunicorn", "packdesk.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "-"]

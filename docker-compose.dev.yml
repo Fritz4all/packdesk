@@ -1,11 +1,10 @@
-# PackDesk for local development and testing (debug mode, test mail server on port 8025).
-# Settings that differ per computer (database, folders) come from .env; see .env.example.
+# PackDesk for DEVELOPMENT: debug mode, code mounted from this folder, test mailbox on port 8025.
+# Use it with:  docker compose -f docker-compose.dev.yml up -d
+# (or set COMPOSE_FILE=docker-compose.dev.yml in .env, then plain "docker compose" uses it).
+# For a real installation use docker-compose.yml, docker-compose.mariadb.yml or
+# docker-compose.external-db.yml instead; see docs/installatie.md.
 #
-# Data lives outside the containers, so containers can be removed or replaced at any time:
-#   database   -> the server in DB_HOST, or volume "dbdata" / "mariadbdata" (database container)
-#   files      -> DATA_DIR (default ../packdesk-data), mounted as /data
-#   old files  -> optional, read-only sources under /data-sources (see the web service)
-# Overview of everything that is stored: docs/opslag.md.
+# Database and folders come from .env; see .env.example. Overview of what is stored: docs/opslag.md.
 name: packdesk
 
 services:

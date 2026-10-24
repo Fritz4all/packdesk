@@ -1,0 +1,51 @@
+# PackDesk with its own PostgreSQL database. Start with:  docker compose up -d
+# Then open http://<server>:8000 and follow the installation wizard (the installation code is shown
+# with: docker compose logs web | grep "Installation code").
+#
+# Other variants: docker-compose.mariadb.yml (with MariaDB) and docker-compose.external-db.yml
+# (an existing database server). Settings can be put in .env (see .env.example); none are required.
+name: packdesk
+
+services:
+  db:
+    image: postgres:17.11-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: packdesk
+      POSTGRES_USER: packdesk
+      # Only reachable by PackDesk inside this setup; set your own DB_PASSWORD in .env if you like.
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-packdesk-internal}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "packdesk"]
+      interval: 3s
+      retries: 30
+
+  web:
+    build: .
+    image: packdesk:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DB_ENGINE: postgres
+      DB_HOST: db
+      DB_NAME: packdesk
+      DB_USER: packdesk
+      DB_PASSWORD: ${DB_PASSWORD:-packdesk-internal}
+      DATA_ROOT: /data
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      # All files PackDesk keeps (logos, invoice PDFs, attachments, the settings of the wizard).
+      # Back this folder up together with the database.
+      - ${DATA_DIR:-../packdesk-data}:/data
+
+volumes:
+  # The database. Back up with: docker compose exec db pg_dump -U packdesk packdesk > packdesk.sql
+  postgres-data:

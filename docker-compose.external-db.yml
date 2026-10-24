@@ -1,0 +1,27 @@
+# PackDesk on an existing database server (MariaDB, MySQL or PostgreSQL); no database container.
+# Start with:  docker compose -f docker-compose.external-db.yml up -d
+# Then open http://<server>:8000. The installation wizard asks for the database server and can create
+# the database with an administrator login of that server (used once, never stored). The installation
+# code is shown with: docker compose -f docker-compose.external-db.yml logs web | grep "Installation code"
+# The database can also be given in .env instead (DB_ENGINE, DB_HOST, ...; see .env.example).
+name: packdesk
+
+services:
+  web:
+    build: .
+    image: packdesk:latest
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATA_ROOT: /data
+    # A database server on this same computer is reachable as "host.docker.internal".
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      # All files PackDesk keeps (logos, invoice PDFs, attachments, the settings of the wizard).
+      # Back this folder up together with the database (which lives on the database server).
+      - ${DATA_DIR:-../packdesk-data}:/data
