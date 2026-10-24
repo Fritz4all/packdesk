@@ -56,13 +56,16 @@ Handige opdrachten:
 ## Testen
 
 ```bash
+# Draai alle tests (tegen de database uit .env).
 docker compose exec web python -m pytest
 ```
 
 Tegen MariaDB:
 
 ```bash
+# Start (ook) een MariaDB-container.
 docker compose --profile mariadb up -d mariadb
+# Draai de tests met MariaDB in plaats van de database uit .env.
 docker compose exec -e DB_ENGINE=mariadb -e DB_HOST=mariadb web python -m pytest
 ```
 
@@ -78,7 +81,9 @@ Teksten in de code zijn Engels; de Nederlandse en Duitse vertalingen staan in `l
 `locale/de/`. Een test controleert dat ze compleet zijn.
 
 ```bash
+# Zoek nieuwe of gewijzigde teksten in de code en zet ze in de vertaalbestanden (locale/*/django.po).
 docker compose exec web python manage.py makemessages -l nl -l de --ignore=venv --ignore=staticfiles --ignore=tests --no-obsolete
+# Na het vertalen: zet de .po-bestanden om naar het formaat dat PackDesk leest (.mo).
 docker compose exec web python manage.py compilemessages --ignore=/venv
 ```
 

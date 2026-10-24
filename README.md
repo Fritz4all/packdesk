@@ -33,6 +33,7 @@ prijzen, teksten, huisstijl, nummering, rechten van medewerkers.
 Nodig: [Docker](https://docs.docker.com/get-docker/) met Docker Compose.
 
 ```bash
+# Maak je eigen instellingenbestand op basis van het voorbeeld.
 cp .env.example .env
 ```
 
@@ -40,11 +41,24 @@ Zet in `.env` voor een proefopstelling: `DB_ENGINE=postgres`, `DB_HOST=postgres`
 zelfgekozen wachtwoord en `COMPOSE_PROFILES=postgres`. Daarna:
 
 ```bash
+# Start PackDesk, de database en de testmailbox op de achtergrond (de eerste keer wordt alles
+# gedownload en gebouwd; dat duurt een paar minuten).
 docker compose up -d
+
+# Maak de tabellen in de lege database aan.
 docker compose exec web python manage.py migrate
+
+# Maak het eerste beheerdersaccount; je wordt gevraagd een wachtwoord te kiezen.
 docker compose exec web python manage.py create_user --email admin@example.com --superuser
+
+# Optioneel: vul een kleine democatalogus met servicepakketten en testlicenties om mee te oefenen.
 docker compose exec web python manage.py load_demo_catalogue
 ```
+
+`docker compose exec web …` voert een opdracht uit binnen de draaiende PackDesk-container (`web`).
+Regels die met `#` beginnen zijn uitleg; die mag je meekopiëren.
+
+Daarna open je in de browser:
 
 - Website: http://localhost:8000
 - Beheer: http://localhost:8000/beheer/

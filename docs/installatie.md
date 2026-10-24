@@ -75,10 +75,19 @@ met `DOCUMENT_ARCHIVE=<map met de pdf's>` in `.env`.
 ## 4. Starten en eerste keer inrichten
 
 ```bash
+# Start PackDesk (en, als je dat in .env hebt gekozen, de database) op de achtergrond.
 docker compose up -d
+
+# Maak de tabellen in de lege database aan. Alleen de eerste keer en na een update nodig.
 docker compose exec web python manage.py migrate
-docker compose exec web python manage.py create_user --email <jouw e-mailadres> --superuser
+
+# Maak het eerste beheerdersaccount met volledige rechten (vervang jouw@email.nl door je eigen
+# e-mailadres); je wordt gevraagd een wachtwoord te kiezen.
+docker compose exec web python manage.py create_user --email jouw@email.nl --superuser
 ```
+
+`docker compose exec web …` voert een opdracht uit binnen de draaiende PackDesk-container (`web`).
+Regels die met `#` beginnen zijn uitleg; die mag je meekopiëren.
 
 Daarna in het beheer (`/beheer/`):
 
@@ -95,6 +104,7 @@ Komt het bedrijf over van een ander systeem? Zie *Externe databases* in de [hand
 mail af in een testmailbox. Op een server gebruik je de productie-image:
 
 ```bash
+# Bouw de productie-image uit deze map en geef hem een versienummer, bijv. packdesk:1.0.
 docker build -t packdesk:<versie> .
 ```
 
@@ -122,5 +132,7 @@ Bronnen uit andere systemen (zoals een oud factuurarchief) veranderen niet; daar
 
 1. Back-up maken (zie hierboven).
 2. Nieuwe versie ophalen of bouwen.
-3. Container vervangen: `docker compose up -d --build`.
-4. Databasewijzigingen doorvoeren: `docker compose exec web python manage.py migrate`.
+3. Container vervangen door de nieuwe versie: `docker compose up -d --build` (bouwt de image opnieuw
+   en start de container daarmee; database en datamap blijven staan).
+4. Databasewijzigingen van de nieuwe versie doorvoeren:
+   `docker compose exec web python manage.py migrate`.

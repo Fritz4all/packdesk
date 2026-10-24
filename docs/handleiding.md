@@ -150,6 +150,7 @@ Komen er factuur-pdf's mee uit een vorig systeem en zijn die gekoppeld (zie [Ins
 dan registreert deze opdracht ze als facturen, zodat ze in het beheer en bij de klant te vinden zijn:
 
 ```bash
+# Lees alle pdf's in de archiefmap uit en registreer ze als facturen.
 docker compose exec web python manage.py import_invoice_archive
 ```
 
