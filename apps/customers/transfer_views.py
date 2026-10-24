@@ -1,7 +1,7 @@
 """Admin pages for exporting and importing customers. The logic is in `transfer.py`.
 
 Import is three steps: upload → check the report and choose per customer → import.
-The uploaded file waits in the private folder (never in the website's media folder) and is
+The uploaded file waits in DATA_ROOT/imports (never in the website folder) and is
 removed after the import or when it is cancelled; leftovers older than a day are cleaned up.
 """
 
@@ -29,7 +29,7 @@ SESSION_KEY = "customer_import"
 
 
 def _upload_dir():
-    path = Path(settings.PRIVATE_MEDIA_ROOT) / "imports"
+    path = Path(settings.DATA_ROOT) / "imports"
     path.mkdir(parents=True, exist_ok=True)
     return path
 

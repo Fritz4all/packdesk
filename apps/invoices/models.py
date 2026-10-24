@@ -6,7 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.faults.models import private_storage
+from apps.core.storage import data_storage
 
 
 class InvoiceSettings(models.Model):
@@ -84,7 +84,7 @@ class Invoice(models.Model):
     vat = models.DecimalField(_("VAT"), max_digits=12, decimal_places=2, default=Decimal("0"))
     total = models.DecimalField(_("total incl. VAT"), max_digits=12, decimal_places=2, default=Decimal("0"))
 
-    pdf = models.FileField(_("PDF"), upload_to=pdf_path, storage=private_storage, blank=True)
+    pdf = models.FileField(_("PDF"), upload_to=pdf_path, storage=data_storage, blank=True)
     is_archive = models.BooleanField(_("from old archive"), default=False, db_index=True)
     archive_file = models.CharField(_("file in archive"), max_length=200, blank=True)
     paid_on = models.DateField(_("paid on"), null=True, blank=True)

@@ -1,18 +1,11 @@
 import uuid
 
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-
-def private_storage():
-    """Storage for files that must never be public (attachments); served only through checked views.
-
-    A callable, so migrations refer to this function instead of a path that differs per server.
-    """
-    return FileSystemStorage(location=settings.PRIVATE_MEDIA_ROOT)
+from apps.core.storage import data_storage
 
 
 class RepairOption(models.Model):
@@ -132,12 +125,12 @@ class FaultReport(models.Model):
 
 
 def attachment_path(instance, filename):
-    return f"faults/{instance.report_id}/{uuid.uuid4().hex[:8]}-{filename}"
+    return f"fault-attachments/{instance.report_id}/{uuid.uuid4().hex[:8]}-{filename}"
 
 
 class FaultAttachment(models.Model):
     report = models.ForeignKey(FaultReport, on_delete=models.CASCADE, related_name="attachments")
-    file = models.FileField(_("file"), upload_to=attachment_path, storage=private_storage)
+    file = models.FileField(_("file"), upload_to=attachment_path, storage=data_storage)
     name = models.CharField(_("name"), max_length=200)
     size = models.PositiveIntegerField(_("size"), default=0)
 

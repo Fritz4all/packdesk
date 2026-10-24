@@ -149,11 +149,17 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+# All files PackDesk keeps, one folder per purpose (see docs/opslag.md):
+#   DATA_ROOT/website            logo, favicon, customer logos; public through MEDIA_URL
+#   DATA_ROOT/invoices           invoice PDFs made by PackDesk          } never served directly,
+#   DATA_ROOT/fault-attachments  attachments of fault reports           } only through views
+#   DATA_ROOT/imports            customer imports waiting to be checked } that check access
+# Default outside the repository, so files never end up in Git.
+DATA_ROOT = Path(env("DATA_ROOT", default=str(BASE_DIR.parent / "packdesk-data")))
 MEDIA_URL = "media/"
-MEDIA_ROOT = Path(env("MEDIA_ROOT", default=str(BASE_DIR / "media")))
-# Never served directly: attachments and other private files, only via checked views.
-PRIVATE_MEDIA_ROOT = Path(env("PRIVATE_MEDIA_ROOT", default=str(BASE_DIR / "private")))
-# Folder with existing documents (e.g. the previous webshop's invoice PDFs), read-only.
+MEDIA_ROOT = DATA_ROOT / "website"
+# Optional, separate from DATA_ROOT: a folder with existing documents (the previous webshop's invoice PDFs),
+# read-only. Empty = no archive. In docker-compose it is /data-archive, mounted only when given.
 DOCUMENT_ARCHIVE_DIR = env("DOCUMENT_ARCHIVE_DIR", default="")
 
 STORAGES = {
