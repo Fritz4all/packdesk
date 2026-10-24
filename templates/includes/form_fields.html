@@ -1,5 +1,12 @@
-{% for field in fields %}{% if field.is_hidden %}{{ field }}{% else %}
-<label class="field{% if field.field.widget.input_type == 'checkbox' %} field-check{% endif %}">
+{% for field in fields %}{% if field.is_hidden %}{{ field }}{% elif field.widget_type == "checkboxselectmultiple" or field.widget_type == "radioselect" %}
+<fieldset class="field">
+  <legend>{{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}</legend>
+  {{ field }}
+  {% if field.help_text %}<small class="muted">{{ field.help_text }}</small>{% endif %}
+  {% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}
+</fieldset>
+{% else %}
+<label class="field{% if field.widget_type == 'checkbox' %} field-check{% endif %}">
   <span>{{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}</span>
   {{ field }}
   {% if field.help_text %}<small class="muted">{{ field.help_text }}</small>{% endif %}

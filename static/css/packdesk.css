@@ -155,7 +155,7 @@ h2 { font-size: 1.15rem; }
 .field { display: grid; gap: 0.35rem; margin-bottom: 1rem; font-weight: 500; min-width: 0; }
 /* Fields fill their grid column; a select with a long option must not push into the next column. */
 .field input, .field select, .field textarea { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; }
-.field-check input { width: auto; }
+.field input[type="checkbox"], .field input[type="radio"] { width: auto; margin: 0; }
 .field input {
   font: inherit; padding: 0.65rem 0.8rem; border-radius: 10px;
   border: 1px solid var(--border); background: var(--bg); color: var(--text);
@@ -167,7 +167,13 @@ h2 { font-size: 1.15rem; }
   font: inherit; padding: 0.65rem 0.8rem; border-radius: 10px;
   border: 1px solid var(--border); background: var(--bg); color: var(--text);
 }
-.field-check { grid-template-columns: auto 1fr; align-items: center; }
+.field-check { grid-template-columns: auto 1fr; align-items: center; column-gap: .6rem; }
+/* The checkbox goes in front of its text. */
+.field-check input { order: -1; }
+/* A list of checkboxes (e.g. languages): one per line, box in front of the text. */
+fieldset.field { border: 0; padding: 0; margin: 0 0 1rem; min-width: 0; }
+fieldset.field legend { font-weight: 500; margin-bottom: .35rem; padding: 0; }
+.field label:has(> input[type="checkbox"]), .field label:has(> input[type="radio"]) { display: flex; align-items: center; gap: .5rem; font-weight: 400; margin-bottom: .2rem; }
 .req { color: var(--danger); }
 .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
 .form-card fieldset { border: 0; padding: 0; margin: 0 0 1.5rem; }
