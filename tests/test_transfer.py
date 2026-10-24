@@ -213,3 +213,9 @@ def test_bad_upload_shows_error(client, site, tmp_path):
     with open(path, "rb") as f:
         page = client.post("/beheer/customers/customer/import/", {"step": "upload", "file": f})
     assert page.status_code == 200 and page.context["form"].errors
+
+
+def test_import_page_has_a_clear_file_picker(client, site):
+    client.force_login(make_user("root@example.test", superuser=True))
+    html = client.get("/beheer/customers/customer/import/").content.decode()
+    assert "data-dropzone" in html and 'accept=".zip,.json"' in html

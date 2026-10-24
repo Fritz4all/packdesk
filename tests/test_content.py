@@ -117,3 +117,17 @@ def test_site_back_after_maintenance(client, site):
     site.maintenance_mode = False
     site.save()
     assert client.get("/").status_code == 200
+
+
+def test_mailto_link_goes_to_the_general_email_address(client, site):
+    from apps.siteconfig.models import HomeBlock
+
+    site.email = "info@bedrijf.test"
+    site.save()
+    HomeBlock.objects.all().delete()
+    HomeBlock.objects.create(settings=site, title="Onderdelen", link_url="mailto:", link_text="Informatie aanvragen")
+    html = client.get("/").content.decode()
+    assert 'href="mailto:info@bedrijf.test?subject=Onderdelen"' in html
+    site.email = ""
+    site.save()
+    assert "mailto:" not in client.get("/").content.decode()  # no address: no link
