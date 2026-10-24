@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 01:57+0200\n"
+"POT-Creation-Date: 2026-10-24 02:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid ""
 msgstr "Kreuzen Sie an, was Benutzer mit dieser Rolle sehen und tun dürfen. Sie können nur Rechte vergeben, die Sie selbst haben."
 
 #: apps/accounts/admin.py:85 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:139 apps/dashboard/navigation.py:142
+#: apps/dashboard/navigation.py:164 apps/dashboard/navigation.py:167
 msgid "Users"
 msgstr "Benutzer"
 
@@ -177,7 +177,8 @@ msgstr "Preise und Rechnungen"
 msgid "Notes"
 msgstr "Notizen"
 
-#: apps/customers/admin.py:91
+#: apps/customers/admin.py:91 templates/faults/done.html:8
+#: templates/faults/my_reports.html:9
 msgid "Number"
 msgstr "Nummer"
 
@@ -186,8 +187,9 @@ msgstr "Nummer"
 msgid "City"
 msgstr "Ort"
 
-#: apps/customers/admin.py:100 apps/licences/admin.py:175
-#: apps/numbering/admin.py:119 apps/numbering/admin.py:133
+#: apps/customers/admin.py:100 apps/faults/admin.py:70
+#: apps/licences/admin.py:175 apps/numbering/admin.py:119
+#: apps/numbering/admin.py:133 templates/faults/my_reports.html:9
 msgid "Status"
 msgstr "Status"
 
@@ -400,6 +402,7 @@ msgid "The passwords do not match."
 msgstr "Die Passwörter stimmen nicht überein."
 
 #: apps/customers/models.py:14 apps/customers/models.py:31
+#: apps/faults/models.py:24 apps/faults/models.py:144
 #: apps/licences/models.py:32 apps/licences/models.py:57
 #: apps/licences/models.py:71 apps/licences/models.py:112
 #: apps/numbering/models.py:18 apps/siteconfig/models.py:24
@@ -412,9 +415,9 @@ msgid "is reseller"
 msgstr "ist Reseller"
 
 #: apps/customers/models.py:16 apps/customers/models.py:36
-#: apps/licences/models.py:43 apps/licences/models.py:59
-#: apps/siteconfig/models.py:196 apps/siteconfig/models.py:243
-#: apps/siteconfig/models.py:263
+#: apps/faults/models.py:25 apps/licences/models.py:43
+#: apps/licences/models.py:59 apps/siteconfig/models.py:196
+#: apps/siteconfig/models.py:243 apps/siteconfig/models.py:263
 msgid "order"
 msgstr "Reihenfolge"
 
@@ -443,8 +446,8 @@ msgstr "USt-IdNr. erforderlich"
 msgid "E.g. for customers outside your own country."
 msgstr "Z. B. für Kunden außerhalb Ihres eigenen Landes."
 
-#: apps/customers/models.py:35 apps/siteconfig/models.py:242
-#: apps/siteconfig/models.py:262
+#: apps/customers/models.py:35 apps/faults/models.py:26
+#: apps/siteconfig/models.py:242 apps/siteconfig/models.py:262
 msgid "active"
 msgstr "aktiv"
 
@@ -479,13 +482,13 @@ msgstr "Debitorennummer. Wird bei der Freigabe automatisch vergeben, wenn leer."
 msgid "company name"
 msgstr "Firmenname"
 
-#: apps/customers/models.py:61
+#: apps/customers/models.py:61 apps/faults/models.py:82
 msgid "status"
 msgstr "Status"
 
 #: apps/customers/models.py:65 apps/customers/models.py:198
-#: apps/customers/models.py:267 apps/siteconfig/models.py:101
-#: apps/siteconfig/models.py:186
+#: apps/customers/models.py:267 apps/faults/models.py:109
+#: apps/siteconfig/models.py:101 apps/siteconfig/models.py:186
 msgid "phone"
 msgstr "Telefon"
 
@@ -570,7 +573,8 @@ msgstr "angelegt"
 msgid "updated"
 msgstr "aktualisiert"
 
-#: apps/customers/models.py:95 apps/licences/models.py:249
+#: apps/customers/models.py:95 apps/faults/models.py:86
+#: apps/licences/models.py:249
 msgid "customer"
 msgstr "Kunde"
 
@@ -594,8 +598,8 @@ msgstr "Lieferadresse"
 msgid "attention of"
 msgstr "zu Händen von"
 
-#: apps/customers/models.py:156 apps/siteconfig/models.py:181
-#: apps/siteconfig/models.py:199
+#: apps/customers/models.py:156 apps/faults/models.py:106
+#: apps/siteconfig/models.py:181 apps/siteconfig/models.py:199
 msgid "address"
 msgstr "Adresse"
 
@@ -604,11 +608,13 @@ msgstr "Adresse"
 msgid "address line 2"
 msgstr "Adresszeile 2"
 
-#: apps/customers/models.py:158 apps/siteconfig/models.py:183
+#: apps/customers/models.py:158 apps/faults/models.py:107
+#: apps/siteconfig/models.py:183
 msgid "postal code"
 msgstr "Postleitzahl"
 
-#: apps/customers/models.py:159 apps/siteconfig/models.py:184
+#: apps/customers/models.py:159 apps/faults/models.py:108
+#: apps/siteconfig/models.py:184
 msgid "city"
 msgstr "Ort"
 
@@ -656,8 +662,8 @@ msgstr "Funktion"
 msgid "department"
 msgstr "Abteilung"
 
-#: apps/customers/models.py:199 apps/siteconfig/models.py:102
-#: apps/siteconfig/models.py:187
+#: apps/customers/models.py:199 apps/faults/models.py:110
+#: apps/siteconfig/models.py:102 apps/siteconfig/models.py:187
 msgid "email"
 msgstr "E-Mail"
 
@@ -713,11 +719,12 @@ msgstr "Text des Links zum Formular auf der Anmeldeseite."
 msgid "title"
 msgstr "Titel"
 
-#: apps/customers/models.py:250 apps/siteconfig/models.py:58
+#: apps/customers/models.py:250 apps/faults/models.py:41
+#: apps/siteconfig/models.py:58
 msgid "introduction"
 msgstr "Einleitung"
 
-#: apps/customers/models.py:251
+#: apps/customers/models.py:251 apps/faults/models.py:45
 msgid "text after sending"
 msgstr "Text nach dem Absenden"
 
@@ -833,7 +840,7 @@ msgid "Service packs and licences"
 msgstr "Servicepakete und Lizenzen"
 
 #: apps/dashboard/navigation.py:76 apps/dashboard/widgets.py:44
-#: templates/core/dashboard.html:14
+#: templates/core/dashboard.html:15
 msgid "Licences"
 msgstr "Lizenzen"
 
@@ -873,7 +880,22 @@ msgstr "Servicelevel"
 msgid "Licence settings"
 msgstr "Lizenzeinstellungen"
 
-#: apps/dashboard/navigation.py:148
+#: apps/dashboard/navigation.py:139 apps/dashboard/navigation.py:142
+#: apps/faults/apps.py:7
+msgid "Fault reports"
+msgstr "Störungsmeldungen"
+
+#: apps/dashboard/navigation.py:149
+#| msgid "licence options"
+msgid "Handling options"
+msgstr "Bearbeitungsoptionen"
+
+#: apps/dashboard/navigation.py:155 apps/faults/models.py:63
+#| msgid "customer settings"
+msgid "Fault report settings"
+msgstr "Störungseinstellungen"
+
+#: apps/dashboard/navigation.py:173
 msgid "Roles"
 msgstr "Rollen"
 
@@ -941,6 +963,335 @@ msgstr "Bald ablaufende Lizenzen"
 msgid "My recent changes"
 msgstr "Meine letzten Änderungen"
 
+#: apps/faults/admin.py:29
+msgid "File"
+msgstr "Datei"
+
+#: apps/faults/admin.py:46
+msgid "Take in progress"
+msgstr "In Bearbeitung nehmen"
+
+#: apps/faults/admin.py:47
+msgid "Close"
+msgstr "Abschließen"
+
+#: apps/faults/admin.py:48
+msgid "Reopen"
+msgstr "Wieder öffnen"
+
+#: apps/faults/admin.py:51
+msgid "Report"
+msgstr "Meldung"
+
+#: apps/faults/admin.py:55 templates/faults/report.html:24
+msgid "Device and fault"
+msgstr "Gerät und Störung"
+
+#: apps/faults/admin.py:58 apps/licences/views.py:22 apps/licences/views.py:113
+#: templates/licences/check.html:14
+msgid "Reseller"
+msgstr "Reseller"
+
+#: apps/faults/admin.py:61
+#| msgid "Information"
+msgid "Location"
+msgstr "Standort"
+
+#: apps/faults/admin.py:74 templates/faults/done.html:9
+#: templates/licences/check.html:12 templates/licences/done.html:9
+msgid "Cover"
+msgstr "Abdeckung"
+
+#: apps/faults/admin.py:77
+#, python-format
+msgid "Covered until %(date)s"
+msgstr "Abgedeckt bis %(date)s"
+
+#: apps/faults/admin.py:78 apps/faults/emails.py:20
+#: templates/faults/done.html:9 templates/faults/email_report.txt:2
+#| msgid "Documents found"
+msgid "No cover found"
+msgstr "Keine Abdeckung gefunden"
+
+#: apps/faults/admin.py:92
+#, python-format
+msgid "Status changed to “%(s)s”."
+msgstr "Status geändert auf „%(s)s“."
+
+#: apps/faults/admin.py:113
+msgid "Form"
+msgstr "Formular"
+
+#: apps/faults/admin.py:115
+#| msgid "emails"
+msgid "Emails"
+msgstr "E-Mails"
+
+#: apps/faults/emails.py:20
+msgid "UNDER CONTRACT"
+msgstr "MIT VERTRAG"
+
+#: apps/faults/emails.py:21
+#, python-format
+msgid "Fault report %(number)s – %(company)s – %(prefix)s"
+msgstr "Störungsmeldung %(number)s – %(company)s – %(prefix)s"
+
+#: apps/faults/emails.py:34
+#, python-brace-format
+#| msgid "explanation of article number"
+msgid "Confirmation of fault report {number}"
+msgstr "Eingangsbestätigung Störungsmeldung {number}"
+
+#: apps/faults/emails.py:35
+#, python-brace-format
+msgid "We have received your fault report {number}."
+msgstr "Wir haben Ihre Störungsmeldung {number} erhalten."
+
+#: apps/faults/forms.py:9
+#| msgid "Licence number"
+msgid "Licence number or serial number"
+msgstr "Lizenz- oder Seriennummer"
+
+#: apps/faults/forms.py:10
+#| msgid "Optional: fill in the monitor that is covered by this pack."
+msgid "Optional. We fill in the device and check whether it is covered."
+msgstr "Optional. Wir ergänzen das Gerät und prüfen, ob es abgedeckt ist."
+
+#: apps/faults/models.py:29
+#| msgid "licence option"
+msgid "handling option"
+msgstr "Bearbeitungsoption"
+
+#: apps/faults/models.py:30
+#| msgid "licence options"
+msgid "handling options"
+msgstr "Bearbeitungsoptionen"
+
+#: apps/faults/models.py:40
+#| msgid "sign-up form active"
+msgid "fault report form active"
+msgstr "Störungsformular aktiv"
+
+#: apps/faults/models.py:43
+msgid "text about reporting by phone"
+msgstr "Text zur telefonischen Meldung"
+
+#: apps/faults/models.py:43
+msgid "E.g. outside office hours call ..."
+msgstr "Z. B. außerhalb der Bürozeiten rufen Sie ... an"
+
+#: apps/faults/models.py:47
+#| msgid "Dashboard and reports"
+msgid "send reports to"
+msgstr "Meldungen senden an"
+
+#: apps/faults/models.py:48
+#| msgid "Empty = the general email address from the settings."
+msgid ""
+"Email addresses separated by commas. Empty = the general email address from "
+"the settings."
+msgstr "E-Mail-Adressen durch Kommas getrennt. Leer = die allgemeine E-Mail-Adresse aus den Einstellungen."
+
+#: apps/faults/models.py:50
+msgid "copy to"
+msgstr "Kopie an"
+
+#: apps/faults/models.py:50 apps/licences/models.py:206
+msgid "Email addresses separated by commas."
+msgstr "E-Mail-Adressen durch Kommas getrennt."
+
+#: apps/faults/models.py:51
+#| msgid "subject of activation email"
+msgid "subject of confirmation"
+msgstr "Betreff der Bestätigung"
+
+#: apps/faults/models.py:53
+#| msgid "order confirmations"
+msgid "text of confirmation"
+msgstr "Text der Bestätigung"
+
+#: apps/faults/models.py:53
+#, python-brace-format
+#| msgid "Placeholders: {name}, {company}, {number}, {login_url}."
+msgid "Placeholders: {number}, {name}, {company}."
+msgstr "Platzhalter: {number}, {name}, {company}."
+
+#: apps/faults/models.py:55
+msgid "max. size of attachments (MB, total)"
+msgstr "max. Größe der Anhänge (MB, gesamt)"
+
+#: apps/faults/models.py:56
+msgid "max. number of attachments"
+msgstr "max. Anzahl Anhänge"
+
+#: apps/faults/models.py:59 apps/faults/models.py:60
+#| msgid "customer settings"
+msgid "fault report settings"
+msgstr "Störungseinstellungen"
+
+#: apps/faults/models.py:77
+msgid "New"
+msgstr "Neu"
+
+#: apps/faults/models.py:78
+msgid "In progress"
+msgstr "In Bearbeitung"
+
+#: apps/faults/models.py:79
+msgid "Closed"
+msgstr "Abgeschlossen"
+
+#: apps/faults/models.py:81
+#| msgid "Number"
+msgid "number"
+msgstr "Nummer"
+
+#: apps/faults/models.py:83
+#| msgid "recorded at"
+msgid "reported at"
+msgstr "gemeldet am"
+
+#: apps/faults/models.py:88
+#| msgid "approved by"
+msgid "reported by"
+msgstr "gemeldet von"
+
+#: apps/faults/models.py:90 apps/licences/models.py:278
+#: templates/faults/email_report.txt:2
+msgid "licence"
+msgstr "Lizenz"
+
+#: apps/faults/models.py:91
+#| msgid "Covered products"
+msgid "covered until"
+msgstr "abgedeckt bis"
+
+#: apps/faults/models.py:92
+msgid ""
+"End date of the licence at the time of reporting; empty = no cover found."
+msgstr "Enddatum der Lizenz zum Zeitpunkt der Meldung; leer = keine Abdeckung gefunden."
+
+#: apps/faults/models.py:95 apps/licences/models.py:82
+#: apps/licences/models.py:93 apps/licences/models.py:259
+#: apps/licences/models.py:355
+msgid "brand"
+msgstr "Marke"
+
+#: apps/faults/models.py:96
+#| msgid "Device"
+msgid "device"
+msgstr "Gerät"
+
+#: apps/faults/models.py:97 apps/licences/models.py:263
+#: apps/licences/models.py:358 templates/licences/email_certificate.txt:24
+msgid "serial number"
+msgstr "Seriennummer"
+
+#: apps/faults/models.py:98
+msgid "operating system"
+msgstr "Betriebssystem"
+
+#: apps/faults/models.py:99
+#| msgid "description"
+msgid "description of the fault"
+msgstr "Beschreibung der Störung"
+
+#: apps/faults/models.py:101
+msgid "desired handling"
+msgstr "gewünschte Bearbeitung"
+
+#: apps/faults/models.py:102
+#| msgid "Your reference"
+msgid "your reference"
+msgstr "Ihre Referenz"
+
+#: apps/faults/models.py:105
+#| msgid "Company"
+msgid "company"
+msgstr "Firma"
+
+#: apps/faults/models.py:113
+msgid "company at location"
+msgstr "Firma am Standort"
+
+#: apps/faults/models.py:114
+#| msgid "Contact person and login"
+msgid "contact person at location"
+msgstr "Ansprechpartner am Standort"
+
+#: apps/faults/models.py:115
+#| msgid "address line 2"
+msgid "address of location"
+msgstr "Adresse des Standorts"
+
+#: apps/faults/models.py:116
+#| msgid "postal code"
+msgid "postal code of location"
+msgstr "PLZ des Standorts"
+
+#: apps/faults/models.py:117
+msgid "city of location"
+msgstr "Ort des Standorts"
+
+#: apps/faults/models.py:118
+#| msgid "counter change"
+msgid "country of location"
+msgstr "Land des Standorts"
+
+#: apps/faults/models.py:119
+msgid "phone at location"
+msgstr "Telefon am Standort"
+
+#: apps/faults/models.py:120
+#| msgid "Email / login"
+msgid "email at location"
+msgstr "E-Mail am Standort"
+
+#: apps/faults/models.py:120
+#| msgid "The service certificate is sent here."
+msgid "The confirmation is sent here."
+msgstr "Die Bestätigung wird an diese Adresse gesendet."
+
+#: apps/faults/models.py:122
+#| msgid "internal"
+msgid "internal notes"
+msgstr "interne Notizen"
+
+#: apps/faults/models.py:125
+msgid "fault report"
+msgstr "Störungsmeldung"
+
+#: apps/faults/models.py:126
+msgid "fault reports"
+msgstr "Störungsmeldungen"
+
+#: apps/faults/models.py:143
+msgid "file"
+msgstr "Datei"
+
+#: apps/faults/models.py:145
+msgid "size"
+msgstr "Größe"
+
+#: apps/faults/models.py:148
+#| msgid "Department"
+msgid "attachment"
+msgstr "Anhang"
+
+#: apps/faults/models.py:149
+msgid "attachments"
+msgstr "Anhänge"
+
+#: apps/faults/views.py:21
+#, python-format
+msgid "At most %(n)s attachments."
+msgstr "Höchstens %(n)s Anhänge."
+
+#: apps/faults/views.py:23
+#, python-format
+msgid "The attachments together may be at most %(n)s MB."
+msgstr "Die Anhänge dürfen zusammen höchstens %(n)s MB groß sein."
+
 #: apps/licences/admin.py:89
 msgid "Registration"
 msgstr "Registrierung"
@@ -961,7 +1312,9 @@ msgid "Licence"
 msgstr "Lizenz"
 
 #: apps/licences/admin.py:132 apps/licences/views.py:23
-#: apps/licences/views.py:137 templates/licences/check.html:15
+#: apps/licences/views.py:137 templates/faults/email_report.txt:4
+#: templates/faults/email_report.txt:6 templates/faults/my_reports.html:9
+#: templates/licences/check.html:15
 msgid "Device"
 msgstr "Gerät"
 
@@ -1010,7 +1363,7 @@ msgstr "E-Mail-Adresse Endkunde"
 msgid "The service certificate is sent here."
 msgstr "Das Servicezertifikat wird an diese Adresse gesendet."
 
-#: apps/licences/forms.py:29
+#: apps/licences/forms.py:29 templates/faults/email_report.txt:10
 msgid "Reference"
 msgstr "Referenz"
 
@@ -1027,7 +1380,8 @@ msgid "Brand and type"
 msgstr "Marke und Typ"
 
 #: apps/licences/forms.py:50 apps/licences/forms.py:101
-#: apps/licences/forms.py:117 templates/licences/email_certificate.txt:17
+#: apps/licences/forms.py:117 templates/faults/email_report.txt:5
+#: templates/licences/email_certificate.txt:17
 #: templates/licences/options.html:16
 msgid "Brand"
 msgstr "Marke"
@@ -1046,6 +1400,7 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: apps/licences/forms.py:53 apps/licences/forms.py:104
+#: templates/faults/email_report.txt:7 templates/faults/my_reports.html:9
 #: templates/licences/check.html:16 templates/licences/email_certificate.txt:21
 msgid "Serial number"
 msgstr "Seriennummer"
@@ -1162,11 +1517,6 @@ msgstr "Hardwaremarke"
 #: apps/licences/models.py:78
 msgid "show at top of lists"
 msgstr "oben in Listen anzeigen"
-
-#: apps/licences/models.py:82 apps/licences/models.py:93
-#: apps/licences/models.py:259 apps/licences/models.py:355
-msgid "brand"
-msgstr "Marke"
 
 #: apps/licences/models.py:83
 msgid "brands"
@@ -1356,10 +1706,6 @@ msgstr "Durch Leerzeichen getrennt."
 msgid "internal recipients of registrations"
 msgstr "interne Empfänger von Registrierungen"
 
-#: apps/licences/models.py:206
-msgid "Email addresses separated by commas."
-msgstr "E-Mail-Adressen durch Kommas getrennt."
-
 #: apps/licences/models.py:208
 msgid "introduction of registration"
 msgstr "Einleitung der Registrierung"
@@ -1428,11 +1774,6 @@ msgstr "Enddatum"
 msgid "article number"
 msgstr "Artikelnummer"
 
-#: apps/licences/models.py:263 apps/licences/models.py:358
-#: templates/licences/email_certificate.txt:24
-msgid "serial number"
-msgstr "Seriennummer"
-
 #: apps/licences/models.py:264
 msgid "purchase date"
 msgstr "Kaufdatum"
@@ -1468,10 +1809,6 @@ msgstr "Ort Reseller"
 #: apps/licences/models.py:272
 msgid "reseller phone"
 msgstr "Telefon Reseller"
-
-#: apps/licences/models.py:278
-msgid "licence"
-msgstr "Lizenz"
 
 #: apps/licences/models.py:279
 msgid "licences"
@@ -1517,11 +1854,6 @@ msgstr "Registrierung Lizenz %(number)s"
 #: templates/licences/check.html:13
 msgid "End customer"
 msgstr "Endkunde"
-
-#: apps/licences/views.py:22 apps/licences/views.py:113
-#: templates/licences/check.html:14
-msgid "Reseller"
-msgstr "Reseller"
 
 #: apps/licences/views.py:24 apps/licences/views.py:154
 #: templates/licences/check.html:19
@@ -2080,15 +2412,15 @@ msgstr "Menüeintrag"
 msgid "menu items"
 msgstr "Menüeinträge"
 
-#: packdesk/settings.py:99
+#: packdesk/settings.py:100
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: packdesk/settings.py:99
+#: packdesk/settings.py:100
 msgid "English"
 msgstr "Englisch"
 
-#: packdesk/settings.py:99
+#: packdesk/settings.py:100
 msgid "German"
 msgstr "Deutsch"
 
@@ -2110,9 +2442,6 @@ msgid "Reset to default"
 msgstr "Standard wiederherstellen"
 
 #: templates/admin/index.html:19
-#| msgid ""
-#| "Drag blocks to change the order. Use the eye to hide or show a block. "
-#| "Changes are saved for you only."
 msgid ""
 "Drag blocks to change the order. Use the eye to hide a block or a tile. "
 "Changes are saved for you only."
@@ -2123,7 +2452,6 @@ msgid "Hide"
 msgstr "Ausblenden"
 
 #: templates/admin/index.html:36
-#| msgid "Hidden blocks"
 msgid "Hidden blocks and tiles"
 msgstr "Ausgeblendete Blöcke und Kacheln"
 
@@ -2205,16 +2533,25 @@ msgstr "Meine Daten"
 msgid "Company details, contact person and password."
 msgstr "Firmendaten, Ansprechpartner und Passwort."
 
-#: templates/core/dashboard.html:13
+#: templates/core/dashboard.html:12 templates/faults/my_reports.html:3
+#: templates/faults/my_reports.html:5
+msgid "My fault reports"
+msgstr "Meine Störungsmeldungen"
+
+#: templates/core/dashboard.html:12
+msgid "Report a fault and see the status of your reports."
+msgstr "Melden Sie eine Störung und sehen Sie den Status Ihrer Meldungen."
+
+#: templates/core/dashboard.html:14
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: templates/core/dashboard.html:13 templates/core/dashboard.html:14
-#: templates/core/dashboard.html:15
+#: templates/core/dashboard.html:14 templates/core/dashboard.html:15
+#: templates/core/dashboard.html:16
 msgid "Available soon."
 msgstr "Demnächst verfügbar."
 
-#: templates/core/dashboard.html:15
+#: templates/core/dashboard.html:16
 msgid "Invoices"
 msgstr "Rechnungen"
 
@@ -2277,7 +2614,7 @@ msgstr "Anmeldung senden"
 msgid "Thank you"
 msgstr "Vielen Dank"
 
-#: templates/customers/signup_done.html:7
+#: templates/customers/signup_done.html:7 templates/faults/done.html:11
 msgid "Back to the home page"
 msgstr "Zurück zur Startseite"
 
@@ -2286,7 +2623,6 @@ msgid "From"
 msgstr "Von"
 
 #: templates/dashboard/report.html:15
-#| msgid "Auto"
 msgid "to"
 msgstr "bis"
 
@@ -2358,7 +2694,6 @@ msgid "Margin"
 msgstr "Marge"
 
 #: templates/dashboard/report.html:69
-#| msgid "No sales in this period."
 msgid "Sales in this period"
 msgstr "Verkäufe in diesem Zeitraum"
 
@@ -2366,8 +2701,7 @@ msgstr "Verkäufe in diesem Zeitraum"
 msgid "Click a month in the chart to see only that month."
 msgstr "Klicken Sie im Diagramm auf einen Monat, um nur diesen Monat zu sehen."
 
-#: templates/dashboard/report.html:72
-#| msgid "Dates"
+#: templates/dashboard/report.html:72 templates/faults/my_reports.html:9
 msgid "Date"
 msgstr "Datum"
 
@@ -2391,6 +2725,108 @@ msgstr "Einkaufspreis"
 msgid "No service packs yet."
 msgstr "Noch keine Servicepakete."
 
+#: templates/faults/done.html:5
+msgid "Fault report sent"
+msgstr "Störungsmeldung gesendet"
+
+#: templates/faults/done.html:9
+#, python-format
+msgid "Covered until %(until)s"
+msgstr "Abgedeckt bis %(until)s"
+
+#: templates/faults/email_report.txt:1
+msgid "Fault report"
+msgstr "Störungsmeldung"
+
+#: templates/faults/email_report.txt:2
+#, python-format
+msgid "Under contract: licence %(number)s, covered until %(until)s"
+msgstr "Mit Vertrag: Lizenz %(number)s, abgedeckt bis %(until)s"
+
+#: templates/faults/email_report.txt:2
+#| msgid "Ended"
+msgid "ended"
+msgstr "abgelaufen"
+
+#: templates/faults/email_report.txt:8
+msgid "Operating system"
+msgstr "Betriebssystem"
+
+#: templates/faults/email_report.txt:9
+msgid "Desired handling"
+msgstr "Gewünschte Bearbeitung"
+
+#: templates/faults/email_report.txt:12
+#| msgid "Description"
+msgid "Description of the fault"
+msgstr "Beschreibung der Störung"
+
+#: templates/faults/email_report.txt:15 templates/faults/report.html:32
+#| msgid "approved by"
+msgid "Reported by"
+msgstr "Gemeldet von"
+
+#: templates/faults/email_report.txt:20 templates/faults/report.html:35
+#| msgid "Purchase date of the device"
+msgid "Location of the device"
+msgstr "Standort des Geräts"
+
+#: templates/faults/my_reports.html:6 templates/faults/report.html:3
+#: templates/faults/report.html:6
+#| msgid "Reset to default"
+msgid "Report a fault"
+msgstr "Störung melden"
+
+#: templates/faults/my_reports.html:12
+#| msgid "No registrations yet."
+msgid "No fault reports yet."
+msgstr "Noch keine Störungsmeldungen."
+
+#: templates/faults/report.html:12
+msgid "Please check the fields marked below."
+msgstr "Bitte prüfen Sie die unten markierten Felder."
+
+#: templates/faults/report.html:13
+#| msgid "Contacts"
+msgid "Contract"
+msgstr "Vertrag"
+
+#: templates/faults/report.html:16
+msgid "Look up"
+msgstr "Suchen"
+
+#: templates/faults/report.html:19
+#, python-format
+msgid ""
+"Licence %(number)s found: covered until %(until)s. We filled in the device "
+"below."
+msgstr "Lizenz %(number)s gefunden: abgedeckt bis %(until)s. Das Gerät wurde unten eingetragen."
+
+#: templates/faults/report.html:20
+#, python-format
+msgid "Licence %(number)s found, but its cover ended on %(until)s."
+msgstr "Lizenz %(number)s gefunden, aber die Abdeckung endete am %(until)s."
+
+#: templates/faults/report.html:21
+msgid ""
+"No registered licence found for this number. You can still report the fault."
+msgstr "Keine registrierte Lizenz zu dieser Nummer gefunden. Sie können die Störung trotzdem melden."
+
+#: templates/faults/report.html:27
+msgid "Attachments"
+msgstr "Anhänge"
+
+#: templates/faults/report.html:29
+#, python-format
+msgid ""
+"Up to %(n)s files, %(mb)s MB in total. Add them in the last step, after "
+"looking up."
+msgstr "Bis zu %(n)s Dateien, zusammen %(mb)s MB. Fügen Sie sie zuletzt hinzu, nach der Suche."
+
+#: templates/faults/report.html:38
+msgid "Send fault report"
+msgstr "Störungsmeldung senden"
+
 #: templates/licences/_steps.html:2
 msgid "Steps"
 msgstr "Schritte"
@@ -2404,10 +2840,6 @@ msgstr "Lizenz registrieren"
 #: templates/licences/check.html:9
 msgid "Check your registration"
 msgstr "Prüfen Sie Ihre Registrierung"
-
-#: templates/licences/check.html:12 templates/licences/done.html:9
-msgid "Cover"
-msgstr "Abdeckung"
 
 #: templates/licences/check.html:20
 msgid "Option"
@@ -2576,7 +3008,6 @@ msgstr "%(model)s ändern"
 #: templates/unfold/widgets/related_widget_wrapper.html:36
 #: templates/unfold/widgets/related_widget_wrapper.html:37
 #, python-format
-#| msgid "Add %(name)s"
 msgid "Add another %(model)s"
 msgstr "%(model)s hinzufügen"
 
