@@ -4,18 +4,15 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.utils import timezone
-from django.utils.functional import LazyObject
 from django.utils.translation import gettext_lazy as _
 
 
-class PrivateStorage(LazyObject):
-    """Files that must never be public (attachments). Served only through checked views."""
+def private_storage():
+    """Storage for files that must never be public (attachments); served only through checked views.
 
-    def _setup(self):
-        self._wrapped = FileSystemStorage(location=settings.PRIVATE_MEDIA_ROOT)
-
-
-private_storage = PrivateStorage()
+    A callable, so migrations refer to this function instead of a path that differs per server.
+    """
+    return FileSystemStorage(location=settings.PRIVATE_MEDIA_ROOT)
 
 
 class RepairOption(models.Model):
