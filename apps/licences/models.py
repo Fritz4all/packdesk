@@ -248,6 +248,8 @@ class Licence(models.Model):
     pack = models.ForeignKey(SupportPack, on_delete=models.PROTECT, related_name="licences", verbose_name=_("service pack"))
     customer = models.ForeignKey("customers.Customer", on_delete=models.PROTECT, related_name="licences", verbose_name=_("customer"))
     order_reference = models.CharField(_("order reference"), max_length=128, blank=True)
+    order_line = models.ForeignKey("orders.OrderLine", on_delete=models.SET_NULL, null=True, blank=True,
+                                   related_name="licences", verbose_name=_("order line"))
     prolongation_of = models.ForeignKey(
         "self", on_delete=models.SET_NULL, null=True, blank=True, related_name="prolonged_by", verbose_name=_("extension of"),
     )

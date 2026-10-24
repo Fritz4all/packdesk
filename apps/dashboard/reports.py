@@ -1,7 +1,7 @@
 """Sales report: revenue, cost and margin per month, per category and per customer.
 
-Until orders and invoices live in PackDesk, a sold pack is a licence, valued at the pack's current
-price minus the customer's service pack discount, and the pack's current cost price. The page says so.
+Orders give exact amounts. Licences without an order (made by hand or imported) are estimated at the
+pack's current price minus the customer's discount; the page says how many sales are estimates.
 """
 
 from collections import OrderedDict, defaultdict
@@ -67,31 +67,51 @@ def parse_range(request, today):
     return (choice, *_period(choice, today))
 
 
-def build_report(start, end):
-    licences = (Licence.objects.filter(created_at__date__gte=start, created_at__date__lte=end)
+def sale_items(start, end):
+    """Everything sold in the period: order lines (exact prices at order time) and licences without an order
+    (e.g. created by hand or imported), valued at the current pack price minus the customer's discount."""
+    from apps.orders.models import OrderLine
+
+    items = []
+    lines = (OrderLine.objects.filter(order__created_at__date__gte=start, order__created_at__date__lte=end)
+             .select_related("order__customer", "pack__category"))
+    for line in lines:
+        revenue = (line.line_total * (HUNDRED - line.order.discount_pct) / HUNDRED).quantize(Decimal("0.01"))
+        items.append({"when": line.order.created_at, "customer": line.order.customer, "pack": line.pack,
+                      "count": line.quantity, "revenue": revenue, "cost": line.pack.cost_price * line.quantity,
+                      "label": line.order.number, "url": ("admin:orders_order_change", line.order.pk), "exact": True})
+    licences = (Licence.objects.filter(created_at__date__gte=start, created_at__date__lte=end, order_line__isnull=True)
                 .select_related("pack__category", "customer"))
+    for lic in licences:
+        revenue, cost = sale_values(lic)
+        items.append({"when": lic.created_at, "customer": lic.customer, "pack": lic.pack, "count": 1,
+                      "revenue": revenue, "cost": cost, "label": lic.full_number,
+                      "url": ("admin:licences_licence_change", lic.pk), "exact": False})
+    return items
+
+
+def build_report(start, end):
+    items = sale_items(start, end)
     per_month = OrderedDict((key, {"revenue": Decimal(0), "cost": Decimal(0), "count": 0}) for key in _months(start, end))
     per_category = defaultdict(lambda: {"revenue": Decimal(0), "count": 0})
     per_customer = defaultdict(lambda: {"revenue": Decimal(0), "margin": Decimal(0), "count": 0})
-    totals = {"revenue": Decimal(0), "cost": Decimal(0), "count": 0}
-    for lic in licences:
-        revenue, cost = sale_values(lic)
-        created = timezone.localtime(lic.created_at).date()
+    totals = {"revenue": Decimal(0), "cost": Decimal(0), "count": 0, "estimated": 0}
+    for item in items:
+        created = timezone.localtime(item["when"]).date()
         bucket = per_month.setdefault((created.year, created.month), {"revenue": Decimal(0), "cost": Decimal(0), "count": 0})
         for target in (bucket, totals):
-            target["revenue"] += revenue
-            target["cost"] += cost
-            target["count"] += 1
-        per_category[str(lic.pack.category)]["revenue"] += revenue
-        per_category[str(lic.pack.category)]["count"] += 1
-        per_customer[lic.customer.name]["revenue"] += revenue
-        per_customer[lic.customer.name]["margin"] += revenue - cost
-        per_customer[lic.customer.name]["count"] += 1
-    sales = []
-    for lic in sorted(licences, key=lambda lic: lic.created_at, reverse=True)[:500]:
-        revenue, cost = sale_values(lic)
-        sales.append({"licence": lic, "date": timezone.localtime(lic.created_at).date(), "revenue": revenue,
-                      "margin": revenue - cost})
+            target["revenue"] += item["revenue"]
+            target["cost"] += item["cost"]
+            target["count"] += item["count"]
+        if not item["exact"]:
+            totals["estimated"] += 1
+        per_category[str(item["pack"].category)]["revenue"] += item["revenue"]
+        per_category[str(item["pack"].category)]["count"] += item["count"]
+        per_customer[item["customer"].name]["revenue"] += item["revenue"]
+        per_customer[item["customer"].name]["margin"] += item["revenue"] - item["cost"]
+        per_customer[item["customer"].name]["count"] += item["count"]
+    sales = [{**item, "date": timezone.localtime(item["when"]).date(), "margin": item["revenue"] - item["cost"]}
+             for item in sorted(items, key=lambda i: i["when"], reverse=True)[:500]]
     totals["margin"] = totals["revenue"] - totals["cost"]
     totals["margin_pct"] = (totals["margin"] / totals["revenue"] * HUNDRED) if totals["revenue"] else None
     return {

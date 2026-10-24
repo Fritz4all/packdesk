@@ -38,6 +38,13 @@ def stats(request):
             {"key": "pending", "label": _("Sign-ups to approve"), "value": Customer.objects.filter(status=Customer.Status.PENDING).count(),
              "url": f"{changelist}?status__exact=pending", "icon": "how_to_reg", "warn": True},
         ]
+    if request.user.has_perm("orders.view_order"):
+        from apps.orders.models import Order
+
+        start = today.replace(day=1)
+        month = Order.objects.filter(created_at__date__gte=start)
+        cards.append({"key": "orders_month", "label": _("Orders this month"), "value": month.count(),
+                      "url": reverse("admin:orders_order_changelist") + f"?created_at__gte={start}", "icon": "shopping_cart"})
     if request.user.has_perm("licences.view_licence"):
         changelist = reverse("admin:licences_licence_changelist")
         cards += [

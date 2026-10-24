@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Order service packs" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Order service packs" %}</h1>
+  {% if rules.intro %}<p class="lead">{{ rules.intro|linebreaksbr }}</p>{% endif %}</div>
+<form method="post" class="form-card" novalidate>
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% if formset.non_form_errors %}<div class="message message-error">{{ formset.non_form_errors|join:" " }}</div>{% endif %}
+  <fieldset><legend>{% translate "Service packs" %}</legend>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>{% translate "Service pack" %}</th><th>{% translate "Quantity" %}</th><th>{% translate "Reference" %}</th></tr></thead>
+      <tbody>{% for form in formset %}<tr>{% for field in form %}<td>{{ field }}{% for e in field.errors %}<small class="error">{{ e }}</small>{% endfor %}</td>{% endfor %}</tr>{% endfor %}</tbody>
+    </table></div>
+  </fieldset>
+  <fieldset><legend>{% translate "Order details" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=details %}</div>
+  </fieldset>
+  <button class="btn btn-primary btn-lg" type="submit">{% translate "Check order" %}</button>
+</form>
+{% endblock %}

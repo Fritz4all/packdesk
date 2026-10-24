@@ -195,6 +195,11 @@ a.card-link-block:hover { text-decoration: none; border-color: var(--brand); }
 .lookup-row .btn { margin-top: 1.7rem; }
 .page-head .btn { margin-top: .5rem; }
 
+.totals { max-width: 420px; margin-left: auto; }
+.totals dd { text-align: right; }
+.filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; align-items: center; }
+.filter-bar input[type="search"] { flex: 1; min-width: 220px; font: inherit; padding: .55rem .8rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+
 /* Messages */
 .messages { display: grid; gap: 0.5rem; margin-bottom: 1.5rem; }
 .message { padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); }

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "Order" %} {{ order.number }} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Order" %} {{ order.number }}</h1><p class="muted">{{ order.created_at|date:"j F Y H:i" }}{% if order.reference %} · {{ order.reference }}{% endif %}</p></div>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Service pack" %}</th><th>{% translate "Quantity" %}</th><th>{% translate "Amount" %}</th><th>{% translate "Licences" %}</th></tr></thead>
+  <tbody>{% for line in order.lines.all %}<tr><td>{{ line.description }}{% if line.extends %}<br><small class="muted">{% translate "Extension of" %} {{ line.extends.full_number }}</small>{% endif %}</td>
+    <td>{{ line.quantity }}</td><td>€ {{ line.line_total|money }}</td>
+    <td>{% for lic in line.licences.all %}<div>{{ lic.full_number }} · {{ lic.get_status_display }}</div>{% empty %}—{% endfor %}</td></tr>{% endfor %}</tbody>
+</table>
+<dl class="details totals">
+  <dt>{% translate "Subtotal" %}</dt><dd>€ {{ order.gross|money }}</dd>
+  {% if order.discount %}<dt>{% translate "Discount" %} ({{ order.discount_pct|floatformat:"-2" }} %)</dt><dd>− € {{ order.discount|money }}</dd>{% endif %}
+  <dt>{% translate "VAT" %} {{ order.vat_rate|floatformat:"-2" }} %</dt><dd>€ {{ order.vat|money }}</dd>
+  <dt><strong>{% translate "Total incl. VAT" %}</strong></dt><dd><strong>€ {{ order.total|money }}</strong></dd>
+</dl></div>
+<p class="muted">{% translate "Unregistered licences can be registered with the licence number." %} <a href="{% url 'register_licence' %}">{% translate "Register a licence" %}</a></p>
+{% endblock %}

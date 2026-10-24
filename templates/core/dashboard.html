@@ -11,8 +11,11 @@
   <a class="card card-link-block" href="{% url 'my_details' %}"><h2>{% translate "My details" %}</h2><p>{% translate "Company details, contact person and password." %}</p></a>
   <a class="card card-link-block" href="{% url 'my_fault_reports' %}"><h2>{% translate "My fault reports" %}</h2><p>{% translate "Report a fault and see the status of your reports." %}</p></a>
   {% endif %}
-  <article class="card card-muted"><h2>{% translate "Orders" %}</h2><p>{% translate "Available soon." %}</p></article>
-  <article class="card card-muted"><h2>{% translate "Licences" %}</h2><p>{% translate "Available soon." %}</p></article>
+  {% if current_customer %}
+  <a class="card card-link-block" href="{% url 'order_packs' %}"><h2>{% translate "Order service packs" %}</h2><p>{% translate "Choose packs, check the price and order." %}</p></a>
+  <a class="card card-link-block" href="{% url 'my_orders' %}"><h2>{% translate "My orders" %}</h2><p>{% translate "Your orders and their licences." %}</p></a>
+  <a class="card card-link-block" href="{% url 'my_licences' %}"><h2>{% translate "My licences" %}</h2><p>{% translate "Status, end dates and extending." %}</p></a>
+  {% endif %}
   <article class="card card-muted"><h2>{% translate "Invoices" %}</h2><p>{% translate "Available soon." %}</p></article>
 </section>
 {% endblock %}

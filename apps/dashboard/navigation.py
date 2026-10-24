@@ -68,6 +68,24 @@ SECTIONS = [
         ],
     },
     {
+        "key": "orders",
+        "title": _("Orders"),
+        "items": [
+            {
+                "title": _("Orders"),
+                "icon": "shopping_cart",
+                "link": reverse_lazy("admin:orders_order_changelist"),
+                "permission": lambda request: request.user.has_perm("orders.view_order"),
+            },
+            {
+                "title": _("Order settings"),
+                "icon": "tune",
+                "link": reverse_lazy("admin:orders_ordersettings_changelist"),
+                "permission": lambda request: request.user.has_perm("orders.view_ordersettings"),
+            },
+        ],
+    },
+    {
         "key": "licences",
         "title": _("Service packs and licences"),
         "collapsible": True,
@@ -179,7 +197,7 @@ SECTIONS = [
     },
 ]
 
-DEFAULT_ORDER = ["overview", "customers", "licences", "faults", "users", "configuration"]
+DEFAULT_ORDER = ["overview", "customers", "orders", "licences", "faults", "users", "configuration"]
 
 
 def ordered_keys(user):

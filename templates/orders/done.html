@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block content %}
+<div class="auth"><div class="auth-card">
+  <h1>{% translate "Thank you for your order" %}</h1>
+  <p>{% blocktranslate with number=order.number %}Your order {{ number }} has been placed. You will receive a confirmation by email.{% endblocktranslate %}</p>
+  <dl class="details"><dt>{% translate "Total incl. VAT" %}</dt><dd>€ {{ order.total|money }}</dd></dl>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{% url 'order_detail' order.pk %}">{% translate "View order" %}</a>
+    <a class="btn btn-ghost" href="{% url 'my_licences' %}">{% translate "My licences" %}</a>
+  </div>
+</div></div>
+{% endblock %}

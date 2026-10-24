@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "My licences" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "My licences" %}</h1></div>
+<form method="get" class="filter-bar">
+  <a class="btn {% if show == 'all' %}btn-primary{% else %}btn-ghost{% endif %}" href="?show=all">{% translate "All" %}</a>
+  <a class="btn {% if show == 'ending' %}btn-primary{% else %}btn-ghost{% endif %}" href="?show=ending">{% blocktranslate with d=rules.extend_window_days %}Ending within {{ d }} days{% endblocktranslate %}</a>
+  <a class="btn {% if show == 'unregistered' %}btn-primary{% else %}btn-ghost{% endif %}" href="?show=unregistered">{% translate "Not registered yet" %}</a>
+  <input type="hidden" name="show" value="{{ show }}"><input type="search" name="q" value="{{ q }}" placeholder="{% translate 'Licence, serial number or reference' %}">
+</form>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Licence" %}</th><th>{% translate "Service pack" %}</th><th>{% translate "Device" %}</th><th>{% translate "End date" %}</th><th>{% translate "Status" %}</th><th></th></tr></thead>
+  <tbody>{% for row in rows %}{% with lic=row.licence %}<tr>
+    <td>{{ lic.full_number }}</td><td>{{ lic.pack }}</td><td>{{ lic.description|default:"—" }}{% if lic.serial_nr %}<br><small class="muted">{{ lic.serial_nr }}</small>{% endif %}</td>
+    <td>{{ lic.end_date|date:"j M Y"|default:"—" }}</td><td>{{ lic.get_status_display }}{% if row.extended %}<br><small class="muted">{% translate "extended" %}</small>{% endif %}</td>
+    <td>{% if row.can_extend %}<a class="btn btn-primary" href="{% url 'extend_licence' lic.pk %}">{% translate "Extend" %}</a>{% elif not lic.registered_on %}<a class="btn btn-ghost" href="{% url 'register_licence' %}">{% translate "Register" %}</a>{% endif %}</td>
+  </tr>{% endwith %}{% empty %}<tr><td colspan="6" class="muted">{% translate "No licences found." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

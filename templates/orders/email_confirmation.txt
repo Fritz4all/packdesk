@@ -1,0 +1,24 @@
+{% load i18n humanize_nl %}{% autoescape off %}{{ site_settings.display_name }}
+{% translate "Order confirmation" %} {{ order.number }}
+
+{{ rules.confirmation_text }}
+
+{% translate "Customer" %}: {{ order.customer.name }}{% if order.customer.number %} ({{ order.customer.number }}){% endif %}
+{% translate "Date" %}: {{ order.created_at|date:"j F Y H:i" }}
+{% if order.reference %}{% translate "Your reference" %}: {{ order.reference }}
+{% endif %}
+{% for line in lines %}- {{ line.quantity }} × {{ line.description }} à € {{ line.unit_price|money }} = € {{ line.line_total|money }}{% if line.reference %} ({{ line.reference }}){% endif %}
+{% for lic in line.licences.all %}    {% translate "Licence" %}: {{ lic.full_number }}{% if lic.registered_on %} ({% translate "registered" %}, {{ lic.start_date|date:"j-n-Y" }} – {{ lic.end_date|date:"j-n-Y" }}){% endif %}
+{% endfor %}{% endfor %}
+{% translate "Subtotal" %}: € {{ order.gross|money }}
+{% if order.discount %}{% translate "Discount" %} ({{ order.discount_pct|floatformat:"-2" }} %): − € {{ order.discount|money }}
+{% endif %}{% translate "Total excl. VAT" %}: € {{ order.net|money }}
+{% translate "VAT" %} {{ order.vat_rate|floatformat:"-2" }} %: € {{ order.vat|money }}
+{% translate "Total incl. VAT" %}: € {{ order.total|money }}
+{% if order.send_boxes %}
+{% translate "Physical packs are sent to" %}: {{ order.delivery_name }}, {{ order.delivery_address }}, {{ order.delivery_postal_code }} {{ order.delivery_city }}
+{% endif %}
+{{ rules.terms_text }}
+
+{{ site_settings.display_name }}
+{% endautoescape %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Extend licence" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Extend licence" %}</h1>
+  <p class="lead">{{ licence.full_number }} · {{ licence.pack }} · {% translate "ends on" %} {{ licence.end_date|date:"j F Y" }}</p></div>
+<form method="post" class="form-card" novalidate>{% csrf_token %}
+  {% include "includes/form_fields.html" with fields=form %}
+  <p class="muted">{% translate "The new licence starts the day after the current one ends, for the same device." %}</p>
+  <div class="hero-actions"><button class="btn btn-primary" type="submit">{% translate "Check order" %}</button>
+    <a class="btn btn-ghost" href="{% url 'my_licences' %}">{% translate "Back" %}</a></div>
+</form>
+{% endblock %}

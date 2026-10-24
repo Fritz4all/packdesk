@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "My orders" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "My orders" %}</h1><a class="btn btn-primary" href="{% url 'order_packs' %}">{% translate "Order service packs" %}</a></div>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Order number" %}</th><th>{% translate "Date" %}</th><th>{% translate "Your reference" %}</th><th>{% translate "Total incl. VAT" %}</th></tr></thead>
+  <tbody>{% for o in orders %}<tr><td><a href="{% url 'order_detail' o.pk %}">{{ o.number }}</a></td><td>{{ o.created_at|date:"j M Y" }}</td><td>{{ o.reference }}</td><td>€ {{ o.total|money }}</td></tr>
+  {% empty %}<tr><td colspan="4" class="muted">{% translate "No orders yet." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}
