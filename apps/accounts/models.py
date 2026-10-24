@@ -26,7 +26,9 @@ class User(AbstractUser):
         CUSTOMER = "customer", _("Customer")
 
     kind = models.CharField(_("kind"), max_length=16, choices=Kind.choices, default=Kind.CUSTOMER)
-    email = models.EmailField(_("email address"))
+    # unique=True is enough on MariaDB/MySQL (their text comparison ignores case); PostgreSQL also
+    # gets the case-insensitive constraint below, which MariaDB cannot create.
+    email = models.EmailField(_("email address"), unique=True)
     admin_language = models.CharField(
         _("admin language"), max_length=8, blank=True, choices=settings.LANGUAGES,
         help_text=_("Language of the admin for this user. Empty: the admin language from the site settings."),

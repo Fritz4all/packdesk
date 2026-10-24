@@ -51,7 +51,9 @@ class Customer(models.Model):
         BLOCKED = "blocked", _("Blocked")
 
     number = models.CharField(
-        _("customer number"), max_length=32, blank=True, db_index=True,
+        _("customer number"), max_length=32, blank=True, null=True, unique=True,
+        # Empty is stored as NULL, so several customers can be without a number while numbers stay
+        # unique. (A conditional unique constraint would do this too, but MariaDB/MySQL lack those.)
         help_text=_("Account number (debtor number). Filled in automatically on approval if left empty."),
     )
     name = models.CharField(_("company name"), max_length=120)
@@ -98,9 +100,6 @@ class Customer(models.Model):
         permissions = [
             ("export_customer", _("Can export customers")),
             ("import_customer", _("Can import customers")),
-        ]
-        constraints = [
-            models.UniqueConstraint(fields=["number"], condition=~models.Q(number=""), name="unique_customer_number"),
         ]
 
     def __str__(self):

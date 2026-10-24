@@ -451,7 +451,7 @@ class Importer:
             _apply(customer, fields)
             if existing is not None:
                 # Import as an extra customer next to the existing one: it gets its own number.
-                customer.number, customer.legacy_id = "", ""
+                customer.number, customer.legacy_id = None, ""
                 if customer.status == Customer.Status.ACTIVE:
                     customer.assign_number()
         customer.customer_type = _by_names(CustomerType, block.get("customer_type"))

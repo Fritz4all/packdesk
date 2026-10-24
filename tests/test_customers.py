@@ -51,7 +51,7 @@ def test_signup_creates_pending_customer(client, signup_settings):
     response = client.post("/aanmelden/", signup_data())
     assert response.status_code == 302 and response["Location"] == "/aanmelden/verzonden/"
     customer = Customer.objects.get(name="Nieuwe Reseller BV")
-    assert customer.status == Customer.Status.PENDING and customer.number == ""
+    assert customer.status == Customer.Status.PENDING and customer.number is None
     assert customer.signup_message == "Graag!"
     assert customer.address(CustomerAddress.Kind.MAIN).city == "Amsterdam"
     contact = customer.contacts.get()

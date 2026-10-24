@@ -37,7 +37,7 @@ class Command(BaseCommand):
             raise CommandError("The 'invoice' number sequence has no file name pattern for the archive.")
         regex = re.compile(sequence.archive_regex)
         existing = set(Invoice.objects.filter(is_archive=True).values_list("archive_file", flat=True))
-        customers = dict(Customer.objects.exclude(number="").values_list("number", "pk"))
+        customers = dict(Customer.objects.exclude(number__isnull=True).exclude(number="").values_list("number", "pk"))
         files = sorted(f for f in os.listdir(folder) if regex.fullmatch(f) and f not in existing)
         if options["limit"]:
             files = files[: options["limit"]]
@@ -69,7 +69,7 @@ class Command(BaseCommand):
         return len(batch)
 
     def relink(self):
-        customers = dict(Customer.objects.exclude(number="").values_list("number", "pk"))
+        customers = dict(Customer.objects.exclude(number__isnull=True).exclude(number="").values_list("number", "pk"))
         changed = 0
         for invoice in Invoice.objects.filter(is_archive=True).only("pk", "customer_number", "customer_id"):
             customer_id = customers.get(invoice.customer_number)
