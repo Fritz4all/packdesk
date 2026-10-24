@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "apps.orders",
     "apps.invoices",
     "apps.dashboard",
+    "apps.legacy",
     # Last: its post_migrate hook gives roles the permissions of all apps above.
     "apps.accounts",
 ]
