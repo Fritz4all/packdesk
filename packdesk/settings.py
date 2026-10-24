@@ -1,5 +1,7 @@
-"""PackDesk settings. All environment-specific values come from environment variables."""
+"""PackDesk settings. Values that differ per server come from, in this order: environment variables,
+.env in the project folder, and DATA_ROOT/packdesk.env (written by the installation wizard)."""
 
+import os
 from pathlib import Path
 
 import environ
@@ -7,20 +9,37 @@ from django.core.exceptions import ImproperlyConfigured
 from django.templatetags.static import static
 from django.utils.translation import gettext_lazy as _
 
+from apps.core import server_config
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
+    ALLOWED_HOSTS=(list, []),
     CSRF_TRUSTED_ORIGINS=(list, []),
     SECURE_COOKIES=(bool, False),
 )
 environ.Env.read_env(BASE_DIR / ".env", overwrite=False)
 
+# All files PackDesk keeps, one folder per purpose (see docs/opslag.md):
+#   DATA_ROOT/website            logo, favicon, customer logos; public through MEDIA_URL
+#   DATA_ROOT/invoices           invoice PDFs made by PackDesk          } never served directly,
+#   DATA_ROOT/fault-attachments  attachments of fault reports           } only through views
+#   DATA_ROOT/imports            customer imports waiting to be checked } that check access
+#   DATA_ROOT/packdesk.env       server settings saved by the installation wizard
+# Default outside the repository, so files never end up in Git.
+DATA_ROOT = Path(env("DATA_ROOT", default=str(BASE_DIR.parent / "packdesk-data")))
+# What came from the environment or .env (the wizard cannot change those).
+FIXED_SETTINGS = frozenset(key for key, value in os.environ.items() if value)
+server_config.load(DATA_ROOT)
+server_config.ensure_secret_key(DATA_ROOT)
+
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+# Without a fixed list every host name is accepted, and the domain from the settings in the admin
+# is checked instead (apps.siteconfig.middleware); a fresh installation must be reachable by IP.
+ALLOWED_HOSTS = env("ALLOWED_HOSTS") if os.environ.get("ALLOWED_HOSTS") else ["*"]
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
 INSTALLED_APPS = [
@@ -51,6 +70,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "apps.core.middleware.ServerSetupMiddleware",
     "apps.core.middleware.DatabaseUpdateMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "apps.siteconfig.middleware.SiteSettingsMiddleware",
@@ -97,8 +117,13 @@ DB_ENGINES = {
     "mariadb": "django.db.backends.mysql",
     "mysql": "django.db.backends.mysql",
 }
+# Not configured yet (no DB_HOST / DATABASE_URL): PackDesk starts in installation mode and asks for
+# the database in the browser (apps.core.server_setup).
+DATABASE_CONFIGURED = bool(env("DATABASE_URL", default="") or env("DB_HOST", default=""))
 if env("DATABASE_URL", default=""):
     DATABASES = {"default": env.db("DATABASE_URL")}
+elif not DATABASE_CONFIGURED:
+    DATABASES = {"default": {"ENGINE": "django.db.backends.dummy"}}
 else:
     _engine = env("DB_ENGINE", default="postgres").lower()
     if _engine not in DB_ENGINES:
@@ -151,13 +176,6 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-# All files PackDesk keeps, one folder per purpose (see docs/opslag.md):
-#   DATA_ROOT/website            logo, favicon, customer logos; public through MEDIA_URL
-#   DATA_ROOT/invoices           invoice PDFs made by PackDesk          } never served directly,
-#   DATA_ROOT/fault-attachments  attachments of fault reports           } only through views
-#   DATA_ROOT/imports            customer imports waiting to be checked } that check access
-# Default outside the repository, so files never end up in Git.
-DATA_ROOT = Path(env("DATA_ROOT", default=str(BASE_DIR.parent / "packdesk-data")))
 MEDIA_URL = "media/"
 MEDIA_ROOT = DATA_ROOT / "website"
 # Optional and read-only, outside DATA_ROOT: the previous webshop's invoice PDFs. Empty = no archive.
@@ -182,7 +200,9 @@ FORMS_URLFIELD_ASSUME_HTTPS = True  # Django 6 default
 WHITENOISE_USE_FINDERS = DEBUG
 WHITENOISE_AUTOREFRESH = DEBUG
 
-EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+# The mail server comes from here when EMAIL_HOST is set, otherwise from the settings in the admin.
+EMAIL_BACKEND = env("EMAIL_BACKEND", default="apps.core.mail.SiteEmailBackend")
+MAIL_SERVER_FROM_ENV = bool(os.environ.get("EMAIL_HOST"))
 EMAIL_HOST = env("EMAIL_HOST", default="localhost")
 EMAIL_PORT = env.int("EMAIL_PORT", default=25)
 EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")

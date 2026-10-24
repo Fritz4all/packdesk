@@ -1,0 +1,49 @@
+{% extends "setup/_page.html" %}
+{% load i18n %}
+{% block title %}{% translate "Database" %} – PackDesk{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>{% translate "Database" %}</h1>
+  <p class="notice{% if state != 'not_configured' %} notice-error{% endif %}">{{ problem }}</p>
+  {% if error %}<p class="notice notice-error">{{ error }}</p>{% endif %}
+  {% if detail %}<details class="muted" style="margin-bottom:1rem"><summary>{% translate "Technical details" %}</summary><code>{{ detail }}</code></details>{% endif %}
+  <p class="muted">{% translate "Fill in the database server PackDesk uses. PackDesk always gets its own database; other databases on the same server are not touched." %}</p>
+  <form method="post" action="{{ path }}" autocomplete="off">
+    <label class="field">
+      <span>{% translate "Installation code" %} <span class="req" aria-hidden="true">*</span></span>
+      <input name="code" required>
+      <small class="muted">{% if code_from_env %}{% translate "The SETUP_CODE from .env." %}{% else %}{% translate "Shown in the log of the server: docker compose logs web" %}{% endif %}</small>
+    </label>
+    <div class="form-grid">
+      <label class="field"><span>{% translate "Type" %}</span>
+        <select name="engine"{% if "DB_ENGINE" in fixed %} disabled{% endif %}>
+          {% with chosen=values.engine|default:target.engine %}
+          <option value="mariadb"{% if chosen == "mariadb" %} selected{% endif %}>MariaDB / MySQL</option>
+          <option value="postgres"{% if chosen == "postgres" %} selected{% endif %}>PostgreSQL</option>
+          {% endwith %}
+        </select></label>
+      <label class="field"><span>{% translate "Server (IP address or name)" %}</span>
+        <input name="host" value="{{ values.host|default:target.host }}"{% if "DB_HOST" in fixed %} disabled{% endif %}></label>
+      <label class="field"><span>{% translate "Port" %}</span>
+        <input name="port" inputmode="numeric" placeholder="3306 / 5432" value="{{ values.port|default:target.port|default_if_none:'' }}"{% if "DB_PORT" in fixed %} disabled{% endif %}></label>
+      <label class="field"><span>{% translate "Database name" %}</span>
+        <input name="name" value="{{ values.name|default:target.name }}"{% if "DB_NAME" in fixed %} disabled{% endif %}></label>
+      <label class="field"><span>{% translate "PackDesk's database user" %}</span>
+        <input name="user" value="{{ values.user|default:target.user }}"{% if "DB_USER" in fixed %} disabled{% endif %}></label>
+      <label class="field"><span>{% translate "Password of that user" %}</span>
+        <input name="password" type="password"{% if "DB_PASSWORD" in fixed %} disabled placeholder="••••••"{% endif %}></label>
+    </div>
+    {% if fixed %}<p class="muted">{% translate "Greyed-out values come from the docker-compose file or .env and can only be changed there." %}</p>{% endif %}
+    <fieldset class="field"{% if not offer_create and state != "no_database" and state != "not_configured" %} hidden{% endif %}>
+      <legend>{% translate "Database does not exist yet?" %}</legend>
+      <label class="field field-check"><input type="checkbox" name="create" value="1"> <span>{% translate "Create the database and the user with an administrator login of the database server" %}</span></label>
+      <div class="form-grid">
+        <label class="field"><span>{% translate "Administrator (e.g. root or postgres)" %}</span><input name="admin_user" value="{{ values.admin_user }}"></label>
+        <label class="field"><span>{% translate "Administrator password" %}</span><input name="admin_password" type="password"></label>
+      </div>
+      <small class="muted">{% translate "Used once to create the database; never stored. Not possible? Ask the administrator of the database server to create an empty database and user with the names above." %}</small>
+    </fieldset>
+    <button class="btn btn-primary" type="submit">{% translate "Test and save" %}</button>
+  </form>
+</div>
+{% endblock %}

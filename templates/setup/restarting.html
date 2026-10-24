@@ -1,0 +1,18 @@
+{% extends "setup/_page.html" %}
+{% load i18n %}
+{% block title %}{% translate "Restarting" %} – PackDesk{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>{% translate "Database connected" %}</h1>
+  <p>{% translate "PackDesk restarts to use the database and then continues with the installation. This takes a few seconds." %}</p>
+  <p class="muted" id="wait">{% translate "Waiting…" %}</p>
+</div>
+<script>
+  // Try again until the restarted PackDesk answers, then continue with the wizard.
+  setTimeout(function poll() {
+    fetch("/installatie/", {cache: "no-store"})
+      .then(function (r) { if (r.ok) { location.href = "/installatie/"; } else { setTimeout(poll, 2000); } })
+      .catch(function () { setTimeout(poll, 2000); });
+  }, 3000);
+</script>
+{% endblock %}

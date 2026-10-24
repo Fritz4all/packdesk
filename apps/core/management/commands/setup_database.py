@@ -1,5 +1,6 @@
 """Run at every start (docker entrypoint and docker-compose).
 
+- No usable database yet: say so; the database is then set up in the browser.
 - Empty database (new installation): create the tables right away; nothing can be lost.
 - Existing database with changes of a new version: change nothing, but say so. The changes are
   applied with the button in the browser (or `migrate`, or RUN_MIGRATIONS=1), after a backup.
@@ -10,13 +11,22 @@ import os
 
 from django.core.management.base import BaseCommand
 
-from apps.core import database_state, setup_code
+from apps.core import database_state, server_setup, setup_code
 
 
 class Command(BaseCommand):
     help = "Create the tables of a new installation and report what still needs to be done."
 
     def handle(self, *args, **options):
+        state, detail = server_setup.diagnose()
+        if state != server_setup.OK:
+            self.stdout.write(self.style.WARNING(
+                f"{server_setup.message(state)} Open PackDesk in the browser to set up the database."
+            ))
+            if detail:
+                self.stdout.write(f"  ({detail})")
+            self._show_code()
+            return
         if database_state.is_empty():
             self.stdout.write("New installation: creating the database tables ...")
             database_state.apply_changes()
