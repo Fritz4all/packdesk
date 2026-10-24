@@ -121,7 +121,7 @@ class FaultReport(models.Model):
 
     @property
     def is_covered(self):
-        return bool(self.covered_until and self.covered_until >= self.created_at.date())
+        return bool(self.covered_until and self.covered_until >= timezone.localtime(self.created_at).date())
 
 
 def attachment_path(instance, filename):

@@ -19,9 +19,10 @@ def pending():
 
 
 def has_pending():
-    """Cached per process: checked once, and again after an update."""
+    """Cached per process once there is nothing pending. While something is pending it is checked on every
+    request, so an update done from the command line (manage.py migrate) is noticed right away."""
     global _pending_cache
-    if _pending_cache is None:
+    if _pending_cache is not False:
         _pending_cache = bool(pending())
     return _pending_cache
 

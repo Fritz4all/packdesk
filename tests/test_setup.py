@@ -235,3 +235,13 @@ def test_mail_step_can_be_skipped(client, new_install):
     # An empty server with the test box ticked also just goes on, without a failing test mail.
     assert client.post("/installatie/mail/", {"mail_security": "starttls", "test_mail": "on"}).url == "/installatie/numbering/"
     assert not SiteSettings.load().mail_host
+
+
+def test_update_page_goes_away_after_migrating_from_the_command_line(monkeypatch):
+    from apps.core import database_state
+
+    answers = iter([["app.0002"], []])
+    monkeypatch.setattr(database_state, "pending", lambda: next(answers))
+    monkeypatch.setattr(database_state, "_pending_cache", None)
+    assert database_state.has_pending() is True
+    assert database_state.has_pending() is False  # checked again while something was pending
