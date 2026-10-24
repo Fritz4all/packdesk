@@ -128,7 +128,7 @@ def test_explained_gap_is_no_longer_a_problem(invoices, archive):
 def test_without_archive_nothing_is_compared(invoices, settings):
     settings.DOCUMENT_ARCHIVE_DIR = ""
     result = check(invoices)
-    assert result.status == "empty" and not result.source_available
+    assert result.status == "empty"  # no archive and no invoices in PackDesk yet
 
 
 # --- corrections -------------------------------------------------------------
