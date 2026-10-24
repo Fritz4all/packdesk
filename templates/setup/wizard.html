@@ -20,7 +20,8 @@
   {% elif step == "mail" %}
     <h1>{% translate "Mail server" %}</h1>
     {% if mail_from_env %}<p>{% translate "The mail server is set in the server settings (.env). Send a test email to check it." %}</p>
-    {% else %}<p>{% translate "The server PackDesk sends email with (order confirmations, invoices, passwords). Ask your email provider or IT department for these details." %}</p>{% endif %}
+    {% else %}<p>{% translate "The server PackDesk sends email with (order confirmations, invoices, passwords). Ask your email provider or IT department for these details." %}</p>
+    <p class="muted">{% translate "Not at hand? Skip this step and set it later under Settings → Mail server." %}</p>{% endif %}
     {% if mail_error %}<p class="notice notice-error">{% translate "The test email could not be sent. Check the details and try again." %} ({{ mail_error }})</p>{% endif %}
   {% elif step == "numbering" %}
     <h1>{% translate "Numbering" %}</h1>
@@ -34,6 +35,7 @@
     {% for error in form.non_field_errors %}<p class="notice notice-error">{{ error }}</p>{% endfor %}
     {% include "includes/form_fields.html" with fields=form %}
     <button class="btn btn-primary" type="submit">{% if step == "demo" %}{% translate "Finish installation" %}{% else %}{% translate "Next" %}{% endif %}</button>
+    {% if step == "mail" %}<button class="btn" type="submit" name="skip" value="1" formnovalidate>{% translate "Skip, set up later" %}</button>{% endif %}
   </form>
 </div>
 {% endblock %}

@@ -225,3 +225,13 @@ def test_empty_values_count_as_not_set(tmp_path, monkeypatch):
     import os
 
     assert os.environ["SECRET_KEY"] == "saved-key"
+
+
+def test_mail_step_can_be_skipped(client, new_install):
+    client.post("/installatie/code/", {"code": setup_code.get_code()})
+    client.post("/installatie/admin/", {"email": "baas@bedrijf.test", "password1": "lang-genoeg-wachtwoord",
+                                        "password2": "lang-genoeg-wachtwoord"})
+    assert client.post("/installatie/mail/", {"skip": "1"}).url == "/installatie/numbering/"
+    # An empty server with the test box ticked also just goes on, without a failing test mail.
+    assert client.post("/installatie/mail/", {"mail_security": "starttls", "test_mail": "on"}).url == "/installatie/numbering/"
+    assert not SiteSettings.load().mail_host

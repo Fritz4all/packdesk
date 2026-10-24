@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 20:30+0200\n"
+"POT-Creation-Date: 2026-10-24 21:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,6 @@ msgid "Choose the type of database and fill in the server."
 msgstr "Wählen Sie die Art der Datenbank und geben Sie den Server ein."
 
 #: apps/core/middleware.py:77
-#| msgid "Use a table or column name: letters, digits and _ only."
 msgid "Database name and user: letters, digits and _ only."
 msgstr "Datenbankname und Benutzer: nur Buchstaben, Ziffern und _."
 
@@ -174,7 +173,6 @@ msgid ""
 msgstr "Die Aktualisierung ist fehlgeschlagen. Details stehen im Protokoll (docker compose logs web)."
 
 #: apps/core/server_setup.py:134
-#| msgid "No PackDesk parts are linked to tables in this database yet."
 msgid "PackDesk does not know its database yet."
 msgstr "PackDesk kennt seine Datenbank noch nicht."
 
@@ -212,11 +210,10 @@ msgstr "Grundeinstellungen"
 
 #: apps/core/setup_views.py:31 apps/siteconfig/admin.py:131
 #: templates/setup/wizard.html:21
-#| msgid "server"
 msgid "Mail server"
 msgstr "Mailserver"
 
-#: apps/core/setup_views.py:32 templates/setup/wizard.html:26
+#: apps/core/setup_views.py:32 templates/setup/wizard.html:27
 msgid "Numbering"
 msgstr "Nummerierung"
 
@@ -280,21 +277,26 @@ msgstr "Nächste: %(example)s"
 msgid "Fill in a small demo catalogue with test licences"
 msgstr "Einen kleinen Demokatalog mit Testlizenzen anlegen"
 
-#: apps/core/setup_views.py:219
+#: apps/core/setup_views.py:215
+msgid ""
+"Mail server skipped. Set it later under Settings → Mail server; until then "
+"PackDesk cannot send email."
+msgstr "Mailserver übersprungen. Richten Sie ihn später unter Einstellungen → Mailserver ein; bis dahin kann PackDesk keine E-Mails senden."
+
+#: apps/core/setup_views.py:224
 msgid "Test email from PackDesk"
 msgstr "Test-E-Mail von PackDesk"
 
-#: apps/core/setup_views.py:219
+#: apps/core/setup_views.py:224
 msgid "Sending email works."
 msgstr "Der E-Mail-Versand funktioniert."
 
-#: apps/core/setup_views.py:222
+#: apps/core/setup_views.py:227
 #, python-format
-#| msgid "Invoice %(number)s has been sent to %(email)s."
 msgid "Test email sent to %(email)s."
 msgstr "Test-E-Mail an %(email)s gesendet."
 
-#: apps/core/setup_views.py:242
+#: apps/core/setup_views.py:247
 msgid "PackDesk is ready. Everything can be changed later in the admin."
 msgstr "PackDesk ist bereit. Alles lässt sich später in der Verwaltung ändern."
 
@@ -3325,7 +3327,6 @@ msgid "The values above are used."
 msgstr "Die obigen Werte werden verwendet."
 
 #: apps/siteconfig/admin.py:125
-#| msgid "No fault reports yet."
 msgid "No mail server entered yet."
 msgstr "Noch kein Mailserver eingetragen."
 
@@ -3378,7 +3379,6 @@ msgid "available languages"
 msgstr "verfügbare Sprachen"
 
 #: apps/siteconfig/models.py:39
-#| msgid "Company name"
 msgid "domain name"
 msgstr "Domainname"
 
@@ -3389,7 +3389,6 @@ msgid ""
 msgstr "Z. B. shop.firma.de. Wenn ausgefüllt, antwortet die Website nur unter diesem Namen (und localhost). Leer = jeder Name oder jede IP-Adresse."
 
 #: apps/siteconfig/models.py:45
-#| msgid "server"
 msgid "mail server"
 msgstr "Mailserver"
 
@@ -3402,7 +3401,6 @@ msgid "Usually 587 (STARTTLS) or 465 (SSL)."
 msgstr "Meist 587 (STARTTLS) oder 465 (SSL)."
 
 #: apps/siteconfig/models.py:48
-#| msgid "description"
 msgid "encryption"
 msgstr "Verschlüsselung"
 
@@ -3411,7 +3409,6 @@ msgid "none"
 msgstr "keine"
 
 #: apps/siteconfig/models.py:51
-#| msgid "customer name"
 msgid "user name"
 msgstr "Benutzername"
 
@@ -4568,7 +4565,7 @@ msgid ""
 msgstr "Dieses Paket deckt bis zu %(i)s interne und %(e)s externe Optionen ab. Lassen Sie nicht benötigte Zeilen leer."
 
 #: templates/licences/options.html:27 templates/licences/step.html:18
-#: templates/setup/wizard.html:36
+#: templates/setup/wizard.html:37
 msgid "Next"
 msgstr "Weiter"
 
@@ -4768,12 +4765,10 @@ msgid "New password for %(name)s"
 msgstr "Neues Passwort für %(name)s"
 
 #: templates/setup/database.html:3 templates/setup/database.html:6
-#| msgid "Old database"
 msgid "Database"
 msgstr "Datenbank"
 
 #: templates/setup/database.html:9
-#| msgid "Order details"
 msgid "Technical details"
 msgstr "Technische Details"
 
@@ -4792,7 +4787,6 @@ msgid "Shown in the log of the server: docker compose logs web"
 msgstr "Steht im Protokoll des Servers: docker compose logs web"
 
 #: templates/setup/database.html:25
-#| msgid "IP address or host name."
 msgid "Server (IP address or name)"
 msgstr "Server (IP-Adresse oder Name)"
 
@@ -4801,17 +4795,14 @@ msgid "Port"
 msgstr "Port"
 
 #: templates/setup/database.html:29
-#| msgid "database name"
 msgid "Database name"
 msgstr "Datenbankname"
 
 #: templates/setup/database.html:31
-#| msgid "Add database server"
 msgid "PackDesk's database user"
 msgstr "Datenbankbenutzer von PackDesk"
 
 #: templates/setup/database.html:33
-#| msgid "Password changed"
 msgid "Password of that user"
 msgstr "Passwort dieses Benutzers"
 
@@ -4836,7 +4827,6 @@ msgid "Administrator (e.g. root or postgres)"
 msgstr "Administrator (z. B. root oder postgres)"
 
 #: templates/setup/database.html:42
-#| msgid "Administrator"
 msgid "Administrator password"
 msgstr "Administrator-Passwort"
 
@@ -4852,12 +4842,10 @@ msgid "Test and save"
 msgstr "Testen und speichern"
 
 #: templates/setup/restarting.html:3
-#| msgid "Settings"
 msgid "Restarting"
 msgstr "Neustart"
 
 #: templates/setup/restarting.html:6
-#| msgid "database name"
 msgid "Database connected"
 msgstr "Datenbank verbunden"
 
@@ -4956,31 +4944,38 @@ msgid ""
 msgstr "Der Server, über den PackDesk E-Mails versendet (Auftragsbestätigungen, Rechnungen, Passwörter). Diese Angaben erhalten Sie von Ihrem E-Mail-Anbieter oder Ihrer IT-Abteilung."
 
 #: templates/setup/wizard.html:24
-#| msgid ""
-#| "The test email could not be sent. Check the mail server settings in .env."
+msgid ""
+"Not at hand? Skip this step and set it later under Settings → Mail server."
+msgstr "Nicht zur Hand? Überspringen Sie diesen Schritt und richten Sie ihn später unter Einstellungen → Mailserver ein."
+
+#: templates/setup/wizard.html:25
 msgid "The test email could not be sent. Check the details and try again."
 msgstr "Die Test-E-Mail konnte nicht gesendet werden. Prüfen Sie die Angaben und versuchen Sie es erneut."
 
-#: templates/setup/wizard.html:27
+#: templates/setup/wizard.html:28
 msgid ""
 "The first number of each kind of document. Taking over from another system? "
 "Choose a number above the highest number there. Patterns can be changed "
 "later under Number sequences."
 msgstr "Die erste Nummer je Dokumentart. Übernehmen Sie Daten aus einem anderen System? Wählen Sie eine Nummer über der höchsten dort. Muster lassen sich später unter Nummernkreise ändern."
 
-#: templates/setup/wizard.html:29
+#: templates/setup/wizard.html:30
 msgid "Almost done"
 msgstr "Fast fertig"
 
-#: templates/setup/wizard.html:30
+#: templates/setup/wizard.html:31
 msgid ""
 "For trying PackDesk out you can add a small demo catalogue with test "
 "licences. Leave it off for a real installation."
 msgstr "Zum Ausprobieren können Sie einen kleinen Demokatalog mit Testlizenzen anlegen. Bei einer echten Installation lassen Sie dies aus."
 
-#: templates/setup/wizard.html:36
+#: templates/setup/wizard.html:37
 msgid "Finish installation"
 msgstr "Installation abschließen"
+
+#: templates/setup/wizard.html:38
+msgid "Skip, set up later"
+msgstr "Überspringen, später einrichten"
 
 #: templates/unfold/helpers/account_links.html:6
 msgid "View site"

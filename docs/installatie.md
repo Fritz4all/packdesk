@@ -77,7 +77,8 @@ Daarna, voor alle varianten:
 1. **Installatiecode:** bewijst dat jij de server beheert (zie hieronder).
 2. **Eerste beheerder:** e-mailadres en wachtwoord van het account dat alles mag.
 3. **Basisinstellingen:** naam, domeinnaam, talen, beheertaal, algemeen e-mailadres en logo.
-4. **Mailserver:** de server waarmee PackDesk mail verstuurt, met een testmail.
+4. **Mailserver:** de server waarmee PackDesk mail verstuurt, met een testmail. Niet bij de hand? Kies
+   *Overslaan, later instellen* en vul hem later in onder *Instellingen → Mailserver*.
 5. **Nummering:** het eerste nummer voor klanten, bestellingen, licenties en facturen.
 6. **Democatalogus** (optioneel, alleen om te oefenen).
 

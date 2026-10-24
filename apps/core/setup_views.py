@@ -211,10 +211,15 @@ def _basics(request, site):
 
 
 def _mail(request, site):
+    if request.method == "POST" and request.POST.get("skip"):
+        messages.info(request, _("Mail server skipped. Set it later under Settings → Mail server; until then "
+                                 "PackDesk cannot send email."))
+        return redirect("setup_step", "numbering")
     form = MailForm(_posted(request), instance=site)
     if request.method == "POST" and form.is_valid():
         form.save()
-        if form.cleaned_data.get("test_mail"):
+        has_server = settings.MAIL_SERVER_FROM_ENV or form.cleaned_data.get("mail_host")
+        if has_server and form.cleaned_data.get("test_mail"):
             try:
                 send_mail(_("Test email from PackDesk"), _("Sending email works."), None, [request.user.email])
             except Exception as exc:  # stay on this step, so the settings can be corrected
