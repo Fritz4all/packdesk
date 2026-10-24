@@ -88,3 +88,14 @@ html.dark .pd-badge-success { color: rgb(74 222 128); }
 html.dark .pd-badge-warning { color: rgb(251 191 36); }
 .pd-import-conflict { border-left: 4px solid rgb(217 119 6); }
 .pd-import-option { border: 1px dashed rgb(127 127 127 / .35); border-radius: 8px; padding: .6rem .8rem; }
+
+/* Action buttons inside a change form (light and dark, own hover colours) */
+.pd-obj-btn { display: inline-flex; align-items: center; gap: .25rem; height: 38px; padding: 0 .75rem; border-radius: 6px;
+  border: 1px solid rgb(229 231 235); background: #fff; color: rgb(17 24 39); font-size: .875rem; font-weight: 500;
+  box-shadow: 0 1px 2px rgb(0 0 0 / .05); cursor: pointer; }
+.pd-obj-btn:hover { background: rgb(249 250 251); }
+html.dark .pd-obj-btn { background: rgb(17 24 39); border-color: rgb(55 65 81); color: rgb(229 231 235); }
+html.dark .pd-obj-btn:hover { background: rgb(31 41 55); }
+.pd-obj-btn-danger, html.dark .pd-obj-btn-danger { border-color: rgb(220 38 38); color: rgb(220 38 38); background: transparent; }
+.pd-obj-btn-danger:hover, html.dark .pd-obj-btn-danger:hover { background: rgb(220 38 38 / .1); }
+html.dark .pd-obj-btn-danger { border-color: rgb(239 68 68); color: rgb(239 68 68); }
