@@ -41,24 +41,19 @@ Zet in `.env` voor een proefopstelling: `DB_ENGINE=postgres`, `DB_HOST=postgres`
 zelfgekozen wachtwoord en `COMPOSE_PROFILES=postgres`. Daarna:
 
 ```bash
-# Start PackDesk, de database en de testmailbox op de achtergrond (de eerste keer wordt alles
-# gedownload en gebouwd; dat duurt een paar minuten).
+# Start PackDesk, de database en de testmailbox op de achtergrond. De eerste keer wordt alles
+# gedownload en gebouwd (een paar minuten) en maakt PackDesk zelf de tabellen in de database aan.
 docker compose up -d
 
-# Maak de tabellen in de lege database aan.
-docker compose exec web python manage.py migrate
-
-# Maak het eerste beheerdersaccount; je wordt gevraagd een wachtwoord te kiezen.
-docker compose exec web python manage.py create_user --email admin@example.com --superuser
-
-# Optioneel: vul een kleine democatalogus met servicepakketten en testlicenties om mee te oefenen.
-docker compose exec web python manage.py load_demo_catalogue
+# Toon de installatiecode die je in de volgende stap nodig hebt.
+docker compose logs web | grep "Installation code"
 ```
 
-`docker compose exec web …` voert een opdracht uit binnen de draaiende PackDesk-container (`web`).
-Regels die met `#` beginnen zijn uitleg; die mag je meekopiëren.
+Open daarna http://localhost:8000. De installatiewizard vraagt de code, maakt je beheerdersaccount
+aan en loopt de basisinstellingen en de nummering met je door. Wil je oefenen, vink dan in de laatste
+stap de democatalogus aan.
 
-Daarna open je in de browser:
+Daarna:
 
 - Website: http://localhost:8000
 - Beheer: http://localhost:8000/beheer/

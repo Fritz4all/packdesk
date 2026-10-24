@@ -47,7 +47,8 @@ Handige opdrachten:
 
 | Opdracht | Doet |
 |---|---|
-| `python manage.py create_user --email <adres> --superuser` | beheerder aanmaken |
+| `python manage.py setup_database` | draait bij elke start: maakt de tabellen van een lege database aan en meldt wachtende databasewijzigingen en de installatiecode |
+| `python manage.py create_user --email <adres> --superuser` | beheerder aanmaken zonder de wizard |
 | `python manage.py load_demo_catalogue` | kleine democatalogus met testlicenties |
 | `python manage.py import_invoice_archive` | factuur-pdf's uit het archief registreren (`--relink`, `--fix-dates`) |
 
@@ -70,7 +71,8 @@ docker compose exec -e DB_ENGINE=mariadb -e DB_HOST=mariadb web python -m pytest
 ```
 
 De databasegebruiker heeft dan rechten nodig op de testdatabase:
-`GRANT ALL ON test_packdesk.* TO packdesk@'%'`. Tests schrijven bestanden altijd in een tijdelijke map.
+`GRANT ALL ON test_packdesk.* TO packdesk@'%'`. Tests schrijven bestanden altijd in een tijdelijke map en
+gaan uit van een ingerichte installatie (`SETUP_WIZARD` uit); de tests van de wizard zetten hem aan.
 
 GitHub Actions draait bij elke push alle tests op PostgreSQL en MariaDB, controleert of er migraties
 ontbreken en bouwt de productie-image.

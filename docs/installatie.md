@@ -76,27 +76,34 @@ met `DOCUMENT_ARCHIVE=<map met de pdf's>` in `.env`.
 
 ```bash
 # Start PackDesk (en, als je dat in .env hebt gekozen, de database) op de achtergrond.
+# Bij een lege database maakt PackDesk zelf de tabellen aan.
 docker compose up -d
 
-# Maak de tabellen in de lege database aan. Alleen de eerste keer en na een update nodig.
-docker compose exec web python manage.py migrate
-
-# Maak het eerste beheerdersaccount met volledige rechten (vervang jouw@email.nl door je eigen
-# e-mailadres); je wordt gevraagd een wachtwoord te kiezen.
-docker compose exec web python manage.py create_user --email jouw@email.nl --superuser
+# Toon de installatiecode (niet nodig als je zelf SETUP_CODE in .env hebt gezet).
+docker compose logs web | grep "Installation code"
 ```
 
-`docker compose exec web …` voert een opdracht uit binnen de draaiende PackDesk-container (`web`).
-Regels die met `#` beginnen zijn uitleg; die mag je meekopiëren.
+Open daarna de website. Zolang de installatie niet klaar is, opent vanzelf de **installatiewizard**:
 
-Daarna in het beheer (`/beheer/`):
+1. **Installatiecode:** voorkomt dat een willekeurige bezoeker zichzelf beheerder maakt. De code staat
+   in het logboek, of je kiest hem zelf als `SETUP_CODE` in `.env`.
+2. **Eerste beheerder:** e-mailadres en wachtwoord van het account dat alles mag.
+3. **Basisinstellingen:** naam, talen, beheertaal, algemeen e-mailadres en logo, met een testmail om te
+   controleren of mail werkt.
+4. **Nummering:** het eerste nummer voor klanten, bestellingen, licenties en facturen.
+5. **Democatalogus** (optioneel, alleen om te oefenen).
 
-1. **Instellingen:** naam, logo, kleuren, talen, adressen, bedrijfsgegevens (KvK, btw, IBAN).
-2. **Nummerreeksen:** patroon en beginnummer voor klanten, bestellingen, licenties en facturen.
-3. **Catalogus:** categorieën, merken, apparaattypes en servicepakketten met prijzen.
-4. **Medewerkers:** toevoegen en een rol geven. De standaardrollen staan al klaar.
+Daarna sluit de wizard voorgoed en kom je in het beheer. Verdere inrichting:
+
+1. **Instellingen:** kleuren, adressen, homepage, bedrijfsgegevens (KvK, btw, IBAN).
+2. **Catalogus:** categorieën, merken, apparaattypes en servicepakketten met prijzen.
+3. **Medewerkers:** toevoegen en een rol geven. De standaardrollen staan al klaar.
 
 Komt het bedrijf over van een ander systeem? Zie *Externe databases* in de [handleiding](handleiding.md).
+
+Liever zonder browser, bijvoorbeeld bij een geautomatiseerde installatie? Dat kan ook met
+`docker compose exec web python manage.py migrate` en
+`docker compose exec web python manage.py create_user --email <e-mailadres> --superuser`.
 
 ## 5. Op een server
 
@@ -112,8 +119,8 @@ docker build -t packdesk:<versie> .
   webserver of reverse proxy voor die HTTPS regelt.
 - Alle instellingen komen uit `.env` / omgevingsvariabelen.
 - Koppel `DATA_DIR` als `/data`.
-- Databasewijzigingen bij een nieuwe versie gebeuren alleen als je `RUN_MIGRATIONS=1` meegeeft, of met
-  `python manage.py migrate`. Zo verandert een update de database nooit ongemerkt.
+- Een lege database krijgt bij het starten vanzelf zijn tabellen. Wijzigingen van een nieuwe versie
+  worden nooit ongemerkt doorgevoerd (zie *Bijwerken*), tenzij je `RUN_MIGRATIONS=1` meegeeft.
 
 ## 6. Back-ups
 
@@ -130,9 +137,10 @@ Bronnen uit andere systemen (zoals een oud factuurarchief) veranderen niet; daar
 
 ## 7. Bijwerken naar een nieuwe versie
 
-1. Back-up maken (zie hierboven).
-2. Nieuwe versie ophalen of bouwen.
-3. Container vervangen door de nieuwe versie: `docker compose up -d --build` (bouwt de image opnieuw
-   en start de container daarmee; database en datamap blijven staan).
-4. Databasewijzigingen van de nieuwe versie doorvoeren:
-   `docker compose exec web python manage.py migrate`.
+1. Maak een back-up (zie hierboven).
+2. Haal de nieuwe versie op en start hem: `docker compose up -d --build` (bouwt de image opnieuw en
+   start de container daarmee; database en datamap blijven staan).
+3. Heeft de nieuwe versie wijzigingen voor de database, dan tonen website en beheer de pagina
+   **Database bijwerken**. Vul de installatiecode in (`docker compose logs web | grep "Installation code"`,
+   of de `SETUP_CODE` uit `.env`), bevestig dat je een back-up hebt gemaakt en klik op *Database bijwerken*.
+   Daarna werkt alles weer.

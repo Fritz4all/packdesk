@@ -13,6 +13,7 @@ Wat PackDesk nu kan en wat er nog komt.
 - Dashboard, verkoop en marge, zoeken in alles.
 - PostgreSQL en MariaDB/MySQL.
 - Externe databases, koppelingen en vergelijken.
+- Installatiewizard voor een nieuwe installatie en database bijwerken via de browser.
 
 ## Nog te doen
 
