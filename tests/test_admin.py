@@ -11,6 +11,7 @@ def settings_form(**overrides):
         "name": "Testshop",
         "language": "nl",
         "languages": ["nl", "en", "de"],
+        "admin_language": "nl",
         "primary_color": "#112233",
         "accent_color": "#ffffff",
         "country": "NL",
