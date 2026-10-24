@@ -88,14 +88,27 @@ services:
       DOCUMENT_ARCHIVE_DIR: /data/archive
     ports:
       - "127.0.0.1:8000:8000"
+    # Each line is  <folder on this computer/server> : <folder inside the container>[:ro].
+    # What PackDesk writes to /data/... lands in the folder on the host, so it survives when the
+    # container is removed or replaced by a new version. Relative paths start at this file's folder.
     volumes:
-      # Source code (development only; the production image contains the code itself)
+      # Source code, for development only: edits on the host are visible in the container at once.
+      # The production image contains the code itself and does not use this line.
       - .:/app
-      # 2. Website uploads
+
+      # 2. Website uploads: logo, favicon and customer logos uploaded in the admin.
+      #    Shown on the website through /media/, so nothing confidential belongs here.
+      #    Default host folder: ../packdesk-data/media (next to the repository, never inside it).
       - ${DATA_DIR:-../packdesk-data}/media:/data/media
-      # 3. Private files
+
+      # 3. Private files: invoice PDFs that PackDesk makes, fault report attachments and import
+      #    files waiting to be checked. Never served directly; PackDesk checks who may open a file.
+      #    Default host folder: ../packdesk-data/private. Include it in the backup with the database.
       - ${DATA_DIR:-../packdesk-data}/private:/data/private
-      # 4. Existing documents (old invoice PDFs), read-only. Set DOCUMENT_ARCHIVE in .env.
+
+      # 4. Existing documents: the folder with the previous webshop's invoice PDFs. ":ro" = read-only, so
+      #    PackDesk can show and search them but never change or delete one. Point DOCUMENT_ARCHIVE
+      #    in .env at the copy of the archive; without it an (empty) folder in packdesk-data is used.
       - ${DOCUMENT_ARCHIVE:-../packdesk-data/archive}:/data/archive:ro
 
 volumes:
