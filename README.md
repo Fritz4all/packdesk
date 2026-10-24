@@ -139,6 +139,28 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
     `apps/accounts/roles.py`); daarna worden ze nooit meer automatisch aangepast.
   - Een superuser kan alles. Nieuwe modules voegen hun app toe aan `MANAGED_APPS` in
     `apps/accounts/permissions.py`, zodat hun functies in de roleditor verschijnen.
+- **Klanten exporteren en importeren** (Klanten → *Exporteren* / *Importeren*, rechten *Mag klanten
+  exporteren* / *Mag klanten importeren*):
+  - De export is een ZIP met alle klantgegevens en wat erbij hoort: adressen, contactpersonen (met
+    login, zonder wachtwoord), bestellingen en orderregels, licenties met opties, storingsmeldingen met
+    bijlagen en facturen met regels, verzendlog en pdf. Koppelingen blijven behouden: licentie ↔
+    orderregel, verlenging ↔ vorige licentie, storing ↔ licentie, factuur ↔ bestelling. Catalogusitems
+    (packs, merken, landen, …) en gebruikers worden op naam, code of e-mailadres opgezocht, zodat een
+    export ook in een andere installatie werkt. Bestanden zijn optioneel (met het hele factuurarchief
+    wordt het bestand groot). Losse klanten: vink ze aan en kies *Geselecteerde klanten exporteren*, of
+    *Exporteren* bij een klant.
+  - Een import overschrijft nooit direct. Eerst volgt een controle: per klant zie je of hij al bestaat
+    (zelfde klantnummer of ID uit het oude systeem), welke velden verschillen, en wat *Overschrijven*
+    en *Als nieuwe klant importeren* precies zouden doen (nieuw, bijgewerkt, ongewijzigd, overgeslagen
+    en waarom). Die controle draait de echte import en draait hem daarna terug. Standaard worden
+    bestaande klanten overgeslagen.
+  - Overschrijven werkt bij en vult aan, maar verwijdert niets. Als nieuwe klant krijgt de klant een
+    nieuw klantnummer; documenten waarvan het nummer hier al bestaat, worden overgeslagen. Gegevens
+    van een andere klant worden nooit aangeraakt.
+- **Beheertaal:** het beheer heeft een eigen taal, los van de website. De standaard staat in
+  *Instellingen → Algemeen → Beheertaal*; elke medewerker kiest zelf NL / EN / DE in het accountmenu
+  (rechtsboven). Mails aan klanten die vanuit het beheer worden verstuurd, blijven in de taal van de
+  website.
 
 ## Lokaal ontwikkelen
 
@@ -156,6 +178,21 @@ docker compose exec web python manage.py create_user --email admin@example.test 
 
 Bestaande documenten (bijv. het factuurarchief van de vorige webshop) koppel je alleen-lezen met
 `DOCUMENT_ARCHIVE=<map>` in een lokaal `.env`-bestand.
+
+## Waar staan de gegevens?
+
+Niets van klanten komt in Git. `.gitignore` sluit `.env`, `media/`, `private/`, pdf's, zip-bestanden
+en database-dumps uit; `.dockerignore` houdt ze ook buiten de image.
+
+| Wat | Waar (lokaal) | Waar (productie) |
+|---|---|---|
+| Database (klanten, licenties, facturen, …) | Docker-volume `dbdata` | PostgreSQL-volume of -server |
+| Gemaakte factuur-pdf's, storingsbijlagen | `private/` (`PRIVATE_MEDIA_ROOT`), niet via de website bereikbaar | eigen volume |
+| Logo's en andere uploads voor de website | `media/` (`MEDIA_ROOT`) | eigen volume |
+| Oud factuurarchief | buiten de repository, alleen-lezen gekoppeld (`DOCUMENT_ARCHIVE`) | idem |
+| Importbestanden die op controle wachten | `private/imports/`, na import of annuleren verwijderd | idem |
+
+Back-ups maak je dus van de database en de volumes, niet van de repository.
 
 ## Testen
 
