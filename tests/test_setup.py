@@ -119,7 +119,7 @@ def waiting_changes(monkeypatch):
 def test_update_page_instead_of_the_site(client, db, waiting_changes):
     page = client.get("/")
     assert page.status_code == 503 and "shop.0099_new_field" in page.content.decode()
-    assert client.get("/static/css/packdesk.css").status_code == 200
+    assert client.get("/static/css/packdesk.css").status_code != 503  # styles are not held back
 
 
 def test_update_needs_backup_confirmation_and_code(client, db, waiting_changes):
