@@ -26,6 +26,11 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
 
 ## Klanten
 
+- **Een klant openen** toont eerst een overzicht om te lezen: gegevens, adressen, e-mail en kortingen, en
+  tabbladen met alles wat bij de klant hoort (contactpersonen, licenties, bestellingen, facturen,
+  onderdelenaanvragen en -bestellingen, storingen). Per tabblad de laatste 50, met een link naar de
+  volledige lijst. Wijzigen of verwijderen kan pas na *Bewerken*.
+- **Klantsoort wijzigen:** vink klanten aan in de lijst en kies *Klanttype van geselecteerde klanten wijzigen*.
 - **Klanten:** bedrijfsgegevens, klantsoort, status (wacht op goedkeuring, actief, geblokkeerd),
   klantnummer, aparte e-mailadressen voor bestellingen, onderdelen en facturen, kortingen, adressen en
   contactpersonen.
@@ -68,6 +73,38 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
   apparaat, opties en looptijd. Zoeken op licentienummer, serienummer, klant of referentie.
 - **Licentie-instellingen:** termijnen voor registreren, de opbouw van het licentienummer, wie een
   melding krijgt van een registratie, en de teksten van de registratiewizard.
+
+## Onderdelen
+
+Zo werkt het, net als in de vorige webshop:
+
+1. **Aanvraag:** de klant vult in het klantportaal (*Onderdelen*) per onderdeel het merk, het
+   artikelnummer, het aantal en eventueel het apparaat in, en kan om spoed vragen (dan met afleveradres).
+   De aanvraag krijgt een nummer (`WS…`); klant en interne ontvangers krijgen een mail.
+2. **Beantwoorden** (*Onderdelenaanvragen*): vul per onderdeel de status en de inkoopprijs en levertijd
+   per verpakking (nieuw, pack, refurbished) in. Onder elk onderdeel staat de verkoopprijs die daaruit
+   volgt (inkoopprijs × factor uit *Opslagstaffels*). Bij spoed: of het kan en wat het kost. Een
+   opmerking voor de klant typ je bij het onderdeel. Is alles beantwoord, dan krijgt de klant
+   automatisch een mail en is de aanvraag een aantal dagen geldig (*Instellingen onderdelen*).
+   Elke wijziging komt in de geschiedenis van het onderdeel.
+3. **Bestellen:** de klant kiest per onderdeel en verpakking hoeveel, het afleveradres en de betaalwijze,
+   ziet de totalen (met de eigen korting voor onderdelen, toeslag kleine bestelling, spoedkosten,
+   verzendkosten buitenland) en bevestigt. De bestelling krijgt het nummer van de aanvraag plus `-1`,
+   `-2`, … en een factuur.
+4. **Uitleveren** (*Onderdelenbestellingen*):
+   - *Op rekening* gaat direct naar *Uit te leveren*; vanaf het bedrag in de instellingen eerst naar
+     *Wacht op vrijgave* (knop *Vrijgeven*). Andere betaalwijzen wachten op betaling (knop *Betaling ontvangen*).
+   - *Uitleveren* legt vast hoeveel er nu geleverd is (ook in delen); de klant krijgt een mail. Is alles
+     geleverd, dan is de bestelling klaar.
+   - *Corrigeren* verlaagt aantallen die niet geleverd kunnen worden; *Annuleren* annuleert de hele
+     bestelling. Beide vragen een reden en mailen de administratie het bedrag om te crediteren.
+   - *Paklijst* is een afdrukbare lijst van wat nog geleverd moet worden.
+5. **Instellingen:** betaalwijzen (op rekening of eerst betalen, extra kosten), levertijden, opslagstaffels,
+   geldigheid, toeslagen, thuisland (voor verzendkosten buitenland en verlegde btw), grens voor vrijgave,
+   teksten en interne ontvangers. Alles in drie talen waar het om teksten gaat.
+
+Wie wat mag: de rol *Service* behandelt aanvragen en levert uit, *Financieel* ziet alles en mag
+uitleveren en corrigeren, *Beheerder* mag ook de instellingen wijzigen.
 
 ## Storingsmeldingen
 
@@ -113,7 +150,14 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
   PackDesk geeft nummers nooit dubbel uit en controleert de teller tegen de documenten die bestaan.
   Klopt iets niet (teller te laag, ontbrekende nummers), dan zie je een waarschuwing. *Teller op hoogste
   nummer + 1 zetten* lost het op; een handmatige correctie vraagt een reden en komt in het logboek.
+  Wie tellers mag corrigeren, kan in het logboek (*Tellerwijzigingen*) de reden aanpassen of een regel
+  weggooien (naar de prullenbak). *Volgend nummer ziet eruit als* toont de naam van de reeks met het
+  volgende nummer volgens het patroon, en past zich aan terwijl je het patroon wijzigt.
   Ontbrekende nummers kun je verklaren (bijv. "geannuleerd").
+  - *Bestandsnamen in archief* is alleen nodig als er pdf's uit een vorig systeem in de archiefmap
+    staan. Het vertelt PackDesk hoe die bestanden heten, zodat het hun nummers kan lezen: om de teller te
+    controleren en om oude facturen in te lezen. `(\d+)` staat voor het nummer; `invoice_(\d+)\.pdf`
+    past bijvoorbeeld op `invoice_1030953.pdf`. Zonder archief laat je het leeg.
 - **Externe databases:** de database van een ander systeem waarmee je wilt vergelijken of waaruit je
   wilt overnemen, zoals die van een vorige webshop. Je vult server, poort, databasenaam, gebruiker en
   wachtwoord in; het wachtwoord wordt versleuteld bewaard en niet meer getoond. *Verbinding testen*
@@ -127,7 +171,9 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
 - **Importeren uit de vorige webshop** (bij de externe database: *Importeren*; recht *Mag gegevens importeren*):
   neemt alles over wat PackDesk kent: catalogus, klanten met adressen, contactpersonen met hun login
   (met hun eigen wachtwoord uit de vorige webshop), medewerkers met een passende rol, bestellingen, licenties
-  met opties en verlengingen, facturen met betalingen, en de nummertellers.
+  met opties en verlengingen, facturen met betalingen, onderdelen (aanvragen met antwoorden, opmerkingen
+  en geschiedenis, bestellingen met leveringen en correcties, gekoppeld aan hun facturen) en de
+  nummertellers.
   - Start eerst een **proefimport**: die doet alles en draait het daarna terug, zodat je het verslag
     kunt bekijken zonder dat er iets verandert. Daarna **importeren** (eerst een back-up maken).
   - Opnieuw importeren werkt bij wat eerder is overgenomen en maakt niets dubbel aan; er wordt niets
@@ -135,9 +181,12 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
   - Het **verslag** (CSV) heeft één regel per rij van de oude database: nieuw, bijgewerkt, ongewijzigd of
     overgeslagen, met de reden. Het bevat persoonsgegevens; bewaar het zorgvuldig.
   - Wat bewust niet meekomt: contactpersonen en opties die in de vorige webshop verwijderd waren, een tweede
-    login met een e-mailadres dat al gebruikt wordt (de contactpersoon komt wel mee), en licenties met
-    een nummer dat al bestaat. Catalogusitems waar de oude gegevens naar verwijzen maar die niet meer
-    bestonden, komen mee als "Onbekend (vorige webshop)".
+    login met een e-mailadres dat al gebruikt wordt (de contactpersoon komt wel mee), en de
+    Acer-onderdelencatalogus uit 2009. Catalogusitems waar de oude gegevens naar verwijzen maar die niet
+    meer bestonden, komen mee als "Onbekend (vorige webshop)".
+  - Een nummer dat de vorige webshop meer dan eens gebruikte (licenties uit 2003–2004, één onderdelenbestelling),
+    houdt bij de eerste zijn nummer; de volgende krijgen `dup2`, `dup3`, … erachter (bijv. `04NBH015dup2-1`),
+    met een notitie bij de licentie.
 - **Nieuw wachtwoord laten kiezen:** bij *Contactpersonen*, *Klanten* (voor alle contactpersonen van de
   geselecteerde klanten) en *Gebruikers* vink je mensen aan en kies je *… een nieuw wachtwoord laten
   kiezen*. Hun huidige wachtwoord werkt dan niet meer en ze krijgen een e-mail met een link. Is de link

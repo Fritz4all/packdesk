@@ -17,22 +17,24 @@ Wat PackDesk nu kan en wat er nog komt.
 - Prullenbak met terugzetten, en instelbaar automatisch uitloggen.
 - Import van de vorige webshop (catalogus, klanten, contactpersonen en logins, bestellingen, licenties,
   facturen en betalingen) met volledig verslag, en meerdere mensen tegelijk een nieuw wachtwoord laten kiezen.
+- Klantpagina met overzicht van alles wat bij de klant hoort, bewerken via een knop.
+- Onderdelen: aanvragen, beantwoorden, bestellen, uitleveren, corrigeren en annuleren, met de import uit
+  de vorige webshop (fase 2).
 
 ## Nog te doen
 
 1. **Mails bewerkbaar** als sjablonen in het beheer.
 2. **Overzichten:** aflopende licenties, verlengvoorstellen, herinneringen, omzet.
-3. **Onderdelen:** aanvragen, offertes en orders.
-4. **Inhoud:** pagina's (over ons, contact), veelgestelde vragen, artikelen, formulieren.
-5. **Export naar Exact.**
-6. **Documentarchief** voor andere documentsoorten dan facturen.
-7. **Overstap van de vorige webshop, fase 2 en 3:** de modules Onderdelen, Printing services en Telefonie, met
-   de import van die gegevens; de facturen van onderdelenorders koppelen aan de order.
-8. **Importeren uit andere systemen**, terugkerend als dat nodig is:
+3. **Inhoud:** pagina's (over ons, contact), veelgestelde vragen, artikelen, formulieren.
+4. **Export naar Exact.**
+5. **Documentarchief** voor andere documentsoorten dan facturen.
+6. **Overstap van de vorige webshop, fase 3:** de modules Printing services en Telefonie, met de import van
+   die gegevens.
+7. **Importeren uit andere systemen**, terugkerend als dat nodig is:
    - één route voor elke bron: een database (bestaat al), een bestand (CSV, Excel, PackDesk-export,
      tijdelijk in `/data/imports/`) of een map met documenten (alleen-lezen onder `/data-sources/<naam>`);
    - dezelfde stappen: koppelen → proefrun → per record kiezen → importeren → verslag;
    - per koppeling in te stellen: handmatig of automatisch op een vast moment. Bij automatisch
      importeren geldt per onderdeel een vooraf gekozen regel (nieuwe toevoegen, wijzigingen overnemen
      of alleen melden); twijfelgevallen komen als melding in het beheer.
-9. **Livegang:** productie-opzet en een draaiboek voor de overstap.
+8. **Livegang:** productie-opzet en een draaiboek voor de overstap.
