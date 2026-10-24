@@ -84,6 +84,18 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   ontvangers en de melder krijgt een bevestiging. Bijlagen staan in `PRIVATE_MEDIA_ROOT` en zijn alleen
   via het beheer te downloaden. In het beheer: status nieuw / in behandeling / afgesloten, interne
   notities, dekking, en een teller in het menu. Klanten zien hun meldingen onder *Mijn storingsmeldingen*.
+- **Bestellen** (klantportaal → *Servicepacks bestellen*): packs kiezen met aantal en referentie,
+  optioneel fysieke packs met labels laten sturen, dan *controleren* (subtotaal, klantkorting, btw,
+  totaal – dezelfde rekenregels als de vorige webshop) en *bestelling plaatsen*. Er wordt pas iets opgeslagen
+  na bevestigen; de gegevens in de controlestap zijn ondertekend, zodat ze niet te vervalsen zijn. De
+  bestelling krijgt een nummer uit de nummerreeks *Orders*, de licenties worden direct aangemaakt en de
+  klant krijgt een orderbevestiging (interne ontvangers in bcc). Btw-percentage, teksten, verlengtermijn
+  en fysieke packs staan in *Bestelinstellingen*.
+- **Mijn licenties en verlengen:** klanten zien hun licenties met status en einddatum (filters: alle,
+  binnenkort aflopend, niet geregistreerd; zoeken op nummer, serienummer, referentie). Licenties die
+  binnen de verlengtermijn aflopen hebben een knop *Verlengen*: kies een verlengpack (zelfde categorie
+  en hardwareklasse, "na garantie" voorrang), controleer en bestel. De nieuwe licentie sluit aan op de
+  oude, met hetzelfde apparaat en dezelfde opties, en is meteen geregistreerd.
 - **Democatalogus:** `docker compose exec web python manage.py load_demo_catalogue` maakt een kleine
   catalogus en testlicenties aan om de wizard te proberen (alleen als er nog geen packs zijn).
 - **Dashboard** (beheer-startpagina): totalen (actieve klanten, te keuren aanmeldingen, licenties, nog
@@ -92,8 +104,8 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   volgen de rechten van de rol.
 - **Verkoop en marge** (`/beheer/rapportage/`, recht *Mag verkooprapportage bekijken*): omzet, brutomarge
   en margepercentage, grafiek per maand, omzet per categorie, beste klanten en een prijslijst met
-  inkoopprijs en marge per pack. Zolang bestellingen en facturen nog niet in PackDesk staan, telt elke
-  licentie als verkocht pack tegen de huidige prijs min de korting van de klant (dat staat op de pagina).
+  inkoopprijs en marge per pack. Bestellingen tellen met hun werkelijke prijs; licenties zonder bestelling
+  (handmatig of geïmporteerd) worden geschat tegen de huidige prijs min de klantkorting.
 - **Zoeken (Ctrl/Cmd+K):** doorzoekt alle lijsten waar je rechten voor hebt, met hun zoekvelden:
   licentienummers (ook een deel), serienummers van apparaten en opties, klanten (naam, nummer, btw, KvK,
   adres, contactpersonen), gebruikers, packs, enz.
