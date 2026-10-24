@@ -2,13 +2,15 @@ from datetime import date
 from decimal import Decimal
 
 import pytest
+from django.core.exceptions import ValidationError
 
 from apps.customers.models import Contact, Customer, CustomerAddress
 from apps.invoices.models import Invoice
 from apps.legacy import crypto
-from apps.legacy.compare import PARTS_BY_KEY, compare_part, number_tops, search
+from apps.legacy.compare import compare_archive, compare_mapping, number_tops, search
 from apps.legacy.connection import ExternalDatabaseError, open_reader, check_connection
-from apps.legacy.models import ExternalDatabase
+from apps.legacy.models import ExternalDatabase, FieldMapping, TableMapping
+from apps.legacy.parts import OLD_SHOP_PRESET, apply_preset
 from apps.licences.models import Category, HardwareClass, Licence, SupportPack, SupportPeriod, SupportService
 
 from .conftest import make_user
@@ -120,13 +122,25 @@ def test_reader_only_runs_select_and_cannot_write(old_db):
 # --- comparing ----------------------------------------------------------------------------------
 
 
-def _compare(old_db, key):
-    with open_reader(old_db) as reader:
-        return compare_part(PARTS_BY_KEY[key], reader)
+@pytest.fixture
+def mapped(old_db):
+    old_db.save()
+    apply_preset(old_db)
+    return old_db
 
 
-def test_customers_matched_on_old_id_with_differences(old_db, packdesk):
-    result = _compare(old_db, "customers")
+def _compare(db, key):
+    with open_reader(db) as reader:
+        return compare_mapping(db.mappings.get(part=key), reader)
+
+
+def test_preset_maps_every_part_once(mapped):
+    assert set(mapped.mappings.values_list("part", flat=True)) == set(OLD_SHOP_PRESET)
+    assert apply_preset(mapped) == 0  # loading again adds nothing and keeps changes
+
+
+def test_customers_matched_on_old_id_with_differences(mapped, packdesk):
+    result = _compare(mapped, "customers")
     assert result.old_count == 2  # the deleted one is left out
     assert [r["name"] for r in result.only_old] == ["Alleen Oud BV"]
     assert [r["name"] for r in result.only_new] == ["Alleen Nieuw BV"]
@@ -134,35 +148,58 @@ def test_customers_matched_on_old_id_with_differences(old_db, packdesk):
     assert new["pk"] == packdesk.pk and [d[0] for d in diffs] in (["Phone"], ["Telefoon"])
 
 
-def test_contacts_match_and_email_case_does_not_count(old_db, packdesk):
-    result = _compare(old_db, "contacts")
-    assert len(result.matched) == 1 and not result.different and not result.only_old
+def test_contacts_match_and_email_case_does_not_count(mapped, packdesk):
+    result = _compare(mapped, "contacts")
+    assert result.matched == 1 and not result.different and not result.only_old
 
 
-def test_licences_match_on_number_and_show_other_end_date(old_db, packdesk):
-    result = _compare(old_db, "licences")
-    assert len(result.matched) == 1 and [r["full_number"] for r in result.only_old] == ["900002CD-1"]
+def test_licences_match_on_number_and_show_other_end_date(mapped, packdesk):
+    result = _compare(mapped, "licences")
+    assert result.matched == 1 and [r["full_number"] for r in result.only_old] == ["900002CD-1"]
     (_old, _new, diffs), = result.different
     assert any("31-01-2027" in d[1] and "28-02-2027" in d[2] for d in diffs)
 
 
-def test_invoices_and_archive_pdfs(old_db, packdesk):
-    invoices = _compare(old_db, "invoices")
-    assert len(invoices.matched) == 1 and [r["invoice_id"] for r in invoices.only_old] == ["1017495"]
-    pdfs = _compare(old_db, "invoice_pdfs")
-    assert len(pdfs.matched) == 1 and [r["invoice_id"] for r in pdfs.only_old] == ["1017495"]
+def test_invoices_and_archive_pdfs(mapped, packdesk):
+    invoices = _compare(mapped, "invoices")
+    assert invoices.matched == 1 and [r["number"] for r in invoices.only_old] == ["1017495"]
+    with open_reader(mapped) as reader:
+        pdfs = compare_archive(mapped.mappings.get(part="invoices"), reader)
+    assert pdfs.matched == 1 and [r["number"] for r in pdfs.only_old] == ["1017495"]
 
 
-def test_number_tops_flag_low_counters(old_db, packdesk):
+def test_a_mapping_made_by_hand(old_db, packdesk):
+    """Any database: a part mapped to a plain table with chosen columns."""
+    old_db.save()
+    mapping = TableMapping.objects.create(database=old_db, part="customers", source_table="customer",
+                                          id_column="id", skip_column="deleted", skip_value="1")
+    FieldMapping.objects.create(mapping=mapping, field="name", column="name")
+    FieldMapping.objects.create(mapping=mapping, field="number", column="NUMBER_DEB")  # case does not matter
     with open_reader(old_db) as reader:
-        tops = {t["label"]: t for t in number_tops(reader)}
-    invoice = next(t for label, t in tops.items() if t["old"] == "1017495")
+        result = compare_mapping(mapping, reader)
+    assert result.old_count == 2 and result.matched == 1 and not result.different  # phone is not mapped
+
+
+def test_mapping_accepts_one_select_only(old_db):
+    old_db.save()
+    for bad in ({"source_table": "customer", "source_query": "SELECT 1"}, {},
+                {"source_query": "DELETE FROM customer"}, {"source_query": "SELECT 1; DROP TABLE customer"}):
+        with pytest.raises(ValidationError):
+            TableMapping(database=old_db, part="users", **bad).full_clean()
+    with pytest.raises(ValidationError):
+        TableMapping(database=old_db, part="users", source_table="user; drop").full_clean()
+
+
+def test_number_tops_flag_low_counters(mapped, packdesk):
+    with open_reader(mapped) as reader:
+        tops = number_tops(mapped, reader)
+    invoice = next(t for t in tops if t["old"] == "1017495")
     assert invoice["ok"] is False
 
 
-def test_search_finds_where_things_are(old_db, packdesk):
-    with open_reader(old_db) as reader:
-        results = search(reader, "900001AB-1")
+def test_search_finds_where_things_are(mapped, packdesk):
+    with open_reader(mapped) as reader:
+        results = search(mapped, reader, "900001AB-1")
     licences = next(r for r in results if r["old"] or r["new"])
     assert licences["old"] == ["900001AB-1"] and licences["new"][0][0] == "900001AB-1"
 
@@ -175,8 +212,8 @@ def _saved(old_db):
     return old_db
 
 
-def test_compare_pages(client, site, old_db, packdesk):
-    db = _saved(old_db)
+def test_compare_pages(client, site, mapped, packdesk):
+    db = mapped
     client.force_login(make_user("root@example.test", superuser=True))
     assert client.get("/beheer/vergelijken/").status_code == 302  # one database: straight to it
     page = client.get(f"/beheer/vergelijken/{db.pk}/")
@@ -195,3 +232,22 @@ def test_compare_needs_permission(client, site, old_db):
     client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
     assert client.get(f"/beheer/vergelijken/{db.pk}/").status_code == 403
     assert client.get("/beheer/legacy/externaldatabase/").status_code == 403
+
+
+def test_compare_without_mappings_explains_what_to_do(client, site, old_db):
+    db = _saved(old_db)
+    client.force_login(make_user("root@example.test", superuser=True))
+    page = client.get(f"/beheer/vergelijken/{db.pk}/")
+    assert page.status_code == 200 and not page.context["summaries"]
+    assert f"/beheer/legacy/tablemapping/add/?database={db.pk}" in page.content.decode()
+
+
+def test_preset_button_and_mapping_page(client, site, old_db):
+    db = _saved(old_db)
+    client.force_login(make_user("root@example.test", superuser=True))
+    client.post(f"/beheer/legacy/externaldatabase/{db.pk}/action/preset/")
+    assert db.mappings.count() == len(OLD_SHOP_PRESET)
+    mapping = db.mappings.get(part="customers")
+    page = client.get(f"/beheer/legacy/tablemapping/{mapping.pk}/change/").content.decode()
+    assert 'id="pd-columns"' in page and "number_deb" in page and "Koper BV" in page  # columns and example rows
+    assert client.get("/beheer/legacy/tablemapping/add/").status_code == 200
