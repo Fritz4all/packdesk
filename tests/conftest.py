@@ -42,3 +42,10 @@ def plain_static_storage(settings):
         **settings.STORAGES,
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
     }
+
+
+@pytest.fixture(autouse=True)
+def test_data_folder(tmp_path, settings):
+    """Files written by tests go to a temporary DATA_ROOT, never to the real data folder."""
+    settings.DATA_ROOT = tmp_path / "data"
+    settings.MEDIA_ROOT = settings.DATA_ROOT / "website"

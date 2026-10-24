@@ -17,8 +17,7 @@ from .conftest import make_user
 
 @pytest.fixture(autouse=True)
 def folders(tmp_path, settings):
-    settings.PRIVATE_MEDIA_ROOT = str(tmp_path / "private")
-    settings.MEDIA_ROOT = str(tmp_path / "media")
+    settings.DATA_ROOT = tmp_path / "data"
     settings.DOCUMENT_ARCHIVE_DIR = str(tmp_path / "archive")
     (tmp_path / "archive").mkdir()
 

@@ -19,8 +19,8 @@ TODAY = timezone.localdate()
 
 
 @pytest.fixture(autouse=True)
-def private_dir(tmp_path, settings):
-    settings.PRIVATE_MEDIA_ROOT = str(tmp_path / "private")
+def data_dir(tmp_path, settings):
+    settings.DATA_ROOT = tmp_path / "data"
 
 
 @pytest.fixture

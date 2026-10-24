@@ -31,7 +31,7 @@ Uw referentie                  PO-1
 
 @pytest.fixture(autouse=True)
 def folders(tmp_path, settings):
-    settings.PRIVATE_MEDIA_ROOT = str(tmp_path / "private")
+    settings.DATA_ROOT = tmp_path / "data"
     archive = tmp_path / "archive"
     archive.mkdir()
     settings.DOCUMENT_ARCHIVE_DIR = str(archive)
