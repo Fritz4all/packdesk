@@ -41,7 +41,8 @@ def test_page_language_follows_setting(client, site):
     assert "Log in" in client.get("/").content.decode()
 
 
-def test_unknown_host_is_rejected(client, site):
+def test_unknown_host_is_rejected_with_a_fixed_host_list(client, site, settings):
+    settings.ALLOWED_HOSTS = ["shop.example.com"]  # ALLOWED_HOSTS in .env; otherwise the domain from the admin
     assert client.get("/", HTTP_HOST="evil.example").status_code == 400
 
 
