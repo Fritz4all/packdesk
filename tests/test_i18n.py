@@ -67,6 +67,6 @@ def test_every_message_is_translated(folder, lang):
     po = (Path(settings.BASE_DIR) / folder / lang / "LC_MESSAGES" / "django.po").read_text(encoding="utf-8")
     entries = po.split("\n\n")[1:]
     # An empty msgstr is `msgstr ""` without continuation lines.
-    missing = [e for e in entries if re.search(r'^msgstr ""\n(?!")', e + "\n", re.M) and "msgid_plural" not in e]
+    missing = [e for e in entries if re.search(r'^msgstr(\[\d\])? ""\n(?!")', e + "\n", re.M)]
     assert not missing, f"{len(missing)} untranslated, e.g. {missing[0][:120]}"
     assert "#, fuzzy" not in po
