@@ -53,6 +53,11 @@ DB_PASSWORD=<zelfgekozen>
 Daarna werkt gewoon `docker compose up -d`. De andere compose-bestanden zijn voor echte installaties
 (zie [Installatie](installatie.md)).
 
+Met `COMPOSE_PROFILES=mariadb` (en `DB_ENGINE=mariadb`, `DB_HOST=mariadb`, `DB_ROOT_PASSWORD=…`) draait
+PackDesk op MariaDB en start er ook **phpMyAdmin** mee op http://localhost:8081, om de databases op die
+server in te zien. Log in met `root` en `DB_ROOT_PASSWORD`, of maak een gebruiker die alleen mag lezen:
+`GRANT SELECT, SHOW VIEW ON *.* TO viewer@'%'`.
+
 Handige opdrachten:
 
 | Opdracht | Doet |

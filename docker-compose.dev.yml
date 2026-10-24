@@ -41,6 +41,20 @@ services:
       interval: 3s
       retries: 30
 
+  # Look into the MariaDB databases (only with COMPOSE_PROFILES=mariadb): http://localhost:8081
+  # Log in with a user of that MariaDB server, e.g. root and DB_ROOT_PASSWORD from .env.
+  phpmyadmin:
+    profiles: ["mariadb"]
+    image: phpmyadmin:5.2.2
+    environment:
+      PMA_HOST: mariadb
+      UPLOAD_LIMIT: 512M
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8081:80"
+
   # Catches every email PackDesk sends; read them at http://localhost:8025.
   mail:
     image: axllent/mailpit:v1.20
