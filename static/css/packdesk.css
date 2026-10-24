@@ -172,7 +172,9 @@ h2 { font-size: 1.15rem; }
 .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
 .form-card fieldset { border: 0; padding: 0; margin: 0 0 1.5rem; }
 .form-card legend { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.75rem; }
-.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); column-gap: 1rem; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); column-gap: 1rem; align-items: start; }
+/* A field keeps its natural height: help text under one field must not stretch the fields next to it. */
+.field { align-content: start; }
 .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .auth-links { display: flex; justify-content: space-between; gap: 1rem; margin: 1rem 0 0; font-size: 0.95rem; }
 .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; align-items: start; }
@@ -218,7 +220,9 @@ a.card-link-block:hover { text-decoration: none; border-color: var(--brand); }
 .announcement-warning { background: color-mix(in srgb, #f59e0b 25%, var(--surface)); color: var(--text); }
 .announcement-success { background: color-mix(in srgb, var(--success) 20%, var(--surface)); color: var(--text); }
 
-.card-link { margin-top: 0.8rem !important; }
+/* Home cards: the link sits at the bottom, at the same height in every card of a row. */
+.cards > .card { display: flex; flex-direction: column; }
+.card-link { margin-top: auto !important; padding-top: 0.8rem; }
 .card-link a { font-weight: 600; }
 
 /* Maintenance page */
