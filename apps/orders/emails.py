@@ -19,3 +19,14 @@ def send_confirmation(order):
     subject = _("Order %(number)s – %(company)s") % {"number": order.number, "company": order.customer.name}
     if to or internal:
         EmailMessage(subject, body, sender(), to, bcc=internal).send()
+
+
+def notify_invoice_problem(order, error):
+    """The order was placed but no invoice could be made (e.g. the invoice counter is behind)."""
+    rules, site = OrderSettings.load(), SiteSettings.load()
+    to = [e.strip() for e in rules.notify_emails.split(",") if e.strip()] or [site.email]
+    body = _("Order %(number)s for %(company)s was placed, but its invoice could not be made:\n\n%(error)s\n\n"
+             "Make the invoice from the order in the admin once this is solved.") % {
+        "number": order.number, "company": order.customer.name, "error": error}
+    EmailMessage(_("No invoice for order %(number)s") % {"number": order.number}, body, sender(),
+                 [t for t in to if t]).send()

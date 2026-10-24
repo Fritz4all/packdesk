@@ -69,13 +69,25 @@ SECTIONS = [
     },
     {
         "key": "orders",
-        "title": _("Orders"),
+        "title": _("Orders and invoices"),
         "items": [
             {
                 "title": _("Orders"),
                 "icon": "shopping_cart",
                 "link": reverse_lazy("admin:orders_order_changelist"),
                 "permission": lambda request: request.user.has_perm("orders.view_order"),
+            },
+            {
+                "title": _("Invoices"),
+                "icon": "receipt_long",
+                "link": reverse_lazy("admin:invoices_invoice_changelist"),
+                "permission": lambda request: request.user.has_perm("invoices.view_invoice"),
+            },
+            {
+                "title": _("Invoice settings"),
+                "icon": "description",
+                "link": reverse_lazy("admin:invoices_invoicesettings_changelist"),
+                "permission": lambda request: request.user.has_perm("invoices.view_invoicesettings"),
             },
             {
                 "title": _("Order settings"),

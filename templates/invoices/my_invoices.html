@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "My invoices" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "My invoices" %}</h1></div>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Invoice number" %}</th><th>{% translate "Date" %}</th><th>{% translate "Your reference" %}</th><th>{% translate "Total incl. VAT" %}</th><th></th></tr></thead>
+  <tbody>
+  {% for inv in invoices %}<tr>
+    <td>{{ inv.number }}</td><td>{{ inv.issued_on|date:"j M Y" }}</td><td>{{ inv.reference }}</td>
+    <td>{% if inv.total %}€ {{ inv.total|money }}{% else %}—{% endif %}</td>
+    <td class="actions-cell">
+      {% if inv.has_pdf %}
+        <a class="btn btn-ghost" href="{% url 'invoice_pdf' inv.pk %}" target="_blank">{% translate "View" %}</a>
+        <a class="btn btn-ghost" href="{% url 'invoice_pdf' inv.pk %}?download=1">{% translate "Download" %}</a>
+        <form method="post" action="{% url 'invoice_send_to_me' inv.pk %}">{% csrf_token %}<button class="btn btn-ghost" type="submit">{% translate "Email to me" %}</button></form>
+      {% endif %}
+    </td>
+  </tr>{% empty %}<tr><td colspan="5" class="muted">{% translate "No invoices yet." %}</td></tr>{% endfor %}
+  </tbody>
+</table></div>
+{% endblock %}

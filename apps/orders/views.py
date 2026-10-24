@@ -18,6 +18,8 @@ from django.utils.translation import gettext as _
 from apps.customers.models import Customer, customer_of
 from apps.licences.models import Licence, SupportPack
 
+from apps.invoices.services import invoice_order
+
 from . import emails
 from .forms import ExtendForm, LineFormSet, OrderDetailsForm
 from .models import Order, OrderSettings, place_order
@@ -66,6 +68,9 @@ def _confirm(request, customer, rules):
             raise PermissionDenied
     order = place_order(customer, request.user, lines, payload.get("reference", ""), payload.get("delivery"))
     emails.send_confirmation(order)
+    _invoice, error = invoice_order(order)
+    if error:
+        emails.notify_invoice_problem(order, error)
     request.session["placed_order"] = order.pk
     return redirect("order_done")
 

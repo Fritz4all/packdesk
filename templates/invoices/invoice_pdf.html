@@ -1,0 +1,82 @@
+{% load i18n humanize_nl %}<!doctype html>
+<html lang="{{ site.language }}">
+<head>
+<meta charset="utf-8">
+<title>{% translate "Invoice" %} {{ invoice.number }}</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 24mm; @bottom-center { content: "{{ site.display_name|escapejs }}  ·  {% translate 'page' %} " counter(page) " / " counter(pages); font-size: 8pt; color: #888; font-family: "DejaVu Sans", sans-serif; } }
+  body { font-family: "DejaVu Sans", sans-serif; font-size: 9.5pt; color: #1b1f24; }
+  .brand { color: {{ site.primary_color }}; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14mm; }
+  header img { max-height: 22mm; max-width: 70mm; }
+  .company { text-align: right; font-size: 8.5pt; line-height: 1.45; color: #444; }
+  .company strong { color: #1b1f24; font-size: 10pt; }
+  .addressee { margin-bottom: 10mm; line-height: 1.45; }
+  h1 { font-size: 20pt; margin: 0 0 4mm; color: {{ site.primary_color }}; }
+  table.meta { border-collapse: collapse; margin-bottom: 8mm; }
+  table.meta td { padding: 1mm 8mm 1mm 0; }
+  table.meta td:first-child { color: #666; }
+  table.lines { width: 100%; border-collapse: collapse; }
+  table.lines th { text-align: left; font-size: 8.5pt; color: #666; border-bottom: 1.5pt solid {{ site.primary_color }}; padding: 2mm 1.5mm; }
+  table.lines td { padding: 2mm 1.5mm; border-bottom: .5pt solid #ddd; vertical-align: top; }
+  .num { text-align: right; white-space: nowrap; }
+  table.totals { margin-left: auto; margin-top: 5mm; border-collapse: collapse; min-width: 75mm; }
+  table.totals td { padding: 1.2mm 1.5mm; }
+  table.totals tr.grand td { border-top: 1.5pt solid {{ site.primary_color }}; font-weight: bold; font-size: 11pt; }
+  .notice { margin-top: 8mm; padding: 3mm 4mm; border-left: 3pt solid #c62828; background: #fdf1f1; color: #8e1c1c; font-weight: bold; }
+  .payment { margin-top: 8mm; }
+  .footer { margin-top: 10mm; font-size: 8pt; color: #666; }
+</style>
+</head>
+<body>
+<header>
+  <div>{% if logo_url %}<img src="file://{{ logo_url }}" alt="{{ site.name }}">{% else %}<div class="brand" style="font-size:18pt;font-weight:bold">{{ site.name }}</div>{% endif %}</div>
+  <div class="company">
+    <strong>{{ site.display_name }}</strong><br>
+    {% if company_address %}{{ company_address.line1 }}{% if company_address.line2 %}<br>{{ company_address.line2 }}{% endif %}<br>{{ company_address.postal_code }} {{ company_address.city }}<br>{% endif %}
+    {% firstof company_address.phone site.phone as phone %}{% if phone %}{{ phone }}<br>{% endif %}
+    {% firstof company_address.email site.email as email %}{% if email %}{{ email }}<br>{% endif %}
+    {% if site.coc_number %}{% translate "CoC" %} {{ site.coc_number }}<br>{% endif %}
+    {% if site.vat_number %}{% translate "VAT" %} {{ site.vat_number }}<br>{% endif %}
+    {% if site.iban %}IBAN {{ site.iban }}{% endif %}
+  </div>
+</header>
+
+<div class="addressee">
+  <strong>{{ invoice.customer_name }}</strong><br>
+  {% if invoice.address_attention %}{% translate "Attn." %} {{ invoice.address_attention }}<br>{% endif %}
+  {{ invoice.address_line1 }}<br>{% if invoice.address_line2 %}{{ invoice.address_line2 }}<br>{% endif %}
+  {{ invoice.address_postal_code }} {{ invoice.address_city }}{% if invoice.address_country %}<br>{{ invoice.address_country }}{% endif %}
+</div>
+
+<h1>{% translate "Invoice" %}</h1>
+<table class="meta">
+  <tr><td>{% translate "Invoice number" %}</td><td><strong>{{ invoice.number }}</strong></td></tr>
+  <tr><td>{% translate "Invoice date" %}</td><td>{{ invoice.issued_on|date:"j F Y" }}</td></tr>
+  {% if invoice.due_on %}<tr><td>{% translate "Due date" %}</td><td>{{ invoice.due_on|date:"j F Y" }}</td></tr>{% endif %}
+  {% if invoice.customer_number %}<tr><td>{% translate "Customer number" %}</td><td>{{ invoice.customer_number }}</td></tr>{% endif %}
+  {% if invoice.customer_vat %}<tr><td>{% translate "Your VAT number" %}</td><td>{{ invoice.customer_vat }}</td></tr>{% endif %}
+  {% if invoice.reference %}<tr><td>{% translate "Your reference" %}</td><td>{{ invoice.reference }}</td></tr>{% endif %}
+  {% if invoice.order %}<tr><td>{% translate "Order number" %}</td><td>{{ invoice.order.number }}</td></tr>{% endif %}
+</table>
+
+<table class="lines">
+  <thead><tr><th>{% translate "Code" %}</th><th>{% translate "Description" %}</th><th class="num">{% translate "Quantity" %}</th><th class="num">{% translate "Price each" %}</th><th class="num">{% translate "Amount" %}</th></tr></thead>
+  <tbody>
+  {% for line in lines %}<tr><td>{{ line.code }}</td><td>{{ line.description }}</td><td class="num">{{ line.quantity|floatformat:"-2" }}</td><td class="num">€ {{ line.unit_price|money }}</td><td class="num">€ {{ line.amount|money }}</td></tr>{% endfor %}
+  </tbody>
+</table>
+
+<table class="totals">
+  <tr><td>{% translate "Subtotal" %}</td><td class="num">€ {{ invoice.gross|money }}</td></tr>
+  {% if invoice.discount %}<tr><td>{% translate "Discount" %} ({{ invoice.discount_pct|floatformat:"-2" }} %)</td><td class="num">− € {{ invoice.discount|money }}</td></tr>{% endif %}
+  <tr><td>{% translate "Total excl. VAT" %}</td><td class="num">€ {{ invoice.net|money }}</td></tr>
+  <tr><td>{% translate "VAT" %} {{ invoice.vat_rate|floatformat:"-2" }} %</td><td class="num">€ {{ invoice.vat|money }}</td></tr>
+  <tr class="grand"><td>{% translate "Total incl. VAT" %}</td><td class="num">€ {{ invoice.total|money }}</td></tr>
+</table>
+
+{% if rules.notice_text %}<div class="notice">{{ rules.notice_text|linebreaksbr }}</div>{% endif %}
+{% if payment_text %}<div class="payment">{{ payment_text|linebreaksbr }}</div>{% endif %}
+{% if rules.footer_text %}<div class="footer">{{ rules.footer_text|linebreaksbr }}</div>{% endif %}
+</body>
+</html>
