@@ -8,3 +8,11 @@ __pycache__/
 .pytest_cache/
 *.mo
 private/
+# Customer data, dumps and exports never go into Git
+*.sql
+*.sql.gz
+*.dump
+*.zip
+*.pdf
+exports/
+imports/
