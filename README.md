@@ -233,14 +233,14 @@ docker compose exec web python manage.py create_user --email admin@example.test 
 - Admin: http://localhost:8000/beheer/ → **Instellingen** voor naam, logo en kleuren
 - Mailpit (verstuurde mails): http://localhost:8025
 
-Het factuurarchief van de vorige webshop koppel je (optioneel) alleen-lezen als `/data-archive`: zet
+Het factuurarchief van de vorige webshop koppel je (optioneel) alleen-lezen als `/data-sources/archive-invoices`: zet
 `DOCUMENT_ARCHIVE=<map>` in `.env` en maak een `docker-compose.override.yml` (niet in Git) met:
 
 ```yaml
 services:
   web:
     volumes:
-      - ${DOCUMENT_ARCHIVE}:/data-archive:ro
+      - ${DOCUMENT_ARCHIVE}:/data-sources/archive-invoices:ro
 ```
 
 ## Waar staan de gegevens?
@@ -252,7 +252,7 @@ en database-dumps uit; `.dockerignore` houdt ze ook buiten de image.
 |---|---|
 | Database (klanten, licenties, facturen, instellingen, gebruikers) | Docker-volume `dbdata` |
 | Bestanden van PackDesk, één submap per doel: `website/` (logo's), `invoices/`, `fault-attachments/`, `imports/` | `${DATA_DIR}` → `/data`; alleen `website/` is via de website te zien |
-| Oud factuurarchief (optioneel) | `DOCUMENT_ARCHIVE` → `/data-archive`, alleen-lezen, via `docker-compose.override.yml` |
+| Oud factuurarchief (optioneel) | `DOCUMENT_ARCHIVE` → `/data-sources/archive-invoices`, alleen-lezen, via `docker-compose.override.yml` |
 | Geheimen en serverinstellingen | `.env` op de server |
 
 `DATA_DIR` staat standaard op `../packdesk-data`, naast de projectmap. Het volledige overzicht, ook van
@@ -309,7 +309,7 @@ docker build -t packdesk:<versie> .
 - Draait als non-root gebruiker `app` met gunicorn op poort 8000.
 - Configuratie via environment-variabelen, zie [.env.example](.env.example).
 - Migraties draaien alleen met `RUN_MIGRATIONS=1`, zodat een nieuwe image de database niet ongemerkt wijzigt.
-- Alle bestanden van PackDesk in `/data` (`DATA_ROOT`, een volume); het oude archief optioneel in `/data-archive`.
+- Alle bestanden van PackDesk in `/data` (`DATA_ROOT`, een volume); het oude archief optioneel in `/data-sources/archive-invoices`.
 
 Een productie-`docker-compose.yml` volgt in stap E van het plan.
 

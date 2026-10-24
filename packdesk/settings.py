@@ -159,7 +159,8 @@ DATA_ROOT = Path(env("DATA_ROOT", default=str(BASE_DIR.parent / "packdesk-data")
 MEDIA_URL = "media/"
 MEDIA_ROOT = DATA_ROOT / "website"
 # Optional, separate from DATA_ROOT: a folder with existing documents (the previous webshop's invoice PDFs),
-# read-only. Empty = no archive. In docker-compose it is /data-archive, mounted only when given.
+# read-only. Empty = no archive. In docker-compose it is /data-sources/archive-invoices: sources from
+# other systems live under /data-sources/<name>, outside DATA_ROOT, and are mounted only when given.
 DOCUMENT_ARCHIVE_DIR = env("DOCUMENT_ARCHIVE_DIR", default="")
 
 STORAGES = {

@@ -5,7 +5,7 @@
 #      or volume "dbdata" / "mariadbdata" when the database runs in a container
 #   2. Files PackDesk keeps (website uploads, invoice PDFs, fault attachments, pending imports)
 #                                                                         -> ${DATA_DIR}, as /data
-#   3. Optional: previous webshop's invoice archive (read-only)                   -> ${DOCUMENT_ARCHIVE}, as /data-archive
+#   3. Optional: previous webshop's invoice archive (read-only)                   -> ${DOCUMENT_ARCHIVE}, as /data-sources/archive-invoices
 # DATA_DIR defaults to ../packdesk-data, next to (not inside) the repository.
 # Everything else in a container can be thrown away; see docs/opslag.md.
 name: packdesk
@@ -84,8 +84,8 @@ services:
       DATA_ROOT: /data
       PYTHONDONTWRITEBYTECODE: "1"
       XDG_CACHE_HOME: /tmp/cache
-      # Only used when /data-archive is mounted (see the volumes below); otherwise there is no archive.
-      DOCUMENT_ARCHIVE_DIR: /data-archive
+      # Only used when /data-sources/archive-invoices is mounted (see the volumes below); otherwise there is no archive.
+      DOCUMENT_ARCHIVE_DIR: /data-sources/archive-invoices
     ports:
       - "127.0.0.1:8000:8000"
     # Each line is  <folder on this computer/server> : <folder inside the container>[:ro].
@@ -106,15 +106,17 @@ services:
       #    Back it up together with the database.
       - ${DATA_DIR:-../packdesk-data}:/data
 
-      # 3. Optional: the previous webshop's invoice PDFs, read-only (":ro"), so PackDesk can show and search
-      #    them but never change or delete one. Only needed for an installation that takes over the
+      # 3. Optional sources: folders from other systems, each read-only (":ro") under /data-sources/<name>,
+      #    so PackDesk can read them but never change or delete a file. They are not PackDesk's own data
+      #    and stay outside /data. The first one: /data-sources/archive-invoices, the previous webshop's
+      #    invoice PDFs. Only needed for an installation that takes over the
       #    previous webshop. To use it, put these lines in docker-compose.override.yml (not in Git; compose
       #    reads it automatically) with DOCUMENT_ARCHIVE=<folder> in .env:
       #
       #      services:
       #        web:
       #          volumes:
-      #            - ${DOCUMENT_ARCHIVE}:/data-archive:ro
+      #            - ${DOCUMENT_ARCHIVE}:/data-sources/archive-invoices:ro
 
 volumes:
   # 1. Database in a container (only with COMPOSE_PROFILES=postgres or mariadb).

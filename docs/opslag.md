@@ -12,7 +12,7 @@ buiten de container: in de database of in een map op de server. Niets daarvan st
 |---|---|---|---|---|---|
 | 1 | Alle bedrijfsgegevens en de meeste instellingen | eigen database van PackDesk (PostgreSQL of MariaDB/MySQL) | ja: de server in `DB_HOST`, of volume `dbdata` / `mariadbdata` | nee | **ja** |
 | 2 | Bestanden van PackDesk: website-uploads, factuur-pdf's, storingsbijlagen, wachtende imports | `${DATA_DIR}` op de server, in de container `/data` (`DATA_ROOT`) | ja | nee | **ja** |
-| 3 | Oud factuurarchief (pdf's van de vorige webshop), alleen als je het opgeeft | `DOCUMENT_ARCHIVE` op de server, in de container `/data-archive`, alleen-lezen | ja | nee | ja (eenmalig, verandert niet) |
+| 3 | Oud factuurarchief (pdf's van de vorige webshop), alleen als je het opgeeft | `DOCUMENT_ARCHIVE` op de server, in de container `/data-sources/archive-invoices`, alleen-lezen | ja | nee | ja (eenmalig, verandert niet) |
 | 5 | Serverinstellingen (geheime sleutel, databaseadres, mailserver, domein) | `.env` of omgevingsvariabelen | ja, op de server | nee (`.env` staat in `.gitignore`) | **ja** |
 | 6 | Programmacode, vaste teksten en vertalingen | in de image (lokaal: de projectmap) | n.v.t. | ja | via Git |
 | 7 | Keuzes van een bezoeker (taal, licht/donker) | browser van de bezoeker | n.v.t. | nee | nee |
@@ -86,7 +86,7 @@ worden aangemaakt zodra ze nodig zijn.
 Wat niet via de website te zien is, opent alleen de eigen klant of een medewerker met het juiste
 recht, en altijd via PackDesk.
 
-## 3. Oud factuurarchief (optioneel): `DOCUMENT_ARCHIVE` → `/data-archive`
+## 3. Oud factuurarchief (optioneel): `DOCUMENT_ARCHIVE` → `/data-sources/archive-invoices`
 
 Alleen voor een installatie die de vorige webshop overneemt: de pdf's van de vorige webshop (13.456 facturen,
 5,3 GB). De map staat los van `/data` en wordt alleen-lezen gekoppeld, via een
@@ -96,7 +96,7 @@ Alleen voor een installatie die de vorige webshop overneemt: de pdf's van de vor
 services:
   web:
     volumes:
-      - ${DOCUMENT_ARCHIVE}:/data-archive:ro
+      - ${DOCUMENT_ARCHIVE}:/data-sources/archive-invoices:ro
 ```
 
 met `DOCUMENT_ARCHIVE=<map>` in `.env`. Zonder deze koppeling is er geen archief en werkt de rest
@@ -119,7 +119,7 @@ Instellingen die per server verschillen of geheim zijn. Ze staan niet in het beh
 | `SECURE_COOKIES`, `SECURE_SSL_REDIRECT`, `SECURE_HSTS_SECONDS` | HTTPS |
 | `DATA_DIR` | map op de server voor alle bestanden van PackDesk (docker-compose koppelt hem als `/data`) |
 | `DATA_ROOT` | dezelfde map, gezien vanuit de container (`/data`) |
-| `DOCUMENT_ARCHIVE` / `DOCUMENT_ARCHIVE_DIR` | optioneel: archiefmap op de server / in de container (`/data-archive`) |
+| `DOCUMENT_ARCHIVE` / `DOCUMENT_ARCHIVE_DIR` | optioneel: archiefmap op de server / in de container (`/data-sources/archive-invoices`) |
 | `FALLBACK_LANGUAGES`, `LOG_LEVEL`, `DEBUG` | gedrag |
 
 ## 6. Code: Git en de image
