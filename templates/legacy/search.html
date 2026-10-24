@@ -10,9 +10,9 @@
             <h2 class="font-semibold mb-2">{{ r.label }}</h2>
             {% if r.error %}<p class="text-sm text-red-600">{{ r.error }}</p>{% endif %}
             <div class="grid grid-cols-2 gap-3 text-sm">
-                <div><h3 class="pd-dim mb-1">{% translate "Old database" %} ({{ r.old|length }})</h3>
+                <div><h3 class="pd-dim mb-1">{% translate "Old database" %} ({{ r.old_total }})</h3>
                     <ul>{% for label in r.old %}<li>{{ label }}</li>{% empty %}<li class="text-base-500">—</li>{% endfor %}</ul></div>
-                <div><h3 class="pd-dim mb-1">PackDesk ({{ r.new|length }})</h3>
+                <div><h3 class="pd-dim mb-1">PackDesk ({{ r.new_total }})</h3>
                     <ul>{% for label, link in r.new %}<li>{% if link %}<a class="underline" href="{{ link }}">{{ label }}</a>{% else %}{{ label }}{% endif %}</li>{% empty %}<li class="text-base-500">—</li>{% endfor %}</ul></div>
             </div>
         </section>

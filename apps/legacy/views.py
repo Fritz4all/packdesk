@@ -12,7 +12,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
-from .compare import PARTS_BY_KEY, admin_link, compare_all, number_tops, search, show
+from .compare import admin_link, compare_all, label, number_tops, part_for, search, show
 from .connection import ExternalDatabaseError, open_reader
 from .models import ExternalDatabase
 
@@ -36,12 +36,13 @@ def _cache_key(db):
 
 def _run(db):
     with open_reader(db) as reader:
-        results = compare_all(reader)
-        tops = number_tops(reader)
+        results, unmapped = compare_all(db, reader)
+        tops = number_tops(db, reader)
     data = {
-        "compared_at": timezone.now(), "tops": tops,
-        "parts": {r.part.key: {"summary": r.summary(), "only_old": r.only_old, "only_new": r.only_new,
-                               "different": r.different} for r in results},
+        "compared_at": timezone.now(), "tops": tops, "unmapped": [str(p.label) for p in unmapped],
+        "parts": {r.part.key: {"summary": r.summary(), "fields": [f.name for f in r.mapped_fields],
+                               "only_old": r.only_old, "only_new": r.only_new, "different": r.different}
+                  for r in results},
     }
     cache.set(_cache_key(db), data, CACHE_SECONDS)
     return data
@@ -81,14 +82,15 @@ def overview(request, pk):
     ))
 
 
-def _rows(part, category, items):
+def _rows(part, category, items, fields):
     """Table rows for a list page and its CSV: (label, link, details)."""
+    labels = {f.name: str(f.label) for f in getattr(part, "fields", [])}
     if category == "only_old":
-        columns = [f.old for f in part.fields] or ["id"]
-        return [(part.label_old(r), "", [(c, show(r.get(c))) for c in ["id", *columns] if c in r]) for r in items]
+        return [(label(part, r), "", [(labels.get(name, name), show(r.get(name))) for name in fields if r.get(name) not in (None, "")]
+                 + ([(_("Old ID"), r["_id"])] if r.get("_id") else [])) for r in items]
     if category == "only_new":
-        return [(part.label_new(r), admin_link(part, r), []) for r in items]
-    return [(part.label_old(old), admin_link(part, new), [(label, f"{a} → {b}") for label, a, b in diffs])
+        return [(label(part, r), admin_link(part, r), []) for r in items]
+    return [(label(part, old), admin_link(part, new), [(name, f"{a} → {b}") for name, a, b in diffs])
             for old, new, diffs in items]
 
 
@@ -96,13 +98,15 @@ def _rows(part, category, items):
 def detail(request, pk, part_key, category):
     _allowed(request)
     db = get_object_or_404(ExternalDatabase, pk=pk)
-    part = PARTS_BY_KEY.get(part_key)
+    part = part_for(part_key)
     if part is None or category not in CATEGORIES:
         raise Http404
     data = _data(request, db)
     if data is None:
         return redirect("legacy_compare", db.pk)
-    rows = _rows(part, category, data["parts"][part_key][category])
+    if part_key not in data["parts"]:
+        raise Http404
+    rows = _rows(part, category, data["parts"][part_key][category], data["parts"][part_key]["fields"])
     if request.GET.get("format") == "csv":
         return _csv(part, category, rows)
     return render(request, "legacy/detail.html", _context(
@@ -131,7 +135,7 @@ def search_view(request, pk):
     if len(q) >= 2:
         try:
             with open_reader(db) as reader:
-                results = search(reader, q)
+                results = search(db, reader, q)
         except ExternalDatabaseError as exc:
             messages.error(request, _("No connection with %(name)s: %(error)s") % {"name": db.name, "error": exc})
     return render(request, "legacy/search.html", _context(request, title=_("Search in both databases"), db=db,

@@ -2,7 +2,15 @@
 {% load i18n %}
 {% block content %}
 {% include "legacy/_head.html" %}
-{% if data %}
+{% if data and not data.parts %}
+    <section class="pd-widget mb-4">
+        <p class="mb-3">{% translate "No PackDesk parts are linked to tables in this database yet." %}</p>
+        <div class="flex flex-wrap gap-2">
+            <a class="pd-btn pd-btn-primary" href="{% url 'admin:legacy_tablemapping_add' %}?database={{ db.pk }}"><span class="material-symbols-outlined">add_link</span>{% translate "Link a part" %}</a>
+            <a class="pd-btn" href="{% url 'admin:legacy_externaldatabase_change' db.pk %}">{% translate "Or load the ready-made mapping for the previous webshop" %}</a>
+        </div>
+    </section>
+{% elif data %}
     <form method="post" class="mb-4 flex flex-wrap gap-3 items-center text-sm">
         {% csrf_token %}
         <span class="text-base-500">{% blocktranslate with when=data.compared_at|date:"j F Y H:i" %}Compared on {{ when }}.{% endblocktranslate %}</span>
@@ -38,6 +46,7 @@
             {% endfor %}</tbody>
         </table>
     </section>
-    <p class="text-sm text-base-500">{% translate "Rows are matched on the ID from the old system, otherwise on number or email address. Rows deleted in the previous webshop are not counted." %}</p>
+    {% if data.unmapped %}<p class="text-sm mb-2">{% translate "Not linked (not compared)" %}: {{ data.unmapped|join:", " }} · <a class="underline" href="{% url 'admin:legacy_tablemapping_changelist' %}?database__id__exact={{ db.pk }}">{% translate "Table mappings" %}</a></p>{% endif %}
+    <p class="text-sm text-base-500">{% translate "Rows are matched on the old ID, otherwise on number or email address, as set in the table mappings. Rows left out by a mapping are not counted." %}</p>
 {% endif %}
 {% endblock %}
