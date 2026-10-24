@@ -1,4 +1,5 @@
-"""Admin sidebar. Sections can be reordered per user (dashboard → Customise); Configuration is last by default."""
+"""Admin sidebar. Every section can be collapsed; sections can be reordered per user (dashboard → Customise);
+Configuration is last by default."""
 
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -6,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 SECTIONS = [
     {
         "key": "overview",
+        "collapsible": True,
         "title": _("Overview"),
         "items": [
             {"title": _("Dashboard"), "icon": "dashboard", "link": reverse_lazy("admin:index")},
@@ -19,6 +21,7 @@ SECTIONS = [
     },
     {
         "key": "configuration",
+        "collapsible": True,
         "title": _("Configuration"),
         "items": [
             {
@@ -50,6 +53,7 @@ SECTIONS = [
     },
     {
         "key": "customers",
+        "collapsible": True,
         "title": _("Customers"),
         "items": [
             {
@@ -81,6 +85,7 @@ SECTIONS = [
     },
     {
         "key": "orders",
+        "collapsible": True,
         "title": _("Orders and invoices"),
         "items": [
             {
@@ -111,8 +116,8 @@ SECTIONS = [
     },
     {
         "key": "licences",
-        "title": _("Service packs and licences"),
         "collapsible": True,
+        "title": _("Service packs and licences"),
         "items": [
             {
                 "title": _("Licences"),
@@ -178,6 +183,7 @@ SECTIONS = [
     },
     {
         "key": "faults",
+        "collapsible": True,
         "title": _("Fault reports"),
         "items": [
             {
@@ -203,6 +209,7 @@ SECTIONS = [
     },
     {
         "key": "users",
+        "collapsible": True,
         "title": _("Users"),
         "items": [
             {
