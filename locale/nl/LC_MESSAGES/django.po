@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 10:01+0200\n"
+"POT-Creation-Date: 2026-10-24 16:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgid "Superuser"
 msgstr "Superuser"
 
 #: apps/accounts/forms.py:9 apps/accounts/forms.py:21
-#: apps/customers/forms.py:50
+#: apps/core/setup_views.py:47 apps/customers/forms.py:50
 msgid "Email address"
 msgstr "E-mailadres"
 
@@ -89,7 +89,7 @@ msgstr "soort"
 msgid "email address"
 msgstr "e-mailadres"
 
-#: apps/accounts/models.py:33 apps/siteconfig/models.py:39
+#: apps/accounts/models.py:33 apps/siteconfig/models.py:43
 msgid "admin language"
 msgstr "beheertaal"
 
@@ -140,6 +140,117 @@ msgstr "Onderdeel"
 #: apps/accounts/templates/accounts/permission_matrix.html:8
 msgid "Other"
 msgstr "Overig"
+
+#: apps/core/middleware.py:39
+msgid "Confirm that a backup has been made."
+msgstr "Bevestig dat er een back-up is gemaakt."
+
+#: apps/core/middleware.py:41 apps/core/setup_views.py:42
+msgid "The installation code is not correct."
+msgstr "De installatiecode klopt niet."
+
+#: apps/core/middleware.py:47
+msgid ""
+"The update failed. The details are in the log (docker compose logs web)."
+msgstr "Het bijwerken is mislukt. De details staan in het logboek (docker compose logs web)."
+
+#: apps/core/setup_views.py:28 apps/core/setup_views.py:38
+#: templates/setup/update.html:12
+#| msgid "Postal code"
+msgid "Installation code"
+msgstr "Installatiecode"
+
+#: apps/core/setup_views.py:29
+msgid "Administrator"
+msgstr "Beheerder"
+
+#: apps/core/setup_views.py:30 templates/setup/wizard.html:17
+#| msgid "Invoice settings"
+msgid "Basic settings"
+msgstr "Basisinstellingen"
+
+#: apps/core/setup_views.py:31 templates/setup/wizard.html:21
+#| msgid "Number"
+msgid "Numbering"
+msgstr "Nummering"
+
+#: apps/core/setup_views.py:32
+#| msgid "Due date"
+msgid "Demo data"
+msgstr "Demogegevens"
+
+#: apps/core/setup_views.py:48 apps/customers/forms.py:45
+#: apps/legacy/parts.py:125 apps/legacy/parts.py:134
+msgid "First name"
+msgstr "Voornaam"
+
+#: apps/core/setup_views.py:49 apps/customers/forms.py:46
+#: apps/legacy/parts.py:125 apps/legacy/parts.py:134
+msgid "Last name"
+msgstr "Achternaam"
+
+#: apps/core/setup_views.py:50 apps/customers/forms.py:51
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: apps/core/setup_views.py:51
+#| msgid "Password changed"
+msgid "Password again"
+msgstr "Wachtwoord nogmaals"
+
+#: apps/core/setup_views.py:56
+#| msgid "Email address already in use: %(list)s"
+msgid "This email address is already in use."
+msgstr "Dit e-mailadres is al in gebruik."
+
+#: apps/core/setup_views.py:62
+#| msgid "The passwords do not match."
+msgid "The passwords are not the same."
+msgstr "De wachtwoorden zijn niet gelijk."
+
+#: apps/core/setup_views.py:74 apps/siteconfig/admin.py:15
+msgid "Available languages"
+msgstr "Beschikbare talen"
+
+#: apps/core/setup_views.py:76
+#| msgid "Send again to customer"
+msgid "Send a test email to me"
+msgstr "Stuur mij een testmail"
+
+#: apps/core/setup_views.py:81
+#| msgid "Company name"
+msgid "Company or shop name"
+msgstr "Naam van bedrijf of shop"
+
+#: apps/core/setup_views.py:81
+#| msgid "email address"
+msgid "General email address"
+msgstr "Algemeen e-mailadres"
+
+#: apps/core/setup_views.py:91 apps/siteconfig/admin.py:34
+msgid "The default language must be one of the available languages."
+msgstr "De standaardtaal moet een van de beschikbare talen zijn."
+
+#: apps/core/setup_views.py:103
+#, python-format
+msgid "Next: %(example)s"
+msgstr "Volgende: %(example)s"
+
+#: apps/core/setup_views.py:113
+msgid "Fill in a small demo catalogue with test licences"
+msgstr "Een kleine democatalogus met testlicenties toevoegen"
+
+#: apps/core/setup_views.py:182
+msgid "Test email from PackDesk"
+msgstr "Testmail van PackDesk"
+
+#: apps/core/setup_views.py:182
+msgid "Sending email works."
+msgstr "Het versturen van e-mail werkt."
+
+#: apps/core/setup_views.py:204
+msgid "PackDesk is ready. Everything can be changed later in the admin."
+msgstr "PackDesk is klaar. Alles is later in het beheer aan te passen."
 
 #: apps/customers/admin.py:42
 msgid "Login"
@@ -329,13 +440,13 @@ msgstr "Telefoon"
 
 #: apps/customers/forms.py:33 apps/customers/models.py:65
 #: apps/customers/models.py:271 apps/legacy/parts.py:111
-#: apps/siteconfig/models.py:112 templates/customers/my_details.html:11
+#: apps/siteconfig/models.py:116 templates/customers/my_details.html:11
 msgid "VAT number"
 msgstr "btw-nummer"
 
 #: apps/customers/forms.py:34 apps/customers/models.py:66
 #: apps/customers/models.py:273 apps/legacy/parts.py:111
-#: apps/siteconfig/models.py:111
+#: apps/siteconfig/models.py:115
 msgid "Chamber of Commerce number"
 msgstr "KvK-nummer"
 
@@ -370,14 +481,6 @@ msgstr "Aanhef"
 msgid "Initials"
 msgstr "Voorletters"
 
-#: apps/customers/forms.py:45 apps/legacy/parts.py:125 apps/legacy/parts.py:134
-msgid "First name"
-msgstr "Voornaam"
-
-#: apps/customers/forms.py:46 apps/legacy/parts.py:125 apps/legacy/parts.py:134
-msgid "Last name"
-msgstr "Achternaam"
-
 #: apps/customers/forms.py:47
 msgid "Job title"
 msgstr "Functie"
@@ -393,10 +496,6 @@ msgstr "Direct telefoonnummer"
 #: apps/customers/forms.py:50
 msgid "This is also your login."
 msgstr "Dit is ook uw login."
-
-#: apps/customers/forms.py:51
-msgid "Password"
-msgstr "Wachtwoord"
 
 #: apps/customers/forms.py:52
 msgid "Repeat password"
@@ -428,11 +527,11 @@ msgid "The passwords do not match."
 msgstr "De wachtwoorden komen niet overeen."
 
 #: apps/customers/models.py:14 apps/customers/models.py:31
-#: apps/faults/models.py:21 apps/faults/models.py:141 apps/legacy/models.py:16
+#: apps/faults/models.py:14 apps/faults/models.py:134 apps/legacy/models.py:16
 #: apps/licences/models.py:32 apps/licences/models.py:57
 #: apps/licences/models.py:71 apps/licences/models.py:112
 #: apps/numbering/models.py:18 apps/siteconfig/models.py:24
-#: apps/siteconfig/models.py:187
+#: apps/siteconfig/models.py:191
 msgid "name"
 msgstr "naam"
 
@@ -441,10 +540,10 @@ msgid "is reseller"
 msgstr "is reseller"
 
 #: apps/customers/models.py:16 apps/customers/models.py:36
-#: apps/faults/models.py:22 apps/invoices/models.py:62
+#: apps/faults/models.py:15 apps/invoices/models.py:62
 #: apps/licences/models.py:43 apps/licences/models.py:59
-#: apps/orders/models.py:84 apps/siteconfig/models.py:203
-#: apps/siteconfig/models.py:256 apps/siteconfig/models.py:280
+#: apps/orders/models.py:84 apps/siteconfig/models.py:207
+#: apps/siteconfig/models.py:260 apps/siteconfig/models.py:284
 msgid "order"
 msgstr "volgorde"
 
@@ -473,13 +572,13 @@ msgstr "btw-nummer verplicht"
 msgid "E.g. for customers outside your own country."
 msgstr "Bijv. voor klanten buiten uw eigen land."
 
-#: apps/customers/models.py:35 apps/faults/models.py:23
-#: apps/siteconfig/models.py:255 apps/siteconfig/models.py:279
+#: apps/customers/models.py:35 apps/faults/models.py:16
+#: apps/siteconfig/models.py:259 apps/siteconfig/models.py:283
 msgid "active"
 msgstr "actief"
 
 #: apps/customers/models.py:39 apps/customers/models.py:163
-#: apps/invoices/models.py:76 apps/siteconfig/models.py:192
+#: apps/invoices/models.py:76 apps/siteconfig/models.py:196
 msgid "country"
 msgstr "land"
 
@@ -510,13 +609,13 @@ msgstr "Debiteurnummer. Wordt bij goedkeuring automatisch ingevuld als het leeg 
 msgid "company name"
 msgstr "bedrijfsnaam"
 
-#: apps/customers/models.py:63 apps/faults/models.py:79
+#: apps/customers/models.py:63 apps/faults/models.py:72
 msgid "status"
 msgstr "status"
 
 #: apps/customers/models.py:67 apps/customers/models.py:201
-#: apps/customers/models.py:270 apps/faults/models.py:106
-#: apps/siteconfig/models.py:108 apps/siteconfig/models.py:193
+#: apps/customers/models.py:270 apps/faults/models.py:99
+#: apps/siteconfig/models.py:112 apps/siteconfig/models.py:197
 msgid "phone"
 msgstr "telefoon"
 
@@ -525,7 +624,7 @@ msgid "general email"
 msgstr "algemeen e-mailadres"
 
 #: apps/customers/models.py:69 apps/customers/models.py:274
-#: apps/siteconfig/models.py:110 apps/siteconfig/models.py:196
+#: apps/siteconfig/models.py:114 apps/siteconfig/models.py:200
 msgid "website"
 msgstr "website"
 
@@ -565,7 +664,7 @@ msgstr "geen factuur voor servicepacks"
 msgid "Service pack orders of this customer are not invoiced."
 msgstr "Servicepackbestellingen van deze klant worden niet gefactureerd."
 
-#: apps/customers/models.py:80 apps/siteconfig/models.py:47
+#: apps/customers/models.py:80 apps/siteconfig/models.py:51
 msgid "logo"
 msgstr "logo"
 
@@ -600,11 +699,11 @@ msgid "created"
 msgstr "aangemaakt"
 
 #: apps/customers/models.py:94 apps/legacy/models.py:29
-#: apps/siteconfig/models.py:115
+#: apps/siteconfig/models.py:119
 msgid "updated"
 msgstr "bijgewerkt"
 
-#: apps/customers/models.py:97 apps/faults/models.py:83
+#: apps/customers/models.py:97 apps/faults/models.py:76
 #: apps/invoices/models.py:60 apps/licences/models.py:249
 #: apps/orders/models.py:59
 msgid "customer"
@@ -638,24 +737,24 @@ msgstr "Afleveradres"
 msgid "attention of"
 msgstr "ter attentie van"
 
-#: apps/customers/models.py:159 apps/faults/models.py:103
-#: apps/invoices/models.py:72 apps/siteconfig/models.py:188
-#: apps/siteconfig/models.py:206
+#: apps/customers/models.py:159 apps/faults/models.py:96
+#: apps/invoices/models.py:72 apps/siteconfig/models.py:192
+#: apps/siteconfig/models.py:210
 msgid "address"
 msgstr "adres"
 
 #: apps/customers/models.py:160 apps/customers/models.py:279
-#: apps/invoices/models.py:73 apps/siteconfig/models.py:189
+#: apps/invoices/models.py:73 apps/siteconfig/models.py:193
 msgid "address line 2"
 msgstr "adresregel 2"
 
-#: apps/customers/models.py:161 apps/faults/models.py:104
-#: apps/invoices/models.py:74 apps/siteconfig/models.py:190
+#: apps/customers/models.py:161 apps/faults/models.py:97
+#: apps/invoices/models.py:74 apps/siteconfig/models.py:194
 msgid "postal code"
 msgstr "postcode"
 
-#: apps/customers/models.py:162 apps/faults/models.py:105
-#: apps/invoices/models.py:75 apps/siteconfig/models.py:191
+#: apps/customers/models.py:162 apps/faults/models.py:98
+#: apps/invoices/models.py:75 apps/siteconfig/models.py:195
 msgid "city"
 msgstr "plaats"
 
@@ -703,8 +802,8 @@ msgstr "functie"
 msgid "department"
 msgstr "afdeling"
 
-#: apps/customers/models.py:202 apps/faults/models.py:107
-#: apps/siteconfig/models.py:109 apps/siteconfig/models.py:194
+#: apps/customers/models.py:202 apps/faults/models.py:100
+#: apps/siteconfig/models.py:113 apps/siteconfig/models.py:198
 msgid "email"
 msgstr "e-mail"
 
@@ -748,7 +847,7 @@ msgstr "standaardmarge onderdelen (%)"
 msgid "sign-up form active"
 msgstr "aanmeldformulier actief"
 
-#: apps/customers/models.py:250 apps/siteconfig/models.py:253
+#: apps/customers/models.py:250 apps/siteconfig/models.py:257
 msgid "link text"
 msgstr "linktekst"
 
@@ -756,16 +855,16 @@ msgstr "linktekst"
 msgid "Text of the link to the form on the login page."
 msgstr "Tekst van de link naar het formulier op de inlogpagina."
 
-#: apps/customers/models.py:252 apps/siteconfig/models.py:250
+#: apps/customers/models.py:252 apps/siteconfig/models.py:254
 msgid "title"
 msgstr "titel"
 
-#: apps/customers/models.py:253 apps/faults/models.py:38
-#: apps/siteconfig/models.py:65
+#: apps/customers/models.py:253 apps/faults/models.py:31
+#: apps/siteconfig/models.py:69
 msgid "introduction"
 msgstr "introductie"
 
-#: apps/customers/models.py:254 apps/faults/models.py:42
+#: apps/customers/models.py:254 apps/faults/models.py:35
 msgid "text after sending"
 msgstr "tekst na verzenden"
 
@@ -848,7 +947,7 @@ msgstr "Dit bestand is geen klantexport van PackDesk."
 msgid "This export was made by a newer PackDesk version."
 msgstr "Deze export is gemaakt met een nieuwere versie van PackDesk."
 
-#: apps/customers/transfer.py:355 apps/siteconfig/models.py:207
+#: apps/customers/transfer.py:355 apps/siteconfig/models.py:211
 msgid "addresses"
 msgstr "adressen"
 
@@ -864,12 +963,12 @@ msgstr "orderregels"
 msgid "licences"
 msgstr "licenties"
 
-#: apps/customers/transfer.py:357 apps/faults/models.py:123
+#: apps/customers/transfer.py:357 apps/faults/models.py:116
 msgid "fault reports"
 msgstr "storingsmeldingen"
 
 #: apps/customers/transfer.py:357 apps/invoices/models.py:95
-#: apps/siteconfig/models.py:197
+#: apps/siteconfig/models.py:201
 msgid "invoices"
 msgstr "facturen"
 
@@ -996,7 +1095,7 @@ msgid "Configuration"
 msgstr "Configuratie"
 
 #: apps/dashboard/navigation.py:28 apps/siteconfig/apps.py:7
-#: apps/siteconfig/models.py:122
+#: apps/siteconfig/models.py:126
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -1103,12 +1202,11 @@ msgstr "Storingsmeldingen"
 msgid "Handling options"
 msgstr "Afhandelopties"
 
-#: apps/dashboard/navigation.py:209 apps/faults/models.py:60
+#: apps/dashboard/navigation.py:209 apps/faults/models.py:53
 msgid "Fault report settings"
 msgstr "Storingsinstellingen"
 
 #: apps/dashboard/navigation.py:219
-#| msgid "Orders and invoices"
 msgid "Users and roles"
 msgstr "Gebruikers en rollen"
 
@@ -1272,200 +1370,200 @@ msgstr "Licentie- of serienummer"
 msgid "Optional. We fill in the device and check whether it is covered."
 msgstr "Optioneel. Wij vullen het apparaat in en controleren of het gedekt is."
 
-#: apps/faults/models.py:26
+#: apps/faults/models.py:19
 msgid "handling option"
 msgstr "afhandeloptie"
 
-#: apps/faults/models.py:27
+#: apps/faults/models.py:20
 msgid "handling options"
 msgstr "afhandelopties"
 
-#: apps/faults/models.py:37
+#: apps/faults/models.py:30
 msgid "fault report form active"
 msgstr "storingsformulier actief"
 
-#: apps/faults/models.py:40
+#: apps/faults/models.py:33
 msgid "text about reporting by phone"
 msgstr "tekst over telefonisch melden"
 
-#: apps/faults/models.py:40
+#: apps/faults/models.py:33
 msgid "E.g. outside office hours call ..."
 msgstr "Bijv. buiten kantoortijden belt u ..."
 
-#: apps/faults/models.py:44
+#: apps/faults/models.py:37
 msgid "send reports to"
 msgstr "meldingen sturen naar"
 
-#: apps/faults/models.py:45
+#: apps/faults/models.py:38
 msgid ""
 "Email addresses separated by commas. Empty = the general email address from "
 "the settings."
 msgstr "E-mailadressen gescheiden door komma's. Leeg = het algemene e-mailadres uit de instellingen."
 
-#: apps/faults/models.py:47
+#: apps/faults/models.py:40
 msgid "copy to"
 msgstr "kopie naar"
 
-#: apps/faults/models.py:47 apps/licences/models.py:206
+#: apps/faults/models.py:40 apps/licences/models.py:206
 #: apps/orders/models.py:34
 msgid "Email addresses separated by commas."
 msgstr "E-mailadressen gescheiden door komma's."
 
-#: apps/faults/models.py:48
+#: apps/faults/models.py:41
 msgid "subject of confirmation"
 msgstr "onderwerp bevestiging"
 
-#: apps/faults/models.py:50
+#: apps/faults/models.py:43
 msgid "text of confirmation"
 msgstr "tekst bevestiging"
 
-#: apps/faults/models.py:50
+#: apps/faults/models.py:43
 #, python-brace-format
 msgid "Placeholders: {number}, {name}, {company}."
 msgstr "Invulvelden: {number}, {name}, {company}."
 
-#: apps/faults/models.py:52
+#: apps/faults/models.py:45
 msgid "max. size of attachments (MB, total)"
 msgstr "max. grootte bijlagen (MB, totaal)"
 
-#: apps/faults/models.py:53
+#: apps/faults/models.py:46
 msgid "max. number of attachments"
 msgstr "max. aantal bijlagen"
 
-#: apps/faults/models.py:56 apps/faults/models.py:57
+#: apps/faults/models.py:49 apps/faults/models.py:50
 msgid "fault report settings"
 msgstr "storingsinstellingen"
 
-#: apps/faults/models.py:74
+#: apps/faults/models.py:67
 msgid "New"
 msgstr "Nieuw"
 
-#: apps/faults/models.py:75
+#: apps/faults/models.py:68
 msgid "In progress"
 msgstr "In behandeling"
 
-#: apps/faults/models.py:76
+#: apps/faults/models.py:69
 msgid "Closed"
 msgstr "Afgesloten"
 
-#: apps/faults/models.py:78
+#: apps/faults/models.py:71
 msgid "number"
 msgstr "nummer"
 
-#: apps/faults/models.py:80
+#: apps/faults/models.py:73
 msgid "reported at"
 msgstr "gemeld op"
 
-#: apps/faults/models.py:85
+#: apps/faults/models.py:78
 msgid "reported by"
 msgstr "gemeld door"
 
-#: apps/faults/models.py:87 apps/licences/models.py:280
+#: apps/faults/models.py:80 apps/licences/models.py:280
 #: templates/faults/email_report.txt:2
 msgid "licence"
 msgstr "licentie"
 
-#: apps/faults/models.py:88
+#: apps/faults/models.py:81
 msgid "covered until"
 msgstr "gedekt t/m"
 
-#: apps/faults/models.py:89
+#: apps/faults/models.py:82
 msgid ""
 "End date of the licence at the time of reporting; empty = no cover found."
 msgstr "Einddatum van de licentie op het moment van melden; leeg = geen dekking gevonden."
 
-#: apps/faults/models.py:92 apps/licences/models.py:82
+#: apps/faults/models.py:85 apps/licences/models.py:82
 #: apps/licences/models.py:93 apps/licences/models.py:261
 #: apps/licences/models.py:357
 msgid "brand"
 msgstr "merk"
 
-#: apps/faults/models.py:93
+#: apps/faults/models.py:86
 msgid "device"
 msgstr "apparaat"
 
-#: apps/faults/models.py:94 apps/licences/models.py:265
+#: apps/faults/models.py:87 apps/licences/models.py:265
 #: apps/licences/models.py:360 templates/licences/email_certificate.txt:24
 msgid "serial number"
 msgstr "serienummer"
 
-#: apps/faults/models.py:95
+#: apps/faults/models.py:88
 msgid "operating system"
 msgstr "besturingssysteem"
 
-#: apps/faults/models.py:96
+#: apps/faults/models.py:89
 msgid "description of the fault"
 msgstr "omschrijving van de storing"
 
-#: apps/faults/models.py:98
+#: apps/faults/models.py:91
 msgid "desired handling"
 msgstr "gewenste afhandeling"
 
-#: apps/faults/models.py:99 apps/invoices/models.py:65 apps/orders/models.py:63
+#: apps/faults/models.py:92 apps/invoices/models.py:65 apps/orders/models.py:63
 msgid "your reference"
 msgstr "uw referentie"
 
-#: apps/faults/models.py:102
+#: apps/faults/models.py:95
 msgid "company"
 msgstr "bedrijf"
 
-#: apps/faults/models.py:110
+#: apps/faults/models.py:103
 msgid "company at location"
 msgstr "bedrijf op locatie"
 
-#: apps/faults/models.py:111
+#: apps/faults/models.py:104
 msgid "contact person at location"
 msgstr "contactpersoon op locatie"
 
-#: apps/faults/models.py:112
+#: apps/faults/models.py:105
 msgid "address of location"
 msgstr "adres locatie"
 
-#: apps/faults/models.py:113
+#: apps/faults/models.py:106
 msgid "postal code of location"
 msgstr "postcode locatie"
 
-#: apps/faults/models.py:114
+#: apps/faults/models.py:107
 msgid "city of location"
 msgstr "plaats locatie"
 
-#: apps/faults/models.py:115
+#: apps/faults/models.py:108
 msgid "country of location"
 msgstr "land locatie"
 
-#: apps/faults/models.py:116
+#: apps/faults/models.py:109
 msgid "phone at location"
 msgstr "telefoon op locatie"
 
-#: apps/faults/models.py:117
+#: apps/faults/models.py:110
 msgid "email at location"
 msgstr "e-mail op locatie"
 
-#: apps/faults/models.py:117
+#: apps/faults/models.py:110
 msgid "The confirmation is sent here."
 msgstr "De bevestiging wordt hierheen gestuurd."
 
-#: apps/faults/models.py:119
+#: apps/faults/models.py:112
 msgid "internal notes"
 msgstr "interne notities"
 
-#: apps/faults/models.py:122
+#: apps/faults/models.py:115
 msgid "fault report"
 msgstr "storingsmelding"
 
-#: apps/faults/models.py:140
+#: apps/faults/models.py:133
 msgid "file"
 msgstr "bestand"
 
-#: apps/faults/models.py:142
+#: apps/faults/models.py:135
 msgid "size"
 msgstr "grootte"
 
-#: apps/faults/models.py:145
+#: apps/faults/models.py:138
 msgid "attachment"
 msgstr "bijlage"
 
-#: apps/faults/models.py:146
+#: apps/faults/models.py:139
 msgid "attachments"
 msgstr "bijlagen"
 
@@ -1564,7 +1662,7 @@ msgstr "mededeling op factuur"
 msgid "Highlighted text, e.g. a changed bank account."
 msgstr "Opvallende tekst, bijv. een gewijzigd rekeningnummer."
 
-#: apps/invoices/models.py:27 apps/siteconfig/models.py:80
+#: apps/invoices/models.py:27 apps/siteconfig/models.py:84
 msgid "footer text"
 msgstr "voettekst"
 
@@ -1795,22 +1893,18 @@ msgid ""
 msgstr "%(n)s koppeling(en) voor de vorige webshop toegevoegd. Bestaande koppelingen zijn behouden."
 
 #: apps/legacy/admin.py:111 apps/legacy/models.py:107
-#| msgid "Packs sold"
 msgid "PackDesk field"
 msgstr "PackDesk-veld"
 
 #: apps/legacy/admin.py:121
-#| msgid "Field"
 msgid "field"
 msgstr "veld"
 
 #: apps/legacy/admin.py:122
-#| msgid "Field"
 msgid "fields"
 msgstr "velden"
 
 #: apps/legacy/admin.py:147
-#| msgid "external database"
 msgid "Source in the external database"
 msgstr "Bron in de externe database"
 
@@ -1819,12 +1913,10 @@ msgid "PackDesk part"
 msgstr "PackDesk-onderdeel"
 
 #: apps/legacy/admin.py:160
-#| msgid "Field"
 msgid "Fields"
 msgstr "Velden"
 
 #: apps/legacy/admin.py:179
-#| msgid "Sales and margin"
 msgid "Tables and columns"
 msgstr "Tabellen en kolommen"
 
@@ -1953,7 +2045,6 @@ msgid "used"
 msgstr "gebruiken"
 
 #: apps/legacy/models.py:71
-#| msgid "selectable"
 msgid "table"
 msgstr "tabel"
 
@@ -2005,7 +2096,6 @@ msgid "Only one SELECT query is allowed."
 msgstr "Alleen één SELECT-query is toegestaan."
 
 #: apps/legacy/models.py:108
-#| msgid "external database"
 msgid "column in external database"
 msgstr "kolom in externe database"
 
@@ -2084,7 +2174,6 @@ msgid "Discount (%)"
 msgstr "Korting (%)"
 
 #: apps/legacy/parts.py:141 apps/legacy/parts.py:175
-#| msgid "Totals"
 msgid "Total"
 msgstr "Totaal"
 
@@ -2094,7 +2183,6 @@ msgid "Licence number"
 msgstr "Licentienummer"
 
 #: apps/legacy/parts.py:149
-#| msgid "Licence number or serial number"
 msgid "Licence number without letters"
 msgstr "Licentienummer zonder letters"
 
@@ -2159,7 +2247,6 @@ msgid "Matched on licence, serial number and article number."
 msgstr "Gekoppeld op licentie, serienummer en artikelnummer."
 
 #: apps/legacy/parts.py:164
-#| msgid "Order (old ID)"
 msgid "Licence (old ID)"
 msgstr "Licentie (oud ID)"
 
@@ -2181,7 +2268,6 @@ msgid "Paid on"
 msgstr "Betaald op"
 
 #: apps/legacy/parts.py:176
-#| msgid "customer name"
 msgid "Customer name"
 msgstr "Klantnaam"
 
@@ -2207,7 +2293,6 @@ msgid "No connection with %(name)s: %(error)s"
 msgstr "Geen verbinding met %(name)s: %(error)s"
 
 #: apps/legacy/views.py:90 templates/legacy/mapping_help.html:10
-#| msgid "Order (old ID)"
 msgid "Old ID"
 msgstr "Oud ID"
 
@@ -3159,17 +3244,9 @@ msgstr "verlengt licentie"
 msgid "The order has expired or changed. Please check it again."
 msgstr "De bestelling is verlopen of gewijzigd. Controleer haar opnieuw."
 
-#: apps/siteconfig/admin.py:15
-msgid "Available languages"
-msgstr "Beschikbare talen"
-
 #: apps/siteconfig/admin.py:18 apps/siteconfig/models.py:36
 msgid "Languages visitors can choose from."
 msgstr "Talen waaruit bezoekers kunnen kiezen."
-
-#: apps/siteconfig/admin.py:34
-msgid "The default language must be one of the available languages."
-msgstr "De standaardtaal moet een van de beschikbare talen zijn."
 
 #: apps/siteconfig/admin.py:53
 #, python-format
@@ -3235,251 +3312,259 @@ msgstr "Taal voor bezoekers die zelf nog geen taal hebben gekozen."
 msgid "available languages"
 msgstr "beschikbare talen"
 
-#: apps/siteconfig/models.py:43
+#: apps/siteconfig/models.py:39
+msgid "installation finished"
+msgstr "installatie afgerond"
+
+#: apps/siteconfig/models.py:40
+msgid "Set by the installation wizard."
+msgstr "Wordt ingesteld door de installatiewizard."
+
+#: apps/siteconfig/models.py:47
 msgid ""
 "Language of the admin. Each staff user can choose another one under the "
 "account menu."
 msgstr "Taal van het beheer. Elke medewerker kan onder het accountmenu een andere kiezen."
 
-#: apps/siteconfig/models.py:48
+#: apps/siteconfig/models.py:52
 msgid "favicon"
 msgstr "favicon"
 
-#: apps/siteconfig/models.py:49
+#: apps/siteconfig/models.py:53
 msgid "primary colour"
 msgstr "hoofdkleur"
 
-#: apps/siteconfig/models.py:50
+#: apps/siteconfig/models.py:54
 msgid "accent colour"
 msgstr "accentkleur"
 
-#: apps/siteconfig/models.py:52
+#: apps/siteconfig/models.py:56
 msgid "default appearance"
 msgstr "standaardweergave"
 
-#: apps/siteconfig/models.py:56
+#: apps/siteconfig/models.py:60
 msgid "Light or dark appearance for visitors who have not chosen one."
 msgstr "Lichte of donkere weergave voor bezoekers die zelf nog niets hebben gekozen."
 
-#: apps/siteconfig/models.py:59
+#: apps/siteconfig/models.py:63
 msgid "visitors can choose appearance"
 msgstr "bezoekers kunnen weergave kiezen"
 
-#: apps/siteconfig/models.py:61
+#: apps/siteconfig/models.py:65
 msgid "Shows a light/dark switch in the header."
 msgstr "Toont een keuze voor licht/donker in de kopregel."
 
-#: apps/siteconfig/models.py:63
+#: apps/siteconfig/models.py:67
 msgid "tagline"
 msgstr "slogan"
 
-#: apps/siteconfig/models.py:67
+#: apps/siteconfig/models.py:71
 msgid "Short text on the home page under the tagline."
 msgstr "Korte tekst op de homepage onder de slogan."
 
-#: apps/siteconfig/models.py:71
+#: apps/siteconfig/models.py:75
 msgid "description for search engines"
 msgstr "omschrijving voor zoekmachines"
 
-#: apps/siteconfig/models.py:72
+#: apps/siteconfig/models.py:76
 msgid "Shown by Google and others under the page title."
 msgstr "Wordt door Google e.a. onder de paginatitel getoond."
 
-#: apps/siteconfig/models.py:75
+#: apps/siteconfig/models.py:79
 msgid "button text on home page"
 msgstr "knoptekst op homepage"
 
-#: apps/siteconfig/models.py:76
+#: apps/siteconfig/models.py:80
 msgid "Leave empty for the standard text (Log in / Go to my account)."
 msgstr "Leeg laten voor de standaardtekst (Inloggen / Naar mijn omgeving)."
 
-#: apps/siteconfig/models.py:80
+#: apps/siteconfig/models.py:84
 msgid "Extra text at the bottom of every page."
 msgstr "Extra tekst onderaan elke pagina."
 
-#: apps/siteconfig/models.py:81
+#: apps/siteconfig/models.py:85
 msgid "show address"
 msgstr "adres tonen"
 
-#: apps/siteconfig/models.py:82
+#: apps/siteconfig/models.py:86
 msgid "show phone"
 msgstr "telefoon tonen"
 
-#: apps/siteconfig/models.py:83
+#: apps/siteconfig/models.py:87
 msgid "show email"
 msgstr "e-mail tonen"
 
-#: apps/siteconfig/models.py:84
+#: apps/siteconfig/models.py:88
 msgid "show Chamber of Commerce number"
 msgstr "KvK-nummer tonen"
 
-#: apps/siteconfig/models.py:85
+#: apps/siteconfig/models.py:89
 msgid "show VAT number"
 msgstr "btw-nummer tonen"
 
-#: apps/siteconfig/models.py:89
+#: apps/siteconfig/models.py:93
 msgid "maintenance mode"
 msgstr "onderhoudsmodus"
 
-#: apps/siteconfig/models.py:90
+#: apps/siteconfig/models.py:94
 msgid ""
 "Visitors see the maintenance message and cannot log in. Staff can still use "
 "the admin."
 msgstr "Bezoekers zien de onderhoudsmelding en kunnen niet inloggen. Medewerkers kunnen het beheer blijven gebruiken."
 
-#: apps/siteconfig/models.py:92
+#: apps/siteconfig/models.py:96
 msgid "maintenance message"
 msgstr "onderhoudsmelding"
 
-#: apps/siteconfig/models.py:94
+#: apps/siteconfig/models.py:98
 msgid "expected back"
 msgstr "verwacht terug"
 
-#: apps/siteconfig/models.py:94
+#: apps/siteconfig/models.py:98
 msgid "Optional; shown in the maintenance message."
 msgstr "Optioneel; wordt in de onderhoudsmelding getoond."
 
-#: apps/siteconfig/models.py:96
+#: apps/siteconfig/models.py:100
 msgid "show announcement"
 msgstr "melding tonen"
 
-#: apps/siteconfig/models.py:98
+#: apps/siteconfig/models.py:102
 msgid "announcement"
 msgstr "melding"
 
-#: apps/siteconfig/models.py:99
+#: apps/siteconfig/models.py:103
 msgid "Bar at the top of every page, e.g. to announce maintenance."
 msgstr "Balk bovenaan elke pagina, bijv. om onderhoud aan te kondigen."
 
-#: apps/siteconfig/models.py:102
+#: apps/siteconfig/models.py:106
 msgid "announcement colour"
 msgstr "kleur melding"
 
-#: apps/siteconfig/models.py:103
+#: apps/siteconfig/models.py:107
 msgid "Information"
 msgstr "Informatie"
 
-#: apps/siteconfig/models.py:103
+#: apps/siteconfig/models.py:107
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: apps/siteconfig/models.py:103
+#: apps/siteconfig/models.py:107
 msgid "Positive"
 msgstr "Positief"
 
-#: apps/siteconfig/models.py:107
+#: apps/siteconfig/models.py:111
 msgid "legal name"
 msgstr "statutaire naam"
 
-#: apps/siteconfig/models.py:113
+#: apps/siteconfig/models.py:117
 msgid "IBAN"
 msgstr "IBAN"
 
-#: apps/siteconfig/models.py:118 apps/siteconfig/models.py:119
+#: apps/siteconfig/models.py:122 apps/siteconfig/models.py:123
 msgid "settings"
 msgstr "instellingen"
 
-#: apps/siteconfig/models.py:187
+#: apps/siteconfig/models.py:191
 msgid "For yourself, e.g. visiting address or postal address."
 msgstr "Voor uzelf, bijv. bezoekadres of postadres."
 
-#: apps/siteconfig/models.py:193
+#: apps/siteconfig/models.py:197
 msgid "Leave empty to use the general phone number."
 msgstr "Leeg laten om het algemene telefoonnummer te gebruiken."
 
-#: apps/siteconfig/models.py:194
+#: apps/siteconfig/models.py:198
 msgid "Leave empty to use the general email address."
 msgstr "Leeg laten om het algemene e-mailadres te gebruiken."
 
-#: apps/siteconfig/models.py:198
+#: apps/siteconfig/models.py:202
 msgid "quotes"
 msgstr "offertes"
 
-#: apps/siteconfig/models.py:199
+#: apps/siteconfig/models.py:203
 msgid "order confirmations"
 msgstr "orderbevestigingen"
 
-#: apps/siteconfig/models.py:200
+#: apps/siteconfig/models.py:204
 msgid "emails"
 msgstr "e-mails"
 
-#: apps/siteconfig/models.py:201
+#: apps/siteconfig/models.py:205
 msgid "sender on labels"
 msgstr "afzender op labels"
 
-#: apps/siteconfig/models.py:223
+#: apps/siteconfig/models.py:227
 msgid "not used yet"
 msgstr "nog nergens gebruikt"
 
-#: apps/siteconfig/models.py:234
+#: apps/siteconfig/models.py:238
 msgid "Everyone"
 msgstr "Iedereen"
 
-#: apps/siteconfig/models.py:235
+#: apps/siteconfig/models.py:239
 msgid "Only when not logged in"
 msgstr "Alleen als niet ingelogd"
 
-#: apps/siteconfig/models.py:236
+#: apps/siteconfig/models.py:240
 msgid "Only when logged in"
 msgstr "Alleen als ingelogd"
 
-#: apps/siteconfig/models.py:241
+#: apps/siteconfig/models.py:245
 msgid "not active"
 msgstr "niet actief"
 
-#: apps/siteconfig/models.py:249
+#: apps/siteconfig/models.py:253
 msgid "icon"
 msgstr "pictogram"
 
-#: apps/siteconfig/models.py:249
+#: apps/siteconfig/models.py:253
 msgid "A symbol or emoji, e.g. ✓ or 🛠"
 msgstr "Een symbool of emoji, bijv. ✓ of 🛠"
 
-#: apps/siteconfig/models.py:251 apps/siteconfig/models.py:275
+#: apps/siteconfig/models.py:255 apps/siteconfig/models.py:279
 msgid "text"
 msgstr "tekst"
 
-#: apps/siteconfig/models.py:252 apps/siteconfig/models.py:276
+#: apps/siteconfig/models.py:256 apps/siteconfig/models.py:280
 msgid "link"
 msgstr "link"
 
-#: apps/siteconfig/models.py:252 apps/siteconfig/models.py:276
+#: apps/siteconfig/models.py:256 apps/siteconfig/models.py:280
 msgid "Page address, e.g. /mijn/ or https://…"
 msgstr "Paginaadres, bijv. /mijn/ of https://…"
 
-#: apps/siteconfig/models.py:254 apps/siteconfig/models.py:278
+#: apps/siteconfig/models.py:258 apps/siteconfig/models.py:282
 msgid "visible for"
 msgstr "zichtbaar voor"
 
-#: apps/siteconfig/models.py:259
+#: apps/siteconfig/models.py:263
 msgid "home page block"
 msgstr "homepageblok"
 
-#: apps/siteconfig/models.py:260
+#: apps/siteconfig/models.py:264
 msgid "home page blocks"
 msgstr "homepageblokken"
 
-#: apps/siteconfig/models.py:277
+#: apps/siteconfig/models.py:281
 msgid "open in new tab"
 msgstr "openen in nieuw tabblad"
 
-#: apps/siteconfig/models.py:283
+#: apps/siteconfig/models.py:287
 msgid "menu item"
 msgstr "menu-item"
 
-#: apps/siteconfig/models.py:284
+#: apps/siteconfig/models.py:288
 msgid "menu items"
 msgstr "menu-items"
 
-#: packdesk/settings.py:137
+#: packdesk/settings.py:139
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: packdesk/settings.py:137
+#: packdesk/settings.py:139
 msgid "English"
 msgstr "Engels"
 
-#: packdesk/settings.py:137
+#: packdesk/settings.py:139
 msgid "German"
 msgstr "Duits"
 
@@ -4212,7 +4297,6 @@ msgstr "Kolommen in de bron"
 
 #: templates/legacy/mapping_help.html:6
 #, python-format
-#| msgid "Only in the old database"
 msgid "%(n)s table in this database"
 msgid_plural "%(n)s tables in this database"
 msgstr[0] "Alleen in de oude database"
@@ -4227,7 +4311,6 @@ msgid "No PackDesk parts are linked to tables in this database yet."
 msgstr "Er zijn nog geen PackDesk-onderdelen gekoppeld aan tabellen in deze database."
 
 #: templates/legacy/overview.html:9
-#| msgid "Margin spare parts"
 msgid "Link a part"
 msgstr "Onderdeel koppelen"
 
@@ -4293,9 +4376,6 @@ msgid "Not linked (not compared)"
 msgstr "Niet gekoppeld (niet vergeleken)"
 
 #: templates/legacy/overview.html:50
-#| msgid ""
-#| "Rows are matched on the ID from the old system, otherwise on number or "
-#| "email address. Rows deleted in the previous webshop are not counted."
 msgid ""
 "Rows are matched on the old ID, otherwise on number or email address, as set "
 "in the table mappings. Rows left out by a mapping are not counted."
@@ -4381,6 +4461,7 @@ msgid ""
 msgstr "Dit pack dekt maximaal %(i)s interne en %(e)s externe opties. Laat regels die u niet nodig heeft leeg."
 
 #: templates/licences/options.html:27 templates/licences/step.html:18
+#: templates/setup/wizard.html:31
 msgid "Next"
 msgstr "Volgende"
 
@@ -4579,20 +4660,125 @@ msgstr "Link versturen"
 msgid "New password for %(name)s"
 msgstr "Nieuw wachtwoord voor %(name)s"
 
+#: templates/setup/update.html:3 templates/setup/update.html:6
+#: templates/setup/update.html:17
+#| msgid "Compare databases"
+msgid "Update database"
+msgstr "Database bijwerken"
+
+#: templates/setup/update.html:7
+#, python-format
+msgid ""
+"This version of PackDesk brings %(n)s change to the database. Until it is "
+"applied, the website and the admin are not available."
+msgid_plural ""
+"This version of PackDesk brings %(n)s changes to the database. Until they "
+"are applied, the website and the admin are not available."
+msgstr[0] "Deze versie van PackDesk brengt %(n)s wijziging in de database. Zolang die niet is doorgevoerd, zijn de website en het beheer niet beschikbaar."
+msgstr[1] "Deze versie van PackDesk brengt %(n)s wijzigingen in de database. Zolang die niet zijn doorgevoerd, zijn de website en het beheer niet beschikbaar."
+
+#: templates/setup/update.html:8
+msgid ""
+"Make a backup of the database first (see the installation guide). The update "
+"usually takes less than a minute."
+msgstr "Maak eerst een back-up van de database (zie de installatiehandleiding). Het bijwerken duurt meestal minder dan een minuut."
+
+#: templates/setup/update.html:14
+msgid "The SETUP_CODE from .env."
+msgstr "De SETUP_CODE uit .env."
+
+#: templates/setup/update.html:14
+msgid "Shown in the log of the server: docker compose logs web"
+msgstr "Staat in het logboek van de server: docker compose logs web"
+
+#: templates/setup/update.html:16
+msgid "I have made a backup"
+msgstr "Ik heb een back-up gemaakt"
+
+#: templates/setup/update.html:19
+#| msgid "Change"
+msgid "Changes"
+msgstr "Wijzigingen"
+
+#: templates/setup/wizard.html:3
+#| msgid "salutation"
+msgid "Installation"
+msgstr "Installatie"
+
+#: templates/setup/wizard.html:10
+#| msgid "Compare with PackDesk"
+msgid "Welcome to PackDesk"
+msgstr "Welkom bij PackDesk"
+
+#: templates/setup/wizard.html:11
+msgid ""
+"This installation is new. A few steps set it up; everything can be changed "
+"later in the admin."
+msgstr "Deze installatie is nieuw. In een paar stappen richt je hem in; alles is later in het beheer aan te passen."
+
+#: templates/setup/wizard.html:12
+msgid "Enter the SETUP_CODE from .env."
+msgstr "Vul de SETUP_CODE uit .env in."
+
+#: templates/setup/wizard.html:12
+msgid ""
+"Enter the installation code. It is shown in the log of the server: docker "
+"compose logs web"
+msgstr "Vul de installatiecode in. Die staat in het logboek van de server: docker compose logs web"
+
+#: templates/setup/wizard.html:14
+msgid "First administrator"
+msgstr "Eerste beheerder"
+
+#: templates/setup/wizard.html:15
+msgid "This account can do everything, including adding staff and roles."
+msgstr "Dit account kan alles, ook medewerkers en rollen toevoegen."
+
+#: templates/setup/wizard.html:18
+msgid ""
+"The name and email address appear on the website, in emails and on invoices. "
+"Colours, addresses and texts follow later under Settings."
+msgstr "De naam en het e-mailadres staan op de website, in e-mails en op facturen. Kleuren, adressen en teksten stel je later in onder Instellingen."
+
+#: templates/setup/wizard.html:19
+msgid ""
+"The test email could not be sent. Check the mail server settings in .env."
+msgstr "De testmail kon niet worden verstuurd. Controleer de mailserver-instellingen in .env."
+
+#: templates/setup/wizard.html:22
+msgid ""
+"The first number of each kind of document. Taking over from another system? "
+"Choose a number above the highest number there. Patterns can be changed "
+"later under Number sequences."
+msgstr "Het eerste nummer per soort document. Neem je gegevens over uit een ander systeem? Kies dan een nummer boven het hoogste nummer daar. Patronen pas je later aan onder Nummerreeksen."
+
+#: templates/setup/wizard.html:24
+msgid "Almost done"
+msgstr "Bijna klaar"
+
+#: templates/setup/wizard.html:25
+msgid ""
+"For trying PackDesk out you can add a small demo catalogue with test "
+"licences. Leave it off for a real installation."
+msgstr "Om PackDesk uit te proberen kun je een kleine democatalogus met testlicenties toevoegen. Laat dit uit bij een echte installatie."
+
+#: templates/setup/wizard.html:31
+msgid "Finish installation"
+msgstr "Installatie afronden"
+
 #: templates/unfold/helpers/account_links.html:6
 msgid "View site"
 msgstr "Website bekijken"
 
-#: templates/unfold/helpers/app_list.html:10
+#: templates/unfold/helpers/app_list.html:29
 msgid "Expand all"
 msgstr "Alles uitklappen"
 
-#: templates/unfold/helpers/app_list.html:11
-#| msgid "Collapse"
+#: templates/unfold/helpers/app_list.html:30
 msgid "Collapse all"
 msgstr "Alles inklappen"
 
-#: templates/unfold/helpers/app_list.html:85
+#: templates/unfold/helpers/app_list.html:104
 msgid "You don’t have permission to view or edit anything."
 msgstr "U hebt geen rechten om iets te bekijken of te wijzigen."
 
