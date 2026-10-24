@@ -152,7 +152,10 @@ h2 { font-size: 1.15rem; }
   padding: 2rem;
   box-shadow: var(--shadow);
 }
-.field { display: grid; gap: 0.35rem; margin-bottom: 1rem; font-weight: 500; }
+.field { display: grid; gap: 0.35rem; margin-bottom: 1rem; font-weight: 500; min-width: 0; }
+/* Fields fill their grid column; a select with a long option must not push into the next column. */
+.field input, .field select, .field textarea { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; }
+.field-check input { width: auto; }
 .field input {
   font: inherit; padding: 0.65rem 0.8rem; border-radius: 10px;
   border: 1px solid var(--border); background: var(--bg); color: var(--text);
