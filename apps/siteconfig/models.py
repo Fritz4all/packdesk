@@ -35,6 +35,13 @@ class SiteSettings(models.Model):
         default=",".join(code for code, _name in settings.LANGUAGES),
         help_text=_("Languages visitors can choose from."),
     )
+    admin_language = models.CharField(
+        _("admin language"),
+        max_length=8,
+        choices=settings.LANGUAGES,
+        default="nl",
+        help_text=_("Language of the admin. Each staff user can choose another one under the account menu."),
+    )
 
     # Branding
     logo = models.ImageField(_("logo"), upload_to="branding/", blank=True)
@@ -229,6 +236,12 @@ class Visibility(models.TextChoices):
     LOGGED_IN = "logged_in", _("Only when logged in")
 
 
+def _row_state(item):
+    if not item.is_active:
+        return _("not active")
+    return item.get_visibility_display()
+
+
 class HomeBlock(models.Model):
     """A card on the home page."""
 
@@ -250,6 +263,10 @@ class HomeBlock(models.Model):
     def __str__(self):
         return self.title
 
+    def get_inline_title(self):
+        """Collapsed row in the admin: icon and title, then (smaller) who sees it."""
+        return format_html('{} {} <span class="pd-dim">— {}</span>', self.icon, self.title, _row_state(self))
+
 
 class MenuItem(models.Model):
     """A link in the header menu."""
@@ -269,6 +286,10 @@ class MenuItem(models.Model):
 
     def __str__(self):
         return self.label
+
+    def get_inline_title(self):
+        """Collapsed row in the admin: text and link, then (smaller) who sees it."""
+        return format_html('{} · {} <span class="pd-dim">— {}</span>', self.label, self.url, _row_state(self))
 
 
 def visible_for(items, user):

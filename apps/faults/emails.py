@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 
 from apps.customers.emails import sender
+from apps.siteconfig.language import in_customer_language
 from apps.siteconfig.models import SiteSettings
 
 from .models import FaultSettings
@@ -28,6 +29,7 @@ def send_report(fault):
     message.send()
 
 
+@in_customer_language
 def send_confirmation(fault):
     rules, site = FaultSettings.load(), SiteSettings.load()
     values = {"number": fault.number, "name": fault.location_contact, "company": site.display_name}

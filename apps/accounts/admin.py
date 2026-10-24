@@ -148,13 +148,13 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
 
     staff_fieldsets = [
         (None, {"fields": ["email", "password"]}),
-        (_("Personal info"), {"fields": ["first_name", "last_name"]}),
+        (_("Personal info"), {"fields": ["first_name", "last_name", "admin_language"]}),
         (_("Access"), {"fields": ["kind", "role", "is_active"]}),
         (_("Dates"), {"fields": ["last_login", "date_joined"]}),
     ]
     superuser_fieldsets = [
         (None, {"fields": ["email", "password"]}),
-        (_("Personal info"), {"fields": ["first_name", "last_name"]}),
+        (_("Personal info"), {"fields": ["first_name", "last_name", "admin_language"]}),
         (_("Access"), {"fields": ["kind", "role", "is_active", "is_superuser"]}),
         (_("Dates"), {"fields": ["last_login", "date_joined"]}),
     ]

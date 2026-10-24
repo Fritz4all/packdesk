@@ -1,5 +1,6 @@
 import uuid
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group, UserManager
 from django.db import models
 from django.db.models.functions import Lower
@@ -26,6 +27,10 @@ class User(AbstractUser):
 
     kind = models.CharField(_("kind"), max_length=16, choices=Kind.choices, default=Kind.CUSTOMER)
     email = models.EmailField(_("email address"))
+    admin_language = models.CharField(
+        _("admin language"), max_length=8, blank=True, choices=settings.LANGUAGES,
+        help_text=_("Language of the admin for this user. Empty: the admin language from the site settings."),
+    )
 
     objects = EmailUserManager()
 

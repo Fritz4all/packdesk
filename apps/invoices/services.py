@@ -14,6 +14,7 @@ from django.utils.translation import gettext as _
 from apps.customers.emails import sender
 from apps.numbering.checks import check
 from apps.numbering.models import NumberSequence
+from apps.siteconfig.language import in_customer_language
 from apps.siteconfig.models import SiteSettings
 
 from .models import Invoice, InvoiceEmail, InvoiceLine, InvoiceSettings
@@ -92,6 +93,7 @@ def store_pdf(invoice):
     invoice.pdf.save(invoice.filename, ContentFile(render_pdf(invoice)), save=True)
 
 
+@in_customer_language
 def send(invoice, to, by=None):
     rules, site = InvoiceSettings.load(), SiteSettings.load()
     recipients = [e.strip() for e in to.split(",") if e.strip()] if isinstance(to, str) else list(to)

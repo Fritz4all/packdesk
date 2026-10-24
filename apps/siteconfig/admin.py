@@ -81,6 +81,7 @@ class HomeBlockInline(StackedInline, TranslationStackedInline):
     model = HomeBlock
     extra = 0
     tab = True
+    collapsible = True
     fields = ["icon", "title", "text", ("link_url", "link_text"), ("visibility", "is_active"), "position"]
 
 
@@ -88,6 +89,7 @@ class MenuItemInline(StackedInline, TranslationStackedInline):
     model = MenuItem
     extra = 0
     tab = True
+    collapsible = True
     fields = ["label", ("url", "new_tab"), ("visibility", "is_active"), "position"]
 
 
@@ -101,7 +103,7 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
     readonly_fields = ["updated_at"]
     color_fields = {"primary_color", "accent_color"}
     fieldsets = [
-        (_("General"), {"classes": ["tab"], "fields": ["name", "language", "languages", "meta_description", "updated_at"]}),
+        (_("General"), {"classes": ["tab"], "fields": ["name", "language", "languages", "admin_language", "meta_description", "updated_at"]}),
         (
             _("Branding"),
             {"classes": ["tab"], "fields": ["logo", "favicon", ("primary_color", "accent_color"), "theme", "theme_switch"]},

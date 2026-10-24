@@ -8,6 +8,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext as _
 
+from apps.siteconfig.language import in_customer_language
 from apps.siteconfig.models import SiteSettings
 
 from .models import SignupSettings
@@ -39,6 +40,7 @@ def notify_new_signup(customer, request):
     _send(_("New sign-up: %(company)s") % {"company": customer.name}, body, [signup.notify_email or site.email])
 
 
+@in_customer_language
 def send_activation(customer, request):
     site, signup = SiteSettings.load(), SignupSettings.load()
     login_url = request.build_absolute_uri(reverse("login"))
@@ -55,6 +57,7 @@ def password_link(user, request):
     return request.build_absolute_uri(reverse("password_reset_confirm", args=[uid, token]))
 
 
+@in_customer_language
 def send_invite(contact, request):
     site = SiteSettings.load()
     body = _(

@@ -3,11 +3,13 @@ from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 
 from apps.customers.emails import sender
+from apps.siteconfig.language import in_customer_language
 from apps.siteconfig.models import SiteSettings
 
 from .models import OrderSettings
 
 
+@in_customer_language
 def send_confirmation(order):
     rules, site = OrderSettings.load(), SiteSettings.load()
     to = list(dict.fromkeys(e for e in [order.created_by.email if order.created_by else "",
