@@ -52,6 +52,7 @@ waar de vorige webshop draait. Hier staat bijna alles.
 | Nummerreeksen (tellers, patronen) met correctielog en verklaringen van gaten | `NumberSequence`, `CounterChange`, `GapNote` |
 | Rollen en rechten | Django-groepen en -rechten |
 | Externe databases (zoals die van de vorige webshop): server, gebruiker, versleuteld wachtwoord | `ExternalDatabase` |
+| Koppelingen: welke tabel en kolommen bij welk PackDesk-onderdeel en -veld horen | `TableMapping`, `FieldMapping` |
 | Dashboardindeling en volgorde van het menu, per medewerker | `DashboardLayout` |
 | Beheertaal per medewerker | veld op de gebruiker |
 
@@ -123,6 +124,7 @@ kan altijd worden weggegooid en opnieuw gebouwd.
 
 - cookie `packdesk_language`: gekozen taal van de website
 - `localStorage` `packdesk-theme`: licht, donker of automatisch
+- `localStorage` `packdesk-nav-<sectie>`: welke menusecties in het beheer open of dicht staan
 - sessie- en CSRF-cookie: ingelogd blijven en formulieren beveiligen
 
 ## Lokaal ontwikkelen

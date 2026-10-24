@@ -157,27 +157,48 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17 of MariaDB 10.6+ / MySQL, admin met d
   - Overschrijven werkt bij en vult aan, maar verwijdert niets. Als nieuwe klant krijgt de klant een
     nieuw klantnummer; documenten waarvan het nummer hier al bestaat, worden overgeslagen. Gegevens
     van een andere klant worden nooit aangeraakt.
-- **Externe databases en vergelijken** (Configuratie → *Externe databases* / *Databases vergelijken*,
-  rechten *externe database bekijken/toevoegen/…* en *Mag databases vergelijken*):
-  - Voeg de database van de vorige webshop toe met type, server, poort, databasenaam, gebruiker en
+- **Externe databases, koppelingen en vergelijken** (Configuratie → *Externe databases*, *Koppelingen*,
+  *Databases vergelijken*; rechten per onderdeel plus *Mag databases vergelijken*):
+  - *Externe databases*: voeg een server toe met type, server, poort, databasenaam, gebruiker en
     wachtwoord. Het wachtwoord wordt versleuteld opgeslagen (sleutel afgeleid van `SECRET_KEY`) en nooit
     meer getoond; verandert `SECRET_KEY`, dan vul je het opnieuw in. *Verbinding testen* toont de
     serverversie en of het een database van de vorige webshop is.
   - PackDesk leest alleen: de verbinding staat op alleen-lezen en er worden alleen SELECT-opdrachten
     uitgevoerd. Gebruik op de server daarnaast een gebruiker met alleen leesrechten
     (`GRANT SELECT ON <oude database>.* TO 'lezer'@'<ip>'`).
-  - *Databases vergelijken* zet per onderdeel oud en nieuw naast elkaar: klanten, contactpersonen,
-    logins, bestellingen, licenties, licentie-opties, facturen en de factuur-pdf's in het archief. Per
-    onderdeel zie je hoeveel er alleen oud, alleen nieuw, verschillend en gelijk zijn; klik door voor
-    de lijst (verschillen per veld, oud → nieuw) of download die als CSV. Koppeling op het ID uit het
-    oude systeem, anders op nummer of e-mailadres; verwijderde rijen in de vorige webshop tellen niet mee.
-  - *Hoogste nummers* vergelijkt de hoogste factuur-, bestel-, licentie- en klantnummers in de oude
-    database met het volgende nummer in PackDesk.
-  - Het zoekveld zoekt een nummer, naam, serienummer of e-mailadres in beide databases tegelijk.
+  - *Koppelingen*: per PackDesk-onderdeel (klanten, contactpersonen, logins, bestellingen, licenties,
+    licentie-opties, facturen) stel je in waar het in de externe database staat: een tabel, of een
+    SELECT-query voor gegevens uit meerdere tabellen. Daarna koppel je per PackDesk-veld een kolom, kies
+    je de kolom met het oude ID en eventueel welke rijen weg moeten (bijv. `deleted` = 1). De pagina
+    toont de tabellen en kolommen (ook als suggesties bij het invullen) en de eerste rijen zoals PackDesk
+    ze ziet. Voor de vorige webshop is er een kant-en-klare koppeling: *Koppeling voor de vorige webshop laden* bij
+    de externe database; bestaande koppelingen blijven dan staan.
+  - *Databases vergelijken* gebruikt die koppelingen: per onderdeel hoeveel er alleen oud, alleen nieuw,
+    verschillend en gelijk zijn; klik door voor de lijst (verschillen per veld, oud → nieuw) of download
+    die als CSV. Koppeling op het oude ID, anders op nummer of e-mailadres. Daarnaast de factuur-pdf's
+    in het archief, de hoogste nummers tegenover de tellers van PackDesk, en een zoekveld dat in beide
+    databases tegelijk zoekt. De latere import gebruikt dezelfde koppelingen.
+- **Menu:** elke sectie in de zijbalk is in te klappen; wat je open- of dichtklikt onthoudt de browser.
+  *Alles uitklappen* / *Alles inklappen* staan bovenaan het menu.
 - **Beheertaal:** het beheer heeft een eigen taal, los van de website. De standaard staat in
   *Instellingen → Algemeen → Beheertaal*; elke medewerker kiest zelf NL / EN / DE in het accountmenu
   (rechtsboven). Mails aan klanten die vanuit het beheer worden verstuurd, blijven in de taal van de
   website.
+
+## Nieuwe installatie (zonder vorige webshop)
+
+Een nieuwe klant zonder bestaande database heeft niets van het vergelijken of importeren nodig:
+
+1. `.env` invullen (zie hieronder), `docker compose up -d`, en eenmalig de tabellen aanmaken:
+   `docker compose exec web python manage.py migrate`. (De productie-image migreert alleen met
+   `RUN_MIGRATIONS=1`, zodat een nieuwe versie de database nooit ongemerkt verandert.)
+2. Een beheerder aanmaken: `docker compose exec web python manage.py create_user --email <adres> --superuser`.
+3. In het beheer: *Instellingen* (naam, logo, kleuren, talen, adressen, bedrijfsgegevens), de
+   *Nummerreeksen* (patroon en beginnummer van klanten, bestellingen, licenties en facturen) en de
+   catalogus (categorieën, merken, servicepacks met prijzen).
+4. Medewerkers toevoegen; de standaardrollen staan al klaar.
+
+*Externe databases* en *Koppelingen* blijven dan leeg; het vergelijken toont alleen een uitleg.
 
 ## Lokaal ontwikkelen
 
