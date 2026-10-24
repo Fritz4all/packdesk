@@ -15,6 +15,7 @@ from .conftest import make_user
 @pytest.fixture
 def new_install(db, settings):
     settings.SETUP_WIZARD = True
+    settings.MAIL_SERVER_FROM_ENV = False  # the wizard asks for the mail server
     SiteSettings.objects.update_or_create(pk=1, defaults={"setup_completed": False})
     return settings
 
@@ -70,12 +71,21 @@ def test_wizard_from_code_to_finished(client, new_install):
     assert admin.is_superuser and admin.is_staff and admin.kind == User.Kind.STAFF
 
     response = client.post("/installatie/basics/", {
-        "name": "Bedrijf BV", "language": "nl", "languages": ["nl", "en"], "admin_language": "en",
-        "email": "info@bedrijf.test", "test_mail": "on",
+        "name": "Bedrijf BV", "domain": "shop.bedrijf.test", "language": "nl", "languages": ["nl", "en"],
+        "admin_language": "en", "email": "info@bedrijf.test",
+    })
+    assert response.url == "/installatie/mail/"
+    site = SiteSettings.load()
+    assert site.name == "Bedrijf BV" and site.language_codes == ["nl", "en"] and site.admin_language == "en"
+
+    response = client.post("/installatie/mail/", {
+        "mail_host": "smtp.bedrijf.test", "mail_port": "587", "mail_security": "starttls",
+        "mail_user": "shop", "mail_password": "mail-geheim", "test_mail": "on",
     })
     assert response.url == "/installatie/numbering/"
     site = SiteSettings.load()
-    assert site.name == "Bedrijf BV" and site.language_codes == ["nl", "en"] and site.admin_language == "en"
+    assert site.mail_host == "smtp.bedrijf.test" and site.get_mail_password() == "mail-geheim"
+    assert "mail-geheim" not in site.mail_password_encrypted
     assert mail.outbox[-1].to == ["baas@bedrijf.test"]
 
     sequences = list(NumberSequence.objects.all())
@@ -128,3 +138,90 @@ def test_update_needs_backup_confirmation_and_code(client, db, waiting_changes):
     assert not waiting_changes
     response = client.post("/database-bijwerken/", {"code": setup_code.get_code(), "backup": "1"})
     assert response.status_code == 302 and response.url == "/beheer/" and waiting_changes
+
+
+# --- domain and mail server ----------------------------------------------------------------------
+
+
+def test_domain_limits_host_names(client, site, settings):
+    settings.ALLOWED_HOSTS = ["*"]
+    SiteSettings.objects.filter(pk=1).update(domain="shop.bedrijf.test")
+    assert client.get("/", HTTP_HOST="shop.bedrijf.test").status_code == 200
+    assert client.get("/", HTTP_HOST="localhost").status_code == 200
+    assert client.get("/", HTTP_HOST="evil.example").status_code == 400
+
+
+def test_mail_server_from_admin_settings(site, settings):
+    from apps.core.mail import SiteEmailBackend
+
+    settings.MAIL_SERVER_FROM_ENV = False
+    site.mail_host, site.mail_port, site.mail_security, site.mail_user = "smtp.bedrijf.test", 465, "ssl", "shop"
+    site.set_mail_password("geheim")
+    site.save()
+    backend = SiteEmailBackend()
+    assert (backend.host, backend.port, backend.use_ssl, backend.use_tls) == ("smtp.bedrijf.test", 465, True, False)
+    assert backend.username == "shop" and backend.password == "geheim"
+    settings.MAIL_SERVER_FROM_ENV = True
+    assert SiteEmailBackend().host == settings.EMAIL_HOST  # the server settings win
+
+
+# --- database step -------------------------------------------------------------------------------
+
+
+def test_database_problems_are_recognised():
+    from apps.core import server_setup as s
+
+    assert s.classify(Exception(1049, "Unknown database 'x'")) == s.NO_DATABASE
+    assert s.classify(Exception(1045, "Access denied")) == s.BAD_LOGIN
+    assert s.classify(Exception(2003, "Can't connect")) == s.UNREACHABLE
+    assert s.classify(Exception('FATAL:  database "x" does not exist')) == s.NO_DATABASE
+    assert s.classify(Exception("password authentication failed for user")) == s.BAD_LOGIN
+    assert s.classify(Exception("connection refused")) == s.UNREACHABLE
+
+
+def test_database_step_when_database_is_missing(client, monkeypatch, settings, tmp_path):
+    from apps.core import middleware, server_config, server_setup
+
+    monkeypatch.setattr(middleware.ServerSetupMiddleware, "working", False)
+    monkeypatch.setattr(server_setup, "diagnose", lambda: (server_setup.NO_DATABASE, "Unknown database"))
+    page = client.get("/")
+    assert page.status_code == 503 and 'name="admin_user"' in page.content.decode()
+
+    calls = []
+    monkeypatch.setattr(server_setup, "test", lambda target: None if calls else (server_setup.NO_DATABASE, "x"))
+    monkeypatch.setattr(server_setup, "create", lambda target, user, pw: calls.append((target.name, user, pw)))
+    monkeypatch.setattr(server_setup, "restart_soon", lambda: calls.append("restart"))
+    settings.FIXED_SETTINGS = frozenset()
+    data = {"code": setup_code.get_code(), "engine": "mariadb", "host": "db.bedrijf.test", "port": "",
+            "name": "packdesk", "user": "packdesk", "password": "pd-geheim",
+            "create": "1", "admin_user": "root", "admin_password": "root-geheim"}
+    assert client.post("/installatie/database/", {**data, "name": "bad name;"}).status_code == 503 and not calls
+    response = client.post("/installatie/database/", data)
+    assert response.status_code == 503 and "restart" in calls and ("packdesk", "root", "root-geheim") in calls
+    saved = server_config.read(settings.DATA_ROOT)
+    assert saved["DB_HOST"] == "db.bedrijf.test" and saved["DB_PASSWORD"] == "pd-geheim"
+    assert "root-geheim" not in server_config.path(settings.DATA_ROOT).read_text()  # admin login not stored
+
+
+def test_server_config_file(tmp_path, monkeypatch):
+    from apps.core import server_config
+
+    monkeypatch.delenv("SECRET_KEY", raising=False)
+    server_config.ensure_secret_key(tmp_path)
+    assert server_config.read(tmp_path)["SECRET_KEY"]
+    server_config.write(tmp_path, {"DB_HOST": "x"})
+    values = server_config.read(tmp_path)
+    assert values["DB_HOST"] == "x" and values["SECRET_KEY"]
+    assert oct(server_config.path(tmp_path).stat().st_mode)[-3:] == "600"
+
+
+def test_empty_values_count_as_not_set(tmp_path, monkeypatch):
+    from apps.core import server_config
+
+    server_config.write(tmp_path, {"SECRET_KEY": "saved-key"})
+    monkeypatch.setenv("SECRET_KEY", "")  # e.g. "SECRET_KEY=" in .env
+    server_config.load(tmp_path)
+    server_config.ensure_secret_key(tmp_path)
+    import os
+
+    assert os.environ["SECRET_KEY"] == "saved-key"

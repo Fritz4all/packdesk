@@ -12,6 +12,7 @@ def settings_form(**overrides):
         "language": "nl",
         "languages": ["nl", "en", "de"],
         "admin_language": "nl",
+        "mail_security": "starttls",
         "primary_color": "#112233",
         "accent_color": "#ffffff",
         "country": "NL",
