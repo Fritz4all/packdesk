@@ -1,0 +1,87 @@
+{% load i18n unfold %}
+{% comment %}PackDesk: collapsed/expanded sections are remembered in the browser (only when the user clicks),
+and two buttons expand or collapse every section. Without a remembered choice, the section of the
+current page is open.{% endcomment %}
+
+{% if sidebar_navigation %}
+    <div id="nav-sidebar-apps" class="h-0 grow overflow-auto scrollbar-default-hover">
+        <div class="pd-nav-all mx-3 mb-1 px-3">
+            <button type="button" onclick="pdNavAll(true)" title="{% translate 'Expand all' %}" aria-label="{% translate 'Expand all' %}"><span class="material-symbols-outlined">unfold_more</span>{% translate "Expand all" %}</button>
+            <button type="button" onclick="pdNavAll(false)" title="{% translate 'Collapse all' %}" aria-label="{% translate 'Collapse all' %}"><span class="material-symbols-outlined">unfold_less</span>{% translate "Collapse all" %}</button>
+        </div>
+        {% for group in sidebar_navigation %}
+            {% if group.items %}
+                {% has_nav_item_active group.items as has_active %}
+
+                <div class="hidden mb-1.5 has-[ol]:has-[li]:block" {% if group.collapsible %}data-pd-nav="{{ group.key|default:group.title|slugify }}" x-data="{navigationOpen: pdNavInitial('{{ group.key|default:group.title|slugify }}', {% if has_active %}true{% else %}false{% endif %})}"{% endif %}>
+                    {% if group.separator %}
+                        <hr class="border-t border-base-200 mx-6 my-2 dark:border-base-800" />
+                    {% endif %}
+
+                    {% if group.title %}
+                        <h2 class="font-semibold flex flex-row group items-center mb-1 mx-3 py-1.5 px-3 select-none text-font-important-light text-sm dark:text-font-important-dark {% if group.collapsible %}cursor-pointer hover:text-primary-600 dark:hover:text-primary-500{% endif %}" {% if group.collapsible %}x-on:click="navigationOpen = !navigationOpen; pdNavSave('{{ group.key|default:group.title|slugify }}', navigationOpen)"{% endif %}>
+                            {{ group.title }}
+
+                            {% include "unfold/helpers/app_list_badge.html" with item=group %}
+
+                            {% if group.collapsible %}
+                                <span class="material-symbols-outlined ml-auto transition-transform group-hover:text-primary-600 dark:group-hover:text-primary-500 rtl:ml-0 rtl:mr-auto rtl:-scale-x-100" x-bind:class="{'rotate-90 rtl:-rotate-90': navigationOpen}">
+                                    chevron_right
+                                </span>
+                            {% endif %}
+                        </h2>
+                    {% endif %}
+
+                    <ol class="flex flex-col px-6" {% if group.collapsible %}x-show="navigationOpen"{% endif %}>
+                        {% for item in group.items %}
+                            {% if item.has_permission %}
+                                <li {% if item.items|is_list %}x-data="{'subnavigationOpen': {% if item.items|has_active_item %}true{% else %}false{% endif %} }"{% endif %}>
+                                    <a {% if item.items|is_list and item.items|length > 0 %}x-on:click="subnavigationOpen = !subnavigationOpen"{% else %}href="{% if item.link_callback %}{{ item.link_callback }}{% else %}{{ item.link }}{% endif %}"{% endif %} class="cursor-pointer flex h-[38px] items-center -mx-3 px-3 rounded-default hover:text-primary-600 dark:hover:text-primary-500 {% if item.active %}bg-base-100 font-semibold text-primary-600 dark:bg-white/[.06] dark:text-primary-500 active{% endif %}" {% if item.link_attrs %}{% include "unfold/helpers/attrs.html" with attrs=item.link_attrs %}{% endif %}>
+                                        {% if item.icon_template %}
+                                            {% include item.icon_template with item=item %}
+                                        {% elif item.icon %}
+                                            <span class="material-symbols-outlined md-18 mr-3 w-[18px] rtl:mr-0 rtl:ml-3">
+                                                {{ item.icon }}
+                                            </span>
+                                        {% endif %}
+
+                                        <span>{{ item.title|safe }}</span>
+
+                                        {% include "unfold/helpers/app_list_badge.html" with item=item %}
+
+                                        {% if item.items|is_list and item.items|length > 0 %}
+                                            <span class="material-symbols-outlined ml-auto select-none transition-all group-hover:text-primary-600 dark:group-hover:text-primary-500 rtl:ml-0 rtl:mr-auto rtl:-scale-x-100" x-bind:class="{'rotate-90 rtl:-rotate-90': subnavigationOpen}">
+                                                chevron_right
+                                            </span>
+                                        {% endif %}
+                                    </a>
+
+                                    {% if item.items|is_list %}
+                                        <ul class="border-s-2 border-base-200 flex flex-col gap-0.5 ms-2 my-2 dark:border-base-800" x-show="subnavigationOpen">
+                                            {% for subitem in item.items %}
+                                                {% if subitem.has_permission %}
+                                                    <li class="ms-5">
+                                                        <a href="{% if subitem.link_callback %}{{ subitem.link_callback }}{% else %}{{ subitem.link }}{% endif %}" class="block rounded-default -mx-3 px-3 py-1.5 hover:text-primary-600 dark:hover:text-primary-500 {% if subitem.active %}bg-base-100 font-medium text-primary-600 dark:bg-white/[.06] dark:text-primary-500{% endif %}">
+                                                            {{ subitem.title }}
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ol>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    {% include "unfold/helpers/app_list_all.html" %}
+{% else %}
+    <p>
+        {% trans "You don’t have permission to view or edit anything." as error_message %}
+        {% include "unfold/helpers/messages/error.html" with error=error_message %}
+    </p>
+{% endif %}
