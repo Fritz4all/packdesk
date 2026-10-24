@@ -38,6 +38,7 @@ services:
       EMAIL_PORT: "1025"
       MEDIA_ROOT: /app/media
       PYTHONDONTWRITEBYTECODE: "1"
+      XDG_CACHE_HOME: /tmp/cache
       DOCUMENT_ARCHIVE_DIR: /data/archive
     ports:
       - "127.0.0.1:8000:8000"

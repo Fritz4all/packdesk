@@ -30,7 +30,7 @@ jobs:
           python-version: "3.13.16"
           cache: pip
           cache-dependency-path: requirements*.txt
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends gettext
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends gettext libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core poppler-utils
       - run: pip install -r requirements-dev.txt
       - run: python manage.py compilemessages
       - run: python manage.py makemigrations --check --dry-run
