@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "apps.faults",
     "apps.orders",
     "apps.invoices",
+    "apps.parts",
     "apps.dashboard",
     "apps.legacy",
     "apps.trash",

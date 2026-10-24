@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "Spare parts" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Spare parts" %}</h1><a class="btn btn-primary" href="{% url 'new_part_request' %}">{% translate "Request spare parts" %}</a></div>
+<h2>{% translate "My requests" %}</h2>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Request" %}</th><th>{% translate "Date" %}</th><th>{% translate "Your reference" %}</th><th>{% translate "Parts" %}</th><th>{% translate "Status" %}</th></tr></thead>
+  <tbody>{% for r in requests %}<tr><td><a href="{% url 'part_request' r.pk %}">{{ r.number }}</a>{% if r.urgent %} <small class="muted">{% translate "urgent" %}</small>{% endif %}</td><td>{{ r.created_at|date:"j M Y" }}</td><td>{{ r.reference }}</td><td>{{ r.lines.all|length }}</td>
+    <td>{% if r.valid_until and r.valid_until < today %}{% translate "Expired" %}{% elif r.status == "answered" %}{% blocktranslate with date=r.valid_until|date:"j M Y" %}Answered, valid until {{ date }}{% endblocktranslate %}{% else %}{% translate "Being handled" %}{% endif %}</td></tr>
+  {% empty %}<tr><td colspan="5" class="muted">{% translate "No requests yet." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+<h2>{% translate "My spare parts orders" %}</h2>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Order number" %}</th><th>{% translate "Date" %}</th><th>{% translate "Your reference" %}</th><th>{% translate "Total incl. VAT" %}</th><th>{% translate "Status" %}</th></tr></thead>
+  <tbody>{% for o in orders %}<tr><td><a href="{% url 'part_order' o.pk %}">{{ o.number }}</a></td><td>{{ o.created_at|date:"j M Y" }}</td><td>{{ o.reference }}</td><td>€ {{ o.total|money }}</td><td>{{ o.get_status_display }}</td></tr>
+  {% empty %}<tr><td colspan="5" class="muted">{% translate "No orders yet." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

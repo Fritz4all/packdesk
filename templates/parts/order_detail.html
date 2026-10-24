@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "Order" %} {{ order.number }} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Order" %} {{ order.number }}</h1>
+  <p class="muted">{{ order.created_at|date:"j F Y H:i" }}{% if order.reference %} · {{ order.reference }}{% endif %} · {{ order.get_status_display }}</p></div>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Part" %}</th><th>{% translate "Packing" %}</th><th>{% translate "Quantity" %}</th><th>{% translate "Delivered" %}</th><th>{% translate "Amount" %}</th></tr></thead>
+  <tbody>{% for line in order.lines.all %}<tr><td>{{ line.request_line.article_number }}{% if line.request_line.description %}<br><small class="muted">{{ line.request_line.description }}</small>{% endif %}</td>
+    <td>{{ line.get_packing_display }}</td><td>{{ line.quantity }}{% if line.corrected %} ({{ line.corrected }}){% endif %}</td>
+    <td>{% for d in line.deliveries.all %}<div>{{ d.quantity }} · {{ d.created_at|date:"j M Y" }}</div>{% empty %}—{% endfor %}</td><td>€ {{ line.line_total|money }}</td></tr>{% endfor %}</tbody>
+</table>
+{% include "parts/totals.html" %}</div>
+<p class="muted">{% translate "Payment method" %}: {{ order.payment_method|default:"—" }}{% if order.delivery_address %}<br>{% translate "Delivery address" %}: {{ order.delivery_lines|join:", " }}{% endif %}
+{% if order.invoice %}<br>{% translate "Invoice" %}: <a href="{% url 'my_invoices' %}">{{ order.invoice.number }}</a>{% endif %}</p>
+<p><a href="{% url 'part_request' order.request_id %}">{% translate "Request" %} {{ order.request.number }}</a> · <a href="{% url 'my_parts' %}">{% translate "All requests and orders" %}</a></p>
+{% endblock %}

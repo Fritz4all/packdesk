@@ -60,6 +60,8 @@ class Invoice(models.Model):
                                  related_name="invoices", verbose_name=_("customer"))
     order = models.OneToOneField("orders.Order", on_delete=models.PROTECT, null=True, blank=True,
                                  related_name="invoice", verbose_name=_("order"))
+    part_order = models.OneToOneField("parts.PartOrder", on_delete=models.PROTECT, null=True, blank=True,
+                                      related_name="invoice", verbose_name=_("spare parts order"))
     issued_on = models.DateField(_("invoice date"), default=timezone.localdate)
     due_on = models.DateField(_("due date"), null=True, blank=True)
     reference = models.CharField(_("your reference"), max_length=128, blank=True)

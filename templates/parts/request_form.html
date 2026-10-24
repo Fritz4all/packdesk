@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Request spare parts" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Request spare parts" %}</h1>
+  {% if rules.intro %}<p class="lead">{{ rules.intro|linebreaksbr }}</p>{% else %}<p class="lead">{% translate "Fill in the parts you need. We answer with prices and delivery times; then you can order." %}</p>{% endif %}</div>
+<form method="post" class="form-card" novalidate>
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% if formset.non_form_errors %}<div class="message message-error">{{ formset.non_form_errors|join:" " }}</div>{% endif %}
+  <fieldset><legend>{% translate "Parts" %}</legend>
+    <div class="table-wrap"><table class="table">
+      <thead><tr>{% for field in formset.empty_form %}<th>{{ field.label }}</th>{% endfor %}</tr></thead>
+      <tbody>{% for form in formset %}<tr>{% for field in form %}<td>{{ field }}{% for e in field.errors %}<small class="error">{{ e }}</small>{% endfor %}</td>{% endfor %}</tr>{% endfor %}</tbody>
+    </table></div>
+  </fieldset>
+  <fieldset><legend>{% translate "Request details" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=form %}</div>
+    <p class="muted">{% translate "The delivery address is only needed for an urgent request." %}</p>
+  </fieldset>
+  <button class="btn btn-primary btn-lg" type="submit">{% translate "Send request" %}</button>
+</form>
+{% endblock %}

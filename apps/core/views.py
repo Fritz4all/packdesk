@@ -11,4 +11,6 @@ def home(request):
 
 @login_required
 def dashboard(request):
-    return render(request, "core/dashboard.html")
+    from apps.parts.models import PartsSettings
+
+    return render(request, "core/dashboard.html", {"parts_enabled": PartsSettings.load().enabled})

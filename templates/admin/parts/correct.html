@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div class="max-w-4xl">
+  {% include "admin/parts/_order_head.html" %}
+  <form method="post" class="pd-widget">
+    {% csrf_token %}
+    <p class="text-sm mb-3">{% translate "Lower the quantity of parts that cannot be delivered, with a negative number (e.g. -2). The administration gets an email with the amount to credit." %}</p>
+    <table class="pd-table mb-4">
+      <thead><tr><th>{% translate "Part" %}</th><th>{% translate "Packing" %}</th><th>{% translate "Ordered" %}</th><th>{% translate "Corrected" %}</th><th>{% translate "Delivered" %}</th><th>{% translate "Correction" %}</th></tr></thead>
+      <tbody>{% for line in lines %}<tr>
+        <td>{{ line.request_line.article_number }}</td><td>{{ line.get_packing_display }}</td><td>{{ line.quantity }}</td>
+        <td>{{ line.corrected }}</td><td>{{ line.delivered }}</td>
+        <td><input type="number" max="0" name="correct-{{ line.pk }}" value="0" class="border border-base-200 rounded-default px-2 py-1 w-24 dark:bg-base-900 dark:border-base-700"></td>
+      </tr>{% endfor %}</tbody>
+    </table>
+    <label class="block text-sm font-semibold mb-1" for="reason">{% translate "Reason" %}</label>
+    <textarea id="reason" name="reason" rows="3" required class="border border-base-200 rounded-default px-3 py-2 w-full mb-4 dark:bg-base-900 dark:border-base-700">{{ request.POST.reason }}</textarea>
+    <div class="flex gap-2">
+      <button type="submit" class="pd-btn pd-btn-primary"><span class="material-symbols-outlined text-[18px]">edit_note</span>{% translate "Save correction" %}</button>
+      <a class="pd-btn" href="{{ back }}">{% translate "Back" %}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

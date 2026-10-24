@@ -139,6 +139,49 @@ SECTIONS = [
         ],
     },
     {
+        "key": "parts",
+        "collapsible": True,
+        "title": _("Spare parts"),
+        "items": [
+            {
+                "title": _("Spare parts requests"),
+                "icon": "build",
+                "link": reverse_lazy("admin:parts_partrequest_changelist"),
+                "permission": lambda request: request.user.has_perm("parts.view_partrequest"),
+            },
+            {
+                "title": _("Spare parts orders"),
+                "icon": "local_shipping",
+                "link": reverse_lazy("admin:parts_partorder_changelist"),
+                "permission": lambda request: request.user.has_perm("parts.view_partorder"),
+            },
+            {
+                "title": _("Payment methods"),
+                "icon": "payments",
+                "link": reverse_lazy("admin:parts_paymentmethod_changelist"),
+                "permission": lambda request: request.user.has_perm("parts.view_paymentmethod"),
+            },
+            {
+                "title": _("Delivery times"),
+                "icon": "schedule",
+                "link": reverse_lazy("admin:parts_deliverytime_changelist"),
+                "permission": lambda request: request.user.has_perm("parts.view_deliverytime"),
+            },
+            {
+                "title": _("Markup tiers"),
+                "icon": "percent",
+                "link": reverse_lazy("admin:parts_markuptier_changelist"),
+                "permission": lambda request: request.user.has_perm("parts.view_markuptier"),
+            },
+            {
+                "title": _("Spare parts settings"),
+                "icon": "tune",
+                "link": reverse_lazy("admin:parts_partssettings_changelist"),
+                "permission": lambda request: request.user.has_perm("parts.view_partssettings"),
+            },
+        ],
+    },
+    {
         "key": "licences",
         "collapsible": True,
         "title": _("Service packs and licences"),
@@ -252,7 +295,7 @@ SECTIONS = [
     },
 ]
 
-DEFAULT_ORDER = ["overview", "customers", "orders", "licences", "faults", "users", "configuration"]
+DEFAULT_ORDER = ["overview", "customers", "orders", "licences", "parts", "faults", "users", "configuration"]
 
 
 def ordered_keys(user):

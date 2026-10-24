@@ -1,0 +1,24 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div class="max-w-4xl">
+  {% include "admin/parts/_order_head.html" %}
+  <form method="post" class="pd-widget">
+    {% csrf_token %}
+    <table class="pd-table mb-4">
+      <thead><tr><th>{% translate "Part" %}</th><th>{% translate "Packing" %}</th><th>{% translate "Ordered" %}</th><th>{% translate "Delivered" %}</th><th>{% translate "Still to deliver" %}</th><th>{% translate "Deliver now" %}</th></tr></thead>
+      <tbody>{% for line in lines %}<tr>
+        <td>{{ line.request_line.article_number }}<br><small class="text-base-500">{{ line.request_line.description }}</small></td>
+        <td>{{ line.get_packing_display }}</td><td>{{ line.quantity }}{% if line.corrected %} ({{ line.corrected }}){% endif %}</td>
+        <td>{{ line.delivered }}</td><td>{{ line.to_deliver }}</td>
+        <td><input type="number" min="0" max="{{ line.to_deliver }}" name="deliver-{{ line.pk }}" value="{{ line.to_deliver }}" class="border border-base-200 rounded-default px-2 py-1 w-24 dark:bg-base-900 dark:border-base-700"{% if not line.to_deliver %} disabled{% endif %}></td>
+      </tr>{% endfor %}</tbody>
+    </table>
+    <div class="flex gap-2">
+      <button type="submit" class="pd-btn pd-btn-primary"><span class="material-symbols-outlined text-[18px]">local_shipping</span>{% translate "Save delivery" %}</button>
+      <a class="pd-btn" href="{{ back }}">{% translate "Back" %}</a>
+    </div>
+    <p class="text-sm text-base-500 mt-3">{% translate "The customer gets an email with what has been delivered." %}</p>
+  </form>
+</div>
+{% endblock %}

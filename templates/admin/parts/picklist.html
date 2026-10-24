@@ -1,0 +1,12 @@
+{% load i18n %}<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'nl' }}"><head><meta charset="utf-8"><title>{{ title }}</title>
+<style>body{font:14px system-ui,sans-serif;margin:2rem;color:#111}table{border-collapse:collapse;width:100%;margin-top:1rem}th,td{border:1px solid #bbb;padding:.4rem .6rem;text-align:left}h1{font-size:1.3rem}@media print{button{display:none}}</style></head>
+<body>
+<h1>{{ title }}</h1>
+<p>{{ order.customer }}{% if order.customer.number %} ({{ order.customer.number }}){% endif %}{% if order.reference %} · {{ order.reference }}{% endif %}<br>
+{% translate "Ordered at" %}: {{ order.created_at|date:"j-n-Y H:i" }}{% if order.urgent %} · <strong>{% translate "Urgent" %}</strong>{% endif %}</p>
+<p><strong>{% translate "Delivery address" %}</strong><br>{% for l in order.delivery_lines %}{{ l }}<br>{% endfor %}{{ order.delivery_phone }}</p>
+<table><thead><tr><th>{% translate "Article number" %}</th><th>{% translate "Description" %}</th><th>{% translate "Packing" %}</th><th>{% translate "To deliver" %}</th><th>✓</th></tr></thead>
+<tbody>{% for line in lines %}<tr><td>{{ line.request_line.article_number }}</td><td>{{ line.request_line.description }}</td><td>{{ line.get_packing_display }}</td><td>{{ line.to_deliver }}</td><td></td></tr>{% endfor %}</tbody></table>
+<p><button onclick="window.print()">{% translate "Print" %}</button></p>
+</body></html>

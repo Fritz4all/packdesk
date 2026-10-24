@@ -1,0 +1,8 @@
+{% load i18n humanize_nl %}<dl class="details totals">
+  <dt>{% translate "Parts" %}</dt><dd>€ {{ order.gross|money }}</dd>
+  {% if order.discount %}<dt>{% blocktranslate with pct=order.discount_pct|floatformat:"-2" %}Your discount ({{ pct }} %){% endblocktranslate %}</dt><dd>− € {{ order.discount|money }}</dd>{% endif %}
+  {% for label, amount in order.costs %}<dt>{{ label }}</dt><dd>€ {{ amount|money }}</dd>{% endfor %}
+  <dt>{% translate "Total excl. VAT" %}</dt><dd>€ {{ order.net|money }}</dd>
+  <dt>{% blocktranslate with rate=order.vat_rate|floatformat:"-2" %}VAT {{ rate }} %{% endblocktranslate %}</dt><dd>€ {{ order.vat|money }}</dd>
+  <dt><strong>{% translate "Total incl. VAT" %}</strong></dt><dd><strong>€ {{ order.total|money }}</strong></dd>
+</dl>

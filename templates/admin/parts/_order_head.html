@@ -1,0 +1,2 @@
+{% load i18n %}<h1 class="font-semibold text-lg mb-1 text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
+<p class="text-sm text-base-500 mb-4">{{ order.customer }}{% if order.reference %} · {{ order.reference }}{% endif %} · {{ order.get_status_display }}{% if order.delivery_address %}<br>{{ order.delivery_lines|join:", " }}{% endif %}</p>

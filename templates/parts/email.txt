@@ -1,0 +1,39 @@
+{% load i18n humanize_nl %}{% autoescape off %}{{ site_settings.display_name }}
+{% if kind == "received" %}{% translate "We have received your spare parts request. We will let you know the prices and delivery times as soon as possible." %}
+
+{% translate "Request" %}: {{ request.number }}{% if request.reference %} ({{ request.reference }}){% endif %}
+{% translate "Customer" %}: {{ request.customer.name }}{% if request.urgent %}
+{% translate "Urgent" %}{% endif %}
+{% for line in lines %}- {{ line.quantity }} × {{ line.article_number }}{% if line.vendor %} ({{ line.vendor }}){% endif %}{% if line.description %}: {{ line.description }}{% endif %}
+{% endfor %}{% elif kind == "answered" %}{% translate "Your spare parts request has been answered. Log in to see the prices and to order." %}
+
+{% translate "Request" %}: {{ request.number }}{% if request.reference %} ({{ request.reference }}){% endif %}{% if request.valid_until %}
+{% translate "Valid until" %}: {{ request.valid_until|date:"j F Y" }}{% endif %}
+{% for line in lines %}- {{ line.quantity }} × {{ line.article_number }}: {{ line.get_status_display }}{% for offer in line.offers %}
+    {{ offer.label }}: € {{ offer.price|money }}{% if offer.time %}, {{ offer.time }}{% endif %}{% endfor %}
+{% endfor %}{% elif kind == "ordered" %}{% translate "Thank you for your order." %}
+
+{% translate "Order" %}: {{ order.number }}{% if order.reference %} ({{ order.reference }}){% endif %}
+{% translate "Payment method" %}: {{ order.payment_method|default:"" }}
+{% for line in lines %}- {{ line.quantity }} × {{ line.request_line.article_number }} ({{ line.get_packing_display }}) à € {{ line.unit_price|money }} = € {{ line.line_total|money }}
+{% endfor %}{% translate "Parts" %}: € {{ order.gross|money }}
+{% if order.discount %}{% translate "Discount" %} ({{ order.discount_pct|floatformat:"-2" }} %): − € {{ order.discount|money }}
+{% endif %}{% for label, amount in order.costs %}{{ label }}: € {{ amount|money }}
+{% endfor %}{% translate "Total excl. VAT" %}: € {{ order.net|money }}
+{% translate "VAT" %} {{ order.vat_rate|floatformat:"-2" }} %: € {{ order.vat|money }}
+{% translate "Total incl. VAT" %}: € {{ order.total|money }}
+{% if order.delivery_address %}
+{% translate "Delivery address" %}: {{ order.delivery_lines|join:", " }}
+{% endif %}
+{{ rules.terms_text }}{% elif kind == "delivered" %}{% if complete %}{% translate "Your spare parts order has been delivered in full." %}{% else %}{% translate "Part of your spare parts order has been delivered; the rest follows." %}{% endif %}
+
+{% translate "Order" %}: {{ order.number }}{% if order.reference %} ({{ order.reference }}){% endif %}
+{% for line in lines %}- {{ line.request_line.article_number }} ({{ line.get_packing_display }}): {% blocktranslate with n=line.delivered total=line.quantity %}{{ n }} of {{ total }} delivered{% endblocktranslate %}
+{% endfor %}{% elif kind == "changed" %}{% translate "Order" %} {{ order.number }} ({{ order.customer.name }}): {{ what }}
+{% translate "By" %}: {{ user }}
+{% translate "Reason" %}: {{ reason }}
+{% translate "Amount to credit (excl. VAT)" %}: € {{ credit|money }}
+{% if order.invoice %}{% translate "Invoice" %}: {{ order.invoice.number }}{% endif %}
+{% endif %}
+{{ site_settings.display_name }}
+{% endautoescape %}

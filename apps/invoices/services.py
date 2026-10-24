@@ -31,8 +31,7 @@ def _fmt(text, **values):
         return text
 
 
-def create_for_order(order):
-    """Make the invoice of an order, with a new number, and store its PDF."""
+def _check_counter():
     sequence = NumberSequence.objects.get(key="invoice")
     result = check(sequence)
     if result.status == "behind":
@@ -40,32 +39,61 @@ def create_for_order(order):
             _("The invoice counter (%(next)s) is not above the highest existing invoice number (%(highest)s). "
               "Correct it under Number sequences first.") % {"next": sequence.next_number, "highest": result.highest}
         )
+
+
+def _create(customer, source, lines, gross=None, **links):
+    """An invoice for `customer` with the totals of `source` (an order) and `lines` as
+    (code, description, quantity, unit price, amount); stores its PDF. `gross` overrides the subtotal."""
+    _check_counter()
     rules = InvoiceSettings.load()
-    customer = order.customer
     address = customer.address("invoice")
     with transaction.atomic():
         _n, number = NumberSequence.issue("invoice")
         today = timezone.localdate()
         invoice = Invoice.objects.create(
-            number=number, customer=customer, order=order, issued_on=today,
-            due_on=today + timedelta(days=rules.payment_term_days), reference=order.reference,
+            number=number, customer=customer, issued_on=today,
+            due_on=today + timedelta(days=rules.payment_term_days), reference=source.reference,
             customer_name=customer.name, customer_number=customer.number, customer_vat=customer.vat_number,
             address_attention=address.attention if address else "", address_line1=address.line1 if address else "",
             address_line2=address.line2 if address else "", address_postal_code=address.postal_code if address else "",
             address_city=address.city if address else "", address_country=str(address.country or "") if address else "",
             email=customer.email_for("invoices"),
-            gross=order.gross, discount_pct=order.discount_pct, discount=order.discount, net=order.net,
-            vat_rate=order.vat_rate, vat=order.vat, total=order.total,
+            gross=source.gross if gross is None else gross, discount_pct=source.discount_pct, discount=source.discount, net=source.net,
+            vat_rate=source.vat_rate, vat=source.vat, total=source.total, **links,
         )
-        for line in order.lines.select_related("pack", "extends"):
-            description = line.description
-            if line.extends:
-                description = _("Extension of licence %(number)s: %(pack)s") % {"number": line.extends.full_number,
-                                                                               "pack": line.description}
-            InvoiceLine.objects.create(invoice=invoice, code=line.pack.code, description=description,
-                                       quantity=line.quantity, unit_price=line.unit_price, amount=line.line_total)
+        for code, description, quantity, unit_price, amount in lines:
+            InvoiceLine.objects.create(invoice=invoice, code=code, description=description[:300], quantity=quantity,
+                                       unit_price=unit_price, amount=amount)
         store_pdf(invoice)
     return invoice
+
+
+def create_for_order(order):
+    """Make the invoice of an order, with a new number, and store its PDF."""
+    lines = []
+    for line in order.lines.select_related("pack", "extends"):
+        description = line.description
+        if line.extends:
+            description = _("Extension of licence %(number)s: %(pack)s") % {"number": line.extends.full_number,
+                                                                           "pack": line.description}
+        lines.append((line.pack.code, description, line.quantity, line.unit_price, line.line_total))
+    return _create(order.customer, order, lines, order=order)
+
+
+def create_for_part_order(order):
+    """Make the invoice of a spare parts order: the parts, then the extra costs."""
+    lines = []
+    for line in order.lines.select_related("request_line"):
+        part = line.request_line
+        description = f"{part.description or part.article_number} ({line.get_packing_display()})"
+        lines.append((part.article_number[:32], description, line.quantity, line.unit_price, line.line_total))
+    for label, amount in order.costs():
+        lines.append(("", str(label), 1, amount, amount))
+    if order.vat_rate == 0 and order.delivery_costs:
+        lines.append(("", _("VAT reverse-charged: intra-community delivery"), 1, 0, 0))
+    # The subtotal includes the extra costs, so that subtotal − discount = total excl. VAT.
+    gross = order.gross + sum((amount for _label, amount in order.costs()), 0)
+    return _create(order.customer, order, lines, gross=gross, part_order=order)
 
 
 def render_html(invoice):
@@ -120,6 +148,20 @@ def invoice_order(order):
         return None, None
     try:
         invoice = create_for_order(order)
+    except InvoiceNumberError as exc:
+        return None, str(exc)
+    if rules.send_on_create:
+        send(invoice, invoice.email or order.customer.email)
+    return invoice, None
+
+
+def invoice_part_order(order):
+    """Like invoice_order, for a spare parts order (also when the customer gets no invoices for service packs)."""
+    rules = InvoiceSettings.load()
+    if not rules.auto_on_order:
+        return None, None
+    try:
+        invoice = create_for_part_order(order)
     except InvoiceNumberError as exc:
         return None, str(exc)
     if rules.send_on_create:

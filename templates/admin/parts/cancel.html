@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% load i18n humanize_nl %}
+{% block content %}
+<div class="max-w-2xl">
+  {% include "admin/parts/_order_head.html" %}
+  <form method="post" class="pd-widget">
+    {% csrf_token %}
+    <p class="text-sm mb-3">{% blocktranslate with total=order.net|money %}The whole order is cancelled. The administration gets an email to credit € {{ total }} (excl. VAT).{% endblocktranslate %}</p>
+    <label class="block text-sm font-semibold mb-1" for="reason">{% translate "Reason" %}</label>
+    <textarea id="reason" name="reason" rows="3" required class="border border-base-200 rounded-default px-3 py-2 w-full mb-4 dark:bg-base-900 dark:border-base-700"></textarea>
+    <div class="flex gap-2">
+      <button type="submit" class="pd-btn" style="color:rgb(220 38 38)"><span class="material-symbols-outlined text-[18px]">cancel</span>{% translate "Cancel order" %}</button>
+      <a class="pd-btn" href="{{ back }}">{% translate "Back" %}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

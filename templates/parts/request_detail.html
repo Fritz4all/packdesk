@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "Request" %} {{ part_request.number }} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Request" %} {{ part_request.number }}</h1>
+  <p class="muted">{{ part_request.created_at|date:"j F Y" }}{% if part_request.reference %} · {{ part_request.reference }}{% endif %}{% if part_request.urgent %} · {% translate "urgent" %}{% endif %}
+  {% if part_request.valid_until %} · {% if part_request.is_valid %}{% blocktranslate with date=part_request.valid_until|date:"j F Y" %}valid until {{ date }}{% endblocktranslate %}{% else %}{% translate "expired" %}{% endif %}{% endif %}</p>
+  {% if part_request.urgent and part_request.urgent_possible == False %}<p class="message message-error">{% translate "Urgent delivery is not possible for this request." %}</p>{% endif %}
+</div>
+<form method="post" class="form-card" novalidate>
+  {% csrf_token %}
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>{% translate "Part" %}</th><th>{% translate "Requested" %}</th><th>{% translate "Status" %}</th><th>{% translate "Choice" %}</th></tr></thead>
+    <tbody>{% for row in rows %}{% with line=row.line %}<tr>
+      <td><strong>{{ line.article_number }}</strong>{% if line.vendor %} · {{ line.vendor }}{% endif %}{% if line.description %}<br><small class="muted">{{ line.description }}</small>{% endif %}</td>
+      <td>{{ line.quantity }}</td>
+      <td>{{ line.get_status_display }}</td>
+      <td>{% for offer in row.offers %}<div class="lookup-row">
+          {% if row.orderable %}<input type="number" min="0" max="999" name="{{ offer.name }}" value="{{ offer.value }}" placeholder="0" style="width:5rem" aria-label="{% translate 'Quantity' %} {{ offer.label }}">{% endif %}
+          <span>{{ offer.label }}: € {{ offer.price|money }}{% if offer.time %} · {{ offer.time }}{% endif %}</span></div>
+        {% empty %}<span class="muted">—</span>{% endfor %}</td>
+    </tr>
+    {% for remark in line.remarks.all %}<tr><td colspan="4"><small class="muted">{{ remark.created_at|date:"j M Y H:i" }} · {% if remark.from_customer %}{% translate "You" %}{% else %}{{ site_settings.display_name }}{% endif %}:</small> {{ remark.text|linebreaksbr }}</td></tr>{% endfor %}
+    {% endwith %}{% endfor %}</tbody>
+  </table></div>
+  {% if orderable %}
+  <fieldset><legend>{% translate "Order" %}</legend>
+    <div class="form-grid">{% include "includes/form_fields.html" with fields=form %}</div>
+  </fieldset>
+  <button class="btn btn-primary btn-lg" type="submit" name="action" value="check">{% translate "Check order" %}</button>
+  {% elif part_request.is_valid %}<p class="muted">{% translate "You can order as soon as prices are known." %}</p>{% endif %}
+</form>
+<form method="post" class="form-card">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="remark">
+  <h2>{% translate "Add a remark" %}</h2>
+  <label class="field"><span>{% translate "About part" %}</span><select name="line">{% for line in part_request.lines.all %}<option value="{{ line.pk }}">{{ line.article_number }}</option>{% endfor %}</select></label>
+  <label class="field"><span>{% translate "Remark" %}</span><textarea name="text" rows="3" required></textarea></label>
+  <button class="btn" type="submit">{% translate "Send remark" %}</button>
+</form>
+<p><a href="{% url 'my_parts' %}">{% translate "All requests and orders" %}</a></p>
+{% endblock %}
