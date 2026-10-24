@@ -28,36 +28,28 @@ prijzen, teksten, huisstijl, nummering, rechten van medewerkers.
 | | Klanten exporteren en importeren |
 | | Externe databases koppelen en vergelijken |
 
-## Snel starten (om uit te proberen)
+## Snel starten
 
 Nodig: [Docker](https://docs.docker.com/get-docker/) met Docker Compose.
 
 ```bash
-# Maak je eigen instellingenbestand op basis van het voorbeeld.
-cp .env.example .env
-```
+# Haal PackDesk binnen en ga naar de map.
+git clone https://github.com/Fritz4all/packdesk.git
+cd packdesk
 
-Zet in `.env` voor een proefopstelling: `DB_ENGINE=postgres`, `DB_HOST=postgres`, `DB_PASSWORD=` een
-zelfgekozen wachtwoord en `COMPOSE_PROFILES=postgres`. Daarna:
-
-```bash
-# Start PackDesk, de database en de testmailbox op de achtergrond. De eerste keer wordt alles
-# gedownload en gebouwd (een paar minuten) en maakt PackDesk zelf de tabellen in de database aan.
+# Start PackDesk met een eigen database op de achtergrond (de eerste keer een paar minuten).
 docker compose up -d
 
-# Toon de installatiecode die je in de volgende stap nodig hebt.
+# Toon de installatiecode die je zo nodig hebt.
 docker compose logs web | grep "Installation code"
 ```
 
-Open daarna http://localhost:8000. De installatiewizard vraagt de code, maakt je beheerdersaccount
-aan en loopt de basisinstellingen en de nummering met je door. Wil je oefenen, vink dan in de laatste
-stap de democatalogus aan.
+Open daarna http://localhost:8000. De installatiewizard vraagt de code, maakt je beheerdersaccount aan
+en loopt de basisinstellingen, de mailserver en de nummering met je door. Wil je oefenen, vink dan in
+de laatste stap de democatalogus aan. Instellingen vooraf in een `.env`-bestand zijn niet nodig.
 
-Daarna:
-
-- Website: http://localhost:8000
-- Beheer: http://localhost:8000/beheer/
-- Verstuurde mails (testmailbox): http://localhost:8025
+Liever MariaDB, of een bestaande databaseserver? Daarvoor zijn er kant-en-klare startbestanden; zie
+[Installatie](docs/installatie.md).
 
 ## Documentatie
 

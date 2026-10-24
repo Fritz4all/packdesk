@@ -39,9 +39,19 @@ documentatie en de teksten op het scherm zijn Nederlands, met vertalingen in het
 
 ## Lokaal draaien
 
-Zie [README](../README.md) en [Installatie](installatie.md). `docker-compose.yml` start PackDesk met
-de code als gekoppelde map, zodat wijzigingen direct zichtbaar zijn, plus een testmailbox op
-http://localhost:8025.
+Gebruik `docker-compose.dev.yml`: PackDesk in foutopsporingsmodus met de code als gekoppelde map,
+zodat wijzigingen direct zichtbaar zijn, plus een testmailbox op http://localhost:8025. Zet in `.env`:
+
+```bash
+COMPOSE_FILE=docker-compose.dev.yml
+COMPOSE_PROFILES=postgres
+DB_ENGINE=postgres
+DB_HOST=postgres
+DB_PASSWORD=<zelfgekozen>
+```
+
+Daarna werkt gewoon `docker compose up -d`. De andere compose-bestanden zijn voor echte installaties
+(zie [Installatie](installatie.md)).
 
 Handige opdrachten:
 

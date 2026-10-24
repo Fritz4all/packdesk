@@ -13,7 +13,7 @@ buiten de container: in de database of in een map op de server. Niets daarvan st
 | 1 | Alle bedrijfsgegevens en de meeste instellingen | eigen database van PackDesk (PostgreSQL of MariaDB/MySQL) | ja: de server in `DB_HOST`, of volume `dbdata` / `mariadbdata` | nee | **ja** |
 | 2 | Bestanden van PackDesk: website-uploads, factuur-pdf's, storingsbijlagen, wachtende imports | `${DATA_DIR}` op de server, in de container `/data` (`DATA_ROOT`) | ja | nee | **ja** |
 | 3 | Oud factuurarchief (pdf's van de vorige webshop), alleen als je het opgeeft | `DOCUMENT_ARCHIVE` op de server, in de container `/data-sources/archive-invoices`, alleen-lezen | ja | nee | ja (eenmalig, verandert niet) |
-| 5 | Serverinstellingen (geheime sleutel, databaseadres, mailserver, domein) | `.env` of omgevingsvariabelen | ja, op de server | nee (`.env` staat in `.gitignore`) | **ja** |
+| 5 | Serverinstellingen (geheime sleutel, database) | `packdesk.env` in de datamap (gemaakt door de wizard), of `.env` / omgevingsvariabelen | ja, op de server | nee | **ja** |
 | 6 | Programmacode, vaste teksten en vertalingen | in de image (lokaal: de projectmap) | n.v.t. | ja | via Git |
 | 7 | Keuzes van een bezoeker (taal, licht/donker) | browser van de bezoeker | n.v.t. | nee | nee |
 | 8 | Logboek | uitvoer van de container (`docker compose logs`) | nee, verdwijnt met de container | nee | optioneel |
@@ -22,9 +22,10 @@ buiten de container: in de database of in een map op de server. Niets daarvan st
 
 ## 1. Database (PostgreSQL of MariaDB/MySQL)
 
-De databaseserver uit `.env` (`DB_ENGINE`, `DB_HOST`, …), of een databasecontainer met volume `dbdata`
-(PostgreSQL) of `mariadbdata` (MariaDB). PackDesk heeft altijd een eigen database, ook op een server
-waar de vorige webshop draait. Hier staat bijna alles.
+De databasecontainer van `docker-compose.yml` (volume `postgres-data`) of `docker-compose.mariadb.yml`
+(volume `mariadb-data`), of een bestaande databaseserver. PackDesk heeft altijd een eigen database, ook
+op een server waar andere databases staan. Hier staat bijna alles, ook de mailserver en de domeinnaam
+uit *Instellingen* (het wachtwoord van de mailserver versleuteld).
 
 **Klantgegevens**
 - klanten, adressen, contactpersonen, klantsoorten, landen
@@ -82,6 +83,8 @@ worden aangemaakt zodra ze nodig zijn.
 | `invoices/<jaar>/` | Factuur-pdf's die PackDesk maakt, en kopieën van oude facturen die via een klantimport binnenkwamen | nee |
 | `fault-attachments/<id>/` | Bijlagen bij storingsmeldingen | nee |
 | `imports/` | Een geüpload importbestand dat op controle wacht; verwijderd na importeren of annuleren, anders na een dag | nee |
+| `packdesk.env` | Serverinstellingen uit de installatiewizard (geheime sleutel, eventueel de database) | nee |
+| `setup-code.txt` | De installatiecode zolang die nodig is; verdwijnt na gebruik | nee |
 
 Wat niet via de website te zien is, opent alleen de eigen klant of een medewerker met het juiste
 recht, en altijd via PackDesk.
@@ -103,24 +106,26 @@ met `DOCUMENT_ARCHIVE=<map>` in `.env`. Zonder deze koppeling is er geen archief
 gewoon. PackDesk leest de pdf's alleen en wijzigt ze nooit. In de database staat per factuur alleen
 de bestandsnaam, en PackDesk opent alleen bestanden binnen deze map.
 
-## 5. Serverinstellingen: `.env` / omgevingsvariabelen
+## 5. Serverinstellingen: `packdesk.env`, `.env` en omgevingsvariabelen
 
-Instellingen die per server verschillen of geheim zijn. Ze staan niet in het beheer en niet in Git; zie
-`.env.example` voor de lijst.
+Instellingen die PackDesk nodig heeft om te kunnen starten. Ze staan niet in Git. Waar ze vandaan
+komen, in deze volgorde:
+
+1. omgevingsvariabelen (bijv. uit het compose-bestand);
+2. `.env` in de map van PackDesk (optioneel, zie `.env.example`);
+3. `packdesk.env` in de datamap: daar bewaart de installatiewizard de geheime sleutel en, bij een
+   bestaande databaseserver, de database-gegevens. Alleen leesbaar voor PackDesk.
 
 | Variabele | Waarvoor |
 |---|---|
-| `SECRET_KEY` | ondertekening van sessies en links; geheim |
-| `DB_ENGINE`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | eigen database van PackDesk: type, server en login; wachtwoord geheim |
-| `DB_ROOT_PASSWORD`, `COMPOSE_PROFILES` | alleen voor een databasecontainer van docker-compose |
-| `DATABASE_URL` | alternatief voor de `DB_*`-regels, in één adres |
-| `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` | domeinnaam van de shop |
-| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_BACKEND` | mailserver |
-| `SECURE_COOKIES`, `SECURE_SSL_REDIRECT`, `SECURE_HSTS_SECONDS` | HTTPS |
-| `DATA_DIR` | map op de server voor alle bestanden van PackDesk (docker-compose koppelt hem als `/data`) |
-| `DATA_ROOT` | dezelfde map, gezien vanuit de container (`/data`) |
-| `DOCUMENT_ARCHIVE` / `DOCUMENT_ARCHIVE_DIR` | optioneel: archiefmap op de server / in de container (`/data-sources/archive-invoices`) |
-| `FALLBACK_LANGUAGES`, `LOG_LEVEL`, `DEBUG` | gedrag |
+| `SECRET_KEY` | ondertekening van sessies en links, en versleuteling van opgeslagen wachtwoorden; maakt PackDesk zelf aan als hij ontbreekt |
+| `DB_ENGINE`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | de eigen database van PackDesk |
+| `SETUP_CODE` | eigen installatiecode in plaats van een willekeurige |
+| `PORT`, `DATA_DIR` | poort en datamap op de server (docker-compose) |
+| `EMAIL_HOST`, `EMAIL_PORT`, … | mailserver; zonder deze regels geldt de mailserver uit het beheer |
+| `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `SECURE_*` | domein en HTTPS; zonder `ALLOWED_HOSTS` geldt de domeinnaam uit het beheer |
+| `DOCUMENT_ARCHIVE` / `DOCUMENT_ARCHIVE_DIR` | optioneel: archiefmap op de server / in de container |
+| `RUN_MIGRATIONS`, `FALLBACK_LANGUAGES`, `LOG_LEVEL`, `DEBUG` | gedrag |
 
 ## 6. Code: Git en de image
 
@@ -140,7 +145,7 @@ kan altijd worden weggegooid en opnieuw gebouwd.
 
 | Wat | Waar |
 |---|---|
-| Database | Docker-volume `packdesk_dbdata` (PostgreSQL) of `packdesk_mariadbdata` (MariaDB) |
+| Database (ontwikkelen) | Docker-volume `packdesk_dbdata` (PostgreSQL) of `packdesk_mariadbdata` (MariaDB) |
 | Bestanden van PackDesk | `../packdesk-data/` met `website/`, `invoices/`, `fault-attachments/`, `imports/` |
 | Factuurarchief (optioneel) | `DOCUMENT_ARCHIVE` in `.env`, gekoppeld via `docker-compose.override.yml` |
 | Verstuurde mails | Mailpit, alleen in het geheugen (http://localhost:8025) |

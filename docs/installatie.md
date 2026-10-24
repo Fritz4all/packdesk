@@ -1,7 +1,7 @@
 # Installatie
 
-Hoe je PackDesk neerzet voor een bedrijf: welke onderdelen er zijn, wat je instelt en hoe je back-ups
-maakt en bijwerkt. Voor een snelle proefopstelling op je eigen computer: zie de [README](../README.md).
+Hoe je PackDesk neerzet voor een bedrijf: kiezen welke database, starten, de installatiewizard,
+back-ups en updates.
 
 ## Wat er draait
 
@@ -9,91 +9,89 @@ maakt en bijwerkt. Voor een snelle proefopstelling op je eigen computer: zie de 
 |---|---|
 | **PackDesk** (container `web`) | de website en het beheer |
 | **Database** | alle gegevens: klanten, licenties, bestellingen, facturen, instellingen, gebruikers |
-| **Datamap** | bestanden die PackDesk bewaart: logo's, factuur-pdf's, bijlagen |
-| **Mailserver** | voor uitgaande mail (bestaande mailserver van het bedrijf of een maildienst) |
+| **Datamap** | bestanden die PackDesk bewaart: logo's, factuur-pdf's, bijlagen, en de instellingen uit de wizard |
 
 De database en de datamap staan altijd buiten de PackDesk-container. Een container kun je dus
 weggooien en vervangen door een nieuwe versie zonder dat er iets verloren gaat.
 
-## 1. Instellingen in `.env`
+## 1. Kies een variant
 
-Kopieer `.env.example` naar `.env` en vul het in. Elke regel heeft een korte uitleg. De belangrijkste:
+Er zijn drie kant-en-klare startbestanden. Kies er één:
 
-| Instelling | Uitleg |
-|---|---|
-| `SECRET_KEY` | lange willekeurige tekst, geheim houden |
-| `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` | de domeinnaam van de shop, bijv. `shop.bedrijf.nl` en `https://shop.bedrijf.nl` |
-| `DB_ENGINE`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | de database (zie hieronder) |
-| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS` | de mailserver |
-| `DATA_DIR` | de datamap op de server |
-
-`.env` bevat wachtwoorden: zet het nooit in Git en geef het alleen aan wie de server beheert.
-
-## 2. Database
-
-PackDesk werkt met **PostgreSQL** en met **MariaDB / MySQL**. Kies wat bij de omgeving past:
-
-| Situatie | In `.env` |
-|---|---|
-| Bestaande databaseserver van het bedrijf | `DB_ENGINE=mariadb` (of `postgres`), `DB_HOST=<ip-adres>`, naam, gebruiker en wachtwoord; `COMPOSE_PROFILES=` leeg |
-| PostgreSQL in een container naast PackDesk | `DB_ENGINE=postgres`, `DB_HOST=postgres`, `COMPOSE_PROFILES=postgres` |
-| MariaDB in een container naast PackDesk | `DB_ENGINE=mariadb`, `DB_HOST=mariadb`, `DB_ROOT_PASSWORD=…`, `COMPOSE_PROFILES=mariadb` |
-
-PackDesk krijgt altijd een **eigen** database, ook op een server waar al andere databases staan. Op
-een bestaande MariaDB-server maakt de beheerder van die server hem eenmalig aan:
-
-```sql
-CREATE DATABASE packdesk CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'packdesk'@'<ip van de PackDesk-server>' IDENTIFIED BY '<wachtwoord>';
-GRANT ALL ON packdesk.* TO 'packdesk'@'<ip van de PackDesk-server>';
-```
-
-De tekenset `utf8mb4` is nodig voor alle tekens, zoals de pictogrammen op de homepage.
-
-## 3. Mappen
-
-| Op de server | In de container | Inhoud |
+| Bestand | Database | Starten met |
 |---|---|---|
-| `DATA_DIR` (standaard `../packdesk-data`) | `/data` | alles wat PackDesk bewaart, met een submap per doel: `website/`, `invoices/`, `fault-attachments/`, `imports/` |
-| optioneel, bijv. het oude factuurarchief | `/data-sources/<naam>` | bestanden uit een ander systeem, alleen-lezen |
+| `docker-compose.yml` | eigen **PostgreSQL**, draait mee | `docker compose up -d` |
+| `docker-compose.mariadb.yml` | eigen **MariaDB**, draait mee | `docker compose -f docker-compose.mariadb.yml up -d` |
+| `docker-compose.external-db.yml` | een **bestaande databaseserver** (MariaDB, MySQL of PostgreSQL) | `docker compose -f docker-compose.external-db.yml up -d` |
 
-Alleen `website/` (logo's) is via de website te zien. Facturen en bijlagen opent PackDesk alleen voor
-de eigen klant of een medewerker met het juiste recht. Meer details: [Waar staat wat](opslag.md).
+Twijfel je, kies dan de eerste. De database draait dan in een eigen container en is alleen bereikbaar
+voor PackDesk.
 
-Een bron alleen-lezen koppelen (bijvoorbeeld de factuur-pdf's van een vorig systeem) doe je in een
-`docker-compose.override.yml` naast `docker-compose.yml`; Docker Compose leest dat bestand vanzelf:
+Bij een andere variant dan de eerste zet je in de opdrachten hieronder steeds `-f <bestand>` achter
+`docker compose`.
 
-```yaml
-services:
-  web:
-    volumes:
-      - ${DOCUMENT_ARCHIVE}:/data-sources/archive-invoices:ro
-```
-
-met `DOCUMENT_ARCHIVE=<map met de pdf's>` in `.env`.
-
-## 4. Starten en eerste keer inrichten
+## 2. Starten
 
 ```bash
-# Start PackDesk (en, als je dat in .env hebt gekozen, de database) op de achtergrond.
-# Bij een lege database maakt PackDesk zelf de tabellen aan.
+# Haal PackDesk binnen en ga naar de map.
+git clone https://github.com/Fritz4all/packdesk.git
+cd packdesk
+
+# Bouw en start PackDesk (en de database van je variant) op de achtergrond. De eerste keer duurt dit
+# een paar minuten. Een nieuwe, lege database krijgt vanzelf zijn tabellen.
 docker compose up -d
 
-# Toon de installatiecode (niet nodig als je zelf SETUP_CODE in .env hebt gezet).
+# Toon de installatiecode die de wizard vraagt.
 docker compose logs web | grep "Installation code"
 ```
 
-Open daarna de website. Zolang de installatie niet klaar is, opent vanzelf de **installatiewizard**:
+Een `.env`-bestand is niet nodig. Wie liever vooraf instelt, kopieert `.env.example` naar `.env`:
+wat daar staat, gaat altijd vóór wat de wizard vraagt.
 
-1. **Installatiecode:** voorkomt dat een willekeurige bezoeker zichzelf beheerder maakt. De code staat
-   in het logboek, of je kiest hem zelf als `SETUP_CODE` in `.env`.
+Standaard luistert PackDesk op poort 8000 en staan de bestanden in `../packdesk-data` (naast de map
+van PackDesk). Anders? Zet `PORT=` of `DATA_DIR=` in `.env`.
+
+## 3. De installatiewizard
+
+Open `http://<server>:8000` in de browser. Zolang de installatie niet klaar is, opent vanzelf de
+wizard. Met `docker-compose.external-db.yml` komt eerst de stap **Database**:
+
+- Vul de databaseserver in (IP-adres of naam, poort, databasenaam, gebruiker en wachtwoord voor
+  PackDesk). Staat de databaseserver op dezelfde computer, gebruik dan `host.docker.internal`.
+- **Bestaat de database nog niet?** Vink aan dat PackDesk hem aanmaakt en vul een beheerderslogin van
+  de databaseserver in (bijv. `root` of `postgres`). Die wordt één keer gebruikt en nooit opgeslagen.
+  PackDesk maakt dan de database en een eigen gebruiker met rechten op alleen die database.
+- Mag de beheerder niet op afstand inloggen, dan vraag je de beheerder van de databaseserver om een
+  lege database en gebruiker aan te maken, bijvoorbeeld voor MariaDB:
+
+  ```sql
+  CREATE DATABASE packdesk CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  CREATE USER 'packdesk'@'%' IDENTIFIED BY '<wachtwoord>';
+  GRANT ALL ON packdesk.* TO 'packdesk'@'%';
+  ```
+
+- PackDesk test de verbinding, slaat de gegevens op en start zichzelf opnieuw.
+
+Daarna, voor alle varianten:
+
+1. **Installatiecode:** bewijst dat jij de server beheert (zie hieronder).
 2. **Eerste beheerder:** e-mailadres en wachtwoord van het account dat alles mag.
-3. **Basisinstellingen:** naam, talen, beheertaal, algemeen e-mailadres en logo, met een testmail om te
-   controleren of mail werkt.
-4. **Nummering:** het eerste nummer voor klanten, bestellingen, licenties en facturen.
-5. **Democatalogus** (optioneel, alleen om te oefenen).
+3. **Basisinstellingen:** naam, domeinnaam, talen, beheertaal, algemeen e-mailadres en logo.
+4. **Mailserver:** de server waarmee PackDesk mail verstuurt, met een testmail.
+5. **Nummering:** het eerste nummer voor klanten, bestellingen, licenties en facturen.
+6. **Democatalogus** (optioneel, alleen om te oefenen).
 
-Daarna sluit de wizard voorgoed en kom je in het beheer. Verdere inrichting:
+Daarna sluit de wizard voorgoed en kom je in het beheer. Alles uit de wizard is later aan te passen
+onder *Instellingen* en *Nummerreeksen*.
+
+**Waarom een installatiecode?** Een nieuwe installatie heeft nog geen beheerder. Zonder code kan de
+eerste bezoeker die de site vindt zichzelf beheerder maken. De code staat alleen in het logboek van de
+server (`docker compose logs web`), of je kiest hem zelf als `SETUP_CODE` in `.env`. Een code die
+PackDesk zelf maakt, verdwijnt na gebruik.
+
+## 4. Verder inrichten
+
+In het beheer (`/beheer/`):
 
 1. **Instellingen:** kleuren, adressen, homepage, bedrijfsgegevens (KvK, btw, IBAN).
 2. **Catalogus:** categorieën, merken, apparaattypes en servicepakketten met prijzen.
@@ -101,46 +99,63 @@ Daarna sluit de wizard voorgoed en kom je in het beheer. Verdere inrichting:
 
 Komt het bedrijf over van een ander systeem? Zie *Externe databases* in de [handleiding](handleiding.md).
 
-Liever zonder browser, bijvoorbeeld bij een geautomatiseerde installatie? Dat kan ook met
-`docker compose exec web python manage.py migrate` en
-`docker compose exec web python manage.py create_user --email <e-mailadres> --superuser`.
+## 5. Op internet
 
-## 5. Op een server
+- Zet een webserver of reverse proxy voor PackDesk die HTTPS regelt (bijv. Caddy, nginx of Traefik).
+  Zet dan in `.env`: `SECURE_COOKIES=1`, `SECURE_SSL_REDIRECT=1` en `CSRF_TRUSTED_ORIGINS=https://<domein>`.
+- Vul in *Instellingen → Algemeen* de **domeinnaam** in. De website antwoordt dan alleen op die naam
+  (en op `localhost`), niet op elke naam of elk IP-adres.
+- Doe de installatiewizard bij voorkeur via HTTPS of op het eigen netwerk; je vult er wachtwoorden in.
 
-`docker-compose.yml` is bedoeld voor ontwikkelen en testen: hij zet de foutopsporing aan en vangt alle
-mail af in een testmailbox. Op een server gebruik je de productie-image:
+## 6. Een map uit een ander systeem koppelen (optioneel)
 
-```bash
-# Bouw de productie-image uit deze map en geef hem een versienummer, bijv. packdesk:1.0.
-docker build -t packdesk:<versie> .
+Neemt het bedrijf factuur-pdf's mee uit een vorig systeem, koppel die map dan alleen-lezen. Maak naast
+het startbestand een `docker-compose.override.yml`:
+
+```yaml
+services:
+  web:
+    volumes:
+      - ${DOCUMENT_ARCHIVE}:/data-sources/archive-invoices:ro
+    environment:
+      DOCUMENT_ARCHIVE_DIR: /data-sources/archive-invoices
 ```
 
-- De image draait als gewone gebruiker (niet als root) en luistert op poort 8000. Zet er een
-  webserver of reverse proxy voor die HTTPS regelt.
-- Alle instellingen komen uit `.env` / omgevingsvariabelen.
-- Koppel `DATA_DIR` als `/data`.
-- Een lege database krijgt bij het starten vanzelf zijn tabellen. Wijzigingen van een nieuwe versie
-  worden nooit ongemerkt doorgevoerd (zie *Bijwerken*), tenzij je `RUN_MIGRATIONS=1` meegeeft.
+en zet `DOCUMENT_ARCHIVE=<map met de pdf's>` in `.env`. Docker Compose leest het override-bestand
+vanzelf bij `docker-compose.yml`; bij de andere varianten geef je het mee:
+`docker compose -f docker-compose.mariadb.yml -f docker-compose.override.yml up -d`.
 
-## 6. Back-ups
+## 7. Back-ups
 
 Maak regelmatig een back-up van:
 
 1. **de database**, bijvoorbeeld
-   `docker compose exec postgres pg_dump -U packdesk packdesk > packdesk.sql` of
-   `docker compose exec mariadb mariadb-dump -u packdesk -p packdesk > packdesk.sql`
-   (bij een bestaande databaseserver: met de back-up van die server);
-2. **de datamap** (`DATA_DIR`);
-3. **`.env`**, op een veilige plek.
+   `docker compose exec db pg_dump -U packdesk packdesk > packdesk.sql` (PostgreSQL) of
+   `docker compose -f docker-compose.mariadb.yml exec db mariadb-dump -u packdesk -p packdesk > packdesk.sql`
+   (MariaDB). Bij een bestaande databaseserver: met de back-up van die server.
+2. **de datamap** (standaard `../packdesk-data`). Daar staan ook de instellingen uit de wizard, met
+   wachtwoorden: bewaar de back-up veilig.
+3. **`.env`**, als je die gebruikt.
 
-Bronnen uit andere systemen (zoals een oud factuurarchief) veranderen niet; daarvan is één kopie genoeg.
+## 8. Bijwerken naar een nieuwe versie
 
-## 7. Bijwerken naar een nieuwe versie
+```bash
+# 1. Maak eerst een back-up (zie hierboven).
+# 2. Haal de nieuwe versie op.
+git pull
+# 3. Bouw en start de nieuwe versie; database en datamap blijven staan.
+docker compose up -d --build
+```
 
-1. Maak een back-up (zie hierboven).
-2. Haal de nieuwe versie op en start hem: `docker compose up -d --build` (bouwt de image opnieuw en
-   start de container daarmee; database en datamap blijven staan).
-3. Heeft de nieuwe versie wijzigingen voor de database, dan tonen website en beheer de pagina
-   **Database bijwerken**. Vul de installatiecode in (`docker compose logs web | grep "Installation code"`,
-   of de `SETUP_CODE` uit `.env`), bevestig dat je een back-up hebt gemaakt en klik op *Database bijwerken*.
-   Daarna werkt alles weer.
+Heeft de nieuwe versie wijzigingen voor de database, dan tonen website en beheer de pagina
+**Database bijwerken**. Vul de installatiecode in (`docker compose logs web | grep "Installation code"`,
+of de `SETUP_CODE` uit `.env`), bevestig dat je een back-up hebt gemaakt en klik op
+*Database bijwerken*. Daarna werkt alles weer.
+
+## Zonder browser installeren
+
+Voor een geautomatiseerde installatie kan alles ook zonder wizard: zet de database en de mailserver in
+`.env` en maak de eerste beheerder met
+`docker compose exec web python manage.py create_user --email <e-mailadres> --superuser`.
+Daarmee is de installatie afgerond en opent de wizard niet meer. Wijzigingen van een nieuwe versie
+voert PackDesk bij het starten zelf door als je `RUN_MIGRATIONS=1` in `.env` zet.
