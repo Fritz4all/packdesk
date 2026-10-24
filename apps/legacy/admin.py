@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
+from django.utils.html import format_html
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.widgets import UnfoldAdminSelectWidget, UnfoldAdminTextareaWidget, UnfoldAdminTextInputWidget
 from unfold.decorators import display
@@ -14,7 +15,9 @@ from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
 from .compare import mapped_rows, show, source_columns
 from .connection import ExternalDatabaseError, check_connection, open_reader
-from .models import ExternalDatabase, FieldMapping, TableMapping
+from .import_views import progress_text, report_url
+from .models import ExternalDatabase, FieldMapping, ImportRun, TableMapping
+from .old_shop.importer import ACTIONS, PARTS
 from .parts import OLD_SHOP_PRESET, PARTS_BY_KEY, apply_preset
 
 
@@ -57,6 +60,7 @@ class ExternalDatabaseAdmin(ObjectActionsMixin, ModelAdmin):
                      show_if="preset_missing"),
         ObjectAction("compare", _("Compare with PackDesk"), "compare_arrows", handler="open_compare",
                      permission="legacy.compare_databases"),
+        ObjectAction("import", _("Import"), "input", handler="open_import", permission="legacy.import_data"),
     ]
 
     @display(description=_("Connection"), label={"ok": "success", "error": "danger", "unknown": "info"})
@@ -83,6 +87,9 @@ class ExternalDatabaseAdmin(ObjectActionsMixin, ModelAdmin):
         ExternalDatabase.objects.filter(pk=db.pk).update(updated_at=timezone.now())
         messages.success(request, gettext("%(n)s table mapping(s) for the previous webshop added. Existing mappings were kept.")
                          % {"n": created})
+
+    def open_import(self, request, db):
+        return redirect(reverse("legacy_import", args=[db.pk]))
 
     def open_compare(self, request, db):
         return redirect(reverse("legacy_compare", args=[db.pk]))
@@ -203,3 +210,57 @@ class TableMappingAdmin(ModelAdmin):
     def response_add(self, request, obj, post_url_continue=None):
         # Straight on to linking the fields.
         return redirect(reverse("admin:legacy_tablemapping_change", args=[obj.pk]))
+
+
+# --- import runs ---------------------------------------------------------------------------------
+
+
+@admin.register(ImportRun)
+class ImportRunAdmin(ModelAdmin):
+    list_display = ["__str__", "database", "show_status", "started_by", "finished_at"]
+    list_filter = ["database", "dry_run", "status"]
+    readonly_fields = ["database", "dry_run", "show_status_text", "show_progress", "started_at", "finished_at",
+                       "started_by", "show_counts", "notes", "show_report"]
+    fields = readonly_fields
+
+    @display(description=_("Status"), label={"running": "info", "done": "success", "failed": "danger"})
+    def show_status(self, obj):
+        return obj.status, obj.get_status_display()
+
+    @display(description=_("Status"))
+    def show_status_text(self, obj):
+        return obj.get_status_display()
+
+    @display(description=_("Busy with"))
+    def show_progress(self, obj):
+        return progress_text(obj) or "—"
+
+    @display(description=_("Result per part"))
+    def show_counts(self, obj):
+        if not obj.counts:
+            return "—"
+        rows = [(PARTS.get(part, part), [(ACTIONS.get(action, action), n) for action, n in counts.items()])
+                for part, counts in obj.counts.items()]
+        return render_to_string("legacy/import_counts.html", {"rows": rows})
+
+    @display(description=_("Report"))
+    def show_report(self, obj):
+        url = report_url(obj)
+        if not url:
+            return "—"
+        return format_html('<a class="underline" href="{}">{}</a> <span class="pd-dim">{}</span>', url,
+                           gettext("Download report (CSV)"),
+                           gettext("one line per row of the old database; contains personal data"))
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        obj = self.get_object(request, object_id)
+        extra = {"show_delete": False, **(extra_context or {})}
+        if obj and obj.status == ImportRun.Status.RUNNING:
+            extra["refresh_seconds"] = 3
+        return super().change_view(request, object_id, form_url, extra)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False

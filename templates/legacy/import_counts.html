@@ -1,0 +1,5 @@
+{% load i18n %}
+<table class="pd-table text-sm">
+  <thead><tr><th>{% translate "Part" %}</th><th>{% translate "Result" %}</th></tr></thead>
+  <tbody>{% for part, counts in rows %}<tr><td>{{ part }}</td><td>{% for action, n in counts %}<span class="inline-block mr-3">{{ action }}: <strong>{{ n }}</strong></span>{% endfor %}</td></tr>{% endfor %}</tbody>
+</table>

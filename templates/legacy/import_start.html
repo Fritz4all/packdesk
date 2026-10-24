@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div class="max-w-3xl">
+  <h1 class="font-semibold text-lg mb-2 text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
+  <p class="mb-2 text-sm">{% translate "Imports everything from the previous webshop that PackDesk knows: the catalogue, customers with addresses, contacts and logins (with their own passwords), orders, licences with options and extensions, invoices with payments, and the number counters." %}</p>
+  <p class="mb-4 text-sm text-base-500">{% translate "Uses the table mappings of this database. Running it again updates what was imported before and never creates anything twice; nothing in PackDesk is deleted. Every row of the old database ends up in the report, with what happened to it." %}</p>
+  {% if not mapped %}<p class="pd-widget mb-4">{% translate "This database has no table mappings yet. Load the mapping for the previous webshop first." %}</p>{% endif %}
+  <div class="grid gap-3 md:grid-cols-2 mb-6">
+    <form method="post" class="pd-widget">
+      {% csrf_token %}
+      <input type="hidden" name="mode" value="trial">
+      <h2 class="font-semibold mb-1">{% translate "Trial import" %}</h2>
+      <p class="text-sm mb-3">{% translate "Does everything and writes the report, then undoes it. Nothing changes in PackDesk." %}</p>
+      <button class="pd-btn pd-btn-primary"><span class="material-symbols-outlined">science</span>{% translate "Start trial import" %}</button>
+    </form>
+    <form method="post" class="pd-widget">
+      {% csrf_token %}
+      <input type="hidden" name="mode" value="apply">
+      <h2 class="font-semibold mb-1">{% translate "Import" %}</h2>
+      <p class="text-sm mb-3">{% translate "Saves everything in PackDesk. Make a backup of the PackDesk database first." %}</p>
+      <label class="flex gap-2 items-center text-sm mb-3"><input type="checkbox" name="confirm" value="1"> {% translate "I have made a backup" %}</label>
+      <button class="pd-btn"><span class="material-symbols-outlined">input</span>{% translate "Start import" %}</button>
+    </form>
+  </div>
+  {% if runs %}
+  <section class="pd-widget">
+    <h2 class="font-semibold mb-2">{% translate "Earlier runs" %}</h2>
+    <table class="pd-table"><tbody>
+    {% for run in runs %}<tr><td><a class="underline" href="{% url 'admin:legacy_importrun_change' run.pk %}">{{ run }}</a></td><td>{{ run.get_status_display }}</td><td>{{ run.started_by|default:"" }}</td></tr>{% endfor %}
+    </tbody></table>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

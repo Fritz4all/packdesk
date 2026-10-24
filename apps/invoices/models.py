@@ -141,6 +141,24 @@ class InvoiceLine(models.Model):
         return self.description
 
 
+class InvoicePayment(models.Model):
+    """A (part) payment received for an invoice."""
+
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name="payments")
+    amount = models.DecimalField(_("amount"), max_digits=12, decimal_places=2)
+    paid_at = models.DateTimeField(_("paid at"))
+    recorded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+                                    related_name="+", verbose_name=_("recorded by"))
+
+    class Meta:
+        verbose_name = _("payment")
+        verbose_name_plural = _("payments")
+        ordering = ["paid_at"]
+
+    def __str__(self):
+        return f"€ {self.amount} ({self.paid_at:%d-%m-%Y})"
+
+
 class InvoiceEmail(models.Model):
     """Every time an invoice was emailed."""
 

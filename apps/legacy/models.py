@@ -114,3 +114,50 @@ class FieldMapping(models.Model):
 
     def __str__(self):
         return f"{self.field} ← {self.column}"
+
+
+class ImportRun(models.Model):
+    """One import (or trial import) from an external database, with its report."""
+
+    class Status(models.TextChoices):
+        RUNNING = "running", _("Running")
+        DONE = "done", _("Done")
+        FAILED = "failed", _("Failed")
+
+    database = models.ForeignKey(ExternalDatabase, on_delete=models.CASCADE, related_name="imports",
+                                 verbose_name=_("external database"))
+    dry_run = models.BooleanField(_("trial (nothing saved)"), default=True)
+    status = models.CharField(_("status"), max_length=10, choices=Status.choices, default=Status.RUNNING)
+    started_at = models.DateTimeField(_("started"), auto_now_add=True)
+    finished_at = models.DateTimeField(_("finished"), null=True, blank=True)
+    started_by = models.ForeignKey("accounts.User", on_delete=models.SET_NULL, null=True, blank=True,
+                                   related_name="+", verbose_name=_("started by"))
+    progress = models.CharField(_("progress"), max_length=200, blank=True)
+    counts = models.JSONField(_("counts"), default=dict, blank=True)
+    notes = models.TextField(_("notes"), blank=True)
+    report_file = models.CharField(_("report"), max_length=300, blank=True)
+
+    class Meta:
+        verbose_name = _("import")
+        verbose_name_plural = _("imports")
+        ordering = ["-started_at"]
+        permissions = [("import_data", _("Can import data from external databases"))]
+
+    def __str__(self):
+        kind = _("Trial import") if self.dry_run else _("Import")
+        return f"{kind} {self.started_at:%d-%m-%Y %H:%M}"
+
+
+class ImportedRecord(models.Model):
+    """Which record in PackDesk came from which row in the external database (kept between runs)."""
+
+    database = models.ForeignKey(ExternalDatabase, on_delete=models.CASCADE, related_name="+")
+    source_table = models.CharField(max_length=64)
+    source_id = models.CharField(max_length=64)
+    target_model = models.CharField(max_length=100)
+    target_pk = models.BigIntegerField()
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["database", "source_table", "source_id"],
+                                               name="one_target_per_source_row")]
+        indexes = [models.Index(fields=["target_model", "target_pk"])]

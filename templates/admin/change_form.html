@@ -1,3 +1,4 @@
 {% extends "admin/change_form.html" %}
 {% comment %}PackDesk: no "add" button in the page header of a form; "Save and add another" is at the bottom.{% endcomment %}
 {% block nav-global-side %}{% endblock %}
+{% block extrahead %}{{ block.super }}{% if refresh_seconds %}<meta http-equiv="refresh" content="{{ refresh_seconds }}">{% endif %}{% endblock %}
