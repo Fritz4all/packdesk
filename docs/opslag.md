@@ -142,5 +142,5 @@ kan altijd worden weggegooid en opnieuw gebouwd.
 |---|---|
 | Database | Docker-volume `packdesk_dbdata` (PostgreSQL) of `packdesk_mariadbdata` (MariaDB) |
 | Bestanden van PackDesk | `../packdesk-data/` met `website/`, `invoices/`, `fault-attachments/`, `imports/` |
-| Factuurarchief | `DOCUMENT_ARCHIVE` in `.env`; lokaal een kopie in `Source/extra/data/invoices` |
+| Factuurarchief (optioneel) | `DOCUMENT_ARCHIVE` in `.env`, gekoppeld via `docker-compose.override.yml` |
 | Verstuurde mails | Mailpit, alleen in het geheugen (http://localhost:8025) |
