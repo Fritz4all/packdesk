@@ -168,7 +168,7 @@ class NumberSequenceAdmin(ObjectActionsMixin, ModelAdmin, TabbedTranslationAdmin
                 instance.created_by = request.user
             instance.save()
         for deleted in formset.deleted_objects:
-            deleted.delete()
+            self.delete_model(request, deleted)  # to the trash
         formset.save_m2m()
 
     def counter_differs(self, obj):

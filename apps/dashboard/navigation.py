@@ -38,6 +38,12 @@ SECTIONS = [
                 "permission": lambda request: request.user.has_perm("numbering.view_numbersequence"),
             },
             {
+                "title": _("Trash"),
+                "icon": "delete",
+                "link": reverse_lazy("admin:trash_trashentry_changelist"),
+                "permission": lambda request: request.user.has_perm("trash.view_trashentry"),
+            },
+            {
                 "title": _("External databases"),
                 "icon": "database",
                 "link": reverse_lazy("admin:legacy_externaldatabase_changelist"),
