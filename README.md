@@ -9,7 +9,7 @@ Status: in opbouw. Zie [docs/plan.md](docs/plan.md).
 
 ## Techniek
 
-Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
+Python 3.13, Django 5.2 LTS, PostgreSQL 17 of MariaDB 10.6+ / MySQL, admin met django-unfold, Docker.
 
 ## Hoe het werkt
 
@@ -157,6 +157,23 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
   - Overschrijven werkt bij en vult aan, maar verwijdert niets. Als nieuwe klant krijgt de klant een
     nieuw klantnummer; documenten waarvan het nummer hier al bestaat, worden overgeslagen. Gegevens
     van een andere klant worden nooit aangeraakt.
+- **Externe databases en vergelijken** (Configuratie → *Externe databases* / *Databases vergelijken*,
+  rechten *externe database bekijken/toevoegen/…* en *Mag databases vergelijken*):
+  - Voeg de database van de vorige webshop toe met type, server, poort, databasenaam, gebruiker en
+    wachtwoord. Het wachtwoord wordt versleuteld opgeslagen (sleutel afgeleid van `SECRET_KEY`) en nooit
+    meer getoond; verandert `SECRET_KEY`, dan vul je het opnieuw in. *Verbinding testen* toont de
+    serverversie en of het een database van de vorige webshop is.
+  - PackDesk leest alleen: de verbinding staat op alleen-lezen en er worden alleen SELECT-opdrachten
+    uitgevoerd. Gebruik op de server daarnaast een gebruiker met alleen leesrechten
+    (`GRANT SELECT ON <oude database>.* TO 'lezer'@'<ip>'`).
+  - *Databases vergelijken* zet per onderdeel oud en nieuw naast elkaar: klanten, contactpersonen,
+    logins, bestellingen, licenties, licentie-opties, facturen en de factuur-pdf's in het archief. Per
+    onderdeel zie je hoeveel er alleen oud, alleen nieuw, verschillend en gelijk zijn; klik door voor
+    de lijst (verschillen per veld, oud → nieuw) of download die als CSV. Koppeling op het ID uit het
+    oude systeem, anders op nummer of e-mailadres; verwijderde rijen in de vorige webshop tellen niet mee.
+  - *Hoogste nummers* vergelijkt de hoogste factuur-, bestel-, licentie- en klantnummers in de oude
+    database met het volgende nummer in PackDesk.
+  - Het zoekveld zoekt een nummer, naam, serienummer of e-mailadres in beide databases tegelijk.
 - **Beheertaal:** het beheer heeft een eigen taal, los van de website. De standaard staat in
   *Instellingen → Algemeen → Beheertaal*; elke medewerker kiest zelf NL / EN / DE in het accountmenu
   (rechtsboven). Mails aan klanten die vanuit het beheer worden verstuurd, blijven in de taal van de
@@ -165,6 +182,25 @@ Python 3.13, Django 5.2 LTS, PostgreSQL 17, admin met django-unfold, Docker.
 ## Lokaal ontwikkelen
 
 Vereist: Docker met Compose v2.
+
+Kopieer `.env.example` naar `.env` en vul de database in:
+
+| Situatie | In `.env` |
+|---|---|
+| Bestaande databaseserver (bijv. de MariaDB van de klant) | `DB_ENGINE=mariadb`, `DB_HOST=<ip>`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `COMPOSE_PROFILES=` (leeg) |
+| PostgreSQL in een container | `DB_ENGINE=postgres`, `DB_HOST=postgres`, `DB_PASSWORD=…`, `COMPOSE_PROFILES=postgres` |
+| MariaDB in een container | `DB_ENGINE=mariadb`, `DB_HOST=mariadb`, `DB_PASSWORD=…`, `DB_ROOT_PASSWORD=…`, `COMPOSE_PROFILES=mariadb` |
+
+PackDesk krijgt altijd een **eigen** database. Op een bestaande MariaDB-server maak je die eenmalig aan
+(als beheerder van die server):
+
+```sql
+CREATE DATABASE packdesk CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'packdesk'@'<ip van de PackDesk-server>' IDENTIFIED BY '<DB_PASS>';
+GRANT ALL ON packdesk.* TO 'packdesk'@'<ip van de PackDesk-server>';
+```
+
+De database van de vorige webshop op dezelfde server wordt niet gebruikt of veranderd.
 
 ```bash
 docker compose up -d
@@ -203,7 +239,15 @@ Back-ups maak je dus van de database en de volumes, niet van de repository.
 docker compose exec web python -m pytest
 ```
 
-GitHub Actions draait bij elke push de tests tegen PostgreSQL en bouwt de productie-image.
+GitHub Actions draait bij elke push alle tests tegen **PostgreSQL en MariaDB 10.6** en bouwt de
+productie-image. Lokaal tegen MariaDB testen:
+
+```bash
+docker compose --profile mariadb up -d mariadb
+docker compose exec -e DB_ENGINE=mariadb -e DB_HOST=mariadb web python -m pytest
+```
+
+(De gebruiker heeft dan rechten nodig op `test_packdesk`: `GRANT ALL ON test_packdesk.* TO packdesk@'%'`.)
 
 ## Talen
 

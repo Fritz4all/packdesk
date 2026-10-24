@@ -10,7 +10,7 @@ buiten de container: in de database of in een map op de server. Niets daarvan st
 
 | # | Wat | Waar | Buiten de container? | In Git? | Back-up? |
 |---|---|---|---|---|---|
-| 1 | Alle bedrijfsgegevens en de meeste instellingen | PostgreSQL-database | ja, volume `dbdata` | nee | **ja** |
+| 1 | Alle bedrijfsgegevens en de meeste instellingen | eigen database van PackDesk (PostgreSQL of MariaDB/MySQL) | ja: de server in `DB_HOST`, of volume `dbdata` / `mariadbdata` | nee | **ja** |
 | 2 | Uploads voor de website (logo, favicon, klantlogo's) | `MEDIA_ROOT` → `${DATA_DIR}/media` | ja | nee | **ja** |
 | 3 | Privébestanden (factuur-pdf's, storingsbijlagen, wachtende imports) | `PRIVATE_MEDIA_ROOT` → `${DATA_DIR}/private` | ja | nee | **ja** |
 | 4 | Oud factuurarchief (pdf's van de vorige webshop) | `DOCUMENT_ARCHIVE` → `/data/archive`, alleen-lezen | ja | nee | ja (eenmalig, verandert niet) |
@@ -21,9 +21,11 @@ buiten de container: in de database of in een map op de server. Niets daarvan st
 
 `DATA_DIR` staat standaard op `../packdesk-data`: naast de projectmap, niet erin.
 
-## 1. Database (PostgreSQL)
+## 1. Database (PostgreSQL of MariaDB/MySQL)
 
-Volume `dbdata` (lokaal) of de databaseserver (productie). Hier staat bijna alles.
+De databaseserver uit `.env` (`DB_ENGINE`, `DB_HOST`, …), of een databasecontainer met volume `dbdata`
+(PostgreSQL) of `mariadbdata` (MariaDB). PackDesk heeft altijd een eigen database, ook op een server
+waar de vorige webshop draait. Hier staat bijna alles.
 
 **Klantgegevens**
 - klanten, adressen, contactpersonen, klantsoorten, landen
@@ -49,6 +51,7 @@ Volume `dbdata` (lokaal) of de databaseserver (productie). Hier staat bijna alle
 | Factuurinstellingen | `InvoiceSettings` |
 | Nummerreeksen (tellers, patronen) met correctielog en verklaringen van gaten | `NumberSequence`, `CounterChange`, `GapNote` |
 | Rollen en rechten | Django-groepen en -rechten |
+| Externe databases (zoals die van de vorige webshop): server, gebruiker, versleuteld wachtwoord | `ExternalDatabase` |
 | Dashboardindeling en volgorde van het menu, per medewerker | `DashboardLayout` |
 | Beheertaal per medewerker | veld op de gebruiker |
 
@@ -57,8 +60,16 @@ Volume `dbdata` (lokaal) of de databaseserver (productie). Hier staat bijna alle
 Back-up:
 
 ```bash
-docker compose exec db pg_dump -U packdesk packdesk > <bestand buiten Git>
+docker compose exec postgres pg_dump -U packdesk packdesk > <bestand buiten Git>
+# of, bij MariaDB:
+docker compose exec mariadb mariadb-dump -u packdesk -p packdesk > <bestand buiten Git>
 ```
+
+Bij een bestaande databaseserver maak je de back-up op die server zelf.
+
+Het wachtwoord van een externe database is versleuteld met een sleutel die van `SECRET_KEY` is
+afgeleid. Een kopie van de database alleen geeft het dus niet prijs. Na een andere `SECRET_KEY` vul je
+het opnieuw in.
 
 ## 2. Uploads voor de website: `${DATA_DIR}/media`
 
@@ -90,7 +101,9 @@ Instellingen die per server verschillen of geheim zijn. Ze staan niet in het beh
 | Variabele | Waarvoor |
 |---|---|
 | `SECRET_KEY` | ondertekening van sessies en links; geheim |
-| `DATABASE_URL` | databaseadres met wachtwoord; geheim |
+| `DB_ENGINE`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | eigen database van PackDesk: type, server en login; wachtwoord geheim |
+| `DB_ROOT_PASSWORD`, `COMPOSE_PROFILES` | alleen voor een databasecontainer van docker-compose |
+| `DATABASE_URL` | alternatief voor de `DB_*`-regels, in één adres |
 | `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` | domeinnaam van de shop |
 | `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_BACKEND` | mailserver |
 | `SECURE_COOKIES`, `SECURE_SSL_REDIRECT`, `SECURE_HSTS_SECONDS` | HTTPS |
@@ -116,7 +129,7 @@ kan altijd worden weggegooid en opnieuw gebouwd.
 
 | Wat | Waar |
 |---|---|
-| Database | Docker-volume `packdesk_dbdata` |
+| Database | Docker-volume `packdesk_dbdata` (PostgreSQL) of `packdesk_mariadbdata` (MariaDB) |
 | Media en privébestanden | `../packdesk-data/media` en `../packdesk-data/private` |
 | Factuurarchief | `DOCUMENT_ARCHIVE` in `.env`; lokaal een kopie in `Source/extra/data/invoices` |
 | Verstuurde mails | Mailpit, alleen in het geheugen (http://localhost:8025) |
