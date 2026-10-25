@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 00:08+0200\n"
+"POT-Creation-Date: 2026-10-25 02:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "können nur Rechte vergeben, die Sie selbst haben."
 
 #: apps/accounts/admin.py:87 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:283
+#: apps/dashboard/navigation.py:357
 msgid "Users"
 msgstr "Benutzer"
 
@@ -182,8 +182,9 @@ msgstr ""
 msgid "Choose a new password for %(company)s"
 msgstr "Wählen Sie ein neues Passwort für %(company)s"
 
-#: apps/accounts/permissions.py:12 apps/invoices/admin.py:87
-#: templates/invoices/my_invoices.html:14
+#: apps/accounts/permissions.py:12 apps/customers/overview.py:159
+#: apps/invoices/admin.py:87 templates/invoices/my_invoices.html:14
+#: templates/telephony/my_quotes.html:7
 msgid "View"
 msgstr "Anzeigen"
 
@@ -444,7 +445,8 @@ msgstr "Notizen"
 #: apps/customers/admin.py:107 apps/customers/overview.py:114
 #: apps/customers/overview.py:117 apps/customers/overview.py:119
 #: apps/customers/overview.py:121 apps/customers/overview.py:141
-#: apps/customers/overview.py:143
+#: apps/customers/overview.py:143 apps/customers/overview.py:159
+#: apps/customers/overview.py:162 apps/customers/overview.py:164
 #: templates/admin/customers/customer/overview.html:10
 #: templates/faults/done.html:8 templates/faults/my_reports.html:9
 #: templates/legacy/overview.html:42
@@ -470,7 +472,7 @@ msgid "Status"
 msgstr "Status"
 
 #: apps/customers/admin.py:120 apps/customers/overview.py:111
-#: apps/dashboard/navigation.py:85 apps/legacy/old_shop/importer.py:112
+#: apps/dashboard/navigation.py:85 apps/legacy/old_shop/importer.py:113
 #: apps/legacy/parts.py:122
 msgid "Contacts"
 msgstr "Ansprechpartner"
@@ -604,7 +606,7 @@ msgid "Activation email"
 msgstr "Aktivierungs-E-Mail"
 
 #: apps/customers/admin.py:331 apps/customers/overview.py:112
-#: apps/legacy/old_shop/importer.py:134 apps/legacy/parts.py:110
+#: apps/legacy/old_shop/importer.py:138 apps/legacy/parts.py:110
 msgid "Name"
 msgstr "Name"
 
@@ -627,7 +629,7 @@ msgstr ""
 "Link)"
 
 #: apps/customers/apps.py:7 apps/dashboard/navigation.py:75
-#: apps/dashboard/navigation.py:78 apps/legacy/old_shop/importer.py:111
+#: apps/dashboard/navigation.py:78 apps/legacy/old_shop/importer.py:112
 #: apps/legacy/parts.py:107
 msgid "Customers"
 msgstr "Kunden"
@@ -764,8 +766,10 @@ msgstr "Die Passwörter stimmen nicht überein."
 #: apps/licences/models.py:32 apps/licences/models.py:57
 #: apps/licences/models.py:71 apps/licences/models.py:112
 #: apps/numbering/models.py:18 apps/parts/models.py:105
-#: apps/parts/models.py:119 apps/siteconfig/models.py:26
-#: apps/siteconfig/models.py:233 apps/trash/models.py:14
+#: apps/parts/models.py:119 apps/printing/models.py:11
+#: apps/printing/models.py:37 apps/siteconfig/models.py:26
+#: apps/siteconfig/models.py:233 apps/telephony/models.py:42
+#: apps/telephony/models.py:57 apps/trash/models.py:14
 msgid "name"
 msgstr "Name"
 
@@ -777,8 +781,9 @@ msgstr "ist Reseller"
 #: apps/faults/models.py:15 apps/invoices/models.py:62
 #: apps/licences/models.py:43 apps/licences/models.py:59
 #: apps/orders/models.py:84 apps/parts/models.py:106 apps/parts/models.py:127
-#: apps/siteconfig/models.py:249 apps/siteconfig/models.py:306
-#: apps/siteconfig/models.py:337
+#: apps/printing/models.py:63 apps/siteconfig/models.py:249
+#: apps/siteconfig/models.py:306 apps/siteconfig/models.py:337
+#: apps/telephony/models.py:43 apps/telephony/models.py:73
 msgid "order"
 msgstr "Reihenfolge"
 
@@ -788,7 +793,7 @@ msgstr "Kundentypen"
 
 #: apps/customers/models.py:30 apps/invoices/models.py:131
 #: apps/licences/models.py:158 apps/numbering/models.py:17
-#: apps/parts/models.py:104 apps/parts/models.py:118
+#: apps/parts/models.py:104 apps/parts/models.py:118 apps/printing/models.py:58
 msgid "code"
 msgstr "Code"
 
@@ -806,7 +811,7 @@ msgstr "Z. B. für Kunden außerhalb Ihres eigenen Landes."
 
 #: apps/customers/models.py:35 apps/faults/models.py:16
 #: apps/parts/models.py:126 apps/siteconfig/models.py:305
-#: apps/siteconfig/models.py:336
+#: apps/siteconfig/models.py:336 apps/telephony/models.py:72
 msgid "active"
 msgstr "aktiv"
 
@@ -851,7 +856,8 @@ msgstr "Status"
 
 #: apps/customers/models.py:67 apps/customers/models.py:201
 #: apps/customers/models.py:270 apps/faults/models.py:99
-#: apps/siteconfig/models.py:144 apps/siteconfig/models.py:239
+#: apps/printing/models.py:147 apps/siteconfig/models.py:144
+#: apps/siteconfig/models.py:239
 msgid "phone"
 msgstr "Telefon"
 
@@ -911,14 +917,14 @@ msgid "ID in old system"
 msgstr "ID im alten System"
 
 #: apps/customers/models.py:93 apps/invoices/models.py:93
-#: apps/legacy/models.py:28 apps/legacy/old_shop/importer.py:125
+#: apps/legacy/models.py:28 apps/legacy/old_shop/importer.py:129
 #: apps/licences/models.py:277 apps/parts/models.py:239
 #: apps/parts/models.py:396
 msgid "created"
 msgstr "angelegt"
 
 #: apps/customers/models.py:94 apps/legacy/models.py:29
-#: apps/legacy/old_shop/importer.py:125 apps/parts/models.py:182
+#: apps/legacy/old_shop/importer.py:129 apps/parts/models.py:182
 #: apps/siteconfig/models.py:151
 msgid "updated"
 msgstr "aktualisiert"
@@ -926,7 +932,8 @@ msgstr "aktualisiert"
 #: apps/customers/models.py:97 apps/faults/models.py:76
 #: apps/invoices/models.py:60 apps/licences/models.py:249
 #: apps/orders/models.py:59 apps/parts/admin.py:64 apps/parts/models.py:170
-#: apps/parts/models.py:323
+#: apps/parts/models.py:323 apps/printing/models.py:101
+#: apps/printing/models.py:142 apps/telephony/models.py:91
 msgid "customer"
 msgstr "Kunde"
 
@@ -961,8 +968,8 @@ msgid "attention of"
 msgstr "zu Händen von"
 
 #: apps/customers/models.py:159 apps/faults/models.py:96
-#: apps/invoices/models.py:74 apps/siteconfig/models.py:234
-#: apps/siteconfig/models.py:252
+#: apps/invoices/models.py:74 apps/printing/models.py:148
+#: apps/siteconfig/models.py:234 apps/siteconfig/models.py:252
 msgid "address"
 msgstr "Adresse"
 
@@ -1151,7 +1158,7 @@ msgid "Not paid"
 msgstr "Nicht bezahlt"
 
 #: apps/customers/overview.py:113 apps/dashboard/navigation.py:190
-#: apps/dashboard/widgets.py:51 apps/legacy/old_shop/importer.py:113
+#: apps/dashboard/widgets.py:51 apps/legacy/old_shop/importer.py:114
 #: apps/legacy/parts.py:146 apps/orders/admin.py:27
 #: templates/orders/order_detail.html:7
 msgid "Licences"
@@ -1180,34 +1187,38 @@ msgstr "Gerät"
 msgid "Serial number"
 msgstr "Seriennummer"
 
-#: apps/customers/overview.py:114
+#: apps/customers/overview.py:114 apps/customers/overview.py:164
 msgid "Start"
 msgstr "Beginn"
 
-#: apps/customers/overview.py:114
+#: apps/customers/overview.py:114 apps/customers/overview.py:164
 msgid "End"
 msgstr "Ende"
 
 #: apps/customers/overview.py:116 apps/dashboard/navigation.py:116
-#: apps/legacy/old_shop/importer.py:113 apps/legacy/parts.py:137
+#: apps/legacy/old_shop/importer.py:114 apps/legacy/parts.py:137
 #: apps/orders/apps.py:7 apps/parts/admin.py:110
 msgid "Orders"
 msgstr "Bestellungen"
 
 #: apps/customers/overview.py:117 apps/customers/overview.py:119
 #: apps/customers/overview.py:121 apps/customers/overview.py:141
-#: apps/customers/overview.py:143 templates/dashboard/report.html:73
+#: apps/customers/overview.py:143 apps/customers/overview.py:159
+#: apps/customers/overview.py:162 templates/dashboard/report.html:73
 #: templates/faults/my_reports.html:9 templates/invoices/my_invoices.html:7
 #: templates/orders/email_confirmation.txt:7 templates/orders/my_orders.html:7
 #: templates/parts/overview.html:8 templates/parts/overview.html:15
+#: templates/telephony/my_quotes.html:7
 msgid "Date"
 msgstr "Datum"
 
 #: apps/customers/overview.py:117 apps/customers/overview.py:119
 #: apps/customers/overview.py:141 apps/customers/overview.py:143
+#: apps/customers/overview.py:159 apps/customers/overview.py:162
 #: apps/legacy/parts.py:140 apps/legacy/parts.py:155 apps/licences/forms.py:29
 #: apps/orders/forms.py:24 templates/faults/email_report.txt:10
-#: templates/orders/order_form.html:13
+#: templates/orders/order_form.html:13 templates/telephony/calculator.html:26
+#: templates/telephony/my_quotes.html:7
 msgid "Reference"
 msgstr "Referenz"
 
@@ -1219,7 +1230,7 @@ msgstr "Gesamt"
 
 #: apps/customers/overview.py:118 apps/dashboard/navigation.py:122
 #: apps/invoices/admin.py:101 apps/invoices/apps.py:7
-#: apps/legacy/old_shop/importer.py:115 apps/legacy/parts.py:170
+#: apps/legacy/old_shop/importer.py:116 apps/legacy/parts.py:170
 msgid "Invoices"
 msgstr "Rechnungen"
 
@@ -1227,13 +1238,13 @@ msgstr "Rechnungen"
 msgid "Paid"
 msgstr "Bezahlt"
 
-#: apps/customers/overview.py:120 apps/dashboard/navigation.py:254
-#: apps/dashboard/navigation.py:257 apps/faults/apps.py:7
+#: apps/customers/overview.py:120 apps/dashboard/navigation.py:328
+#: apps/dashboard/navigation.py:331 apps/faults/apps.py:7
 msgid "Fault reports"
 msgstr "Störungsmeldungen"
 
 #: apps/customers/overview.py:140 apps/dashboard/navigation.py:147
-#: apps/legacy/old_shop/importer.py:117
+#: apps/legacy/old_shop/importer.py:118
 msgid "Spare parts requests"
 msgstr "Ersatzteilanfragen"
 
@@ -1244,9 +1255,29 @@ msgid "Parts"
 msgstr "Teile"
 
 #: apps/customers/overview.py:142 apps/dashboard/navigation.py:153
-#: apps/legacy/old_shop/importer.py:119
+#: apps/legacy/old_shop/importer.py:120
 msgid "Spare parts orders"
 msgstr "Ersatzteilbestellungen"
+
+#: apps/customers/overview.py:158 apps/dashboard/navigation.py:257
+#: apps/legacy/old_shop/importer.py:125
+msgid "Telephony quotes"
+msgstr "Telefonie-Angebote"
+
+#: apps/customers/overview.py:161 apps/dashboard/navigation.py:288
+#: apps/legacy/old_shop/importer.py:123
+msgid "Printing quotes"
+msgstr "Druck-Angebote"
+
+#: apps/customers/overview.py:163 apps/dashboard/navigation.py:294
+#: apps/legacy/old_shop/importer.py:124
+msgid "Printing contracts"
+msgstr "Druck-Verträge"
+
+#: apps/customers/overview.py:164 apps/licences/views.py:21
+#: apps/licences/views.py:109 templates/licences/check.html:13
+msgid "End customer"
+msgstr "Endkunde"
 
 #: apps/customers/transfer.py:161 apps/legacy/compare.py:83
 msgid "yes"
@@ -1494,7 +1525,7 @@ msgstr "Lieferzeiten"
 msgid "Markup tiers"
 msgstr "Aufschlagstaffeln"
 
-#: apps/dashboard/navigation.py:177 apps/legacy/old_shop/importer.py:116
+#: apps/dashboard/navigation.py:177 apps/legacy/old_shop/importer.py:117
 #: apps/parts/models.py:73
 msgid "Spare parts settings"
 msgstr "Einstellungen Ersatzteile"
@@ -1539,19 +1570,56 @@ msgstr "Servicelevel"
 msgid "Licence settings"
 msgstr "Lizenzeinstellungen"
 
-#: apps/dashboard/navigation.py:264
+#: apps/dashboard/navigation.py:254 apps/telephony/apps.py:7
+#: templates/core/dashboard.html:19 templates/telephony/calculator.html:3
+msgid "Telephony"
+msgstr "Telefonie"
+
+#: apps/dashboard/navigation.py:263
+msgid "Telephony items"
+msgstr "Telefonie-Artikel"
+
+#: apps/dashboard/navigation.py:269
+msgid "Telephony categories"
+msgstr "Telefonie-Kategorien"
+
+#: apps/dashboard/navigation.py:275 apps/telephony/models.py:29
+msgid "Telephony settings"
+msgstr "Einstellungen Telefonie"
+
+#: apps/dashboard/navigation.py:285
+msgid "Printing services (archive)"
+msgstr "Druckdienste (Archiv)"
+
+#: apps/dashboard/navigation.py:300 apps/legacy/old_shop/importer.py:124
+msgid "Supplies orders"
+msgstr "Verbrauchsmaterialbestellungen"
+
+#: apps/dashboard/navigation.py:306
+msgid "Printers"
+msgstr "Drucker"
+
+#: apps/dashboard/navigation.py:312
+msgid "Supplies"
+msgstr "Verbrauchsmaterial"
+
+#: apps/dashboard/navigation.py:318
+msgid "Support plans"
+msgstr "Supportpakete"
+
+#: apps/dashboard/navigation.py:338
 msgid "Handling options"
 msgstr "Bearbeitungsoptionen"
 
-#: apps/dashboard/navigation.py:270 apps/faults/models.py:53
+#: apps/dashboard/navigation.py:344 apps/faults/models.py:53
 msgid "Fault report settings"
 msgstr "Störungseinstellungen"
 
-#: apps/dashboard/navigation.py:280
+#: apps/dashboard/navigation.py:354
 msgid "Users and roles"
 msgstr "Benutzer und Rollen"
 
-#: apps/dashboard/navigation.py:289
+#: apps/dashboard/navigation.py:363
 msgid "Roles"
 msgstr "Rollen"
 
@@ -1790,7 +1858,8 @@ msgstr "In Bearbeitung"
 msgid "Closed"
 msgstr "Abgeschlossen"
 
-#: apps/faults/models.py:71
+#: apps/faults/models.py:71 apps/printing/models.py:99
+#: apps/printing/models.py:189
 msgid "number"
 msgstr "Nummer"
 
@@ -1821,6 +1890,7 @@ msgstr ""
 #: apps/faults/models.py:85 apps/licences/models.py:82
 #: apps/licences/models.py:93 apps/licences/models.py:261
 #: apps/licences/models.py:357 apps/parts/models.py:221
+#: apps/printing/models.py:15 apps/printing/models.py:40
 msgid "brand"
 msgstr "Marke"
 
@@ -1829,7 +1899,8 @@ msgid "device"
 msgstr "Gerät"
 
 #: apps/faults/models.py:87 apps/licences/models.py:265
-#: apps/licences/models.py:360 templates/licences/email_certificate.txt:24
+#: apps/licences/models.py:360 apps/printing/models.py:173
+#: templates/licences/email_certificate.txt:24
 msgid "serial number"
 msgstr "Seriennummer"
 
@@ -2128,12 +2199,15 @@ msgstr "Rechnung"
 #: apps/invoices/models.py:132 apps/licences/models.py:163
 #: apps/licences/models.py:263 apps/licences/models.py:358
 #: apps/orders/models.py:102 apps/parts/models.py:223
+#: apps/printing/models.py:13 apps/printing/models.py:59
+#: apps/telephony/models.py:58
 msgid "description"
 msgstr "Beschreibung"
 
 #: apps/invoices/models.py:133 apps/orders/models.py:103
 #: apps/parts/models.py:222 apps/parts/models.py:393 apps/parts/models.py:424
-#: apps/parts/models.py:441
+#: apps/parts/models.py:441 apps/printing/models.py:212
+#: apps/telephony/models.py:121
 msgid "quantity"
 msgstr "Anzahl"
 
@@ -2171,7 +2245,7 @@ msgstr "Zahlung"
 msgid "payments"
 msgstr "Zahlungen"
 
-#: apps/invoices/models.py:168
+#: apps/invoices/models.py:168 apps/printing/models.py:193
 msgid "sent at"
 msgstr "gesendet am"
 
@@ -2179,7 +2253,7 @@ msgstr "gesendet am"
 msgid "sent to"
 msgstr "gesendet an"
 
-#: apps/invoices/models.py:171
+#: apps/invoices/models.py:171 apps/printing/models.py:195
 msgid "sent by"
 msgstr "gesendet von"
 
@@ -2208,7 +2282,9 @@ msgstr "Verlängerung Lizenz %(number)s: %(pack)s"
 
 #: apps/invoices/services.py:93
 msgid "VAT reverse-charged: intra-community delivery"
-msgstr "Steuerschuldnerschaft des Leistungsempfängers: innergemeinschaftliche Lieferung"
+msgstr ""
+"Steuerschuldnerschaft des Leistungsempfängers: innergemeinschaftliche "
+"Lieferung"
 
 #: apps/invoices/services.py:132
 #, python-brace-format
@@ -2602,111 +2678,119 @@ msgstr "Darf Daten aus externen Datenbanken importieren"
 msgid "Trial import"
 msgstr "Probeimport"
 
-#: apps/legacy/old_shop/importer.py:111
+#: apps/legacy/old_shop/importer.py:112
 msgid "Catalogue"
 msgstr "Katalog"
 
-#: apps/legacy/old_shop/importer.py:111
+#: apps/legacy/old_shop/importer.py:112
 #: templates/admin/customers/customer/overview.html:29
 msgid "Addresses"
 msgstr "Adressen"
 
-#: apps/legacy/old_shop/importer.py:112 apps/legacy/parts.py:131
+#: apps/legacy/old_shop/importer.py:113 apps/legacy/parts.py:131
 msgid "Logins"
 msgstr "Logins"
 
-#: apps/legacy/old_shop/importer.py:112
+#: apps/legacy/old_shop/importer.py:113
 msgid "Staff roles"
 msgstr "Rollen der Mitarbeiter"
 
-#: apps/legacy/old_shop/importer.py:113
+#: apps/legacy/old_shop/importer.py:114
 msgid "Order lines"
 msgstr "Bestellpositionen"
 
-#: apps/legacy/old_shop/importer.py:114
+#: apps/legacy/old_shop/importer.py:115
 msgid "Licence extensions"
 msgstr "Lizenzverlängerungen"
 
-#: apps/legacy/old_shop/importer.py:114 apps/legacy/parts.py:160
+#: apps/legacy/old_shop/importer.py:115 apps/legacy/parts.py:160
 msgid "Licence options"
 msgstr "Lizenzoptionen"
 
-#: apps/legacy/old_shop/importer.py:115
+#: apps/legacy/old_shop/importer.py:116
 msgid "Payments"
 msgstr "Zahlungen"
 
-#: apps/legacy/old_shop/importer.py:117
+#: apps/legacy/old_shop/importer.py:118
 msgid "Requested parts"
 msgstr "Angefragte Teile"
 
-#: apps/legacy/old_shop/importer.py:118
+#: apps/legacy/old_shop/importer.py:119
 msgid "Spare parts history"
 msgstr "Verlauf Ersatzteile"
 
-#: apps/legacy/old_shop/importer.py:118
+#: apps/legacy/old_shop/importer.py:119
 msgid "Spare parts remarks"
 msgstr "Bemerkungen Ersatzteile"
 
-#: apps/legacy/old_shop/importer.py:119
+#: apps/legacy/old_shop/importer.py:120
 msgid "Ordered parts"
 msgstr "Bestellte Teile"
 
-#: apps/legacy/old_shop/importer.py:120
+#: apps/legacy/old_shop/importer.py:121
 msgid "Deliveries"
 msgstr "Lieferungen"
 
-#: apps/legacy/old_shop/importer.py:120
+#: apps/legacy/old_shop/importer.py:121
 msgid "Corrections"
 msgstr "Korrekturen"
 
-#: apps/legacy/old_shop/importer.py:121
+#: apps/legacy/old_shop/importer.py:122
 msgid "Spare parts invoices"
 msgstr "Ersatzteilrechnungen"
 
-#: apps/legacy/old_shop/importer.py:122
+#: apps/legacy/old_shop/importer.py:123
+msgid "Printing catalogue"
+msgstr "Druck-Katalog"
+
+#: apps/legacy/old_shop/importer.py:125
+msgid "Telephony catalogue"
+msgstr "Telefonie-Katalog"
+
+#: apps/legacy/old_shop/importer.py:126
 msgid "Number counters"
 msgstr "Nummernzähler"
 
-#: apps/legacy/old_shop/importer.py:125
+#: apps/legacy/old_shop/importer.py:129
 msgid "unchanged"
 msgstr "unverändert"
 
-#: apps/legacy/old_shop/importer.py:126
+#: apps/legacy/old_shop/importer.py:130
 msgid "skipped"
 msgstr "übersprungen"
 
-#: apps/legacy/old_shop/importer.py:126
+#: apps/legacy/old_shop/importer.py:130
 msgid "linked"
 msgstr "verknüpft"
 
-#: apps/legacy/old_shop/importer.py:133 templates/admin/parts/correct.html:10
+#: apps/legacy/old_shop/importer.py:137 templates/admin/parts/correct.html:10
 #: templates/admin/parts/deliver.html:9 templates/legacy/import_counts.html:3
 #: templates/legacy/overview.html:21 templates/parts/order_detail.html:8
 #: templates/parts/request_detail.html:13 templates/parts/review.html:8
 msgid "Part"
 msgstr "Bereich"
 
-#: apps/legacy/old_shop/importer.py:133
+#: apps/legacy/old_shop/importer.py:137
 msgid "Old table"
 msgstr "Alte Tabelle"
 
-#: apps/legacy/old_shop/importer.py:133
+#: apps/legacy/old_shop/importer.py:137
 msgid "Old id"
 msgstr "Alte ID"
 
-#: apps/legacy/old_shop/importer.py:133
+#: apps/legacy/old_shop/importer.py:137
 msgid "Action"
 msgstr "Aktion"
 
-#: apps/legacy/old_shop/importer.py:134
+#: apps/legacy/old_shop/importer.py:138
 msgid "PackDesk id"
 msgstr "PackDesk-ID"
 
-#: apps/legacy/old_shop/importer.py:134
+#: apps/legacy/old_shop/importer.py:138
 msgid "Note"
 msgstr "Hinweis"
 
-#: apps/legacy/old_shop/importer.py:286
+#: apps/legacy/old_shop/importer.py:292
 #, python-format
 msgid ""
 "Created '%(name)s' for %(kind)s: old rows refer to one that no longer "
@@ -2715,7 +2799,7 @@ msgstr ""
 "'%(name)s' für %(kind)s angelegt: alte Zeilen verweisen auf etwas, das nicht "
 "mehr existiert. Prüfen Sie diese Elemente nach dem Import."
 
-#: apps/legacy/old_shop/importer.py:325
+#: apps/legacy/old_shop/importer.py:331
 msgid ""
 "hw_type_vendor (which brands supply which option types) is not used by "
 "PackDesk; not imported."
@@ -2723,7 +2807,7 @@ msgstr ""
 "hw_type_vendor (welche Marken welche Optionsarten liefern) nutzt PackDesk "
 "nicht; nicht importiert."
 
-#: apps/legacy/old_shop/importer.py:368
+#: apps/legacy/old_shop/importer.py:374
 msgid ""
 "hw_pack_prolongation (which pack extends which) is not imported: PackDesk "
 "chooses extension packs itself (same category and hardware class)."
@@ -2732,18 +2816,22 @@ msgstr ""
 "importiert: PackDesk wählt Verlängerungspakete selbst (gleiche Kategorie und "
 "Hardwareklasse)."
 
-#: apps/legacy/old_shop/importer.py:653
+#: apps/legacy/old_shop/importer.py:659
 #, python-format
-msgid "Licence number %(nr)s was used %(n)s times in the previous webshop; renumbered on import."
-msgstr "Lizenznummer %(nr)s wurde im vorherigen Webshop %(n)s-mal verwendet; beim Import neu nummeriert."
+msgid ""
+"Licence number %(nr)s was used %(n)s times in the previous webshop; renumbered on "
+"import."
+msgstr ""
+"Lizenznummer %(nr)s wurde im vorherigen Webshop %(n)s-mal verwendet; beim Import neu "
+"nummeriert."
 
-#: apps/legacy/old_shop/importer.py:778
+#: apps/legacy/old_shop/importer.py:784
 #, python-format
 msgid "Counter %(key)s: not changed (pattern %(pattern)s); check it yourself."
 msgstr ""
 "Zähler %(key)s: nicht geändert (Muster %(pattern)s); prüfen Sie ihn selbst."
 
-#: apps/legacy/old_shop/importer.py:790
+#: apps/legacy/old_shop/importer.py:796
 msgid ""
 "Licence numbers of the previous webshop have different formats; the licence counter "
 "is not changed. Check it under Number sequences."
@@ -2752,12 +2840,36 @@ msgstr ""
 "Lizenzzähler wurde nicht geändert. Prüfen Sie ihn unter Nummernkreise."
 
 #: apps/legacy/old_shop/parts_import.py:272
-msgid "The old Acer parts catalogue (part, part_price, part_model, part_model_group, part_model_part, part_type, part_stock) was last updated in 2009 and is not imported; descriptions of requested parts from it are taken over."
-msgstr "Der alte Acer-Teilekatalog (part, part_price, part_model, part_model_group, part_model_part, part_type, part_stock) wurde zuletzt 2009 aktualisiert und wird nicht importiert; Beschreibungen angefragter Teile daraus werden übernommen."
+msgid ""
+"The old Acer parts catalogue (part, part_price, part_model, "
+"part_model_group, part_model_part, part_type, part_stock) was last updated "
+"in 2009 and is not imported; descriptions of requested parts from it are "
+"taken over."
+msgstr ""
+"Der alte Acer-Teilekatalog (part, part_price, part_model, part_model_group, "
+"part_model_part, part_type, part_stock) wurde zuletzt 2009 aktualisiert und "
+"wird nicht importiert; Beschreibungen angefragter Teile daraus werden "
+"übernommen."
 
 #: apps/legacy/old_shop/parts_import.py:275
-msgid "service_delivery_partner (delivery partners from 2009) is not used by PackDesk; not imported."
-msgstr "service_delivery_partner (Lieferpartner von 2009) wird von PackDesk nicht verwendet; nicht importiert."
+msgid ""
+"service_delivery_partner (delivery partners from 2009) is not used by "
+"PackDesk; not imported."
+msgstr ""
+"service_delivery_partner (Lieferpartner von 2009) wird von PackDesk nicht "
+"verwendet; nicht importiert."
+
+#: apps/legacy/old_shop/phase3_import.py:152
+msgid "Printing services are kept as an archive: the previous webshop no longer offered them and its calculation rules are not known, so PackDesk shows them but makes no new quotes. ps_printer_option was empty."
+msgstr "Druckdienste werden als Archiv übernommen: der vorherige Webshop bot sie nicht mehr an und die Berechnungsregeln sind nicht bekannt, daher zeigt PackDesk sie, erstellt aber keine neuen Angebote. ps_printer_option war leer."
+
+#: apps/legacy/old_shop/phase3_import.py:194
+msgid "Telephony item images were files on the old server and are not imported; add them in the admin if needed."
+msgstr "Bilder der Telefonie-Artikel lagen als Dateien auf dem alten Server und wurden nicht importiert; fügen Sie sie bei Bedarf in der Verwaltung hinzu."
+
+#: apps/legacy/old_shop/phase3_import.py:229
+msgid "The telephony calculator is switched off until you switch it on under Telephony settings. The previous webshop's price per port cannot be recalculated; old quotes show the stored value."
+msgstr "Der Telefonie-Rechner ist ausgeschaltet, bis Sie ihn unter Einstellungen Telefonie einschalten. Der Preis pro Port des vorherigen Webshops lässt sich nicht nachrechnen; alte Angebote zeigen den gespeicherten Wert."
 
 #: apps/legacy/parts.py:110 apps/legacy/parts.py:127 apps/legacy/parts.py:176
 #: templates/admin/customers/_import_outcome.html:3
@@ -3022,6 +3134,8 @@ msgstr "Typ"
 #: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
 #: templates/orders/review.html:9 templates/parts/order_detail.html:8
 #: templates/parts/request_detail.html:19 templates/parts/review.html:8
+#: templates/telephony/calculator.html:13
+#: templates/telephony/calculator.html:19 templates/telephony/quote.html:8
 msgid "Quantity"
 msgstr "Anzahl"
 
@@ -3146,7 +3260,7 @@ msgstr "ist Monitor"
 msgid "option type"
 msgstr "Optionstyp"
 
-#: apps/licences/models.py:126
+#: apps/licences/models.py:126 apps/printing/models.py:60
 msgid "duration (years)"
 msgstr "Laufzeit (Jahre)"
 
@@ -3205,7 +3319,7 @@ msgstr "Servicelevel"
 msgid "service levels"
 msgstr "Servicelevel"
 
-#: apps/licences/models.py:159
+#: apps/licences/models.py:159 apps/telephony/models.py:56
 msgid "category"
 msgstr "Kategorie"
 
@@ -3217,7 +3331,8 @@ msgstr "Laufzeit"
 msgid "Shown to customers and in emails."
 msgstr "Wird Kunden und in E-Mails angezeigt."
 
-#: apps/licences/models.py:164
+#: apps/licences/models.py:164 apps/printing/models.py:16
+#: apps/printing/models.py:41 apps/printing/models.py:213
 msgid "price"
 msgstr "Preis"
 
@@ -3358,16 +3473,17 @@ msgstr "Verlängerung von"
 msgid "registered on"
 msgstr "registriert am"
 
-#: apps/licences/models.py:259
+#: apps/licences/models.py:259 apps/printing/models.py:149
 msgid "start date"
 msgstr "Startdatum"
 
-#: apps/licences/models.py:260
+#: apps/licences/models.py:260 apps/printing/models.py:150
 msgid "end date"
 msgstr "Enddatum"
 
 #: apps/licences/models.py:264 apps/licences/models.py:359
-#: apps/parts/models.py:219
+#: apps/parts/models.py:219 apps/printing/models.py:12
+#: apps/printing/models.py:38
 msgid "article number"
 msgstr "Artikelnummer"
 
@@ -3446,11 +3562,6 @@ msgstr "Lizenzoptionen"
 #, python-format
 msgid "Registration licence %(number)s"
 msgstr "Registrierung Lizenz %(number)s"
-
-#: apps/licences/views.py:21 apps/licences/views.py:109
-#: templates/licences/check.html:13
-msgid "End customer"
-msgstr "Endkunde"
 
 #: apps/licences/views.py:24 apps/licences/views.py:154
 #: templates/licences/check.html:19
@@ -3622,8 +3733,18 @@ msgid "file names in archive"
 msgstr "Dateinamen im Archiv"
 
 #: apps/numbering/models.py:36
-msgid "Optional. Only needed when documents from a previous system are in the archive folder. Tells PackDesk how those files are named, so it can read their numbers: to check the counter and to import old invoices. (\\d+) stands for the number, e.g. invoice_(\\d+)\\.pdf matches invoice_1030953.pdf. Leave empty when there is no archive."
-msgstr "Optional. Nur nötig, wenn Dokumente aus einem früheren System im Archivordner liegen. Sagt PackDesk, wie diese Dateien heißen, damit es ihre Nummern lesen kann: um den Zähler zu prüfen und alte Rechnungen zu importieren. (\\d+) steht für die Nummer, z. B. passt invoice_(\\d+)\\.pdf auf invoice_1030953.pdf. Leer lassen, wenn es kein Archiv gibt."
+msgid ""
+"Optional. Only needed when documents from a previous system are in the "
+"archive folder. Tells PackDesk how those files are named, so it can read "
+"their numbers: to check the counter and to import old invoices. (\\d+) "
+"stands for the number, e.g. invoice_(\\d+)\\.pdf matches "
+"invoice_1030953.pdf. Leave empty when there is no archive."
+msgstr ""
+"Optional. Nur nötig, wenn Dokumente aus einem früheren System im "
+"Archivordner liegen. Sagt PackDesk, wie diese Dateien heißen, damit es ihre "
+"Nummern lesen kann: um den Zähler zu prüfen und alte Rechnungen zu "
+"importieren. (\\d+) steht für die Nummer, z. B. passt invoice_(\\d+)\\.pdf "
+"auf invoice_1030953.pdf. Leer lassen, wenn es kein Archiv gibt."
 
 #: apps/numbering/models.py:44
 msgid "number sequence"
@@ -3847,6 +3968,7 @@ msgid "ordered by"
 msgstr "bestellt von"
 
 #: apps/orders/models.py:62 apps/parts/models.py:326
+#: apps/printing/models.py:196
 msgid "ordered at"
 msgstr "bestellt am"
 
@@ -3878,7 +4000,8 @@ msgstr "Ort Lieferung"
 msgid "packs sent"
 msgstr "Pakete versendet"
 
-#: apps/orders/models.py:106
+#: apps/orders/models.py:106 apps/printing/models.py:104
+#: apps/telephony/models.py:94
 msgid "reference"
 msgstr "Referenz"
 
@@ -4032,8 +4155,12 @@ msgstr "Geben Sie einen Grund an."
 
 #: apps/parts/admin.py:346
 #, python-format
-msgid "Correction saved; € %(credit)s to credit. The administration has been emailed."
-msgstr "Korrektur gespeichert; € %(credit)s gutzuschreiben. Die Buchhaltung wurde benachrichtigt."
+msgid ""
+"Correction saved; € %(credit)s to credit. The administration has been "
+"emailed."
+msgstr ""
+"Korrektur gespeichert; € %(credit)s gutzuschreiben. Die Buchhaltung wurde "
+"benachrichtigt."
 
 #: apps/parts/admin.py:361
 msgid "Order cancelled. The administration has been emailed."
@@ -4137,8 +4264,12 @@ msgid "small order below (€)"
 msgstr "Kleinbestellung unter (€)"
 
 #: apps/parts/models.py:42
-msgid "Orders below this amount (excl. VAT, after discount) get the small order surcharge."
-msgstr "Bestellungen unter diesem Betrag (ohne MwSt., nach Rabatt) erhalten den Kleinmengenzuschlag."
+msgid ""
+"Orders below this amount (excl. VAT, after discount) get the small order "
+"surcharge."
+msgstr ""
+"Bestellungen unter diesem Betrag (ohne MwSt., nach Rabatt) erhalten den "
+"Kleinmengenzuschlag."
 
 #: apps/parts/models.py:44
 msgid "small order surcharge (€)"
@@ -4150,23 +4281,34 @@ msgstr "Versandkosten Ausland (€)"
 
 #: apps/parts/models.py:48
 msgid "Added when the delivery address is outside the home country."
-msgstr "Wird berechnet, wenn die Lieferadresse außerhalb des Heimatlandes liegt."
+msgstr ""
+"Wird berechnet, wenn die Lieferadresse außerhalb des Heimatlandes liegt."
 
 #: apps/parts/models.py:51
 msgid "home country"
 msgstr "Heimatland"
 
 #: apps/parts/models.py:52
-msgid "Deliveries outside this country pay the delivery costs abroad. If both the delivery and the invoice address are abroad, no VAT is charged (intra-community delivery)."
-msgstr "Lieferungen außerhalb dieses Landes zahlen die Versandkosten Ausland. Liegen Liefer- und Rechnungsadresse beide im Ausland, wird keine MwSt. berechnet (innergemeinschaftliche Lieferung)."
+msgid ""
+"Deliveries outside this country pay the delivery costs abroad. If both the "
+"delivery and the invoice address are abroad, no VAT is charged (intra-"
+"community delivery)."
+msgstr ""
+"Lieferungen außerhalb dieses Landes zahlen die Versandkosten Ausland. Liegen "
+"Liefer- und Rechnungsadresse beide im Ausland, wird keine MwSt. berechnet "
+"(innergemeinschaftliche Lieferung)."
 
 #: apps/parts/models.py:56
 msgid "approval needed from (€)"
 msgstr "Freigabe nötig ab (€)"
 
 #: apps/parts/models.py:57
-msgid "Orders on account from this amount (incl. VAT) wait for approval before delivery."
-msgstr "Bestellungen auf Rechnung ab diesem Betrag (inkl. MwSt.) warten vor der Lieferung auf Freigabe."
+msgid ""
+"Orders on account from this amount (incl. VAT) wait for approval before "
+"delivery."
+msgstr ""
+"Bestellungen auf Rechnung ab diesem Betrag (inkl. MwSt.) warten vor der "
+"Lieferung auf Freigabe."
 
 #: apps/parts/models.py:60
 msgid "maximum quantity per line"
@@ -4181,8 +4323,12 @@ msgid "internal recipients"
 msgstr "interne Empfänger"
 
 #: apps/parts/models.py:65
-msgid "Get new requests, orders, cancellations and corrections. Email addresses separated by commas."
-msgstr "Erhalten neue Anfragen, Bestellungen, Stornierungen und Korrekturen. E-Mail-Adressen durch Kommas getrennt."
+msgid ""
+"Get new requests, orders, cancellations and corrections. Email addresses "
+"separated by commas."
+msgstr ""
+"Erhalten neue Anfragen, Bestellungen, Stornierungen und Korrekturen. E-Mail-"
+"Adressen durch Kommas getrennt."
 
 #: apps/parts/models.py:69 apps/parts/models.py:70
 msgid "spare parts settings"
@@ -4225,8 +4371,12 @@ msgid "on account"
 msgstr "auf Rechnung"
 
 #: apps/parts/models.py:122
-msgid "Delivered before payment. Large orders wait for approval (see the settings). Without this, an order waits until it is paid."
-msgstr "Wird vor der Zahlung geliefert. Große Bestellungen warten auf Freigabe (siehe Einstellungen). Ohne dies wartet eine Bestellung, bis sie bezahlt ist."
+msgid ""
+"Delivered before payment. Large orders wait for approval (see the settings). "
+"Without this, an order waits until it is paid."
+msgstr ""
+"Wird vor der Zahlung geliefert. Große Bestellungen warten auf Freigabe "
+"(siehe Einstellungen). Ohne dies wartet eine Bestellung, bis sie bezahlt ist."
 
 #: apps/parts/models.py:125
 msgid "extra costs (€)"
@@ -4477,7 +4627,7 @@ msgstr "Versandkosten"
 msgid "packing"
 msgstr "Verpackung"
 
-#: apps/parts/models.py:394
+#: apps/parts/models.py:394 apps/telephony/models.py:123
 msgid "purchase price"
 msgstr "Einkaufspreis"
 
@@ -4531,8 +4681,12 @@ msgstr "storniert"
 
 #: apps/parts/views.py:72
 #, python-format
-msgid "Request %(number)s has been sent. You will get an email when it has been answered."
-msgstr "Anfrage %(number)s wurde gesendet. Sie erhalten eine E-Mail, sobald sie beantwortet ist."
+msgid ""
+"Request %(number)s has been sent. You will get an email when it has been "
+"answered."
+msgstr ""
+"Anfrage %(number)s wurde gesendet. Sie erhalten eine E-Mail, sobald sie "
+"beantwortet ist."
 
 #: apps/parts/views.py:108
 msgid "Your remark has been sent."
@@ -4544,12 +4698,246 @@ msgstr "Tragen Sie ein, wie viele Teile Sie bestellen möchten."
 
 #: apps/parts/views.py:156
 msgid "The prices have changed in the meantime. Please check your order again."
-msgstr "Die Preise haben sich inzwischen geändert. Bitte prüfen Sie Ihre Bestellung erneut."
+msgstr ""
+"Die Preise haben sich inzwischen geändert. Bitte prüfen Sie Ihre Bestellung "
+"erneut."
 
 #: apps/parts/views.py:168
 #, python-format
 msgid "Order %(number)s has been placed."
 msgstr "Bestellung %(number)s wurde aufgegeben."
+
+#: apps/printing/apps.py:7
+msgid "Printing services"
+msgstr "Druckdienste"
+
+#: apps/printing/models.py:17 apps/telephony/models.py:98
+msgid "installation costs"
+msgstr "Installationskosten"
+
+#: apps/printing/models.py:19
+msgid "support factor"
+msgstr "Supportfaktor"
+
+#: apps/printing/models.py:20 apps/printing/models.py:42
+msgid "colour"
+msgstr "Farbe"
+
+#: apps/printing/models.py:21
+msgid "maximum prints per month"
+msgstr "maximale Drucke pro Monat"
+
+#: apps/printing/models.py:22
+msgid "removed in the previous webshop"
+msgstr "im vorherigen Webshop entfernt"
+
+#: apps/printing/models.py:24
+msgid "replaces"
+msgstr "ersetzt"
+
+#: apps/printing/models.py:28 apps/printing/models.py:124
+#: apps/printing/models.py:170
+msgid "printer"
+msgstr "Drucker"
+
+#: apps/printing/models.py:29 apps/printing/models.py:45
+msgid "printers"
+msgstr "Drucker"
+
+#: apps/printing/models.py:43
+msgid "prints"
+msgstr "Drucke"
+
+#: apps/printing/models.py:44
+msgid "replaceable by the user"
+msgstr "vom Benutzer austauschbar"
+
+#: apps/printing/models.py:49 apps/printing/models.py:211
+msgid "supply"
+msgstr "Verbrauchsmaterial"
+
+#: apps/printing/models.py:50
+msgid "supplies"
+msgstr "Verbrauchsmaterialien"
+
+#: apps/printing/models.py:61
+msgid "storage factor"
+msgstr "Lagerfaktor"
+
+#: apps/printing/models.py:62
+msgid "lease factor"
+msgstr "Leasingfaktor"
+
+#: apps/printing/models.py:67 apps/printing/models.py:126
+#: apps/printing/models.py:172
+msgid "support plan"
+msgstr "Supportpaket"
+
+#: apps/printing/models.py:68
+msgid "support plans"
+msgstr "Supportpakete"
+
+#: apps/printing/models.py:72
+msgid "years"
+msgstr "Jahre"
+
+#: apps/printing/models.py:78
+msgid "options"
+msgstr "Optionen"
+
+#: apps/printing/models.py:79
+msgid "prints per month"
+msgstr "Drucke pro Monat"
+
+#: apps/printing/models.py:80
+msgid "colour prints per month"
+msgstr "Farbdrucke pro Monat"
+
+#: apps/printing/models.py:81
+msgid "cost price per month excl. hardware"
+msgstr "Selbstkosten pro Monat ohne Hardware"
+
+#: apps/printing/models.py:83
+msgid "cost price per month incl. hardware"
+msgstr "Selbstkosten pro Monat mit Hardware"
+
+#: apps/printing/models.py:85
+msgid "price per month excl. hardware"
+msgstr "Preis pro Monat ohne Hardware"
+
+#: apps/printing/models.py:87
+msgid "price per month incl. hardware"
+msgstr "Preis pro Monat mit Hardware"
+
+#: apps/printing/models.py:89
+msgid "price per black print"
+msgstr "Preis pro Schwarzweißdruck"
+
+#: apps/printing/models.py:91
+msgid "price per colour print"
+msgstr "Preis pro Farbdruck"
+
+#: apps/printing/models.py:103 apps/printing/models.py:144
+#: apps/telephony/models.py:93
+msgid "made by"
+msgstr "erstellt von"
+
+#: apps/printing/models.py:105
+msgid "margin hardware (%)"
+msgstr "Marge Hardware (%)"
+
+#: apps/printing/models.py:106
+msgid "margin supplies (%)"
+msgstr "Marge Verbrauchsmaterial (%)"
+
+#: apps/printing/models.py:107
+msgid "margin support (%)"
+msgstr "Marge Support (%)"
+
+#: apps/printing/models.py:108
+msgid "margin prints (%)"
+msgstr "Marge Drucke (%)"
+
+#: apps/printing/models.py:109
+msgid "removed by the customer"
+msgstr "vom Kunden entfernt"
+
+#: apps/printing/models.py:110 apps/printing/models.py:156
+#: apps/printing/models.py:177 apps/telephony/models.py:102
+msgid "made at"
+msgstr "erstellt am"
+
+#: apps/printing/models.py:114
+msgid "printing quote"
+msgstr "Druck-Angebot"
+
+#: apps/printing/models.py:115
+msgid "printing quotes"
+msgstr "Druck-Angebote"
+
+#: apps/printing/models.py:130
+msgid "printer in quote"
+msgstr "Drucker im Angebot"
+
+#: apps/printing/models.py:131
+msgid "printers in quote"
+msgstr "Drucker im Angebot"
+
+#: apps/printing/models.py:138
+msgid "contract number"
+msgstr "Vertragsnummer"
+
+#: apps/printing/models.py:140
+msgid "quote"
+msgstr "Angebot"
+
+#: apps/printing/models.py:145
+msgid "end customer"
+msgstr "Endkunde"
+
+#: apps/printing/models.py:146 apps/printing/models.py:192
+msgid "contact person"
+msgstr "Ansprechpartner"
+
+#: apps/printing/models.py:151
+msgid "preferred installation date"
+msgstr "gewünschtes Installationsdatum"
+
+#: apps/printing/models.py:152
+msgid "including hardware"
+msgstr "inklusive Hardware"
+
+#: apps/printing/models.py:154
+msgid "activated by"
+msgstr "aktiviert von"
+
+#: apps/printing/models.py:155
+msgid "activated at"
+msgstr "aktiviert am"
+
+#: apps/printing/models.py:160
+msgid "printing contract"
+msgstr "Druck-Vertrag"
+
+#: apps/printing/models.py:161
+msgid "printing contracts"
+msgstr "Druck-Verträge"
+
+#: apps/printing/models.py:174
+msgid "minimum stock"
+msgstr "Mindestbestand"
+
+#: apps/printing/models.py:175
+msgid "maximum stock"
+msgstr "Höchstbestand"
+
+#: apps/printing/models.py:176
+msgid "meter readings and details"
+msgstr "Zählerstände und Angaben"
+
+#: apps/printing/models.py:181 apps/printing/models.py:191
+msgid "printer in contract"
+msgstr "Drucker im Vertrag"
+
+#: apps/printing/models.py:182
+msgid "printers in contract"
+msgstr "Drucker im Vertrag"
+
+#: apps/printing/models.py:200
+msgid "supplies order"
+msgstr "Verbrauchsmaterialbestellung"
+
+#: apps/printing/models.py:201
+msgid "supplies orders"
+msgstr "Verbrauchsmaterialbestellungen"
+
+#: apps/printing/models.py:217
+msgid "ordered supply"
+msgstr "bestelltes Verbrauchsmaterial"
+
+#: apps/printing/models.py:218
+msgid "ordered supplies"
+msgstr "bestellte Verbrauchsmaterialien"
 
 #: apps/siteconfig/admin.py:21 apps/siteconfig/models.py:38
 msgid "Languages visitors can choose from."
@@ -4964,6 +5352,146 @@ msgstr "Menüeintrag"
 msgid "menu items"
 msgstr "Menüeinträge"
 
+#: apps/telephony/models.py:16
+msgid "telephony calculator active"
+msgstr "Telefonie-Rechner aktiv"
+
+#: apps/telephony/models.py:17
+msgid "one-off installation costs (€)"
+msgstr "einmalige Installationskosten (€)"
+
+#: apps/telephony/models.py:19
+msgid "default margin (%)"
+msgstr "Standardmarge (%)"
+
+#: apps/telephony/models.py:20
+msgid "Suggested margin for resellers on hire and purchase prices."
+msgstr "Vorgeschlagene Marge für Wiederverkäufer auf Miet- und Kaufpreise."
+
+#: apps/telephony/models.py:21
+msgid "introduction on calculator page"
+msgstr "Einleitung auf der Rechnerseite"
+
+#: apps/telephony/models.py:22
+msgid "text under each quote"
+msgstr "Text unter jedem Angebot"
+
+#: apps/telephony/models.py:25 apps/telephony/models.py:26
+msgid "telephony settings"
+msgstr "Einstellungen Telefonie"
+
+#: apps/telephony/models.py:47
+msgid "telephony category"
+msgstr "Telefonie-Kategorie"
+
+#: apps/telephony/models.py:48
+msgid "telephony categories"
+msgstr "Telefonie-Kategorien"
+
+#: apps/telephony/models.py:59
+msgid "image"
+msgstr "Bild"
+
+#: apps/telephony/models.py:60
+msgid "hire per month (€)"
+msgstr "Miete pro Monat (€)"
+
+#: apps/telephony/models.py:61
+msgid "Empty = cannot be hired."
+msgstr "Leer = nicht mietbar."
+
+#: apps/telephony/models.py:62
+msgid "purchase price (€)"
+msgstr "Kaufpreis (€)"
+
+#: apps/telephony/models.py:63
+msgid "One-off when bought. Empty = nothing one-off."
+msgstr "Einmalig beim Kauf. Leer = nichts Einmaliges."
+
+#: apps/telephony/models.py:64
+msgid "per month when bought (€)"
+msgstr "pro Monat beim Kauf (€)"
+
+#: apps/telephony/models.py:65
+msgid "E.g. licences or subscriptions that also cost something per month when the system is bought."
+msgstr "Z. B. Lizenzen oder Abonnements, die auch beim Kauf monatlich etwas kosten."
+
+#: apps/telephony/models.py:68
+msgid "quantity = sum of"
+msgstr "Menge = Summe von"
+
+#: apps/telephony/models.py:69
+msgid "The quantity is counted automatically: the total of these items (e.g. one user licence per phone)."
+msgstr "Die Menge wird automatisch gezählt: die Summe dieser Artikel (z. B. eine Benutzerlizenz pro Telefon)."
+
+#: apps/telephony/models.py:77
+msgid "telephony item"
+msgstr "Telefonie-Artikel"
+
+#: apps/telephony/models.py:78
+msgid "telephony items"
+msgstr "Telefonie-Artikel"
+
+#: apps/telephony/models.py:87
+msgid "For my customer (prices with my margin)"
+msgstr "Für meinen Kunden (Preise mit meiner Marge)"
+
+#: apps/telephony/models.py:88
+msgid "For myself (purchase prices and margin)"
+msgstr "Für mich (Einkaufspreise und Marge)"
+
+#: apps/telephony/models.py:95
+msgid "view"
+msgstr "Ansicht"
+
+#: apps/telephony/models.py:96
+msgid "margin hire (%)"
+msgstr "Marge Miete (%)"
+
+#: apps/telephony/models.py:97
+msgid "margin purchase (%)"
+msgstr "Marge Kauf (%)"
+
+#: apps/telephony/models.py:100
+msgid "price per port (previous webshop)"
+msgstr "Preis pro Port (alter Shop)"
+
+#: apps/telephony/models.py:106
+msgid "telephony quote"
+msgstr "Telefonie-Angebot"
+
+#: apps/telephony/models.py:107
+msgid "telephony quotes"
+msgstr "Telefonie-Angebote"
+
+#: apps/telephony/models.py:120
+msgid "item"
+msgstr "Artikel"
+
+#: apps/telephony/models.py:122
+msgid "hire per month"
+msgstr "Miete pro Monat"
+
+#: apps/telephony/models.py:124
+msgid "per month when bought"
+msgstr "pro Monat beim Kauf"
+
+#: apps/telephony/models.py:128
+msgid "quote line"
+msgstr "Angebotszeile"
+
+#: apps/telephony/models.py:129
+msgid "quote lines"
+msgstr "Angebotszeilen"
+
+#: apps/telephony/views.py:46
+msgid "Fill in at least one quantity."
+msgstr "Tragen Sie mindestens eine Menge ein."
+
+#: apps/telephony/views.py:56
+msgid "Quote saved."
+msgstr "Angebot gespeichert."
+
 #: apps/trash/admin.py:25
 msgid "Restore"
 msgstr "Wiederherstellen"
@@ -5042,15 +5570,15 @@ msgstr ""
 msgid "Restoring is not possible: %(error)s"
 msgstr "Wiederherstellen ist nicht möglich: %(error)s"
 
-#: packdesk/settings.py:167
+#: packdesk/settings.py:169
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: packdesk/settings.py:167
+#: packdesk/settings.py:169
 msgid "English"
 msgstr "Englisch"
 
-#: packdesk/settings.py:167
+#: packdesk/settings.py:169
 msgid "German"
 msgstr "Deutsch"
 
@@ -5361,8 +5889,12 @@ msgstr "Verwaltungssprache"
 
 #: templates/admin/parts/cancel.html:8
 #, python-format
-msgid "The whole order is cancelled. The administration gets an email to credit € %(total)s (excl. VAT)."
-msgstr "Die ganze Bestellung wird storniert. Die Buchhaltung erhält eine E-Mail, € %(total)s (ohne MwSt.) gutzuschreiben."
+msgid ""
+"The whole order is cancelled. The administration gets an email to credit € "
+"%(total)s (excl. VAT)."
+msgstr ""
+"Die ganze Bestellung wird storniert. Die Buchhaltung erhält eine E-Mail, € "
+"%(total)s (ohne MwSt.) gutzuschreiben."
 
 #: templates/admin/parts/cancel.html:9 templates/admin/parts/correct.html:17
 #: templates/parts/email.txt:34
@@ -5374,8 +5906,13 @@ msgid "Cancel order"
 msgstr "Bestellung stornieren"
 
 #: templates/admin/parts/correct.html:8
-msgid "Lower the quantity of parts that cannot be delivered, with a negative number (e.g. -2). The administration gets an email with the amount to credit."
-msgstr "Verringern Sie die Menge der Teile, die nicht geliefert werden können, mit einer negativen Zahl (z. B. -2). Die Buchhaltung erhält eine E-Mail mit dem gutzuschreibenden Betrag."
+msgid ""
+"Lower the quantity of parts that cannot be delivered, with a negative number "
+"(e.g. -2). The administration gets an email with the amount to credit."
+msgstr ""
+"Verringern Sie die Menge der Teile, die nicht geliefert werden können, mit "
+"einer negativen Zahl (z. B. -2). Die Buchhaltung erhält eine E-Mail mit dem "
+"gutzuschreibenden Betrag."
 
 #: templates/admin/parts/correct.html:10 templates/admin/parts/deliver.html:9
 #: templates/admin/parts/picklist.html:9 templates/parts/order_detail.html:8
@@ -5415,7 +5952,7 @@ msgstr "Der Kunde erhält eine E-Mail mit dem, was geliefert wurde."
 msgid "Ordered at"
 msgstr "Bestellt am"
 
-#: templates/admin/parts/picklist.html:11
+#: templates/admin/parts/picklist.html:11 templates/telephony/quote.html:22
 msgid "Print"
 msgstr "Drucken"
 
@@ -5508,12 +6045,16 @@ msgstr "Status, Enddaten und Verlängerung."
 msgid "Request spare parts, see prices and order."
 msgstr "Ersatzteile anfragen, Preise sehen und bestellen."
 
-#: templates/core/dashboard.html:19 templates/invoices/my_invoices.html:3
+#: templates/core/dashboard.html:19
+msgid "Calculate a phone system: hire or buy."
+msgstr "Berechnen Sie eine Telefonanlage: mieten oder kaufen."
+
+#: templates/core/dashboard.html:20 templates/invoices/my_invoices.html:3
 #: templates/invoices/my_invoices.html:5
 msgid "My invoices"
 msgstr "Meine Rechnungen"
 
-#: templates/core/dashboard.html:19
+#: templates/core/dashboard.html:20
 msgid "View, download or email your invoices."
 msgstr "Rechnungen ansehen, herunterladen oder per E-Mail senden."
 
@@ -5896,8 +6437,8 @@ msgid "Result"
 msgstr "Ergebnis"
 
 #: templates/legacy/import_start.html:6
-msgid "Imports everything from the previous webshop that PackDesk knows: the catalogue, customers with addresses, contacts and logins (with their own passwords), orders, licences with options and extensions, invoices with payments, spare parts requests and orders, and the number counters."
-msgstr "Importiert alles aus dem vorherigen Webshop, was PackDesk kennt: den Katalog, Kunden mit Adressen, Ansprechpartner und Logins (mit ihrem eigenen Passwort), Bestellungen, Lizenzen mit Optionen und Verlängerungen, Rechnungen mit Zahlungen, Ersatzteilanfragen und -bestellungen sowie die Nummernzähler."
+msgid "Imports everything from the previous webshop that PackDesk knows: the catalogue, customers with addresses, contacts and logins (with their own passwords), orders, licences with options and extensions, invoices with payments, spare parts requests and orders, printing services (as an archive), telephony, and the number counters."
+msgstr "Importiert alles aus dem vorherigen Webshop, was PackDesk kennt: den Katalog, Kunden mit Adressen, Ansprechpartner und Logins (mit ihrem eigenen Passwort), Bestellungen, Lizenzen mit Optionen und Verlängerungen, Rechnungen mit Zahlungen, Ersatzteilanfragen und -bestellungen, Druckdienste (als Archiv), Telefonie sowie die Nummernzähler."
 
 #: templates/legacy/import_start.html:7
 msgid ""
@@ -6247,12 +6788,20 @@ msgid "Place order"
 msgstr "Bestellung aufgeben"
 
 #: templates/parts/email.txt:2
-msgid "We have received your spare parts request. We will let you know the prices and delivery times as soon as possible."
-msgstr "Wir haben Ihre Ersatzteilanfrage erhalten. Wir teilen Ihnen Preise und Lieferzeiten so bald wie möglich mit."
+msgid ""
+"We have received your spare parts request. We will let you know the prices "
+"and delivery times as soon as possible."
+msgstr ""
+"Wir haben Ihre Ersatzteilanfrage erhalten. Wir teilen Ihnen Preise und "
+"Lieferzeiten so bald wie möglich mit."
 
 #: templates/parts/email.txt:8
-msgid "Your spare parts request has been answered. Log in to see the prices and to order."
-msgstr "Ihre Ersatzteilanfrage wurde beantwortet. Melden Sie sich an, um die Preise zu sehen und zu bestellen."
+msgid ""
+"Your spare parts request has been answered. Log in to see the prices and to "
+"order."
+msgstr ""
+"Ihre Ersatzteilanfrage wurde beantwortet. Melden Sie sich an, um die Preise "
+"zu sehen und zu bestellen."
 
 #: templates/parts/email.txt:11
 msgid "Valid until"
@@ -6363,8 +6912,12 @@ msgid "Send remark"
 msgstr "Bemerkung senden"
 
 #: templates/parts/request_form.html:6
-msgid "Fill in the parts you need. We answer with prices and delivery times; then you can order."
-msgstr "Tragen Sie die benötigten Teile ein. Wir antworten mit Preisen und Lieferzeiten; danach können Sie bestellen."
+msgid ""
+"Fill in the parts you need. We answer with prices and delivery times; then "
+"you can order."
+msgstr ""
+"Tragen Sie die benötigten Teile ein. Wir antworten mit Preisen und "
+"Lieferzeiten; danach können Sie bestellen."
 
 #: templates/parts/request_form.html:17
 msgid "Request details"
@@ -6704,6 +7257,130 @@ msgstr "Installation abschließen"
 #: templates/setup/wizard.html:38
 msgid "Skip, set up later"
 msgstr "Überspringen, später einrichten"
+
+#: templates/telephony/_totals.html:2
+msgid "Hire"
+msgstr "Mieten"
+
+#: templates/telephony/_totals.html:4 templates/telephony/_totals.html:10
+msgid "Per month"
+msgstr "Pro Monat"
+
+#: templates/telephony/_totals.html:5
+msgid "One-off installation"
+msgstr "Einmalige Installation"
+
+#: templates/telephony/_totals.html:7
+msgid "Buy"
+msgstr "Kaufen"
+
+#: templates/telephony/_totals.html:9
+msgid "One-off"
+msgstr "Einmalig"
+
+#: templates/telephony/_totals.html:13
+msgid "All prices excl. VAT."
+msgstr "Alle Preise ohne MwSt."
+
+#: templates/telephony/calculator.html:5
+msgid "Telephony calculator"
+msgstr "Telefonie-Rechner"
+
+#: templates/telephony/calculator.html:6 templates/telephony/my_quotes.html:3
+#: templates/telephony/my_quotes.html:5
+msgid "My telephony quotes"
+msgstr "Meine Telefonie-Angebote"
+
+#: templates/telephony/calculator.html:7
+msgid "Fill in what is needed and compare hiring with buying. Quantities marked automatic are counted for you."
+msgstr "Tragen Sie ein, was benötigt wird, und vergleichen Sie Mieten mit Kaufen. Mengen mit „automatisch“ werden für Sie gezählt."
+
+#: templates/telephony/calculator.html:13 templates/telephony/quote.html:8
+msgid "Item"
+msgstr "Artikel"
+
+#: templates/telephony/calculator.html:13 templates/telephony/quote.html:9
+msgid "Hire per month"
+msgstr "Miete pro Monat"
+
+#: templates/telephony/calculator.html:13 templates/telephony/quote.html:10
+msgid "Purchase price"
+msgstr "Kaufpreis"
+
+#: templates/telephony/calculator.html:13 templates/telephony/quote.html:10
+msgid "Per month when bought"
+msgstr "Pro Monat beim Kauf"
+
+#: templates/telephony/calculator.html:19
+msgid "Counted automatically"
+msgstr "Wird automatisch gezählt"
+
+#: templates/telephony/calculator.html:19
+msgid "automatic"
+msgstr "automatisch"
+
+#: templates/telephony/calculator.html:24 templates/telephony/my_quotes.html:7
+msgid "Quote"
+msgstr "Angebot"
+
+#: templates/telephony/calculator.html:27
+#, python-format
+msgid "Margin hire (%%)"
+msgstr "Marge Miete (%%)"
+
+#: templates/telephony/calculator.html:28
+#, python-format
+msgid "Margin purchase (%%)"
+msgstr "Marge Kauf (%%)"
+
+#: templates/telephony/calculator.html:29
+msgid "Quote view"
+msgstr "Angebotsansicht"
+
+#: templates/telephony/calculator.html:32
+msgid "Prices in the totals include your margin."
+msgstr "Die Preise in den Summen enthalten Ihre Marge."
+
+#: templates/telephony/calculator.html:34
+msgid "Calculate"
+msgstr "Berechnen"
+
+#: templates/telephony/calculator.html:35
+msgid "Save as quote"
+msgstr "Als Angebot speichern"
+
+#: templates/telephony/my_quotes.html:5
+msgid "New calculation"
+msgstr "Neue Berechnung"
+
+#: templates/telephony/my_quotes.html:9
+msgid "No quotes yet."
+msgstr "Noch keine Angebote."
+
+#: templates/telephony/quote.html:3 templates/telephony/quote.html:5
+msgid "Telephony quote"
+msgstr "Telefonie-Angebot"
+
+#: templates/telephony/quote.html:9
+msgid "Hire per month (cost)"
+msgstr "Miete pro Monat (Einkauf)"
+
+#: templates/telephony/quote.html:10
+msgid "Purchase price (cost)"
+msgstr "Kaufpreis (Einkauf)"
+
+#: templates/telephony/quote.html:19
+#, python-format
+msgid "Margin: hire %(hire)s %%, purchase %(buy)s %%."
+msgstr "Marge: Miete %(hire)s %%, Kauf %(buy)s %%."
+
+#: templates/telephony/quote.html:20
+msgid "Price per port (previous webshop)"
+msgstr "Preis pro Port (alter Shop)"
+
+#: templates/telephony/quote.html:22
+msgid "All telephony quotes"
+msgstr "Alle Telefonie-Angebote"
 
 #: templates/unfold/helpers/account_links.html:6
 msgid "View site"

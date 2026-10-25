@@ -106,6 +106,29 @@ Zo werkt het, net als in de vorige webshop:
 Wie wat mag: de rol *Service* behandelt aanvragen en levert uit, *Financieel* ziet alles en mag
 uitleveren en corrigeren, *Beheerder* mag ook de instellingen wijzigen.
 
+## Telefonie
+
+Een calculator in het klantportaal (*Telefonie*) waarmee klanten, zoals resellers, een telefooncentrale
+doorrekenen en huren met kopen vergelijken. Staat standaard uit: zet hem aan onder *Instellingen telefonie*.
+
+- **Artikelen** (*Telefonie-artikelen*, per categorie): huur per maand, koopprijs (eenmalig) en per maand
+  bij koop. Een leeg veld betekent dat het artikel niet zo te krijgen is. Bij *aantal = som van* telt
+  PackDesk het aantal zelf, bijvoorbeeld één gebruikerslicentie per toestel en installatie per licentie.
+- **Rekenen:** de klant vult aantallen in en ziet het totaal voor huren (per maand, plus eenmalige
+  installatiekosten) en voor kopen (eenmalig en per maand). Op de prijzen komt de marge die de klant
+  invult (prijs × (1 + marge %)); de standaardmarge staat in de instellingen.
+- **Offertes:** de klant kan een berekening opslaan als offerte, voor de eigen klant (prijzen met marge)
+  of voor zichzelf (inkoopprijs, marge en verkoopprijs), en die afdrukken. Een opgeslagen offerte houdt
+  de prijzen van dat moment. In het beheer zie je alle offertes onder *Telefonie-offertes*.
+
+## Printing services (archief)
+
+De vorige webshop bood printing services aan (printers met support en afdrukprijzen). Dat is gestopt; de
+laatste offerte is uit 2013. De gegevens zijn bewaard om in te zien: printers en verbruiksartikelen,
+supportpakketten, offertes, contracten (met serienummers en tellerstanden) en verbruiksbestellingen.
+Je kunt zoeken en kijken, maar niets wijzigen of nieuw maken; de rekenregels van de vorige webshop zijn
+niet meer bekend.
+
 ## Storingsmeldingen
 
 - Meldingen met status nieuw, in behandeling of afgesloten, interne notities, de dekking van de
@@ -172,8 +195,8 @@ uitleveren en corrigeren, *Beheerder* mag ook de instellingen wijzigen.
   neemt alles over wat PackDesk kent: catalogus, klanten met adressen, contactpersonen met hun login
   (met hun eigen wachtwoord uit de vorige webshop), medewerkers met een passende rol, bestellingen, licenties
   met opties en verlengingen, facturen met betalingen, onderdelen (aanvragen met antwoorden, opmerkingen
-  en geschiedenis, bestellingen met leveringen en correcties, gekoppeld aan hun facturen) en de
-  nummertellers.
+  en geschiedenis, bestellingen met leveringen en correcties, gekoppeld aan hun facturen), printing
+  services (als archief), telefonie (artikelen, instellingen en offertes) en de nummertellers.
   - Start eerst een **proefimport**: die doet alles en draait het daarna terug, zodat je het verslag
     kunt bekijken zonder dat er iets verandert. Daarna **importeren** (eerst een back-up maken).
   - Opnieuw importeren werkt bij wat eerder is overgenomen en maakt niets dubbel aan; er wordt niets
