@@ -15,6 +15,8 @@ from apps.licences.models import Category, HardwareClass, Licence, LicenceOption
 from apps.numbering.models import NumberSequence
 from apps.orders.models import Order, OrderLine
 from apps.parts.models import PartOrder, PartRequest, Remark
+from apps.printing.models import PrintContract, PrintQuote, SuppliesOrder
+from apps.telephony.models import Item, Quote, TelephonySettings
 
 from .conftest import make_user
 from .old_shop import make_old_shop
@@ -116,6 +118,43 @@ OLD = {
                       "part_request_id": "pr1", "part_order_id": "po1", "created_at": "2016-02-02 09:00:00"}],
     "part_delivered": [{"id": "dv1", "amount": 2, "part_ordered_id": "od1", "user_id": "u9",
                         "created_at": "2016-02-03 09:00:00"}],
+    "ps_support_type": [{"id": "st1", "abbreviation": "8ND5", "description": "Next business day"}],
+    "ps_support": [{"id": "sp1", "duration": 3, "storage_factor": "1.0000", "lease_factor": "9.207000", "position": 1,
+                    "ps_support_type_id": "st1"}],
+    "ps_printer": [{"id": "pp1", "name": "LaserJet", "product_nr": "LJ1", "description": "A4", "price": "500.00",
+                    "installation_costs": "0", "support_factor": "0.0070", "color": 0, "monthly_max_prints": 0,
+                    "vendor_id": "v1"}],
+    "ps_consumable": [{"id": "pc1", "product_nr": "T1", "name": "Toner", "price": "80.00", "vendor_id": "v1"}],
+    "ps_consumable_ps_printer": [{"ps_consumable_id": "pc1", "ps_printer_id": "pp1"}],
+    "ps_tender": [{"id": 12, "reference": "Kantoor", "margin_hardware": "15.00", "deleted": 0, "employee_id": "e1",
+                   "created_at": "2012-01-01 10:00:00"}],
+    "ps_tender_entry": [{"ps_tender_id": 12, "ps_printer_id": "pp1", "n_total_prints": 1000, "price_ex_hw": "40.00",
+                         "cust_price_ex_hw": "47.06", "ps_support_id": "sp1"}],
+    "ps_contract": [{"id": 3, "id_suffix": "AB", "company": "Eindklant", "lastname": "Jansen", "initials": "J.",
+                     "start_date": "2012-02-01", "inc_hardware": 1, "address_id": "a1", "ps_tender_id": 12,
+                     "employee_id": "e1", "created_at": "2012-01-15 10:00:00"}],
+    "ps_contract_entry": [{"id": "ce1", "serial_nr": "SER1", "ps_support_id": "sp1", "ps_contract_id": 3,
+                           "ps_printer_id": "pp1", "created_at": "2012-02-01 10:00:00"}],
+    "ps_printer_meta": [{"id": "pm1", "name": "teller", "value": "1234", "ps_contract_entry_id": "ce1",
+                         "created_at": "2012-03-01 10:00:00"}],
+    "ps_consumable_order": [{"id": 5, "id_suffix": "X", "contact": "Jansen", "ps_contract_entry_id": "ce1",
+                             "created_at": "2012-04-01 10:00:00"}],
+    "ps_consumable_order_item": [{"ps_consumable_id": "pc1", "ps_consumable_order_id": "5", "amount": 2, "price": "80.00"}],
+    "telephony_category": [{"id": 1, "childnumber": 1, "name": "Toestellen"}, {"id": 2, "childnumber": 2, "name": "Licenties"}],
+    "telephony_item": [
+        {"id": 1, "childnumber": 1, "description_short": "IP-toestel", "hire_costs_per_month": "2.60", "buy_costs": "132.00",
+         "buy_costs_per_month": "0.00", "category_id": 1, "has_hire_costs_per_month": 1, "has_buy_costs": 1,
+         "has_buy_costs_per_month": 0},
+        {"id": 13, "childnumber": 1, "description_short": "Gebruikerslicentie", "hire_costs_per_month": "5.90",
+         "buy_costs": "0.00", "buy_costs_per_month": "5.90", "category_id": 2, "has_hire_costs_per_month": 1,
+         "has_buy_costs": 0, "has_buy_costs_per_month": 1, "amount_function_on_calculator": "amount_sum_items 1"},
+    ],
+    "telephony_setting": [{"id": 1, "name": "installation_costs", "value": "25", "description": "Installatie"}],
+    "telephony_tender": [{"id": 30, "reference": "Kantoor", "view": "reseller", "price_per_port": "14.93",
+                          "margin_hire": "10.00", "margin_buy": "10.00", "user_id": "u1", "created_at": "2015-12-01 10:00:00"}],
+    "telephony_tender_item": [{"id": 1, "telephony_tender_id": 30, "telephony_item_id": 1, "amount": 4,
+                               "hire_costs_per_month": "2.60", "buy_costs": "132.00", "buy_costs_per_month": "0.00"},
+                              {"id": 2, "telephony_tender_id": 30, "telephony_item_id": 13, "amount": 0}],
     "invoice": [{"id": 1, "invoice_id": "1017494", "payed_at": "2016-02-01 12:00:00", "hw_support_order_id": "7",
                  "created_at": "2016-01-05 12:00:00"},
                 {"id": 2, "invoice_id": "1000001", "payed_at": None, "created_at": "2013-01-05 12:00:00"},
@@ -281,3 +320,25 @@ def test_spare_parts_come_along(old_db):
 
     again = _run(old_db, apply=True)
     assert again.counts["spare parts orders"] == {"unchanged": 2} and PartOrder.objects.count() == 2
+
+
+def test_printing_and_telephony_come_along(old_db):
+    run = _run(old_db, apply=True)
+    quote = PrintQuote.objects.get(number="12")
+    assert quote.customer.number == "400123" and quote.lines.get().printer.name == "LaserJet"
+    contract = PrintContract.objects.get(number="3AB")
+    assert contract.quote == quote and contract.contact == "J. Jansen" and "Stad" in contract.address
+    line = contract.lines.get()
+    assert line.serial_nr == "SER1" and "teller: 1234" in line.readings and line.printer.consumables.count() == 1
+    assert SuppliesOrder.objects.get(number="5X").lines.get().quantity == 2
+
+    licence = Item.objects.get(name_nl="Gebruikerslicentie")
+    assert list(licence.quantity_from.values_list("name_nl", flat=True)) == ["IP-toestel"]
+    assert licence.buy_price is None and licence.buy_per_month == Decimal("5.90")
+    assert TelephonySettings.load().installation_costs == Decimal("25") and not TelephonySettings.load().enabled
+    tq = Quote.objects.get(reference="Kantoor")
+    assert tq.customer.number == "400123" and tq.view == "reseller" and tq.old_price_per_port == Decimal("14.93")
+    assert tq.lines.count() == 1 and tq.totals()["hire_per_month"] == Decimal("11.44")  # 4 × 2.60 + 10%
+
+    again = _run(old_db, apply=True)
+    assert again.counts["telephony quotes"].get("created", 0) == 0 and again.counts["printing quotes"].get("created", 0) == 0

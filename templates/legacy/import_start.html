@@ -3,7 +3,7 @@
 {% block content %}
 <div class="max-w-3xl">
   <h1 class="font-semibold text-lg mb-2 text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
-  <p class="mb-2 text-sm">{% translate "Imports everything from the previous webshop that PackDesk knows: the catalogue, customers with addresses, contacts and logins (with their own passwords), orders, licences with options and extensions, invoices with payments, spare parts requests and orders, and the number counters." %}</p>
+  <p class="mb-2 text-sm">{% translate "Imports everything from the previous webshop that PackDesk knows: the catalogue, customers with addresses, contacts and logins (with their own passwords), orders, licences with options and extensions, invoices with payments, spare parts requests and orders, printing services (as an archive), telephony, and the number counters." %}</p>
   <p class="mb-4 text-sm text-base-500">{% translate "Uses the table mappings of this database. Running it again updates what was imported before and never creates anything twice; nothing in PackDesk is deleted. Every row of the old database ends up in the report, with what happened to it." %}</p>
   {% if not mapped %}<p class="pd-widget mb-4">{% translate "This database has no table mappings yet. Load the mapping for the previous webshop first." %}</p>{% endif %}
   <div class="grid gap-3 md:grid-cols-2 mb-6">

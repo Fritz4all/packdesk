@@ -39,6 +39,7 @@ from apps.orders.models import Order, OrderLine, money
 from ..connection import open_reader
 from ..models import ImportedRecord, ImportRun
 from .parts_import import import_spare_parts
+from .phase3_import import import_printing, import_telephony
 from .passwords import decrypt
 
 log = logging.getLogger(__name__)
@@ -119,6 +120,9 @@ PARTS = {
     "spare parts orders": gettext_lazy("Spare parts orders"), "ordered parts": gettext_lazy("Ordered parts"),
     "deliveries": gettext_lazy("Deliveries"), "corrections": gettext_lazy("Corrections"),
     "spare parts invoices": gettext_lazy("Spare parts invoices"),
+    "printing catalogue": gettext_lazy("Printing catalogue"), "printing quotes": gettext_lazy("Printing quotes"),
+    "printing contracts": gettext_lazy("Printing contracts"), "supplies orders": gettext_lazy("Supplies orders"),
+    "telephony catalogue": gettext_lazy("Telephony catalogue"), "telephony quotes": gettext_lazy("Telephony quotes"),
     "number counters": gettext_lazy("Number counters"),
 }
 ACTIONS = {
@@ -262,6 +266,8 @@ class OldShopImport:
                         self.options()
                         self.invoices()
                         import_spare_parts(self)
+                        import_printing(self)
+                        import_telephony(self)
                         self.counters()
                         if self.dry:
                             raise _Rollback

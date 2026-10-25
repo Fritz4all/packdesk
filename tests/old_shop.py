@@ -93,6 +93,55 @@ SCHEMA = [
     "`hw_support_order_id` VARCHAR(36), `part_order_id` VARCHAR(36))",
     "CREATE TABLE `invoice_payment` (`id` VARCHAR(36), `amount` DECIMAL(8,2), `created_at` DATETIME, `invoice_id` INT, "
     "`user_id` VARCHAR(36))",
+    "CREATE TABLE `ps_consumable` (`id` VARCHAR(36), `product_nr` VARCHAR(32), `name` VARCHAR(48), `price` "
+    "DECIMAL(8,2), `color` TINYINT, `n_prints` INT, `user_replaceable` TINYINT, `vendor_id` VARCHAR(36))",
+    "CREATE TABLE `ps_consumable_order` (`id` INT, `id_suffix` VARCHAR(2), `contact` VARCHAR(64), `sent_at` "
+    "DATETIME, `sent_by` VARCHAR(36), `ps_consumable_order_item_id` VARCHAR(36), `ps_contract_entry_id` "
+    "VARCHAR(36), `created_at` DATETIME)",
+    "CREATE TABLE `ps_consumable_order_item` (`ps_consumable_id` VARCHAR(36), `ps_consumable_order_id` VARCHAR(36), "
+    "`amount` INT, `price` DECIMAL(8,2))",
+    "CREATE TABLE `ps_consumable_ps_printer` (`ps_consumable_id` VARCHAR(36), `ps_printer_id` VARCHAR(36))",
+    "CREATE TABLE `ps_contract` (`id` INT, `id_suffix` VARCHAR(3), `company` VARCHAR(128), `lastname` VARCHAR(64), "
+    "`initials` VARCHAR(8), `gender` TINYINT, `phone_nr` VARCHAR(16), `start_date` DATE, `end_date` DATE, "
+    "`preferred_date` DATE, `inc_hardware` TINYINT, `address_id` VARCHAR(36), `ps_tender_id` VARCHAR(36), "
+    "`employee_id` VARCHAR(36), `activated_by` VARCHAR(36), `activated_at` DATETIME, `created_at` DATETIME)",
+    "CREATE TABLE `ps_contract_entry` (`id` VARCHAR(36), `serial_nr` VARCHAR(40), `price_options` DECIMAL(8,2), "
+    "`n_total_prints` INT, `n_color_prints` INT, `price_print_black` DECIMAL(5,4), `price_print_color` "
+    "DECIMAL(5,4), `price_ex_hw` DECIMAL(8,2), `price_inc_hw` DECIMAL(8,2), `cust_price_ex_hw` DECIMAL(8,2), "
+    "`cust_price_inc_hw` DECIMAL(8,2), `min_n_items` INT, `max_n_items` INT, `ps_support_id` VARCHAR(36), `user_id` "
+    "VARCHAR(36), `ps_contract_id` INT, `ps_printer_id` VARCHAR(36), `created_at` DATETIME)",
+    "CREATE TABLE `ps_printer` (`id` VARCHAR(36), `name` VARCHAR(48), `product_nr` VARCHAR(32), `description` "
+    "VARCHAR(128), `price` DECIMAL(8,2), `installation_costs` DECIMAL(8,2), `support_factor` DECIMAL(5,4), `color` "
+    "TINYINT, `monthly_max_prints` INT, `is_deleted` TINYINT, `ps_printer_id` VARCHAR(36), `vendor_id` VARCHAR(36))",
+    "CREATE TABLE `ps_printer_meta` (`id` VARCHAR(36), `name` VARCHAR(32), `value` VARCHAR(32), "
+    "`ps_contract_entry_id` VARCHAR(36), `created_at` DATETIME)",
+    "CREATE TABLE `ps_printer_option` (`id` VARCHAR(36), `product_nr` VARCHAR(32), `amount` INT, `description` "
+    "VARCHAR(128), `price` DECIMAL(8,2), `ps_contract_entry_id` VARCHAR(36), `created_at` DATETIME)",
+    "CREATE TABLE `ps_support` (`id` VARCHAR(36), `duration` INT, `storage_factor` DECIMAL(5,4), `lease_factor` "
+    "DECIMAL(8,6), `position` INT, `ps_support_type_id` VARCHAR(36))",
+    "CREATE TABLE `ps_support_type` (`id` VARCHAR(36), `abbreviation` VARCHAR(8), `description` VARCHAR(128))",
+    "CREATE TABLE `ps_tender` (`id` INT, `reference` VARCHAR(128), `margin_hardware` DECIMAL(5,2), "
+    "`margin_supplies` DECIMAL(5,2), `margin_support` DECIMAL(5,2), `margin_prints` DECIMAL(5,2), `deleted` "
+    "TINYINT, `created_at` DATETIME, `employee_id` VARCHAR(36))",
+    "CREATE TABLE `ps_tender_entry` (`ps_tender_id` INT, `ps_printer_id` VARCHAR(36), `price_options` DECIMAL(8,2), "
+    "`n_total_prints` INT, `n_color_prints` INT, `price_ex_hw` DECIMAL(8,2), `price_inc_hw` DECIMAL(8,2), "
+    "`cust_price_ex_hw` DECIMAL(8,2), `cust_price_inc_hw` DECIMAL(8,2), `price_print_black` DECIMAL(5,4), "
+    "`price_print_color` DECIMAL(5,4), `ps_support_id` VARCHAR(36))",
+    "CREATE TABLE `telephony_category` (`id` INT, `childnumber` INT, `name` VARCHAR(256), `created_at` DATETIME, "
+    "`updated_at` DATETIME)",
+    "CREATE TABLE `telephony_item` (`id` INT, `childnumber` INT, `description_short` VARCHAR(256), "
+    "`description_full` TEXT, `hire_costs_per_month` DECIMAL(8,2), `buy_costs` DECIMAL(8,2), "
+    "`amount_function_on_calculator` VARCHAR(256), `image_path` VARCHAR(256), `category_id` INT, `created_at` "
+    "DATETIME, `updated_at` DATETIME, `buy_costs_per_month` DECIMAL(8,2), `has_hire_costs_per_month` TINYINT, "
+    "`has_buy_costs_per_month` TINYINT, `has_buy_costs` TINYINT)",
+    "CREATE TABLE `telephony_setting` (`id` INT, `name` VARCHAR(255), `value` VARCHAR(255), `description` "
+    "VARCHAR(255), `created_at` DATETIME, `updated_at` DATETIME)",
+    "CREATE TABLE `telephony_tender` (`id` INT, `reference` VARCHAR(256), `view` VARCHAR(256), `price_per_port` "
+    "DECIMAL(8,2), `margin_hire` DECIMAL(8,2), `user_id` VARCHAR(256), `created_at` DATETIME, `updated_at` "
+    "DATETIME, `margin_buy` DECIMAL(8,2))",
+    "CREATE TABLE `telephony_tender_item` (`id` INT, `telephony_tender_id` INT, `telephony_item_id` INT, `amount` "
+    "INT, `hire_costs_per_month` DECIMAL(8,2), `created_at` DATETIME, `updated_at` DATETIME, `buy_costs_per_month` "
+    "DECIMAL(8,2), `buy_costs` DECIMAL(8,2))",
 ]
 
 
