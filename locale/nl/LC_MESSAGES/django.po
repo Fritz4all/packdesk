@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 03:01+0100\n"
+"POT-Creation-Date: 2026-10-25 10:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,7 +98,7 @@ msgstr ""
 msgid "Not sent (no email address or not active): %(list)s"
 msgstr "Niet verstuurd (geen e-mailadres of niet actief): %(list)s"
 
-#: apps/accounts/forms.py:9 apps/accounts/forms.py:21
+#: apps/accounts/forms.py:9 apps/accounts/forms.py:24
 #: apps/core/setup_views.py:48 apps/customers/forms.py:50
 msgid "Email address"
 msgstr "E-mailadres"
@@ -106,6 +106,14 @@ msgstr "E-mailadres"
 #: apps/accounts/forms.py:15
 msgid "Unknown email address or wrong password."
 msgstr "Onbekend e-mailadres of onjuist wachtwoord."
+
+#: apps/accounts/forms.py:32
+msgid "name@company.com"
+msgstr "naam@bedrijf.nl"
+
+#: apps/accounts/forms.py:33
+msgid "Your password"
+msgstr "Je wachtwoord"
 
 #: apps/accounts/models.py:25
 msgid "Staff"
@@ -5901,6 +5909,18 @@ msgstr ""
 msgid "Restore the default dashboard?"
 msgstr "Standaarddashboard herstellen?"
 
+#: templates/admin/login.html:7
+msgid "Admin for staff. Customers log in on the website."
+msgstr "Beheer voor medewerkers. Klanten loggen in op de website."
+
+#: templates/admin/login.html:8
+msgid "Customer login"
+msgstr "Inloggen als klant"
+
+#: templates/admin/login.html:12
+msgid "Forgot your password?"
+msgstr "Wachtwoord vergeten?"
+
 #: templates/admin/packdesk/admin_language.html:3
 msgid "Admin language"
 msgstr "Beheertaal"
@@ -6154,8 +6174,14 @@ msgstr ""
 "inkoopprijs per pack."
 
 #: templates/dashboard/report.html:32
-msgid "Spare parts count with the selling and purchase price of each ordered part, minus corrections; surcharges count as revenue without cost; cancelled orders are left out."
-msgstr "Onderdelen tellen met de verkoop- en inkoopprijs van elk besteld onderdeel, min correcties; toeslagen tellen als omzet zonder inkoop; geannuleerde bestellingen tellen niet mee."
+msgid ""
+"Spare parts count with the selling and purchase price of each ordered part, "
+"minus corrections; surcharges count as revenue without cost; cancelled "
+"orders are left out."
+msgstr ""
+"Onderdelen tellen met de verkoop- en inkoopprijs van elk besteld onderdeel, "
+"min correcties; toeslagen tellen als omzet zonder inkoop; geannuleerde "
+"bestellingen tellen niet mee."
 
 #: templates/dashboard/report.html:33
 #, python-format

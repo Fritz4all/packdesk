@@ -1,0 +1,12 @@
+{% extends "admin/login.html" %}
+{% load i18n %}
+{% comment %}PackDesk: say who this login is for, and offer the password reset of the website.{% endcomment %}
+{% block login_before %}
+<p class="mb-6 text-sm text-base-500 dark:text-base-400">
+  {% translate "Admin for staff. Customers log in on the website." %}
+  <a class="underline text-primary-600 dark:text-primary-500" href="{% url 'login' %}">{% translate "Customer login" %}</a>
+</p>
+{% endblock %}
+{% block login_after %}
+<p class="mt-4 text-center text-sm"><a class="underline text-base-500 dark:text-base-400" href="{% url 'password_reset' %}">{% translate "Forgot your password?" %}</a></p>
+{% endblock %}

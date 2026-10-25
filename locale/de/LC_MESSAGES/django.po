@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 03:01+0100\n"
+"POT-Creation-Date: 2026-10-25 10:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,7 +98,7 @@ msgstr ""
 msgid "Not sent (no email address or not active): %(list)s"
 msgstr "Nicht gesendet (keine E-Mail-Adresse oder nicht aktiv): %(list)s"
 
-#: apps/accounts/forms.py:9 apps/accounts/forms.py:21
+#: apps/accounts/forms.py:9 apps/accounts/forms.py:24
 #: apps/core/setup_views.py:48 apps/customers/forms.py:50
 msgid "Email address"
 msgstr "E-Mail-Adresse"
@@ -106,6 +106,14 @@ msgstr "E-Mail-Adresse"
 #: apps/accounts/forms.py:15
 msgid "Unknown email address or wrong password."
 msgstr "Unbekannte E-Mail-Adresse oder falsches Passwort."
+
+#: apps/accounts/forms.py:32
+msgid "name@company.com"
+msgstr "name@firma.de"
+
+#: apps/accounts/forms.py:33
+msgid "Your password"
+msgstr "Ihr Passwort"
 
 #: apps/accounts/models.py:25
 msgid "Staff"
@@ -5917,6 +5925,18 @@ msgstr ""
 msgid "Restore the default dashboard?"
 msgstr "Standard-Dashboard wiederherstellen?"
 
+#: templates/admin/login.html:7
+msgid "Admin for staff. Customers log in on the website."
+msgstr "Verwaltung für Mitarbeiter. Kunden melden sich auf der Website an."
+
+#: templates/admin/login.html:8
+msgid "Customer login"
+msgstr "Kunden-Anmeldung"
+
+#: templates/admin/login.html:12
+msgid "Forgot your password?"
+msgstr "Passwort vergessen?"
+
 #: templates/admin/packdesk/admin_language.html:3
 msgid "Admin language"
 msgstr "Verwaltungssprache"
@@ -6170,8 +6190,14 @@ msgstr ""
 "Einkaufspreis je Paket."
 
 #: templates/dashboard/report.html:32
-msgid "Spare parts count with the selling and purchase price of each ordered part, minus corrections; surcharges count as revenue without cost; cancelled orders are left out."
-msgstr "Ersatzteile zählen mit dem Verkaufs- und Einkaufspreis jedes bestellten Teils, abzüglich Korrekturen; Zuschläge zählen als Umsatz ohne Einkauf; stornierte Bestellungen zählen nicht."
+msgid ""
+"Spare parts count with the selling and purchase price of each ordered part, "
+"minus corrections; surcharges count as revenue without cost; cancelled "
+"orders are left out."
+msgstr ""
+"Ersatzteile zählen mit dem Verkaufs- und Einkaufspreis jedes bestellten "
+"Teils, abzüglich Korrekturen; Zuschläge zählen als Umsatz ohne Einkauf; "
+"stornierte Bestellungen zählen nicht."
 
 #: templates/dashboard/report.html:33
 #, python-format
