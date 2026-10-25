@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 02:36+0200\n"
+"POT-Creation-Date: 2026-10-25 03:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,8 +111,8 @@ msgstr "Onbekend e-mailadres of onjuist wachtwoord."
 msgid "Staff"
 msgstr "Medewerker"
 
-#: apps/accounts/models.py:26 templates/dashboard/report.html:63
-#: templates/dashboard/report.html:73 templates/orders/email_confirmation.txt:6
+#: apps/accounts/models.py:26 templates/dashboard/report.html:72
+#: templates/dashboard/report.html:82 templates/orders/email_confirmation.txt:6
 #: templates/parts/email.txt:5
 msgid "Customer"
 msgstr "Klant"
@@ -1165,9 +1165,9 @@ msgid "Licences"
 msgstr "Licenties"
 
 #: apps/customers/overview.py:114 apps/orders/forms.py:22
-#: templates/dashboard/report.html:73 templates/dashboard/report.html:84
-#: templates/orders/my_licences.html:13 templates/orders/order_detail.html:7
-#: templates/orders/order_form.html:13 templates/orders/review.html:9
+#: templates/dashboard/report.html:93 templates/orders/my_licences.html:13
+#: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
+#: templates/orders/review.html:9
 msgid "Service pack"
 msgstr "Servicepack"
 
@@ -1204,7 +1204,7 @@ msgstr "Bestellingen"
 #: apps/customers/overview.py:117 apps/customers/overview.py:119
 #: apps/customers/overview.py:121 apps/customers/overview.py:141
 #: apps/customers/overview.py:143 apps/customers/overview.py:159
-#: apps/customers/overview.py:162 templates/dashboard/report.html:73
+#: apps/customers/overview.py:162 templates/dashboard/report.html:82
 #: templates/faults/my_reports.html:9 templates/invoices/my_invoices.html:7
 #: templates/orders/email_confirmation.txt:7 templates/orders/my_orders.html:7
 #: templates/parts/overview.html:8 templates/parts/overview.html:15
@@ -1447,7 +1447,7 @@ msgstr "Overzicht"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: apps/dashboard/navigation.py:15 apps/dashboard/reports.py:159
+#: apps/dashboard/navigation.py:15 apps/dashboard/reports.py:210
 #: templates/dashboard/report.html:5
 msgid "Sales and margin"
 msgstr "Verkoop en marge"
@@ -1507,7 +1507,8 @@ msgstr "Factuurinstellingen"
 msgid "Order settings"
 msgstr "Bestelinstellingen"
 
-#: apps/dashboard/navigation.py:144 apps/parts/apps.py:7
+#: apps/dashboard/navigation.py:144 apps/dashboard/reports.py:120
+#: apps/dashboard/reports.py:213 apps/parts/apps.py:7
 #: templates/core/dashboard.html:18 templates/parts/overview.html:3
 #: templates/parts/overview.html:5
 msgid "Spare parts"
@@ -1534,7 +1535,8 @@ msgstr "Instellingen onderdelen"
 msgid "Service packs and licences"
 msgstr "Servicepacks en licenties"
 
-#: apps/dashboard/navigation.py:196 templates/orders/order_form.html:11
+#: apps/dashboard/navigation.py:196 apps/dashboard/reports.py:213
+#: templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepacks"
 
@@ -1623,15 +1625,23 @@ msgstr "Gebruikers en rollen"
 msgid "Roles"
 msgstr "Rollen"
 
-#: apps/dashboard/reports.py:162
+#: apps/dashboard/reports.py:120
+msgid "Spare parts: surcharges and costs"
+msgstr "Onderdelen: toeslagen en kosten"
+
+#: apps/dashboard/reports.py:213
+msgid "Everything"
+msgstr "Alles"
+
+#: apps/dashboard/reports.py:214
 msgid "Last 12 months"
 msgstr "Laatste 12 maanden"
 
-#: apps/dashboard/reports.py:162
+#: apps/dashboard/reports.py:214
 msgid "This year"
 msgstr "Dit jaar"
 
-#: apps/dashboard/reports.py:162
+#: apps/dashboard/reports.py:214
 msgid "Last year"
 msgstr "Vorig jaar"
 
@@ -2207,7 +2217,7 @@ msgstr "omschrijving"
 #: apps/invoices/models.py:133 apps/orders/models.py:103
 #: apps/parts/models.py:222 apps/parts/models.py:393 apps/parts/models.py:424
 #: apps/parts/models.py:441 apps/printing/models.py:212
-#: apps/telephony/models.py:121
+#: apps/telephony/models.py:121 templates/dashboard/report.html:50
 msgid "quantity"
 msgstr "aantal"
 
@@ -2853,16 +2863,32 @@ msgstr ""
 "niet geïmporteerd."
 
 #: apps/legacy/old_shop/phase3_import.py:152
-msgid "Printing services are kept as an archive: the previous webshop no longer offered them and its calculation rules are not known, so PackDesk shows them but makes no new quotes. ps_printer_option was empty."
-msgstr "Printing services zijn als archief bewaard: de vorige webshop bood ze niet meer aan en de rekenregels zijn niet bekend, dus PackDesk toont ze maar maakt geen nieuwe offertes. ps_printer_option was leeg."
+msgid ""
+"Printing services are kept as an archive: the previous webshop no longer offered "
+"them and its calculation rules are not known, so PackDesk shows them but "
+"makes no new quotes. ps_printer_option was empty."
+msgstr ""
+"Printing services zijn als archief bewaard: de vorige webshop bood ze niet meer "
+"aan en de rekenregels zijn niet bekend, dus PackDesk toont ze maar maakt "
+"geen nieuwe offertes. ps_printer_option was leeg."
 
 #: apps/legacy/old_shop/phase3_import.py:194
-msgid "Telephony item images were files on the old server and are not imported; add them in the admin if needed."
-msgstr "Afbeeldingen van telefonie-artikelen stonden als bestanden op de oude server en zijn niet geïmporteerd; voeg ze zo nodig toe in het beheer."
+msgid ""
+"Telephony item images were files on the old server and are not imported; add "
+"them in the admin if needed."
+msgstr ""
+"Afbeeldingen van telefonie-artikelen stonden als bestanden op de oude server "
+"en zijn niet geïmporteerd; voeg ze zo nodig toe in het beheer."
 
 #: apps/legacy/old_shop/phase3_import.py:229
-msgid "The telephony calculator is switched off until you switch it on under Telephony settings. The previous webshop's price per port cannot be recalculated; old quotes show the stored value."
-msgstr "De telefoniecalculator staat uit tot je hem aanzet onder Instellingen telefonie. De prijs per poort van de vorige webshop is niet na te rekenen; oude offertes tonen de opgeslagen waarde."
+msgid ""
+"The telephony calculator is switched off until you switch it on under "
+"Telephony settings. The previous webshop's price per port cannot be recalculated; "
+"old quotes show the stored value."
+msgstr ""
+"De telefoniecalculator staat uit tot je hem aanzet onder Instellingen "
+"telefonie. De prijs per poort van de vorige webshop is niet na te rekenen; oude "
+"offertes tonen de opgeslagen waarde."
 
 #: apps/legacy/parts.py:110 apps/legacy/parts.py:127 apps/legacy/parts.py:176
 #: templates/admin/customers/_import_outcome.html:3
@@ -3123,6 +3149,7 @@ msgid "Type"
 msgstr "Type"
 
 #: apps/licences/forms.py:118 apps/orders/forms.py:23 apps/parts/forms.py:15
+#: templates/dashboard/report.html:72 templates/dashboard/report.html:82
 #: templates/invoices/invoice_pdf.html:64 templates/licences/options.html:16
 #: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
 #: templates/orders/review.html:9 templates/parts/order_detail.html:8
@@ -5397,16 +5424,23 @@ msgid "per month when bought (€)"
 msgstr "per maand bij koop (€)"
 
 #: apps/telephony/models.py:65
-msgid "E.g. licences or subscriptions that also cost something per month when the system is bought."
-msgstr "Bijv. licenties of abonnementen die ook bij koop per maand iets kosten."
+msgid ""
+"E.g. licences or subscriptions that also cost something per month when the "
+"system is bought."
+msgstr ""
+"Bijv. licenties of abonnementen die ook bij koop per maand iets kosten."
 
 #: apps/telephony/models.py:68
 msgid "quantity = sum of"
 msgstr "aantal = som van"
 
 #: apps/telephony/models.py:69
-msgid "The quantity is counted automatically: the total of these items (e.g. one user licence per phone)."
-msgstr "Het aantal wordt vanzelf geteld: het totaal van deze artikelen (bijv. één gebruikerslicentie per toestel)."
+msgid ""
+"The quantity is counted automatically: the total of these items (e.g. one "
+"user licence per phone)."
+msgstr ""
+"Het aantal wordt vanzelf geteld: het totaal van deze artikelen (bijv. één "
+"gebruikerslicentie per toestel)."
 
 #: apps/telephony/models.py:77
 msgid "telephony item"
@@ -6094,24 +6128,24 @@ msgstr "Bedankt"
 msgid "Back to the home page"
 msgstr "Terug naar de homepage"
 
-#: templates/dashboard/report.html:13
+#: templates/dashboard/report.html:21
 msgid "From"
 msgstr "Van"
 
-#: templates/dashboard/report.html:15
+#: templates/dashboard/report.html:23
 msgid "to"
 msgstr "tot en met"
 
-#: templates/dashboard/report.html:17
+#: templates/dashboard/report.html:25
 msgid "Show"
 msgstr "Tonen"
 
-#: templates/dashboard/report.html:22
+#: templates/dashboard/report.html:30
 #, python-format
 msgid "Period %(start)s – %(end)s."
 msgstr "Periode %(start)s – %(end)s."
 
-#: templates/dashboard/report.html:23
+#: templates/dashboard/report.html:31
 msgid ""
 "Orders count with their actual prices. Costs use the current cost price of "
 "each pack."
@@ -6119,7 +6153,11 @@ msgstr ""
 "Bestellingen tellen met hun werkelijke prijs. Kosten volgen de huidige "
 "inkoopprijs per pack."
 
-#: templates/dashboard/report.html:24
+#: templates/dashboard/report.html:32
+msgid "Spare parts count with the selling and purchase price of each ordered part, minus corrections; surcharges count as revenue without cost; cancelled orders are left out."
+msgstr "Onderdelen tellen met de verkoop- en inkoopprijs van elk besteld onderdeel, min correcties; toeslagen tellen als omzet zonder inkoop; geannuleerde bestellingen tellen niet mee."
+
+#: templates/dashboard/report.html:33
 #, python-format
 msgid ""
 "%(n)s sale without an order (e.g. imported) is estimated at the current "
@@ -6134,82 +6172,78 @@ msgstr[1] ""
 "%(n)s verkopen zonder bestelling (bijv. geïmporteerd) zijn geschat tegen de "
 "huidige prijs."
 
-#: templates/dashboard/report.html:28
-msgid "Packs sold"
-msgstr "Verkochte packs"
+#: templates/dashboard/report.html:37
+msgid "Quantity sold"
+msgstr "Aantal verkocht"
 
-#: templates/dashboard/report.html:29 templates/dashboard/report.html:36
-#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
+#: templates/dashboard/report.html:38 templates/dashboard/report.html:45
+#: templates/dashboard/report.html:72 templates/dashboard/report.html:82
 msgid "Revenue"
 msgstr "Omzet"
 
-#: templates/dashboard/report.html:30 templates/dashboard/report.html:36
+#: templates/dashboard/report.html:39 templates/dashboard/report.html:45
 msgid "Gross margin"
 msgstr "Brutomarge"
 
-#: templates/dashboard/report.html:31
+#: templates/dashboard/report.html:40
 msgid "Margin percentage"
 msgstr "Margepercentage"
 
-#: templates/dashboard/report.html:35 templates/dashboard/report.html:38
+#: templates/dashboard/report.html:44 templates/dashboard/report.html:47
 msgid "Revenue and margin per month"
 msgstr "Omzet en marge per maand"
 
-#: templates/dashboard/report.html:41
+#: templates/dashboard/report.html:50
 msgid "margin"
 msgstr "marge"
 
-#: templates/dashboard/report.html:41
-msgid "packs"
-msgstr "packs"
-
-#: templates/dashboard/report.html:53
+#: templates/dashboard/report.html:62
 msgid "Revenue per category"
 msgstr "Omzet per categorie"
 
-#: templates/dashboard/report.html:59 templates/dashboard/report.html:65
-#: templates/dashboard/report.html:77
+#: templates/dashboard/report.html:68 templates/dashboard/report.html:74
+#: templates/dashboard/report.html:86
 msgid "No sales in this period."
 msgstr "Geen verkopen in deze periode."
 
-#: templates/dashboard/report.html:62
+#: templates/dashboard/report.html:71
 msgid "Top customers"
 msgstr "Beste klanten"
 
-#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
-msgid "Packs"
-msgstr "Packs"
-
-#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
-#: templates/dashboard/report.html:84
+#: templates/dashboard/report.html:72 templates/dashboard/report.html:82
+#: templates/dashboard/report.html:93
 msgid "Margin"
 msgstr "Marge"
 
-#: templates/dashboard/report.html:70
+#: templates/dashboard/report.html:79
 msgid "Sales in this period"
 msgstr "Verkopen in deze periode"
 
-#: templates/dashboard/report.html:71
+#: templates/dashboard/report.html:80
 msgid "Click a month in the chart to see only that month."
 msgstr "Klik op een maand in de grafiek om alleen die maand te zien."
 
-#: templates/dashboard/report.html:73
+#: templates/dashboard/report.html:82
 msgid "Order or licence"
 msgstr "Bestelling of licentie"
 
 #: templates/dashboard/report.html:82
+msgid "Product"
+msgstr "Product"
+
+#: templates/dashboard/report.html:91
 msgid "Prices and margin per pack"
 msgstr "Prijzen en marge per pack"
 
-#: templates/dashboard/report.html:84
+#: templates/dashboard/report.html:93
 msgid "Price"
 msgstr "Prijs"
 
-#: templates/dashboard/report.html:84
+#: templates/dashboard/report.html:93
 msgid "Cost price"
 msgstr "Inkoopprijs"
 
-#: templates/dashboard/report.html:87
+#: templates/dashboard/report.html:96
 msgid "No service packs yet."
 msgstr "Nog geen servicepacks."
 
@@ -6422,8 +6456,18 @@ msgid "Result"
 msgstr "Resultaat"
 
 #: templates/legacy/import_start.html:6
-msgid "Imports everything from the previous webshop that PackDesk knows: the catalogue, customers with addresses, contacts and logins (with their own passwords), orders, licences with options and extensions, invoices with payments, spare parts requests and orders, printing services (as an archive), telephony, and the number counters."
-msgstr "Importeert alles uit de vorige webshop wat PackDesk kent: de catalogus, klanten met adressen, contactpersonen en logins (met hun eigen wachtwoord), bestellingen, licenties met opties en verlengingen, facturen met betalingen, onderdelenaanvragen en -bestellingen, printing services (als archief), telefonie en de nummertellers."
+msgid ""
+"Imports everything from the previous webshop that PackDesk knows: the catalogue, "
+"customers with addresses, contacts and logins (with their own passwords), "
+"orders, licences with options and extensions, invoices with payments, spare "
+"parts requests and orders, printing services (as an archive), telephony, and "
+"the number counters."
+msgstr ""
+"Importeert alles uit de vorige webshop wat PackDesk kent: de catalogus, klanten "
+"met adressen, contactpersonen en logins (met hun eigen wachtwoord), "
+"bestellingen, licenties met opties en verlengingen, facturen met betalingen, "
+"onderdelenaanvragen en -bestellingen, printing services (als archief), "
+"telefonie en de nummertellers."
 
 #: templates/legacy/import_start.html:7
 msgid ""
@@ -7270,8 +7314,12 @@ msgid "My telephony quotes"
 msgstr "Mijn telefonie-offertes"
 
 #: templates/telephony/calculator.html:7
-msgid "Fill in what is needed and compare hiring with buying. Quantities marked automatic are counted for you."
-msgstr "Vul in wat er nodig is en vergelijk huren met kopen. Aantallen met 'automatisch' worden voor je geteld."
+msgid ""
+"Fill in what is needed and compare hiring with buying. Quantities marked "
+"automatic are counted for you."
+msgstr ""
+"Vul in wat er nodig is en vergelijk huren met kopen. Aantallen met "
+"'automatisch' worden voor je geteld."
 
 #: templates/telephony/calculator.html:13 templates/telephony/quote.html:8
 msgid "Item"
@@ -7397,6 +7445,15 @@ msgstr "%(model)s toevoegen"
 #, python-format
 msgid "View selected %(model)s"
 msgstr "%(model)s bekijken"
+
+#~ msgid "Packs sold"
+#~ msgstr "Verkochte packs"
+
+#~ msgid "packs"
+#~ msgstr "packs"
+
+#~ msgid "Packs"
+#~ msgstr "Packs"
 
 #~ msgid ""
 #~ "Optional. Regular expression for documents in the archive folder; the "

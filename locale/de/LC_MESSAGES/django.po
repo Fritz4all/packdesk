@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 02:36+0200\n"
+"POT-Creation-Date: 2026-10-25 03:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,8 +111,8 @@ msgstr "Unbekannte E-Mail-Adresse oder falsches Passwort."
 msgid "Staff"
 msgstr "Mitarbeiter"
 
-#: apps/accounts/models.py:26 templates/dashboard/report.html:63
-#: templates/dashboard/report.html:73 templates/orders/email_confirmation.txt:6
+#: apps/accounts/models.py:26 templates/dashboard/report.html:72
+#: templates/dashboard/report.html:82 templates/orders/email_confirmation.txt:6
 #: templates/parts/email.txt:5
 msgid "Customer"
 msgstr "Kunde"
@@ -1165,9 +1165,9 @@ msgid "Licences"
 msgstr "Lizenzen"
 
 #: apps/customers/overview.py:114 apps/orders/forms.py:22
-#: templates/dashboard/report.html:73 templates/dashboard/report.html:84
-#: templates/orders/my_licences.html:13 templates/orders/order_detail.html:7
-#: templates/orders/order_form.html:13 templates/orders/review.html:9
+#: templates/dashboard/report.html:93 templates/orders/my_licences.html:13
+#: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
+#: templates/orders/review.html:9
 msgid "Service pack"
 msgstr "Servicepaket"
 
@@ -1204,7 +1204,7 @@ msgstr "Bestellungen"
 #: apps/customers/overview.py:117 apps/customers/overview.py:119
 #: apps/customers/overview.py:121 apps/customers/overview.py:141
 #: apps/customers/overview.py:143 apps/customers/overview.py:159
-#: apps/customers/overview.py:162 templates/dashboard/report.html:73
+#: apps/customers/overview.py:162 templates/dashboard/report.html:82
 #: templates/faults/my_reports.html:9 templates/invoices/my_invoices.html:7
 #: templates/orders/email_confirmation.txt:7 templates/orders/my_orders.html:7
 #: templates/parts/overview.html:8 templates/parts/overview.html:15
@@ -1447,7 +1447,7 @@ msgstr "Übersicht"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: apps/dashboard/navigation.py:15 apps/dashboard/reports.py:159
+#: apps/dashboard/navigation.py:15 apps/dashboard/reports.py:210
 #: templates/dashboard/report.html:5
 msgid "Sales and margin"
 msgstr "Verkauf und Marge"
@@ -1507,7 +1507,8 @@ msgstr "Rechnungseinstellungen"
 msgid "Order settings"
 msgstr "Bestelleinstellungen"
 
-#: apps/dashboard/navigation.py:144 apps/parts/apps.py:7
+#: apps/dashboard/navigation.py:144 apps/dashboard/reports.py:120
+#: apps/dashboard/reports.py:213 apps/parts/apps.py:7
 #: templates/core/dashboard.html:18 templates/parts/overview.html:3
 #: templates/parts/overview.html:5
 msgid "Spare parts"
@@ -1534,7 +1535,8 @@ msgstr "Einstellungen Ersatzteile"
 msgid "Service packs and licences"
 msgstr "Servicepakete und Lizenzen"
 
-#: apps/dashboard/navigation.py:196 templates/orders/order_form.html:11
+#: apps/dashboard/navigation.py:196 apps/dashboard/reports.py:213
+#: templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepakete"
 
@@ -1623,15 +1625,23 @@ msgstr "Benutzer und Rollen"
 msgid "Roles"
 msgstr "Rollen"
 
-#: apps/dashboard/reports.py:162
+#: apps/dashboard/reports.py:120
+msgid "Spare parts: surcharges and costs"
+msgstr "Ersatzteile: Zuschläge und Kosten"
+
+#: apps/dashboard/reports.py:213
+msgid "Everything"
+msgstr "Alles"
+
+#: apps/dashboard/reports.py:214
 msgid "Last 12 months"
 msgstr "Letzte 12 Monate"
 
-#: apps/dashboard/reports.py:162
+#: apps/dashboard/reports.py:214
 msgid "This year"
 msgstr "Dieses Jahr"
 
-#: apps/dashboard/reports.py:162
+#: apps/dashboard/reports.py:214
 msgid "Last year"
 msgstr "Letztes Jahr"
 
@@ -2207,7 +2217,7 @@ msgstr "Beschreibung"
 #: apps/invoices/models.py:133 apps/orders/models.py:103
 #: apps/parts/models.py:222 apps/parts/models.py:393 apps/parts/models.py:424
 #: apps/parts/models.py:441 apps/printing/models.py:212
-#: apps/telephony/models.py:121
+#: apps/telephony/models.py:121 templates/dashboard/report.html:50
 msgid "quantity"
 msgstr "Anzahl"
 
@@ -2860,16 +2870,32 @@ msgstr ""
 "verwendet; nicht importiert."
 
 #: apps/legacy/old_shop/phase3_import.py:152
-msgid "Printing services are kept as an archive: the previous webshop no longer offered them and its calculation rules are not known, so PackDesk shows them but makes no new quotes. ps_printer_option was empty."
-msgstr "Druckdienste werden als Archiv übernommen: der vorherige Webshop bot sie nicht mehr an und die Berechnungsregeln sind nicht bekannt, daher zeigt PackDesk sie, erstellt aber keine neuen Angebote. ps_printer_option war leer."
+msgid ""
+"Printing services are kept as an archive: the previous webshop no longer offered "
+"them and its calculation rules are not known, so PackDesk shows them but "
+"makes no new quotes. ps_printer_option was empty."
+msgstr ""
+"Druckdienste werden als Archiv übernommen: der vorherige Webshop bot sie nicht mehr "
+"an und die Berechnungsregeln sind nicht bekannt, daher zeigt PackDesk sie, "
+"erstellt aber keine neuen Angebote. ps_printer_option war leer."
 
 #: apps/legacy/old_shop/phase3_import.py:194
-msgid "Telephony item images were files on the old server and are not imported; add them in the admin if needed."
-msgstr "Bilder der Telefonie-Artikel lagen als Dateien auf dem alten Server und wurden nicht importiert; fügen Sie sie bei Bedarf in der Verwaltung hinzu."
+msgid ""
+"Telephony item images were files on the old server and are not imported; add "
+"them in the admin if needed."
+msgstr ""
+"Bilder der Telefonie-Artikel lagen als Dateien auf dem alten Server und "
+"wurden nicht importiert; fügen Sie sie bei Bedarf in der Verwaltung hinzu."
 
 #: apps/legacy/old_shop/phase3_import.py:229
-msgid "The telephony calculator is switched off until you switch it on under Telephony settings. The previous webshop's price per port cannot be recalculated; old quotes show the stored value."
-msgstr "Der Telefonie-Rechner ist ausgeschaltet, bis Sie ihn unter Einstellungen Telefonie einschalten. Der Preis pro Port des vorherigen Webshops lässt sich nicht nachrechnen; alte Angebote zeigen den gespeicherten Wert."
+msgid ""
+"The telephony calculator is switched off until you switch it on under "
+"Telephony settings. The previous webshop's price per port cannot be recalculated; "
+"old quotes show the stored value."
+msgstr ""
+"Der Telefonie-Rechner ist ausgeschaltet, bis Sie ihn unter Einstellungen "
+"Telefonie einschalten. Der Preis pro Port des vorherigen Webshops lässt sich nicht "
+"nachrechnen; alte Angebote zeigen den gespeicherten Wert."
 
 #: apps/legacy/parts.py:110 apps/legacy/parts.py:127 apps/legacy/parts.py:176
 #: templates/admin/customers/_import_outcome.html:3
@@ -3130,6 +3156,7 @@ msgid "Type"
 msgstr "Typ"
 
 #: apps/licences/forms.py:118 apps/orders/forms.py:23 apps/parts/forms.py:15
+#: templates/dashboard/report.html:72 templates/dashboard/report.html:82
 #: templates/invoices/invoice_pdf.html:64 templates/licences/options.html:16
 #: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
 #: templates/orders/review.html:9 templates/parts/order_detail.html:8
@@ -5413,16 +5440,23 @@ msgid "per month when bought (€)"
 msgstr "pro Monat beim Kauf (€)"
 
 #: apps/telephony/models.py:65
-msgid "E.g. licences or subscriptions that also cost something per month when the system is bought."
-msgstr "Z. B. Lizenzen oder Abonnements, die auch beim Kauf monatlich etwas kosten."
+msgid ""
+"E.g. licences or subscriptions that also cost something per month when the "
+"system is bought."
+msgstr ""
+"Z. B. Lizenzen oder Abonnements, die auch beim Kauf monatlich etwas kosten."
 
 #: apps/telephony/models.py:68
 msgid "quantity = sum of"
 msgstr "Menge = Summe von"
 
 #: apps/telephony/models.py:69
-msgid "The quantity is counted automatically: the total of these items (e.g. one user licence per phone)."
-msgstr "Die Menge wird automatisch gezählt: die Summe dieser Artikel (z. B. eine Benutzerlizenz pro Telefon)."
+msgid ""
+"The quantity is counted automatically: the total of these items (e.g. one "
+"user licence per phone)."
+msgstr ""
+"Die Menge wird automatisch gezählt: die Summe dieser Artikel (z. B. eine "
+"Benutzerlizenz pro Telefon)."
 
 #: apps/telephony/models.py:77
 msgid "telephony item"
@@ -6110,24 +6144,24 @@ msgstr "Vielen Dank"
 msgid "Back to the home page"
 msgstr "Zurück zur Startseite"
 
-#: templates/dashboard/report.html:13
+#: templates/dashboard/report.html:21
 msgid "From"
 msgstr "Von"
 
-#: templates/dashboard/report.html:15
+#: templates/dashboard/report.html:23
 msgid "to"
 msgstr "bis"
 
-#: templates/dashboard/report.html:17
+#: templates/dashboard/report.html:25
 msgid "Show"
 msgstr "Anzeigen"
 
-#: templates/dashboard/report.html:22
+#: templates/dashboard/report.html:30
 #, python-format
 msgid "Period %(start)s – %(end)s."
 msgstr "Zeitraum %(start)s – %(end)s."
 
-#: templates/dashboard/report.html:23
+#: templates/dashboard/report.html:31
 msgid ""
 "Orders count with their actual prices. Costs use the current cost price of "
 "each pack."
@@ -6135,7 +6169,11 @@ msgstr ""
 "Bestellungen zählen mit ihrem tatsächlichen Preis. Kosten nach aktuellem "
 "Einkaufspreis je Paket."
 
-#: templates/dashboard/report.html:24
+#: templates/dashboard/report.html:32
+msgid "Spare parts count with the selling and purchase price of each ordered part, minus corrections; surcharges count as revenue without cost; cancelled orders are left out."
+msgstr "Ersatzteile zählen mit dem Verkaufs- und Einkaufspreis jedes bestellten Teils, abzüglich Korrekturen; Zuschläge zählen als Umsatz ohne Einkauf; stornierte Bestellungen zählen nicht."
+
+#: templates/dashboard/report.html:33
 #, python-format
 msgid ""
 "%(n)s sale without an order (e.g. imported) is estimated at the current "
@@ -6150,82 +6188,78 @@ msgstr[1] ""
 "%(n)s Verkäufe ohne Bestellung (z. B. importiert) sind zum aktuellen Preis "
 "geschätzt."
 
-#: templates/dashboard/report.html:28
-msgid "Packs sold"
-msgstr "Verkaufte Pakete"
+#: templates/dashboard/report.html:37
+msgid "Quantity sold"
+msgstr "Verkaufte Menge"
 
-#: templates/dashboard/report.html:29 templates/dashboard/report.html:36
-#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
+#: templates/dashboard/report.html:38 templates/dashboard/report.html:45
+#: templates/dashboard/report.html:72 templates/dashboard/report.html:82
 msgid "Revenue"
 msgstr "Umsatz"
 
-#: templates/dashboard/report.html:30 templates/dashboard/report.html:36
+#: templates/dashboard/report.html:39 templates/dashboard/report.html:45
 msgid "Gross margin"
 msgstr "Bruttomarge"
 
-#: templates/dashboard/report.html:31
+#: templates/dashboard/report.html:40
 msgid "Margin percentage"
 msgstr "Margenprozentsatz"
 
-#: templates/dashboard/report.html:35 templates/dashboard/report.html:38
+#: templates/dashboard/report.html:44 templates/dashboard/report.html:47
 msgid "Revenue and margin per month"
 msgstr "Umsatz und Marge pro Monat"
 
-#: templates/dashboard/report.html:41
+#: templates/dashboard/report.html:50
 msgid "margin"
 msgstr "Marge"
 
-#: templates/dashboard/report.html:41
-msgid "packs"
-msgstr "Pakete"
-
-#: templates/dashboard/report.html:53
+#: templates/dashboard/report.html:62
 msgid "Revenue per category"
 msgstr "Umsatz pro Kategorie"
 
-#: templates/dashboard/report.html:59 templates/dashboard/report.html:65
-#: templates/dashboard/report.html:77
+#: templates/dashboard/report.html:68 templates/dashboard/report.html:74
+#: templates/dashboard/report.html:86
 msgid "No sales in this period."
 msgstr "Keine Verkäufe in diesem Zeitraum."
 
-#: templates/dashboard/report.html:62
+#: templates/dashboard/report.html:71
 msgid "Top customers"
 msgstr "Top-Kunden"
 
-#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
-msgid "Packs"
-msgstr "Pakete"
-
-#: templates/dashboard/report.html:63 templates/dashboard/report.html:73
-#: templates/dashboard/report.html:84
+#: templates/dashboard/report.html:72 templates/dashboard/report.html:82
+#: templates/dashboard/report.html:93
 msgid "Margin"
 msgstr "Marge"
 
-#: templates/dashboard/report.html:70
+#: templates/dashboard/report.html:79
 msgid "Sales in this period"
 msgstr "Verkäufe in diesem Zeitraum"
 
-#: templates/dashboard/report.html:71
+#: templates/dashboard/report.html:80
 msgid "Click a month in the chart to see only that month."
 msgstr "Klicken Sie im Diagramm auf einen Monat, um nur diesen Monat zu sehen."
 
-#: templates/dashboard/report.html:73
+#: templates/dashboard/report.html:82
 msgid "Order or licence"
 msgstr "Bestellung oder Lizenz"
 
 #: templates/dashboard/report.html:82
+msgid "Product"
+msgstr "Produkt"
+
+#: templates/dashboard/report.html:91
 msgid "Prices and margin per pack"
 msgstr "Preise und Marge pro Paket"
 
-#: templates/dashboard/report.html:84
+#: templates/dashboard/report.html:93
 msgid "Price"
 msgstr "Preis"
 
-#: templates/dashboard/report.html:84
+#: templates/dashboard/report.html:93
 msgid "Cost price"
 msgstr "Einkaufspreis"
 
-#: templates/dashboard/report.html:87
+#: templates/dashboard/report.html:96
 msgid "No service packs yet."
 msgstr "Noch keine Servicepakete."
 
@@ -6437,8 +6471,18 @@ msgid "Result"
 msgstr "Ergebnis"
 
 #: templates/legacy/import_start.html:6
-msgid "Imports everything from the previous webshop that PackDesk knows: the catalogue, customers with addresses, contacts and logins (with their own passwords), orders, licences with options and extensions, invoices with payments, spare parts requests and orders, printing services (as an archive), telephony, and the number counters."
-msgstr "Importiert alles aus dem vorherigen Webshop, was PackDesk kennt: den Katalog, Kunden mit Adressen, Ansprechpartner und Logins (mit ihrem eigenen Passwort), Bestellungen, Lizenzen mit Optionen und Verlängerungen, Rechnungen mit Zahlungen, Ersatzteilanfragen und -bestellungen, Druckdienste (als Archiv), Telefonie sowie die Nummernzähler."
+msgid ""
+"Imports everything from the previous webshop that PackDesk knows: the catalogue, "
+"customers with addresses, contacts and logins (with their own passwords), "
+"orders, licences with options and extensions, invoices with payments, spare "
+"parts requests and orders, printing services (as an archive), telephony, and "
+"the number counters."
+msgstr ""
+"Importiert alles aus dem vorherigen Webshop, was PackDesk kennt: den Katalog, Kunden "
+"mit Adressen, Ansprechpartner und Logins (mit ihrem eigenen Passwort), "
+"Bestellungen, Lizenzen mit Optionen und Verlängerungen, Rechnungen mit "
+"Zahlungen, Ersatzteilanfragen und -bestellungen, Druckdienste (als Archiv), "
+"Telefonie sowie die Nummernzähler."
 
 #: templates/legacy/import_start.html:7
 msgid ""
@@ -7292,8 +7336,12 @@ msgid "My telephony quotes"
 msgstr "Meine Telefonie-Angebote"
 
 #: templates/telephony/calculator.html:7
-msgid "Fill in what is needed and compare hiring with buying. Quantities marked automatic are counted for you."
-msgstr "Tragen Sie ein, was benötigt wird, und vergleichen Sie Mieten mit Kaufen. Mengen mit „automatisch“ werden für Sie gezählt."
+msgid ""
+"Fill in what is needed and compare hiring with buying. Quantities marked "
+"automatic are counted for you."
+msgstr ""
+"Tragen Sie ein, was benötigt wird, und vergleichen Sie Mieten mit Kaufen. "
+"Mengen mit „automatisch“ werden für Sie gezählt."
 
 #: templates/telephony/calculator.html:13 templates/telephony/quote.html:8
 msgid "Item"
@@ -7419,6 +7467,15 @@ msgstr "%(model)s hinzufügen"
 #, python-format
 msgid "View selected %(model)s"
 msgstr "%(model)s anzeigen"
+
+#~ msgid "Packs sold"
+#~ msgstr "Verkaufte Pakete"
+
+#~ msgid "packs"
+#~ msgstr "Pakete"
+
+#~ msgid "Packs"
+#~ msgstr "Pakete"
 
 #~ msgid ""
 #~ "Optional. Regular expression for documents in the archive folder; the "

@@ -175,3 +175,21 @@ def test_customer_page_shows_parts(client, site, parts, beheerder):
     client.force_login(beheerder)
     page = client.get(f"/beheer/customers/customer/{parts['customer'].pk}/change/").content.decode()
     assert "WS17000AA" in page
+
+
+def test_parts_in_sales_report(client, site, parts, beheerder):
+    request = answered_request(parts)
+    order = PartOrder.objects.create(number="WS17000AA-1", request=request, customer=parts["customer"],
+                                     discount_pct=Decimal("10"), small_order_costs=Decimal("15"))
+    line = order.lines.create(request_line=request.lines.get(), packing="new", quantity=3, unit_price=Decimal("20"),
+                              purchase_price=Decimal("10"))
+    Correction.objects.create(line=line, quantity=-1)
+    PartOrder.objects.create(number="WS17000AA-2", request=request, customer=parts["customer"],
+                             status=PartOrder.Status.CANCELLED, small_order_costs=Decimal("15"))
+    client.force_login(beheerder)
+    report = client.get("/beheer/rapportage/", {"kind": "parts"}).context["report"]
+    # 2 parts left × € 20 − 10% = 36, + surcharge 15 = 51; cost 2 × € 10 = 20; the cancelled order is left out
+    assert report["totals"]["revenue"] == Decimal("51.00") and report["totals"]["cost"] == Decimal("20.00")
+    assert report["totals"]["count"] == 2
+    assert client.get("/beheer/rapportage/", {"kind": "packs"}).context["report"]["totals"]["revenue"] == 0
+    assert client.get("/beheer/rapportage/").context["report"]["totals"]["revenue"] == Decimal("51.00")

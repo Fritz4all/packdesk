@@ -1,7 +1,9 @@
 """Sales report: revenue, cost and margin per month, per category and per customer.
 
-Orders give exact amounts. Licences without an order (made by hand or imported) are estimated at the
-pack's current price minus the customer's discount; the page says how many sales are estimates.
+Service packs: orders give exact amounts. Licences without an order (made by hand or imported) are estimated
+at the pack's current price minus the customer's discount; the page says how many sales are estimates.
+Spare parts: each ordered part with its own selling and purchase price, minus the order discount and minus
+corrections; surcharges count as revenue without cost; cancelled orders are left out.
 """
 
 from collections import OrderedDict, defaultdict
@@ -67,9 +69,23 @@ def parse_range(request, today):
     return (choice, *_period(choice, today))
 
 
-def sale_items(start, end):
-    """Everything sold in the period: order lines (exact prices at order time) and licences without an order
-    (e.g. created by hand or imported), valued at the current pack price minus the customer's discount."""
+KINDS = ("all", "packs", "parts")
+
+
+def sale_items(start, end, kind="all"):
+    """Everything sold in the period, as items with: when, customer, category, product, count, revenue, cost,
+    label, url, exact."""
+    items = []
+    if kind in ("all", "packs"):
+        items += pack_items(start, end)
+    if kind in ("all", "parts"):
+        items += part_items(start, end)
+    return items
+
+
+def pack_items(start, end):
+    """Order lines (exact prices at order time) and licences without an order (e.g. created by hand),
+    valued at the current pack price minus the customer's discount."""
     from apps.orders.models import OrderLine
 
     items = []
@@ -77,21 +93,55 @@ def sale_items(start, end):
              .select_related("order__customer", "pack__category"))
     for line in lines:
         revenue = (line.line_total * (HUNDRED - line.order.discount_pct) / HUNDRED).quantize(Decimal("0.01"))
-        items.append({"when": line.order.created_at, "customer": line.order.customer, "pack": line.pack,
-                      "count": line.quantity, "revenue": revenue, "cost": line.pack.cost_price * line.quantity,
-                      "label": line.order.number, "url": ("admin:orders_order_change", line.order.pk), "exact": True})
+        items.append({"when": line.order.created_at, "customer": line.order.customer, "category": str(line.pack.category),
+                      "product": str(line.pack), "count": line.quantity, "revenue": revenue,
+                      "cost": line.pack.cost_price * line.quantity, "label": line.order.number,
+                      "url": ("admin:orders_order_change", line.order.pk), "exact": True})
     licences = (Licence.objects.filter(created_at__date__gte=start, created_at__date__lte=end, order_line__isnull=True)
                 .select_related("pack__category", "customer"))
     for lic in licences:
         revenue, cost = sale_values(lic)
-        items.append({"when": lic.created_at, "customer": lic.customer, "pack": lic.pack, "count": 1,
-                      "revenue": revenue, "cost": cost, "label": lic.full_number,
+        items.append({"when": lic.created_at, "customer": lic.customer, "category": str(lic.pack.category),
+                      "product": str(lic.pack), "count": 1, "revenue": revenue, "cost": cost, "label": lic.full_number,
                       "url": ("admin:licences_licence_change", lic.pk), "exact": False})
     return items
 
 
-def build_report(start, end):
-    items = sale_items(start, end)
+def part_items(start, end):
+    from django.db.models import Sum
+
+    from apps.parts.models import Correction, PartOrder, PartOrderLine
+
+    orders = (PartOrder.objects.filter(created_at__date__gte=start, created_at__date__lte=end)
+              .exclude(status=PartOrder.Status.CANCELLED).select_related("customer"))
+    orders = {o.pk: o for o in orders}
+    corrected = dict(Correction.objects.filter(line__order__in=orders.keys()).values("line")
+                     .annotate(n=Sum("quantity")).values_list("line", "n"))
+    category, extras = _("Spare parts"), _("Spare parts: surcharges and costs")
+    items = []
+    for line in PartOrderLine.objects.filter(order__in=orders.keys()).select_related("request_line"):
+        order = orders[line.order_id]
+        quantity = max(line.quantity + corrected.get(line.pk, 0), 0)
+        if not quantity:
+            continue
+        revenue = (line.unit_price * quantity * (HUNDRED - order.discount_pct) / HUNDRED).quantize(Decimal("0.01"))
+        part = line.request_line
+        items.append({"when": order.created_at, "customer": order.customer, "category": category,
+                      "product": f"{part.article_number} ({line.get_packing_display()})", "count": quantity,
+                      "revenue": revenue, "cost": (line.purchase_price or Decimal("0")) * quantity, "label": order.number,
+                      "url": ("admin:parts_partorder_change", order.pk), "exact": True})
+    for order in orders.values():
+        costs = order.costs()
+        if costs:
+            items.append({"when": order.created_at, "customer": order.customer, "category": extras,
+                          "product": ", ".join(str(label) for label, _amount in costs), "count": 0,
+                          "revenue": sum((amount for _label, amount in costs), Decimal("0")), "cost": Decimal("0"),
+                          "label": order.number, "url": ("admin:parts_partorder_change", order.pk), "exact": True})
+    return items
+
+
+def build_report(start, end, kind="all"):
+    items = sale_items(start, end, kind)
     per_month = OrderedDict((key, {"revenue": Decimal(0), "cost": Decimal(0), "count": 0}) for key in _months(start, end))
     per_category = defaultdict(lambda: {"revenue": Decimal(0), "count": 0})
     per_customer = defaultdict(lambda: {"revenue": Decimal(0), "margin": Decimal(0), "count": 0})
@@ -105,8 +155,8 @@ def build_report(start, end):
             target["count"] += item["count"]
         if not item["exact"]:
             totals["estimated"] += 1
-        per_category[str(item["pack"].category)]["revenue"] += item["revenue"]
-        per_category[str(item["pack"].category)]["count"] += item["count"]
+        per_category[item["category"]]["revenue"] += item["revenue"]
+        per_category[item["category"]]["count"] += item["count"]
         per_customer[item["customer"].name]["revenue"] += item["revenue"]
         per_customer[item["customer"].name]["margin"] += item["revenue"] - item["cost"]
         per_customer[item["customer"].name]["count"] += item["count"]
@@ -145,7 +195,8 @@ def report_view(request):
     if not request.user.has_perm("dashboard.view_reports"):
         raise PermissionDenied
     choice, start, end = parse_range(request, timezone.localdate())
-    report = build_report(start, end)
+    kind = request.GET.get("kind") if request.GET.get("kind") in KINDS else "all"
+    report = build_report(start, end, kind)
     top = max([c["revenue"] for c in report["categories"]] + [Decimal(1)])
     for c in report["categories"]:
         c["pct"] = float(c["revenue"] / top * 100)
@@ -158,7 +209,8 @@ def report_view(request):
         **admin.site.each_context(request),
         "title": _("Sales and margin"),
         "report": report, "chart": bar_chart(report["months"]), "price_list": price_list,
-        "period": choice, "start": start, "end": end,
+        "period": choice, "start": start, "end": end, "kind": kind,
+        "kinds": [("all", _("Everything")), ("packs", _("Service packs")), ("parts", _("Spare parts"))],
         "periods": [("12m", _("Last 12 months")), ("this_year", _("This year")), ("last_year", _("Last year"))],
     }
     return render(request, "dashboard/report.html", context)

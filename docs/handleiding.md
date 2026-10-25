@@ -22,7 +22,13 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
   licenties die nog niet geregistreerd zijn of binnenkort aflopen, en problemen met nummering. Met
   *Aanpassen* versleep en verberg je blokken; *Standaard herstellen* zet alles terug.
 - **Verkoop en marge:** omzet, brutomarge en margepercentage, per maand en per categorie, de beste
-  klanten en een prijslijst met inkoopprijs en marge per pakket. Kies een periode of klik op een maand.
+  klanten en een prijslijst met inkoopprijs en marge per pakket. Kies een periode of klik op een maand,
+  en kies *Alles*, *Servicepakketten* of *Onderdelen*.
+  - Servicepakketten rekenen met de inkoopprijs die het pakket nu heeft; vul die in bij de pakketten,
+    anders is de marge te hoog (de vorige webshop had geen inkoopprijzen).
+  - Onderdelen rekenen met de verkoop- en inkoopprijs van elk besteld onderdeel, min correcties en de
+    korting van de klant. Toeslagen (kleine bestelling, spoed, verzending) tellen als omzet zonder inkoop;
+    geannuleerde bestellingen tellen niet mee.
 
 ## Klanten
 
