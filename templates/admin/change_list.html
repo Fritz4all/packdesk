@@ -56,6 +56,7 @@
             a.href = c.url;
             a.textContent = c.label;
             if (c.selected) a.className = "pd-selected";
+            if (c.empty && !c.selected) a.classList.add("pd-empty");
             menu.appendChild(a);
           });
           document.body.appendChild(menu);

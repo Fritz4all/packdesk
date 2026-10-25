@@ -8,7 +8,9 @@ A computed column gets a filter when its admin method has an ordering on a model
 `column_filters = {"column": "field path" or ListFilter class}` on the ModelAdmin.
 """
 
-from django.contrib.admin import ModelAdmin, SimpleListFilter
+import re
+
+from django.contrib.admin import ModelAdmin, ShowFacets, SimpleListFilter
 from django.core.exceptions import FieldDoesNotExist
 from django.db import models
 from django.utils.html import json_script
@@ -82,6 +84,8 @@ def get_list_filter(self, request):
 
 def install():
     ModelAdmin.get_list_filter = get_list_filter
+    # Every filter option shows how many rows it gives, taking the other active filters into account.
+    ModelAdmin.show_facets = ShowFacets.ALWAYS
 
 
 def header_data(cl, request):
@@ -93,8 +97,12 @@ def header_data(cl, request):
         spec = by_key.get(_key(entry))
         if spec is None:
             continue
-        choices = [{"label": str(c["display"]), "url": c["query_string"], "selected": bool(c.get("selected"))}
-                   for c in spec.choices(cl)]
+        choices = []
+        for c in spec.choices(cl):
+            label = str(c["display"])
+            count = re.search(r"\((\d+)\)$", label)
+            choices.append({"label": label, "url": c["query_string"], "selected": bool(c.get("selected")),
+                            "empty": bool(count) and count.group(1) == "0"})
         if len(choices) > 1:
             data[column] = {"title": str(spec.title), "choices": choices}
     return json_script(data, "pd-column-filters")

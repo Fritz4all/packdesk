@@ -133,3 +133,4 @@ html.dark .pd-colfilter-menu { border-color: rgb(55 65 81); background: rgb(17 2
 .pd-colfilter-menu a { display: block; padding: .35rem .6rem; border-radius: 6px; white-space: nowrap; }
 .pd-colfilter-menu a:hover { background: rgb(147 51 234 / .12); }
 .pd-colfilter-menu a.pd-selected { font-weight: 600; color: rgb(147 51 234); }
+.pd-colfilter-menu a.pd-empty { opacity: .45; }
