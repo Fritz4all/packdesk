@@ -54,3 +54,29 @@ def test_related_menu_has_short_labels_and_no_delete(client, site, beheerder):
     assert 'title="klanttype toevoegen"' in page
     assert 'title="Geselecteerde klanttype' not in page and 'title="Nog een klanttype' not in page
     assert 'id="delete_id_customer_type"' not in page
+
+
+def test_every_admin_field_uses_the_admin_styling(rf, site):
+    """Fields that use Django's plain widgets have no styling and are unreadable in dark mode."""
+    from django.contrib import admin as django_admin
+    from django.forms import widgets as plain
+
+    request = rf.get("/beheer/")
+    request.user = make_user("root@example.test", superuser=True)
+    allowed_plain = (plain.HiddenInput, plain.MultipleHiddenInput)
+    bad = []
+    for model, model_admin in django_admin.site._registry.items():
+        if not (model_admin.has_add_permission(request) or model_admin.has_change_permission(request)):
+            continue  # read-only archive: nothing to fill in
+        try:
+            form = model_admin.get_form(request, None)()
+        except Exception:  # some admins need an object; their extra fields are covered by other tests
+            continue
+        for name, field in form.fields.items():
+            widget = getattr(field.widget, "widget", field.widget)  # related-field wrapper
+            module = type(widget).__module__
+            if getattr(widget, "input_type", "") == "color":
+                continue  # colour picker
+            if module.startswith("django.forms") and not isinstance(widget, allowed_plain):
+                bad.append(f"{model._meta.label}.{name}: {type(widget).__name__}")
+    assert not bad, bad

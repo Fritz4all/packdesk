@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 10:34+0100\n"
+"POT-Creation-Date: 2026-10-25 10:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/accounts/admin.py:38 apps/accounts/admin.py:91
+#: apps/accounts/admin.py:39 apps/accounts/admin.py:92
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: apps/accounts/admin.py:42
+#: apps/accounts/admin.py:43
 msgid ""
 "Tick what users with this role may see and do. You can only grant rights you "
 "have yourself."
@@ -28,16 +28,16 @@ msgstr ""
 "Kreuzen Sie an, was Benutzer mit dieser Rolle sehen und tun dürfen. Sie "
 "können nur Rechte vergeben, die Sie selbst haben."
 
-#: apps/accounts/admin.py:87 apps/accounts/apps.py:8
+#: apps/accounts/admin.py:88 apps/accounts/apps.py:8
 #: apps/dashboard/navigation.py:357
 msgid "Users"
 msgstr "Benutzer"
 
-#: apps/accounts/admin.py:105 apps/accounts/admin.py:201
+#: apps/accounts/admin.py:106 apps/accounts/admin.py:203
 msgid "Role"
 msgstr "Rolle"
 
-#: apps/accounts/admin.py:108
+#: apps/accounts/admin.py:110
 msgid ""
 "Required for staff. The role decides what this user sees and may do in the "
 "admin."
@@ -45,46 +45,46 @@ msgstr ""
 "Pflicht für Mitarbeiter. Die Rolle bestimmt, was dieser Benutzer in der "
 "Verwaltung sieht und tun darf."
 
-#: apps/accounts/admin.py:123
+#: apps/accounts/admin.py:125
 msgid "Staff users need a role."
 msgstr "Mitarbeiter benötigen eine Rolle."
 
-#: apps/accounts/admin.py:149 apps/core/setup_views.py:51
+#: apps/accounts/admin.py:151 apps/core/setup_views.py:51
 #: apps/core/setup_views.py:96 apps/customers/forms.py:51
 msgid "Password"
 msgstr "Passwort"
 
-#: apps/accounts/admin.py:152
+#: apps/accounts/admin.py:154
 msgid "Set"
 msgstr "Gesetzt"
 
-#: apps/accounts/admin.py:153
+#: apps/accounts/admin.py:155
 msgid "Must choose a new one"
 msgstr "Muss ein neues wählen"
 
-#: apps/accounts/admin.py:155
+#: apps/accounts/admin.py:157
 msgid "Make selected users choose a new password (email with link)"
 msgstr ""
 "Ausgewählte Benutzer ein neues Passwort wählen lassen (E-Mail mit Link)"
 
-#: apps/accounts/admin.py:164 apps/accounts/admin.py:170
+#: apps/accounts/admin.py:166 apps/accounts/admin.py:172
 msgid "Personal info"
 msgstr "Persönliche Daten"
 
-#: apps/accounts/admin.py:165 apps/accounts/admin.py:171
-#: apps/accounts/admin.py:176
+#: apps/accounts/admin.py:167 apps/accounts/admin.py:173
+#: apps/accounts/admin.py:178
 msgid "Access"
 msgstr "Zugang"
 
-#: apps/accounts/admin.py:166 apps/accounts/admin.py:172
+#: apps/accounts/admin.py:168 apps/accounts/admin.py:174
 msgid "Dates"
 msgstr "Daten"
 
-#: apps/accounts/admin.py:204
+#: apps/accounts/admin.py:206
 msgid "Superuser"
 msgstr "Superuser"
 
-#: apps/accounts/admin.py:224
+#: apps/accounts/admin.py:226
 #, python-format
 msgid ""
 "%(n)s email(s) sent with a link to choose a new password; the old passwords "
@@ -93,7 +93,7 @@ msgstr ""
 "%(n)s E-Mail(s) mit einem Link zum Wählen eines neuen Passworts gesendet; "
 "die alten Passwörter funktionieren nicht mehr."
 
-#: apps/accounts/admin.py:227
+#: apps/accounts/admin.py:229
 #, python-format
 msgid "Not sent (no email address or not active): %(list)s"
 msgstr "Nicht gesendet (keine E-Mail-Adresse oder nicht aktiv): %(list)s"
@@ -381,76 +381,76 @@ msgstr "Test-E-Mail an %(email)s gesendet."
 msgid "PackDesk is ready. Everything can be changed later in the admin."
 msgstr "PackDesk ist bereit. Alles lässt sich später in der Verwaltung ändern."
 
-#: apps/customers/admin.py:29 apps/customers/models.py:19
+#: apps/customers/admin.py:30 apps/customers/models.py:19
 #: apps/customers/models.py:61
 msgid "customer type"
 msgstr "Kundentyp"
 
-#: apps/customers/admin.py:30
+#: apps/customers/admin.py:31
 msgid "(none)"
 msgstr "(keiner)"
 
-#: apps/customers/admin.py:55 apps/customers/admin.py:335
+#: apps/customers/admin.py:56 apps/customers/admin.py:384
 #: apps/customers/overview.py:112
 msgid "Login"
 msgstr "Login"
 
-#: apps/customers/admin.py:58
+#: apps/customers/admin.py:59
 msgid "No login yet"
 msgstr "Noch kein Login"
 
-#: apps/customers/admin.py:59 apps/customers/admin.py:343
+#: apps/customers/admin.py:60 apps/customers/admin.py:392
 #: apps/customers/models.py:50 apps/customers/overview.py:73
 #: apps/legacy/parts.py:117
 msgid "Active"
 msgstr "Aktiv"
 
-#: apps/customers/admin.py:59
+#: apps/customers/admin.py:60
 msgid "Not active (waiting for approval or blocked)"
 msgstr "Nicht aktiv (wartet auf Freigabe oder gesperrt)"
 
-#: apps/customers/admin.py:77 apps/parts/admin.py:179
+#: apps/customers/admin.py:78 apps/parts/admin.py:179
 msgid "Approve"
 msgstr "Freigeben"
 
-#: apps/customers/admin.py:78
+#: apps/customers/admin.py:79
 msgid "Send login to contacts without one"
 msgstr "Login an Ansprechpartner ohne Login senden"
 
-#: apps/customers/admin.py:80
+#: apps/customers/admin.py:81
 msgid "Block"
 msgstr "Sperren"
 
-#: apps/customers/admin.py:81
+#: apps/customers/admin.py:82
 msgid "Block this customer? Its contacts can no longer log in."
 msgstr ""
 "Diesen Kunden sperren? Die Ansprechpartner können sich dann nicht mehr "
 "anmelden."
 
-#: apps/customers/admin.py:82
+#: apps/customers/admin.py:83
 #: templates/admin/customers/customer/change_list.html:5
 msgid "Export"
 msgstr "Exportieren"
 
-#: apps/customers/admin.py:85 apps/parts/admin.py:385
+#: apps/customers/admin.py:86 apps/parts/admin.py:385
 #: apps/siteconfig/admin.py:129
 #: templates/admin/customers/customer/overview.html:23
 msgid "General"
 msgstr "Allgemein"
 
-#: apps/customers/admin.py:88
+#: apps/customers/admin.py:89
 msgid "Email addresses"
 msgstr "E-Mail-Adressen"
 
-#: apps/customers/admin.py:89
+#: apps/customers/admin.py:90
 msgid "Prices and invoices"
 msgstr "Preise und Rechnungen"
 
-#: apps/customers/admin.py:90
+#: apps/customers/admin.py:91
 msgid "Notes"
 msgstr "Notizen"
 
-#: apps/customers/admin.py:107 apps/customers/overview.py:114
+#: apps/customers/admin.py:108 apps/customers/overview.py:114
 #: apps/customers/overview.py:117 apps/customers/overview.py:119
 #: apps/customers/overview.py:121 apps/customers/overview.py:141
 #: apps/customers/overview.py:143 apps/customers/overview.py:159
@@ -461,13 +461,13 @@ msgstr "Notizen"
 msgid "Number"
 msgstr "Nummer"
 
-#: apps/customers/admin.py:111 apps/customers/forms.py:40
+#: apps/customers/admin.py:112 apps/customers/forms.py:40
 #: apps/legacy/parts.py:118 apps/licences/forms.py:37 apps/orders/forms.py:59
 #: apps/parts/forms.py:69
 msgid "City"
 msgstr "Ort"
 
-#: apps/customers/admin.py:116 apps/customers/overview.py:114
+#: apps/customers/admin.py:117 apps/customers/overview.py:114
 #: apps/customers/overview.py:121 apps/customers/overview.py:141
 #: apps/customers/overview.py:143 apps/faults/admin.py:70
 #: apps/legacy/admin.py:228 apps/legacy/admin.py:232 apps/licences/admin.py:176
@@ -479,158 +479,163 @@ msgstr "Ort"
 msgid "Status"
 msgstr "Status"
 
-#: apps/customers/admin.py:120 apps/customers/overview.py:111
+#: apps/customers/admin.py:121 apps/customers/overview.py:111
 #: apps/dashboard/navigation.py:85 apps/legacy/old_shop/importer.py:113
 #: apps/legacy/parts.py:122
 msgid "Contacts"
 msgstr "Ansprechpartner"
 
-#: apps/customers/admin.py:137
+#: apps/customers/admin.py:138
 msgid "Approve selected customers"
 msgstr "Ausgewählte Kunden freigeben"
 
-#: apps/customers/admin.py:141
+#: apps/customers/admin.py:142
 #, python-format
 msgid "%(n)s customer(s) approved."
 msgstr "%(n)s Kunde(n) freigegeben."
 
-#: apps/customers/admin.py:143
+#: apps/customers/admin.py:144
 msgid "Block selected customers"
 msgstr "Ausgewählte Kunden sperren"
 
-#: apps/customers/admin.py:147
+#: apps/customers/admin.py:148
 #, python-format
 msgid "%(n)s customer(s) blocked."
 msgstr "%(n)s Kunde(n) gesperrt."
 
-#: apps/customers/admin.py:149
+#: apps/customers/admin.py:150
 msgid "Change customer type of selected customers"
 msgstr "Kundentyp der ausgewählten Kunden ändern"
 
-#: apps/customers/admin.py:155
+#: apps/customers/admin.py:156
 #, python-format
 msgid "Customer type of %(n)s customer(s) set to %(type)s."
 msgstr "Kundentyp von %(n)s Kunde(n) auf %(type)s gesetzt."
 
-#: apps/customers/admin.py:160
+#: apps/customers/admin.py:161
 msgid "Change customer type"
 msgstr "Kundentyp ändern"
 
-#: apps/customers/admin.py:187 apps/customers/forms.py:32
+#: apps/customers/admin.py:189
+#, python-format
+msgid "Not deleted: %(names)s%(more)s. Customers with invoices, orders, licences or other history cannot be deleted, because that history must be kept. Block the customer instead: its contacts can then no longer log in."
+msgstr "Nicht gelöscht: %(names)s%(more)s. Kunden mit Rechnungen, Bestellungen, Lizenzen oder anderem Verlauf können nicht gelöscht werden, weil dieser Verlauf aufbewahrt werden muss. Sperren Sie den Kunden stattdessen: seine Ansprechpartner können sich dann nicht mehr anmelden."
+
+#: apps/customers/admin.py:236 apps/customers/forms.py:32
 #: apps/customers/overview.py:112 apps/legacy/parts.py:112
 #: apps/legacy/parts.py:126 apps/licences/forms.py:38 apps/parts/forms.py:71
 #: templates/customers/my_details.html:12
 msgid "Phone"
 msgstr "Telefon"
 
-#: apps/customers/admin.py:187 apps/customers/overview.py:112
+#: apps/customers/admin.py:236 apps/customers/overview.py:112
 #: apps/legacy/parts.py:112 apps/legacy/parts.py:125 apps/legacy/parts.py:134
 msgid "Email"
 msgstr "E-Mail"
 
-#: apps/customers/admin.py:188 apps/customers/forms.py:35
+#: apps/customers/admin.py:237 apps/customers/forms.py:35
 msgid "Website"
 msgstr "Website"
 
-#: apps/customers/admin.py:188 apps/customers/forms.py:33
+#: apps/customers/admin.py:237 apps/customers/forms.py:33
 #: apps/customers/models.py:65 apps/customers/models.py:271
 #: apps/legacy/parts.py:111 apps/siteconfig/models.py:148
 #: templates/customers/my_details.html:11
 msgid "VAT number"
 msgstr "USt-IdNr."
 
-#: apps/customers/admin.py:189 apps/customers/forms.py:34
+#: apps/customers/admin.py:238 apps/customers/forms.py:34
 #: apps/customers/models.py:66 apps/customers/models.py:273
 #: apps/legacy/parts.py:111 apps/siteconfig/models.py:147
 msgid "Chamber of Commerce number"
 msgstr "Handelsregisternummer"
 
-#: apps/customers/admin.py:190
+#: apps/customers/admin.py:239
 msgid "Customer since"
 msgstr "Kunde seit"
 
-#: apps/customers/admin.py:193 apps/customers/models.py:71
+#: apps/customers/admin.py:242 apps/customers/models.py:71
 msgid "email for orders"
 msgstr "E-Mail für Bestellungen"
 
-#: apps/customers/admin.py:193 apps/customers/models.py:72
+#: apps/customers/admin.py:242 apps/customers/models.py:72
 msgid "email for spare parts"
 msgstr "E-Mail für Ersatzteile"
 
-#: apps/customers/admin.py:194 apps/customers/models.py:73
+#: apps/customers/admin.py:243 apps/customers/models.py:73
 msgid "email for invoices"
 msgstr "E-Mail für Rechnungen"
 
-#: apps/customers/admin.py:195 apps/customers/models.py:75
+#: apps/customers/admin.py:244 apps/customers/models.py:75
 msgid "margin service packs (%)"
 msgstr "Marge Servicepakete (%)"
 
-#: apps/customers/admin.py:196 apps/customers/models.py:76
+#: apps/customers/admin.py:245 apps/customers/models.py:76
 msgid "margin spare parts (%)"
 msgstr "Marge Ersatzteile (%)"
 
-#: apps/customers/admin.py:216
+#: apps/customers/admin.py:265
 msgid "Make the contacts of the selected customers choose a new password"
 msgstr ""
 "Ansprechpartner der ausgewählten Kunden ein neues Passwort wählen lassen"
 
-#: apps/customers/admin.py:225
+#: apps/customers/admin.py:274
 msgid "Export selected customers"
 msgstr "Ausgewählte Kunden exportieren"
 
-#: apps/customers/admin.py:251
+#: apps/customers/admin.py:300
 #, python-format
 msgid "Customer approved with number %(n)s."
 msgstr "Kunde mit Nummer %(n)s freigegeben."
 
-#: apps/customers/admin.py:255
+#: apps/customers/admin.py:304
 msgid "Customer blocked; its contacts can no longer log in."
 msgstr "Kunde gesperrt; die Ansprechpartner können sich nicht mehr anmelden."
 
-#: apps/customers/admin.py:273
+#: apps/customers/admin.py:322
 #, python-format
 msgid "Logins created; %(n)s invitation(s) sent."
 msgstr "Logins angelegt; %(n)s Einladung(en) gesendet."
 
-#: apps/customers/admin.py:275
+#: apps/customers/admin.py:324
 #, python-format
 msgid "Email address already in use: %(list)s"
 msgstr "E-Mail-Adresse bereits vergeben: %(list)s"
 
-#: apps/customers/admin.py:294
+#: apps/customers/admin.py:343
 msgid "New customers"
 msgstr "Neue Kunden"
 
-#: apps/customers/admin.py:295
+#: apps/customers/admin.py:344
 msgid "Sign-up form"
 msgstr "Anmeldeformular"
 
-#: apps/customers/admin.py:298
+#: apps/customers/admin.py:347
 msgid "Form fields"
 msgstr "Formularfelder"
 
-#: apps/customers/admin.py:304
+#: apps/customers/admin.py:353
 msgid "Activation email"
 msgstr "Aktivierungs-E-Mail"
 
-#: apps/customers/admin.py:331 apps/customers/overview.py:112
+#: apps/customers/admin.py:380 apps/customers/overview.py:112
 #: apps/legacy/old_shop/importer.py:138 apps/legacy/parts.py:110
 msgid "Name"
 msgstr "Name"
 
-#: apps/customers/admin.py:338 apps/customers/overview.py:67
+#: apps/customers/admin.py:387 apps/customers/overview.py:67
 msgid "No login"
 msgstr "Kein Login"
 
-#: apps/customers/admin.py:340 apps/customers/overview.py:69
+#: apps/customers/admin.py:389 apps/customers/overview.py:69
 msgid "Not active"
 msgstr "Nicht aktiv"
 
-#: apps/customers/admin.py:342 apps/customers/overview.py:71
+#: apps/customers/admin.py:391 apps/customers/overview.py:71
 msgid "Must choose a new password"
 msgstr "Muss ein neues Passwort wählen"
 
-#: apps/customers/admin.py:345
+#: apps/customers/admin.py:394
 msgid "Make selected contacts choose a new password (email with link)"
 msgstr ""
 "Ausgewählte Ansprechpartner ein neues Passwort wählen lassen (E-Mail mit "

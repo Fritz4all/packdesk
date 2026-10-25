@@ -256,3 +256,22 @@ def test_customer_opens_as_overview_with_edit_button(client, site, beheerder):
                                                 "_selected_action": [customer.pk, other.pk],
                                                 "customer_type": reseller.pk})
     assert Customer.objects.filter(customer_type=reseller).count() == 2
+
+
+def test_customer_with_history_is_not_deleted_but_explained(client, site, beheerder):
+    from apps.invoices.models import Invoice
+    from apps.trash.models import TrashEntry
+
+    kept = Customer.objects.create(name="Met factuur", number="80")
+    Invoice.objects.create(number="F1", customer=kept)
+    loose = Customer.objects.create(name="Zonder iets", number="81")
+    client.force_login(make_user("root@example.test", superuser=True))
+    response = client.post("/beheer/customers/customer/", {"action": "delete_selected",
+                                                           "_selected_action": [kept.pk, loose.pk]}, follow=True)
+    page = response.content.decode()
+    assert "Met factuur" in page and "Block the customer instead" in page or "Blokkeer" in page
+    assert Customer.objects.count() == 2 and not TrashEntry.objects.exists()
+    response = client.get(f"/beheer/customers/customer/{kept.pk}/delete/")
+    assert response.status_code == 302 and response["Location"].endswith("?edit=1")
+    client.post("/beheer/customers/customer/", {"action": "delete_selected", "_selected_action": [loose.pk], "post": "yes"})
+    assert not Customer.objects.filter(pk=loose.pk).exists()

@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
+from unfold.widgets import UnfoldAdminSelectWidget
 
 from .models import Role, User
 from .password_reset import force_reset
@@ -105,6 +106,7 @@ class RoleFieldMixin(forms.Form):
         label=_("Role"),
         queryset=Role.objects.none(),
         required=False,
+        widget=UnfoldAdminSelectWidget,
         help_text=_("Required for staff. The role decides what this user sees and may do in the admin."),
     )
 

@@ -1,4 +1,5 @@
 from django.contrib import admin, messages
+from django.db import models
 from django.db.models import Count
 from django import forms
 from django.shortcuts import redirect
@@ -160,6 +161,54 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
             "title": gettext("Change customer type"), "form": form, "customers": queryset,
             "opts": self.model._meta, "action_checkbox_name": admin.helpers.ACTION_CHECKBOX_NAME,
         })
+
+    # --- deleting: not when the customer has a history that must be kept ----
+
+    @staticmethod
+    def kept_history(customers):
+        """{customer: [kinds of records that block deleting, e.g. "invoices"]}: records that point to the
+        customer and may not be deleted with it (protected), such as invoices, orders and licences."""
+        blocking = {}
+        for rel in Customer._meta.related_objects:
+            if rel.on_delete is not models.PROTECT:
+                continue
+            ids = set(rel.related_model.objects.filter(**{f"{rel.field.name}__in": customers})
+                      .values_list(rel.field.attname, flat=True))
+            for customer in customers:
+                if customer.pk in ids:
+                    blocking.setdefault(customer, []).append(str(rel.related_model._meta.verbose_name_plural))
+        return blocking
+
+    def _refuse_delete(self, request, customers):
+        blocking = self.kept_history(list(customers))
+        if not blocking:
+            return False
+        names = "; ".join(f"{c} ({', '.join(kinds)})" for c, kinds in list(blocking.items())[:10])
+        more = len(blocking) - 10
+        messages.error(request, gettext(
+            "Not deleted: %(names)s%(more)s. Customers with invoices, orders, licences or other history cannot be "
+            "deleted, because that history must be kept. Block the customer instead: its contacts can then no "
+            "longer log in.") % {"names": names, "more": f" (+{more})" if more > 0 else ""})
+        return True
+
+    def delete_view(self, request, object_id, extra_context=None):
+        customer = self.get_object(request, object_id)
+        if customer is not None and self._refuse_delete(request, [customer]):
+            return redirect(f"{reverse('admin:customers_customer_change', args=[customer.pk])}?edit=1")
+        return super().delete_view(request, object_id, extra_context)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if "delete_selected" in actions:
+            func, name, description = actions["delete_selected"]
+
+            def delete_selected(modeladmin, request, queryset):
+                if modeladmin._refuse_delete(request, queryset):
+                    return None
+                return func(modeladmin, request, queryset)
+
+            actions["delete_selected"] = (delete_selected, name, description)
+        return actions
 
     # --- the customer page: overview first, edit on request -----------------
 
