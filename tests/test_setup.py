@@ -245,3 +245,30 @@ def test_update_page_goes_away_after_migrating_from_the_command_line(monkeypatch
     monkeypatch.setattr(database_state, "_pending_cache", None)
     assert database_state.has_pending() is True
     assert database_state.has_pending() is False  # checked again while something was pending
+
+
+def test_database_step_explains_what_went_wrong(client, monkeypatch, settings):
+    from apps.core import middleware, server_setup
+
+    monkeypatch.setattr(middleware.ServerSetupMiddleware, "working", False)
+    monkeypatch.setattr(server_setup, "diagnose", lambda: (server_setup.BAD_LOGIN, "old"))
+    settings.FIXED_SETTINGS = frozenset()
+    base = {"code": setup_code.get_code(), "engine": "mariadb", "host": "db", "port": "", "name": "packdesk",
+            "user": "prodpackdesk", "password": "pd-geheim", "create": "1", "admin_user": "app", "admin_password": ""}
+    calls = []
+    monkeypatch.setattr(server_setup, "create", lambda *a: calls.append(a))
+    monkeypatch.setattr(server_setup, "test", lambda target: (server_setup.BAD_LOGIN, "1045 refused"))
+
+    page = client.post("/installatie/database/", base).content.decode()  # no admin password: not even tried
+    assert not calls and "fill in the name and password of an administrator" in page.lower() or "beheerder" in page
+
+    def refuse(*a):
+        raise Exception(1045, "Access denied for user 'app'@'172.21.0.3' (using password: YES)")
+
+    monkeypatch.setattr(server_setup, "create", refuse)
+    page = client.post("/installatie/database/", {**base, "admin_password": "fout"}).content.decode()
+    assert page.count('class="notice notice-error"') == 1 and "app" in page
+
+    monkeypatch.setattr(server_setup, "create", lambda *a: calls.append(a))
+    page = client.post("/installatie/database/", {**base, "admin_password": "goed"}).content.decode()
+    assert calls and "prodpackdesk" in page and page.count('class="notice notice-error"') == 1

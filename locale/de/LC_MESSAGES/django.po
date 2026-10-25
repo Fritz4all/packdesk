@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 11:51+0100\n"
+"POT-Creation-Date: 2026-10-25 12:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -280,33 +280,51 @@ msgstr "Bereich"
 msgid "Other"
 msgstr "Sonstiges"
 
-#: apps/core/middleware.py:73 apps/core/middleware.py:122
+#: apps/core/middleware.py:75 apps/core/middleware.py:148
 #: apps/core/setup_views.py:43
 msgid "The installation code is not correct."
 msgstr "Der Installationscode ist nicht korrekt."
 
-#: apps/core/middleware.py:75
+#: apps/core/middleware.py:77
 msgid "Choose the type of database and fill in the server."
 msgstr "Wählen Sie die Art der Datenbank und geben Sie den Server ein."
 
-#: apps/core/middleware.py:77
+#: apps/core/middleware.py:79
 msgid "Database name and user: letters, digits and _ only."
 msgstr "Datenbankname und Benutzer: nur Buchstaben, Ziffern und _."
 
-#: apps/core/middleware.py:79
+#: apps/core/middleware.py:81
 msgid "Fill in a password for PackDesk's database user."
 msgstr "Geben Sie ein Passwort für den Datenbankbenutzer von PackDesk ein."
 
-#: apps/core/middleware.py:86
-#, python-format
-msgid "Creating the database did not work: %(error)s"
-msgstr "Das Anlegen der Datenbank ist fehlgeschlagen: %(error)s"
+#: apps/core/middleware.py:83
+msgid "To create the database, fill in the name and password of an administrator of the database server (e.g. root)."
+msgstr "Um die Datenbank anzulegen, tragen Sie Name und Passwort eines Administrators des Datenbankservers ein (z. B. root)."
 
-#: apps/core/middleware.py:120
+#: apps/core/middleware.py:96
+#, python-format
+msgid "The database server refuses the administrator login %(user)s. Check the administrator's name and password."
+msgstr "Der Datenbankserver lehnt die Administrator-Anmeldung %(user)s ab. Prüfen Sie Name und Passwort des Administrators."
+
+#: apps/core/middleware.py:99
+msgid "Creating the database did not work. See the technical details."
+msgstr "Das Anlegen der Datenbank hat nicht funktioniert. Siehe die technischen Details."
+
+#: apps/core/middleware.py:107
+#, python-format
+msgid "The database is there, but the user %(user)s already existed on the database server with a different password; PackDesk does not change existing users. Fill in that user's password, or choose another user name."
+msgstr "Die Datenbank ist angelegt, aber der Benutzer %(user)s existierte bereits mit einem anderen Passwort; PackDesk ändert keine bestehenden Benutzer. Tragen Sie dessen Passwort ein oder wählen Sie einen anderen Benutzernamen."
+
+#: apps/core/middleware.py:112
+#, python-format
+msgid "The database server refuses user %(user)s with this password. Is the user new? Then tick below that PackDesk creates the database and the user."
+msgstr "Der Datenbankserver lehnt den Benutzer %(user)s mit diesem Passwort ab. Ist der Benutzer neu? Dann kreuzen Sie unten an, dass PackDesk die Datenbank und den Benutzer anlegt."
+
+#: apps/core/middleware.py:146
 msgid "Confirm that a backup has been made."
 msgstr "Bestätigen Sie, dass eine Sicherung erstellt wurde."
 
-#: apps/core/middleware.py:128
+#: apps/core/middleware.py:154
 msgid ""
 "The update failed. The details are in the log (docker compose logs web)."
 msgstr ""

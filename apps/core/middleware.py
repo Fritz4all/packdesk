@@ -57,6 +57,8 @@ class ServerSetupMiddleware:
     def _post(self, request, current, context):
         post, fixed = request.POST, context["fixed"]
         context["values"] = {k: post.get(k, "") for k in ("engine", "host", "port", "name", "user", "admin_user")}
+        context["detail"] = ""  # details only about this attempt
+        context["create_checked"] = bool(post.get("create"))
 
         def value(key, field, default):
             return default if key in fixed else post.get(field, "").strip()
@@ -77,17 +79,41 @@ class ServerSetupMiddleware:
             context["error"] = _("Database name and user: letters, digits and _ only.")
         elif not target.password:
             context["error"] = _("Fill in a password for PackDesk's database user.")
+        elif post.get("create") and not (post.get("admin_user", "").strip() and post.get("admin_password")):
+            context["error"] = _("To create the database, fill in the name and password of an administrator of the "
+                                 "database server (e.g. root).")
+            context["offer_create"] = True
         else:
             problem = server_setup.test(target)
+            created = False
             if problem and problem[0] in (server_setup.NO_DATABASE, server_setup.BAD_LOGIN) and post.get("create"):
+                admin_user = post.get("admin_user", "").strip()
                 try:
-                    server_setup.create(target, post.get("admin_user", "").strip(), post.get("admin_password", ""))
+                    server_setup.create(target, admin_user, post.get("admin_password", ""))
                 except Exception as exc:
-                    context["error"] = _("Creating the database did not work: %(error)s") % {"error": exc}
+                    state = server_setup.classify(exc)
+                    context["error"] = (
+                        _("The database server refuses the administrator login %(user)s. Check the administrator's "
+                          "name and password.") % {"user": admin_user}
+                        if state == server_setup.BAD_LOGIN else
+                        _("Creating the database did not work. See the technical details."))
+                    context["detail"] = str(exc)
+                    context["offer_create"] = True
                     return False
+                created = True
                 problem = server_setup.test(target)
             if problem:
-                context["error"] = server_setup.message(problem[0]) or problem[1]
+                if created and problem[0] == server_setup.BAD_LOGIN:
+                    context["error"] = _("The database is there, but the user %(user)s already existed on the database "
+                                         "server with a different password; PackDesk does not change existing users. "
+                                         "Fill in that user's password, or choose another user name.") % {
+                                             "user": target.user}
+                elif problem[0] == server_setup.BAD_LOGIN:
+                    context["error"] = _("The database server refuses user %(user)s with this password. Is the user "
+                                         "new? Then tick below that PackDesk creates the database and the user.") % {
+                                             "user": target.user}
+                else:
+                    context["error"] = server_setup.message(problem[0]) or problem[1]
                 context["detail"] = problem[1]
                 context["offer_create"] = problem[0] in (server_setup.NO_DATABASE, server_setup.BAD_LOGIN)
                 return False
