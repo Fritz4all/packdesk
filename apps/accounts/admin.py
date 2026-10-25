@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin, messages
+from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 from django.core.exceptions import PermissionDenied
@@ -154,9 +155,33 @@ class PasswordFilter(ValueListFilter):
     ]
 
 
+class RoleFilter(SimpleListFilter):
+    """The roles, plus Superuser (no role needed) and No role. Superuser is only offered to superusers,
+    the only ones who can see superusers."""
+
+    title = _("Role")
+    parameter_name = "role"
+
+    def lookups(self, request, model_admin):
+        options = [(str(role.pk), role.name) for role in Group.objects.order_by("name")]
+        if request.user.is_superuser:
+            options.append(("superuser", _("Superuser")))
+        return options + [("none", _("Staff without a role"))]
+
+    def queryset(self, request, queryset):
+        value = self.value()
+        if value == "superuser":
+            return queryset.filter(is_superuser=True)
+        if value == "none":
+            return queryset.filter(kind=User.Kind.STAFF, groups__isnull=True, is_superuser=False)
+        if value:
+            return queryset.filter(groups__pk=value)
+        return queryset
+
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin, ModelAdmin):
-    column_filters = {"show_password": PasswordFilter, "show_role": "groups"}
+    column_filters = {"show_password": PasswordFilter, "show_role": RoleFilter}
     form = PackDeskUserChangeForm
     add_form = PackDeskUserCreationForm
     change_password_form = AdminPasswordChangeForm
@@ -165,7 +190,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
 
     class Media:
         js = ["admin/user-kind.js"]
-    list_filter = ["kind", "is_active", "groups"]
+    list_filter = ["kind", "is_active", RoleFilter]
     actions = ["deactivate_selected", "activate_selected", "send_password_reset"]
 
     @display(description=_("Password"), label={"set": "success", "waiting": "warning"})

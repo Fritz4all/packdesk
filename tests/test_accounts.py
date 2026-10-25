@@ -108,3 +108,18 @@ def test_disable_and_enable_users_in_bulk_but_not_yourself(client, site):
     client.post("/beheer/accounts/user/", {"action": "activate_selected", "_selected_action": [a.pk]})
     a.refresh_from_db()
     assert a.is_active
+
+
+def test_role_filter_has_superuser_for_superusers_only(client, site):
+    from django.contrib.auth.models import Group
+
+    root = make_user("root@example.test", superuser=True)
+    make_user("service@example.test", staff=True, role="Service")
+    client.force_login(root)
+    assert list(client.get("/beheer/accounts/user/?role=superuser").context["cl"].result_list) == [root]
+    service = Group.objects.get(name="Service")
+    assert client.get(f"/beheer/accounts/user/?role={service.pk}").context["cl"].result_count == 1
+    client.force_login(make_user("beheer@example.test", staff=True, role="Beheerder"))
+    page = client.get("/beheer/accounts/user/").content.decode()
+    assert "?role=superuser" not in page
+    assert "Superuser" not in client.get("/beheer/accounts/role/").content.decode()  # not a role
