@@ -249,6 +249,80 @@ SECTIONS = [
         ],
     },
     {
+        "key": "telephony",
+        "collapsible": True,
+        "title": _("Telephony"),
+        "items": [
+            {
+                "title": _("Telephony quotes"),
+                "icon": "request_quote",
+                "link": reverse_lazy("admin:telephony_quote_changelist"),
+                "permission": lambda request: request.user.has_perm("telephony.view_quote"),
+            },
+            {
+                "title": _("Telephony items"),
+                "icon": "call",
+                "link": reverse_lazy("admin:telephony_item_changelist"),
+                "permission": lambda request: request.user.has_perm("telephony.view_item"),
+            },
+            {
+                "title": _("Telephony categories"),
+                "icon": "folder",
+                "link": reverse_lazy("admin:telephony_category_changelist"),
+                "permission": lambda request: request.user.has_perm("telephony.view_category"),
+            },
+            {
+                "title": _("Telephony settings"),
+                "icon": "tune",
+                "link": reverse_lazy("admin:telephony_telephonysettings_changelist"),
+                "permission": lambda request: request.user.has_perm("telephony.view_telephonysettings"),
+            },
+        ],
+    },
+    {
+        "key": "printing",
+        "collapsible": True,
+        "title": _("Printing services (archive)"),
+        "items": [
+            {
+                "title": _("Printing quotes"),
+                "icon": "request_quote",
+                "link": reverse_lazy("admin:printing_printquote_changelist"),
+                "permission": lambda request: request.user.has_perm("printing.view_printquote"),
+            },
+            {
+                "title": _("Printing contracts"),
+                "icon": "contract",
+                "link": reverse_lazy("admin:printing_printcontract_changelist"),
+                "permission": lambda request: request.user.has_perm("printing.view_printcontract"),
+            },
+            {
+                "title": _("Supplies orders"),
+                "icon": "inventory",
+                "link": reverse_lazy("admin:printing_suppliesorder_changelist"),
+                "permission": lambda request: request.user.has_perm("printing.view_suppliesorder"),
+            },
+            {
+                "title": _("Printers"),
+                "icon": "print",
+                "link": reverse_lazy("admin:printing_printer_changelist"),
+                "permission": lambda request: request.user.has_perm("printing.view_printer"),
+            },
+            {
+                "title": _("Supplies"),
+                "icon": "water_drop",
+                "link": reverse_lazy("admin:printing_consumable_changelist"),
+                "permission": lambda request: request.user.has_perm("printing.view_consumable"),
+            },
+            {
+                "title": _("Support plans"),
+                "icon": "support_agent",
+                "link": reverse_lazy("admin:printing_supportplan_changelist"),
+                "permission": lambda request: request.user.has_perm("printing.view_supportplan"),
+            },
+        ],
+    },
+    {
         "key": "faults",
         "collapsible": True,
         "title": _("Fault reports"),
@@ -295,7 +369,8 @@ SECTIONS = [
     },
 ]
 
-DEFAULT_ORDER = ["overview", "customers", "orders", "licences", "parts", "faults", "users", "configuration"]
+DEFAULT_ORDER = ["overview", "customers", "orders", "licences", "parts", "telephony", "printing", "faults", "users",
+                 "configuration"]
 
 
 def ordered_keys(user):

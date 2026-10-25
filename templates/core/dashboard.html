@@ -16,6 +16,7 @@
   <a class="card card-link-block" href="{% url 'my_orders' %}"><h2>{% translate "My orders" %}</h2><p>{% translate "Your orders and their licences." %}</p></a>
   <a class="card card-link-block" href="{% url 'my_licences' %}"><h2>{% translate "My licences" %}</h2><p>{% translate "Status, end dates and extending." %}</p></a>
   {% if parts_enabled %}<a class="card card-link-block" href="{% url 'my_parts' %}"><h2>{% translate "Spare parts" %}</h2><p>{% translate "Request spare parts, see prices and order." %}</p></a>{% endif %}
+  {% if telephony_enabled %}<a class="card card-link-block" href="{% url 'telephony_calculator' %}"><h2>{% translate "Telephony" %}</h2><p>{% translate "Calculate a phone system: hire or buy." %}</p></a>{% endif %}
   <a class="card card-link-block" href="{% url 'my_invoices' %}"><h2>{% translate "My invoices" %}</h2><p>{% translate "View, download or email your invoices." %}</p></a>
   {% endif %}
 </section>

@@ -141,3 +141,25 @@ register("part_requests", _("Spare parts requests"), "parts.partrequest", _part_
          [_("Number"), _("Date"), _("Reference"), _("Parts"), _("Status")], _part_request_cells, order=50)
 register("part_orders", _("Spare parts orders"), "parts.partorder", _part_orders,
          [_("Number"), _("Date"), _("Reference"), _("Total"), _("Status")], _part_order_cells, order=55)
+
+
+def _telephony_quotes(customer):
+    return customer.telephony_quotes.order_by("-created_at")
+
+
+def _print_quotes(customer):
+    return customer.print_quotes.order_by("-created_at")
+
+
+def _print_contracts(customer):
+    return customer.print_contracts.order_by("-created_at")
+
+
+register("telephony_quotes", _("Telephony quotes"), "telephony.quote", _telephony_quotes,
+         [_("Number"), _("Date"), _("Reference"), _("View")],
+         lambda q: [f"T{q.pk}", _date(q.created_at), q.reference, q.get_view_display()], order=57)
+register("print_quotes", _("Printing quotes"), "printing.printquote", _print_quotes,
+         [_("Number"), _("Date"), _("Reference")], lambda q: [q.number, _date(q.created_at), q.reference], order=58)
+register("print_contracts", _("Printing contracts"), "printing.printcontract", _print_contracts,
+         [_("Number"), _("End customer"), _("Start"), _("End")],
+         lambda c: [c.number, c.company, _date(c.start_date), _date(c.end_date)], order=59)

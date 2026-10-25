@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     "apps.orders",
     "apps.invoices",
     "apps.parts",
+    "apps.printing",
+    "apps.telephony",
     "apps.dashboard",
     "apps.legacy",
     "apps.trash",

@@ -12,5 +12,7 @@ def home(request):
 @login_required
 def dashboard(request):
     from apps.parts.models import PartsSettings
+    from apps.telephony.models import TelephonySettings
 
-    return render(request, "core/dashboard.html", {"parts_enabled": PartsSettings.load().enabled})
+    return render(request, "core/dashboard.html", {"parts_enabled": PartsSettings.load().enabled,
+                                                   "telephony_enabled": TelephonySettings.load().enabled})
