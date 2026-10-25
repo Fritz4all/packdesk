@@ -153,6 +153,19 @@ Heeft de nieuwe versie wijzigingen voor de database, dan tonen website en beheer
 of de `SETUP_CODE` uit `.env`), bevestig dat je een back-up hebt gemaakt en klik op
 *Database bijwerken*. Daarna werkt alles weer.
 
+## Problemen bij de installatie
+
+- **"De databaseserver weigert de gebruikersnaam of het wachtwoord"** terwijl gebruiker en wachtwoord in
+  het startbestand of `.env` staan: dan moet `DB_PASSWORD` van `web` gelijk zijn aan het wachtwoord van de
+  databasegebruiker (bij de meegeleverde MariaDB: `MARIADB_PASSWORD`). Laat beide op `${DB_PASSWORD}` staan.
+  MariaDB gebruikt `MARIADB_PASSWORD` alleen bij de allereerste start, als de data wordt aangemaakt; later
+  aanpassen verandert het wachtwoord niet. Bij een nieuwe, lege installatie: `docker compose down -v`
+  (verwijdert de database!) en opnieuw starten. Anders het wachtwoord in MariaDB zelf aanpassen.
+- **Database aanmaken lukt niet:** vul bij *Database aanmaken* een echte beheerder van de databaseserver
+  in (bijv. `root`) met wachtwoord. Bij de MariaDB-container is dat het `MARIADB_ROOT_PASSWORD`.
+- **"WORKER TIMEOUT" in het logboek:** kwam voor bij oudere versies als een browser een verbinding vooraf
+  opende en open liet staan; onschuldig. Nieuwe versies hebben er geen last van.
+
 ## Zonder browser installeren
 
 Voor een geautomatiseerde installatie kan alles ook zonder wizard: zet de database en de mailserver in

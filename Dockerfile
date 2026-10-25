@@ -48,4 +48,7 @@ WORKDIR /app
 # Starts as root only to give the data folder to "app"; the entrypoint then runs everything as "app".
 EXPOSE 8000
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
-CMD ["gunicorn", "packdesk.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "-"]
+# Threaded workers: a browser that opens a connection in advance and leaves it idle does not get the worker
+# killed after 30 seconds ("WORKER TIMEOUT"), as happens with the default sync workers.
+CMD ["gunicorn", "packdesk.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--worker-class", "gthread", \
+     "--threads", "4", "--access-logfile", "-"]

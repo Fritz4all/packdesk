@@ -22,6 +22,7 @@ class Command(BaseCommand):
         if state != server_setup.OK:
             self.stdout.write(self.style.WARNING(
                 f"{server_setup.message(state)} Open PackDesk in the browser to set up the database."
+                + (f"\n  {server_setup.fixed_login_hint()}" if state == server_setup.BAD_LOGIN and server_setup.fixed_login_hint() else "")
             ))
             if detail:
                 self.stdout.write(f"  ({detail})")

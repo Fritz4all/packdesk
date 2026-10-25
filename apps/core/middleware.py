@@ -45,6 +45,7 @@ class ServerSetupMiddleware:
         translation.activate(settings.LANGUAGE_CODE)
         current = server_setup.current_target()
         context = {"state": state, "detail": detail, "problem": server_setup.message(state), "target": current,
+                   "hint": server_setup.fixed_login_hint() if state == server_setup.BAD_LOGIN else "",
                    "fixed": {k for k in ("DB_ENGINE", "DB_HOST", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD")
                              if k in settings.FIXED_SETTINGS},
                    "code_from_env": setup_code.from_env(), "path": SERVER_PATH, "values": {}}

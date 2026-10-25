@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 12:11+0100\n"
+"POT-Creation-Date: 2026-10-25 13:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -277,51 +277,72 @@ msgstr "Onderdeel"
 msgid "Other"
 msgstr "Overig"
 
-#: apps/core/middleware.py:75 apps/core/middleware.py:148
+#: apps/core/middleware.py:76 apps/core/middleware.py:149
 #: apps/core/setup_views.py:43
 msgid "The installation code is not correct."
 msgstr "De installatiecode klopt niet."
 
-#: apps/core/middleware.py:77
+#: apps/core/middleware.py:78
 msgid "Choose the type of database and fill in the server."
 msgstr "Kies het soort database en vul de server in."
 
-#: apps/core/middleware.py:79
+#: apps/core/middleware.py:80
 msgid "Database name and user: letters, digits and _ only."
 msgstr "Databasenaam en gebruiker: alleen letters, cijfers en _."
 
-#: apps/core/middleware.py:81
+#: apps/core/middleware.py:82
 msgid "Fill in a password for PackDesk's database user."
 msgstr "Vul een wachtwoord in voor de databasegebruiker van PackDesk."
 
-#: apps/core/middleware.py:83
-msgid "To create the database, fill in the name and password of an administrator of the database server (e.g. root)."
-msgstr "Vul om de database aan te maken de naam en het wachtwoord in van een beheerder van de databaseserver (bijv. root)."
+#: apps/core/middleware.py:84
+msgid ""
+"To create the database, fill in the name and password of an administrator of "
+"the database server (e.g. root)."
+msgstr ""
+"Vul om de database aan te maken de naam en het wachtwoord in van een "
+"beheerder van de databaseserver (bijv. root)."
 
-#: apps/core/middleware.py:96
+#: apps/core/middleware.py:97
 #, python-format
-msgid "The database server refuses the administrator login %(user)s. Check the administrator's name and password."
-msgstr "De databaseserver weigert de beheerderslogin %(user)s. Controleer de naam en het wachtwoord van de beheerder."
+msgid ""
+"The database server refuses the administrator login %(user)s. Check the "
+"administrator's name and password."
+msgstr ""
+"De databaseserver weigert de beheerderslogin %(user)s. Controleer de naam en "
+"het wachtwoord van de beheerder."
 
-#: apps/core/middleware.py:99
+#: apps/core/middleware.py:100
 msgid "Creating the database did not work. See the technical details."
-msgstr "Het aanmaken van de database is niet gelukt. Zie de technische details."
+msgstr ""
+"Het aanmaken van de database is niet gelukt. Zie de technische details."
 
-#: apps/core/middleware.py:107
+#: apps/core/middleware.py:108
 #, python-format
-msgid "The database is there, but the user %(user)s already existed on the database server with a different password; PackDesk does not change existing users. Fill in that user's password, or choose another user name."
-msgstr "De database staat klaar, maar gebruiker %(user)s bestond al op de databaseserver met een ander wachtwoord; PackDesk wijzigt geen bestaande gebruikers. Vul het wachtwoord van die gebruiker in, of kies een andere gebruikersnaam."
+msgid ""
+"The database is there, but the user %(user)s already existed on the database "
+"server with a different password; PackDesk does not change existing users. "
+"Fill in that user's password, or choose another user name."
+msgstr ""
+"De database staat klaar, maar gebruiker %(user)s bestond al op de "
+"databaseserver met een ander wachtwoord; PackDesk wijzigt geen bestaande "
+"gebruikers. Vul het wachtwoord van die gebruiker in, of kies een andere "
+"gebruikersnaam."
 
-#: apps/core/middleware.py:112
+#: apps/core/middleware.py:113
 #, python-format
-msgid "The database server refuses user %(user)s with this password. Is the user new? Then tick below that PackDesk creates the database and the user."
-msgstr "De databaseserver weigert gebruiker %(user)s met dit wachtwoord. Is de gebruiker nieuw? Vink dan hieronder aan dat PackDesk de database en de gebruiker aanmaakt."
+msgid ""
+"The database server refuses user %(user)s with this password. Is the user "
+"new? Then tick below that PackDesk creates the database and the user."
+msgstr ""
+"De databaseserver weigert gebruiker %(user)s met dit wachtwoord. Is de "
+"gebruiker nieuw? Vink dan hieronder aan dat PackDesk de database en de "
+"gebruiker aanmaakt."
 
-#: apps/core/middleware.py:146
+#: apps/core/middleware.py:147
 msgid "Confirm that a backup has been made."
 msgstr "Bevestig dat er een back-up is gemaakt."
 
-#: apps/core/middleware.py:154
+#: apps/core/middleware.py:155
 msgid ""
 "The update failed. The details are in the log (docker compose logs web)."
 msgstr ""
@@ -355,8 +376,12 @@ msgstr ""
 msgid "The database cannot be used."
 msgstr "De database kan niet worden gebruikt."
 
+#: apps/core/server_setup.py:147
+msgid "The database user and password come from the docker-compose file or .env, so they can only be changed there. Check that DB_PASSWORD is the same as the password of the database user (with the MariaDB of the docker-compose file: MARIADB_PASSWORD). Note: MariaDB only uses MARIADB_PASSWORD when its data is created for the first time. For a new, empty installation, remove the database data (docker compose down -v) and start again; otherwise change the password in MariaDB."
+msgstr "De databasegebruiker en het wachtwoord komen uit het docker-compose-bestand of .env en zijn alleen daar te wijzigen. Controleer of DB_PASSWORD hetzelfde is als het wachtwoord van de databasegebruiker (bij de MariaDB uit het docker-compose-bestand: MARIADB_PASSWORD). Let op: MariaDB gebruikt MARIADB_PASSWORD alleen als de data voor het eerst wordt aangemaakt. Bij een nieuwe, lege installatie: verwijder de databasedata (docker compose down -v) en start opnieuw; anders het wachtwoord in MariaDB zelf aanpassen."
+
 #: apps/core/setup_views.py:28 apps/core/setup_views.py:39
-#: templates/setup/database.html:13 templates/setup/update.html:12
+#: templates/setup/database.html:14 templates/setup/update.html:12
 msgid "Installation code"
 msgstr "Installatiecode"
 
@@ -3250,7 +3275,7 @@ msgid "Choose the brand of the monitor."
 msgstr "Kies het merk van het beeldscherm."
 
 #: apps/licences/forms.py:116 templates/licences/email_certificate.txt:18
-#: templates/licences/options.html:16 templates/setup/database.html:18
+#: templates/licences/options.html:16 templates/setup/database.html:19
 msgid "Type"
 msgstr "Type"
 
@@ -7155,11 +7180,11 @@ msgstr "Nieuw wachtwoord voor %(name)s"
 msgid "Database"
 msgstr "Database"
 
-#: templates/setup/database.html:9
+#: templates/setup/database.html:10
 msgid "Technical details"
 msgstr "Technische details"
 
-#: templates/setup/database.html:10
+#: templates/setup/database.html:11
 msgid ""
 "Fill in the database server PackDesk uses. PackDesk always gets its own "
 "database; other databases on the same server are not touched."
@@ -7167,35 +7192,35 @@ msgstr ""
 "Vul de databaseserver in die PackDesk gebruikt. PackDesk krijgt altijd een "
 "eigen database; andere databases op dezelfde server worden niet aangeraakt."
 
-#: templates/setup/database.html:15 templates/setup/update.html:14
+#: templates/setup/database.html:16 templates/setup/update.html:14
 msgid "The SETUP_CODE from .env."
 msgstr "De SETUP_CODE uit .env."
 
-#: templates/setup/database.html:15 templates/setup/update.html:14
+#: templates/setup/database.html:16 templates/setup/update.html:14
 msgid "Shown in the log of the server: docker compose logs web"
 msgstr "Staat in het logboek van de server: docker compose logs web"
 
-#: templates/setup/database.html:25
+#: templates/setup/database.html:26
 msgid "Server (IP address or name)"
 msgstr "Server (IP-adres of naam)"
 
-#: templates/setup/database.html:27
+#: templates/setup/database.html:28
 msgid "Port"
 msgstr "Poort"
 
-#: templates/setup/database.html:29
+#: templates/setup/database.html:30
 msgid "Database name"
 msgstr "Databasenaam"
 
-#: templates/setup/database.html:31
+#: templates/setup/database.html:32
 msgid "PackDesk's database user"
 msgstr "Databasegebruiker van PackDesk"
 
-#: templates/setup/database.html:33
+#: templates/setup/database.html:34
 msgid "Password of that user"
 msgstr "Wachtwoord van die gebruiker"
 
-#: templates/setup/database.html:36
+#: templates/setup/database.html:37
 msgid ""
 "Greyed-out values come from the docker-compose file or .env and can only be "
 "changed there."
@@ -7203,11 +7228,11 @@ msgstr ""
 "Grijze waarden komen uit de docker-compose-file of .env en kunnen alleen "
 "daar worden gewijzigd."
 
-#: templates/setup/database.html:38
+#: templates/setup/database.html:39
 msgid "Database does not exist yet?"
 msgstr "Bestaat de database nog niet?"
 
-#: templates/setup/database.html:39
+#: templates/setup/database.html:40
 msgid ""
 "Create the database and the user with an administrator login of the database "
 "server"
@@ -7215,15 +7240,15 @@ msgstr ""
 "Maak de database en de gebruiker aan met een beheerderslogin van de "
 "databaseserver"
 
-#: templates/setup/database.html:41
+#: templates/setup/database.html:42
 msgid "Administrator (e.g. root or postgres)"
 msgstr "Beheerder (bijv. root of postgres)"
 
-#: templates/setup/database.html:42
+#: templates/setup/database.html:43
 msgid "Administrator password"
 msgstr "Wachtwoord van de beheerder"
 
-#: templates/setup/database.html:44
+#: templates/setup/database.html:45
 msgid ""
 "Used once to create the database; never stored. Not possible? Ask the "
 "administrator of the database server to create an empty database and user "
@@ -7233,7 +7258,7 @@ msgstr ""
 "dat niet? Vraag de beheerder van de databaseserver een lege database en "
 "gebruiker met de namen hierboven aan te maken."
 
-#: templates/setup/database.html:46
+#: templates/setup/database.html:47
 msgid "Test and save"
 msgstr "Testen en opslaan"
 

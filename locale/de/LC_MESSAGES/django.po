@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 12:11+0100\n"
+"POT-Creation-Date: 2026-10-25 13:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -280,51 +280,72 @@ msgstr "Bereich"
 msgid "Other"
 msgstr "Sonstiges"
 
-#: apps/core/middleware.py:75 apps/core/middleware.py:148
+#: apps/core/middleware.py:76 apps/core/middleware.py:149
 #: apps/core/setup_views.py:43
 msgid "The installation code is not correct."
 msgstr "Der Installationscode ist nicht korrekt."
 
-#: apps/core/middleware.py:77
+#: apps/core/middleware.py:78
 msgid "Choose the type of database and fill in the server."
 msgstr "Wählen Sie die Art der Datenbank und geben Sie den Server ein."
 
-#: apps/core/middleware.py:79
+#: apps/core/middleware.py:80
 msgid "Database name and user: letters, digits and _ only."
 msgstr "Datenbankname und Benutzer: nur Buchstaben, Ziffern und _."
 
-#: apps/core/middleware.py:81
+#: apps/core/middleware.py:82
 msgid "Fill in a password for PackDesk's database user."
 msgstr "Geben Sie ein Passwort für den Datenbankbenutzer von PackDesk ein."
 
-#: apps/core/middleware.py:83
-msgid "To create the database, fill in the name and password of an administrator of the database server (e.g. root)."
-msgstr "Um die Datenbank anzulegen, tragen Sie Name und Passwort eines Administrators des Datenbankservers ein (z. B. root)."
+#: apps/core/middleware.py:84
+msgid ""
+"To create the database, fill in the name and password of an administrator of "
+"the database server (e.g. root)."
+msgstr ""
+"Um die Datenbank anzulegen, tragen Sie Name und Passwort eines "
+"Administrators des Datenbankservers ein (z. B. root)."
 
-#: apps/core/middleware.py:96
+#: apps/core/middleware.py:97
 #, python-format
-msgid "The database server refuses the administrator login %(user)s. Check the administrator's name and password."
-msgstr "Der Datenbankserver lehnt die Administrator-Anmeldung %(user)s ab. Prüfen Sie Name und Passwort des Administrators."
+msgid ""
+"The database server refuses the administrator login %(user)s. Check the "
+"administrator's name and password."
+msgstr ""
+"Der Datenbankserver lehnt die Administrator-Anmeldung %(user)s ab. Prüfen "
+"Sie Name und Passwort des Administrators."
 
-#: apps/core/middleware.py:99
+#: apps/core/middleware.py:100
 msgid "Creating the database did not work. See the technical details."
-msgstr "Das Anlegen der Datenbank hat nicht funktioniert. Siehe die technischen Details."
+msgstr ""
+"Das Anlegen der Datenbank hat nicht funktioniert. Siehe die technischen "
+"Details."
 
-#: apps/core/middleware.py:107
+#: apps/core/middleware.py:108
 #, python-format
-msgid "The database is there, but the user %(user)s already existed on the database server with a different password; PackDesk does not change existing users. Fill in that user's password, or choose another user name."
-msgstr "Die Datenbank ist angelegt, aber der Benutzer %(user)s existierte bereits mit einem anderen Passwort; PackDesk ändert keine bestehenden Benutzer. Tragen Sie dessen Passwort ein oder wählen Sie einen anderen Benutzernamen."
+msgid ""
+"The database is there, but the user %(user)s already existed on the database "
+"server with a different password; PackDesk does not change existing users. "
+"Fill in that user's password, or choose another user name."
+msgstr ""
+"Die Datenbank ist angelegt, aber der Benutzer %(user)s existierte bereits "
+"mit einem anderen Passwort; PackDesk ändert keine bestehenden Benutzer. "
+"Tragen Sie dessen Passwort ein oder wählen Sie einen anderen Benutzernamen."
 
-#: apps/core/middleware.py:112
+#: apps/core/middleware.py:113
 #, python-format
-msgid "The database server refuses user %(user)s with this password. Is the user new? Then tick below that PackDesk creates the database and the user."
-msgstr "Der Datenbankserver lehnt den Benutzer %(user)s mit diesem Passwort ab. Ist der Benutzer neu? Dann kreuzen Sie unten an, dass PackDesk die Datenbank und den Benutzer anlegt."
+msgid ""
+"The database server refuses user %(user)s with this password. Is the user "
+"new? Then tick below that PackDesk creates the database and the user."
+msgstr ""
+"Der Datenbankserver lehnt den Benutzer %(user)s mit diesem Passwort ab. Ist "
+"der Benutzer neu? Dann kreuzen Sie unten an, dass PackDesk die Datenbank und "
+"den Benutzer anlegt."
 
-#: apps/core/middleware.py:146
+#: apps/core/middleware.py:147
 msgid "Confirm that a backup has been made."
 msgstr "Bestätigen Sie, dass eine Sicherung erstellt wurde."
 
-#: apps/core/middleware.py:154
+#: apps/core/middleware.py:155
 msgid ""
 "The update failed. The details are in the log (docker compose logs web)."
 msgstr ""
@@ -358,8 +379,12 @@ msgstr ""
 msgid "The database cannot be used."
 msgstr "Die Datenbank kann nicht verwendet werden."
 
+#: apps/core/server_setup.py:147
+msgid "The database user and password come from the docker-compose file or .env, so they can only be changed there. Check that DB_PASSWORD is the same as the password of the database user (with the MariaDB of the docker-compose file: MARIADB_PASSWORD). Note: MariaDB only uses MARIADB_PASSWORD when its data is created for the first time. For a new, empty installation, remove the database data (docker compose down -v) and start again; otherwise change the password in MariaDB."
+msgstr "Datenbankbenutzer und Passwort stammen aus der docker-compose-Datei oder .env und können nur dort geändert werden. Prüfen Sie, ob DB_PASSWORD mit dem Passwort des Datenbankbenutzers übereinstimmt (bei der MariaDB aus der docker-compose-Datei: MARIADB_PASSWORD). Hinweis: MariaDB verwendet MARIADB_PASSWORD nur, wenn die Daten zum ersten Mal angelegt werden. Bei einer neuen, leeren Installation: Datenbankdaten entfernen (docker compose down -v) und neu starten; sonst das Passwort in MariaDB selbst ändern."
+
 #: apps/core/setup_views.py:28 apps/core/setup_views.py:39
-#: templates/setup/database.html:13 templates/setup/update.html:12
+#: templates/setup/database.html:14 templates/setup/update.html:12
 msgid "Installation code"
 msgstr "Installationscode"
 
@@ -3260,7 +3285,7 @@ msgid "Choose the brand of the monitor."
 msgstr "Wählen Sie die Marke des Monitors."
 
 #: apps/licences/forms.py:116 templates/licences/email_certificate.txt:18
-#: templates/licences/options.html:16 templates/setup/database.html:18
+#: templates/licences/options.html:16 templates/setup/database.html:19
 msgid "Type"
 msgstr "Typ"
 
@@ -7177,11 +7202,11 @@ msgstr "Neues Passwort für %(name)s"
 msgid "Database"
 msgstr "Datenbank"
 
-#: templates/setup/database.html:9
+#: templates/setup/database.html:10
 msgid "Technical details"
 msgstr "Technische Details"
 
-#: templates/setup/database.html:10
+#: templates/setup/database.html:11
 msgid ""
 "Fill in the database server PackDesk uses. PackDesk always gets its own "
 "database; other databases on the same server are not touched."
@@ -7190,35 +7215,35 @@ msgstr ""
 "immer eine eigene Datenbank; andere Datenbanken auf demselben Server bleiben "
 "unberührt."
 
-#: templates/setup/database.html:15 templates/setup/update.html:14
+#: templates/setup/database.html:16 templates/setup/update.html:14
 msgid "The SETUP_CODE from .env."
 msgstr "Der SETUP_CODE aus .env."
 
-#: templates/setup/database.html:15 templates/setup/update.html:14
+#: templates/setup/database.html:16 templates/setup/update.html:14
 msgid "Shown in the log of the server: docker compose logs web"
 msgstr "Steht im Protokoll des Servers: docker compose logs web"
 
-#: templates/setup/database.html:25
+#: templates/setup/database.html:26
 msgid "Server (IP address or name)"
 msgstr "Server (IP-Adresse oder Name)"
 
-#: templates/setup/database.html:27
+#: templates/setup/database.html:28
 msgid "Port"
 msgstr "Port"
 
-#: templates/setup/database.html:29
+#: templates/setup/database.html:30
 msgid "Database name"
 msgstr "Datenbankname"
 
-#: templates/setup/database.html:31
+#: templates/setup/database.html:32
 msgid "PackDesk's database user"
 msgstr "Datenbankbenutzer von PackDesk"
 
-#: templates/setup/database.html:33
+#: templates/setup/database.html:34
 msgid "Password of that user"
 msgstr "Passwort dieses Benutzers"
 
-#: templates/setup/database.html:36
+#: templates/setup/database.html:37
 msgid ""
 "Greyed-out values come from the docker-compose file or .env and can only be "
 "changed there."
@@ -7226,11 +7251,11 @@ msgstr ""
 "Ausgegraute Werte stammen aus der docker-compose-Datei oder .env und können "
 "nur dort geändert werden."
 
-#: templates/setup/database.html:38
+#: templates/setup/database.html:39
 msgid "Database does not exist yet?"
 msgstr "Existiert die Datenbank noch nicht?"
 
-#: templates/setup/database.html:39
+#: templates/setup/database.html:40
 msgid ""
 "Create the database and the user with an administrator login of the database "
 "server"
@@ -7238,15 +7263,15 @@ msgstr ""
 "Datenbank und Benutzer mit einem Administrator-Login des Datenbankservers "
 "anlegen"
 
-#: templates/setup/database.html:41
+#: templates/setup/database.html:42
 msgid "Administrator (e.g. root or postgres)"
 msgstr "Administrator (z. B. root oder postgres)"
 
-#: templates/setup/database.html:42
+#: templates/setup/database.html:43
 msgid "Administrator password"
 msgstr "Administrator-Passwort"
 
-#: templates/setup/database.html:44
+#: templates/setup/database.html:45
 msgid ""
 "Used once to create the database; never stored. Not possible? Ask the "
 "administrator of the database server to create an empty database and user "
@@ -7256,7 +7281,7 @@ msgstr ""
 "möglich? Bitten Sie den Administrator des Datenbankservers, eine leere "
 "Datenbank und einen Benutzer mit den obigen Namen anzulegen."
 
-#: templates/setup/database.html:46
+#: templates/setup/database.html:47
 msgid "Test and save"
 msgstr "Testen und speichern"
 

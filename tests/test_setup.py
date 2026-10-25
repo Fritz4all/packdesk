@@ -272,3 +272,15 @@ def test_database_step_explains_what_went_wrong(client, monkeypatch, settings):
     monkeypatch.setattr(server_setup, "create", lambda *a: calls.append(a))
     page = client.post("/installatie/database/", {**base, "admin_password": "goed"}).content.decode()
     assert calls and "prodpackdesk" in page and page.count('class="notice notice-error"') == 1
+
+
+def test_refused_login_from_compose_file_is_explained(client, monkeypatch, settings):
+    from apps.core import middleware, server_setup
+
+    monkeypatch.setattr(middleware.ServerSetupMiddleware, "working", False)
+    monkeypatch.setattr(server_setup, "diagnose", lambda: (server_setup.BAD_LOGIN, "1045"))
+    settings.FIXED_SETTINGS = frozenset({"DB_USER", "DB_PASSWORD"})
+    page = client.get("/").content.decode()
+    assert "MARIADB_PASSWORD" in page and "down -v" in page
+    settings.FIXED_SETTINGS = frozenset()
+    assert "MARIADB_PASSWORD" not in client.get("/").content.decode()

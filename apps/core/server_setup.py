@@ -140,6 +140,17 @@ def message(state):
     }.get(state, "")
 
 
+def fixed_login_hint():
+    """When the database login comes from the docker-compose file or .env, the browser cannot fix it."""
+    if not {"DB_USER", "DB_PASSWORD"} & set(settings.FIXED_SETTINGS):
+        return ""
+    return _("The database user and password come from the docker-compose file or .env, so they can only be "
+             "changed there. Check that DB_PASSWORD is the same as the password of the database user (with the "
+             "MariaDB of the docker-compose file: MARIADB_PASSWORD). Note: MariaDB only uses MARIADB_PASSWORD when "
+             "its data is created for the first time. For a new, empty installation, remove the database data "
+             "(docker compose down -v) and start again; otherwise change the password in MariaDB.")
+
+
 def save(target):
     """Store the database settings that do not come from the environment or .env."""
     values = {"DB_ENGINE": target.engine, "DB_HOST": target.host, "DB_PORT": target.port or "",

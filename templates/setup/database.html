@@ -6,6 +6,7 @@
   <h1>{% translate "Database" %}</h1>
   {% if error %}<p class="notice notice-error">{{ error }}</p>
   {% else %}<p class="notice{% if state != 'not_configured' %} notice-error{% endif %}">{{ problem }}</p>{% endif %}
+  {% if hint %}<p class="notice">{{ hint }}</p>{% endif %}
   {% if detail %}<details class="muted" style="margin-bottom:1rem"><summary>{% translate "Technical details" %}</summary><code>{{ detail }}</code></details>{% endif %}
   <p class="muted">{% translate "Fill in the database server PackDesk uses. PackDesk always gets its own database; other databases on the same server are not touched." %}</p>
   <form method="post" action="{{ path }}" autocomplete="off">
