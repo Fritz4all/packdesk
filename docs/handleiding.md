@@ -15,6 +15,10 @@ Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zij
 - **Licht of donker:** via het accountmenu.
 - **Lijsten:** elke lijst heeft een zoekveld en filters; de knop om iets toe te voegen staat naast het
   zoekveld. Regels met meer details (zoals adressen) staan ingeklapt; *Bewerken* klapt ze open.
+  Kolommen met vaste waarden (zoals soort, status, ja/nee, datums of rol) hebben een filterknopje in de
+  kop: klik erop en kies een waarde. Een paars knopje betekent dat er op die kolom gefilterd wordt.
+- **Sectiepagina's:** klik je in het kruimelpad op een sectie (bijv. *Servicepakketten en licenties*), dan
+  zie je dezelfde onderdelen als in het menu.
 
 ## Overzicht
 
@@ -144,7 +148,10 @@ niet meer bekend.
 
 ## Gebruikers en rollen
 
-- **Gebruikers:** medewerkers en klantlogins. Elke medewerker heeft precies één rol.
+- **Gebruikers:** medewerkers en klantlogins. Elke medewerker heeft precies één rol. Bij klantlogins
+  staan beheertaal, rol en superuser niet; alleen superusers zien de superuser-schakelaar. In de lijst kun
+  je meerdere gebruikers tegelijk uit- of inschakelen (jezelf niet). Bij *Wachtwoord* zie je of er een
+  wachtwoord is ingesteld, met knoppen om er een in te stellen of een resetmail te sturen.
 - **Rollen:** maak zelf rollen en vink per onderdeel aan wat een rol mag (bekijken, toevoegen,
   wijzigen, verwijderen, en speciale rechten zoals *nummertellers corrigeren* of *databases
   vergelijken*). Je kunt alleen rechten geven die je zelf hebt. Een nieuwe installatie heeft vier

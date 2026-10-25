@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
 from django import forms
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -16,6 +16,7 @@ from unfold.widgets import UnfoldAdminSelectWidget
 from apps.accounts.admin import report_reset
 from apps.accounts.models import User
 from apps.accounts.password_reset import force_reset
+from apps.core.column_filters import ValueListFilter
 from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
 from . import emails, overview
@@ -363,8 +364,20 @@ class SignupSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
         return False
 
 
+class LoginFilter(ValueListFilter):
+    title = _("Login")
+    parameter_name = "login"
+    options = [
+        ("none", _("No login"), Q(user__isnull=True)),
+        ("off", _("Not active"), Q(user__isnull=False, user__is_active=False)),
+        ("waiting", _("Must choose a new password"), Q(user__is_active=True, user__password__startswith="!")),
+        ("set", _("Active"), lambda qs: qs.filter(user__is_active=True).exclude(user__password__startswith="!")),
+    ]
+
+
 @admin.register(Contact)
 class ContactAdmin(ModelAdmin):
+    column_filters = {"show_login": LoginFilter}
     """All contacts of all customers in one list, e.g. to send several of them a password reset."""
 
     list_display = ["show_name", "customer", "email", "phone", "show_login", "is_primary"]

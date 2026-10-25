@@ -1,13 +1,17 @@
 from django import forms
 from django.contrib import admin, messages
+from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import display
 from unfold.widgets import UnfoldAdminIntegerFieldWidget
+
+from apps.core.column_filters import ValueListFilter
 
 from .models import (
     Category,
@@ -113,10 +117,23 @@ class LicenceAddForm(forms.ModelForm):
         fields = ["pack", "customer", "order_reference"]
 
 
+
+class LicenceStatusFilter(ValueListFilter):
+    title = _("Status")
+    parameter_name = "status"
+    options = [
+        ("unregistered", _("Not registered"), Q(registered_on__isnull=True)),
+        ("registered", _("Registered"), lambda qs: qs.filter(registered_on__isnull=False).filter(
+            Q(end_date__isnull=True) | Q(end_date__gte=timezone.localdate()))),
+        ("ended", _("Ended"), lambda qs: qs.filter(registered_on__isnull=False, end_date__lt=timezone.localdate())),
+    ]
+
+
 @admin.register(Licence)
 class LicenceAdmin(ModelAdmin):
     inlines = [OptionInline]
     list_display = ["full_number", "customer", "pack", "show_status", "serial_nr", "end_date"]
+    column_filters = {"show_status": LicenceStatusFilter}
     list_filter = ["pack__category", "pack__period", "registered_on", "end_date"]
     search_fields = [
         "full_number", "serial_nr", "product_nr", "description", "customer__name", "customer__number",

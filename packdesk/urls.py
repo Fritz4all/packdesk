@@ -6,12 +6,14 @@ from django.views.static import serve
 
 from apps.accounts import views as account_views
 from apps.accounts.forms import EmailAdminAuthenticationForm
+from apps.dashboard import navigation as dashboard_navigation
 from apps.dashboard import reports as dashboard_reports
 from apps.dashboard import views as dashboard_views
 from apps.legacy import import_views as legacy_import_views
 from apps.legacy import views as legacy_views
 
 admin.site.login_form = EmailAdminAuthenticationForm
+admin.site.app_index = dashboard_navigation.section_index  # section pages follow the menu
 
 urlpatterns = [
     path("beheer/dashboard/layout/", dashboard_views.save_layout, name="dashboard_save_layout"),

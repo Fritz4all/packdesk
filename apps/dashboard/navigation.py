@@ -388,3 +388,23 @@ def sidebar(request):
     if not request.user.is_authenticated:
         return [by_key[k] for k in DEFAULT_ORDER]
     return [by_key[k] for k in ordered_keys(request.user)]
+
+
+def section_index(request, app_label, extra_context=None):
+    """The page behind a section in the breadcrumbs (e.g. /beheer/licences/): the menu section(s) with items in
+    that part of the admin, with the same names, icons and rights as the sidebar, instead of Django's list of
+    all tables of the app."""
+    from django.contrib import admin
+    from django.template.response import TemplateResponse
+
+    prefix = f"/beheer/{app_label}/"
+    sections = []
+    for section in sidebar(request):
+        items = [i for i in section["items"] if not i.get("permission") or i["permission"](request)]
+        if any(str(i["link"]).startswith(prefix) for i in items):
+            sections.append({"title": section["title"], "items": [{**i, "link": str(i["link"])} for i in items]})
+    if not sections:
+        return admin.site.__class__.app_index(admin.site, request, app_label, extra_context)
+    return TemplateResponse(request, "admin/packdesk/section_index.html", {
+        **admin.site.each_context(request), "title": sections[0]["title"], "sections": sections,
+    })

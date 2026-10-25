@@ -1,5 +1,5 @@
 {% extends "admin/change_list.html" %}
-{% load i18n admin_urls %}
+{% load i18n admin_urls column_filters %}
 {% comment %}PackDesk: the "add" button sits next to the search field instead of top right in the page header.{% endcomment %}
 
 {% block object-tools %}{% endblock %}
@@ -19,4 +19,53 @@
         {% endif %}
         {% block search_extra %}{% endblock %}
     </div>
+{% endblock %}
+
+{% block result_list %}
+    {{ block.super }}
+    {% column_filter_data cl %}
+    <script>
+    // PackDesk: a filter button in the column headers (see apps/core/column_filters.py).
+    (function () {
+      var el = document.getElementById("pd-column-filters");
+      if (!el) return;
+      var data = JSON.parse(el.textContent), open = null;
+      function close() { if (open) { open.remove(); open = null; } }
+      document.addEventListener("click", function (e) { if (open && !open.contains(e.target)) close(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+      Object.keys(data).forEach(function (column) {
+        var th = document.querySelector("th.column-" + column);
+        if (!th) return;
+        var info = data[column], active = info.choices.some(function (c, i) { return i > 0 && c.selected; });
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "pd-colfilter" + (active ? " pd-colfilter-on" : "");
+        button.title = info.title;
+        button.setAttribute("aria-label", info.title);
+        button.innerHTML = '<span class="material-symbols-outlined">' + (active ? "filter_alt" : "filter_list") + "</span>";
+        button.addEventListener("click", function (e) {
+          e.preventDefault(); e.stopPropagation();
+          var reopen = !open || open.dataset.column !== column;
+          close();
+          if (!reopen) return;
+          var menu = document.createElement("div");
+          menu.className = "pd-colfilter-menu";
+          menu.dataset.column = column;
+          info.choices.forEach(function (c) {
+            var a = document.createElement("a");
+            a.href = c.url;
+            a.textContent = c.label;
+            if (c.selected) a.className = "pd-selected";
+            menu.appendChild(a);
+          });
+          document.body.appendChild(menu);
+          var r = button.getBoundingClientRect();
+          menu.style.top = (window.scrollY + r.bottom + 4) + "px";
+          menu.style.left = Math.min(window.scrollX + r.left, window.scrollX + document.documentElement.clientWidth - menu.offsetWidth - 8) + "px";
+          open = menu;
+        });
+        th.appendChild(button);
+      });
+    })();
+    </script>
 {% endblock %}

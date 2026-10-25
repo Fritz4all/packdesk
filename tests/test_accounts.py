@@ -97,3 +97,14 @@ def test_staff_without_superuser_rights_never_sees_the_superuser_switch(client, 
     other = make_user("ander@example.test", staff=True, role="Service")
     client.force_login(beheer)
     assert 'name="is_superuser"' not in client.get(f"/beheer/accounts/user/{other.pk}/change/").content.decode()
+
+
+def test_disable_and_enable_users_in_bulk_but_not_yourself(client, site):
+    root = make_user("root@example.test", superuser=True)
+    a, b = make_user("a@example.test"), make_user("b@example.test")
+    client.force_login(root)
+    client.post("/beheer/accounts/user/", {"action": "deactivate_selected", "_selected_action": [a.pk, b.pk, root.pk]})
+    assert set(User.objects.filter(is_active=False).values_list("email", flat=True)) == {"a@example.test", "b@example.test"}
+    client.post("/beheer/accounts/user/", {"action": "activate_selected", "_selected_action": [a.pk]})
+    a.refresh_from_db()
+    assert a.is_active

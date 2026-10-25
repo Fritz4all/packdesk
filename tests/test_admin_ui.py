@@ -80,3 +80,38 @@ def test_every_admin_field_uses_the_admin_styling(rf, site):
             if module.startswith("django.forms") and not isinstance(widget, allowed_plain):
                 bad.append(f"{model._meta.label}.{name}: {type(widget).__name__}")
     assert not bad, bad
+
+
+def test_column_headers_get_filters_and_they_work(client, site):
+    import json
+    import re
+
+    root = make_user("root@example.test", superuser=True)
+    waiting = make_user("nieuw@example.test")
+    waiting.set_unusable_password()
+    waiting.save()
+    client.force_login(root)
+    page = client.get("/beheer/accounts/user/").content.decode()
+    data = json.loads(re.search(r'id="pd-column-filters" type="application/json">(.*?)</script>', page).group(1))
+    assert {"kind", "is_active", "show_password"} <= set(data)
+    assert len(data["show_password"]["choices"]) == 3  # all, set, must choose a new one
+    url = data["show_password"]["choices"][2]["url"]
+    result = client.get(f"/beheer/accounts/user/{url}").context["cl"].result_list
+    assert list(result) == [waiting]
+
+
+def test_every_list_still_opens(client, site):
+    from django.contrib import admin as django_admin
+    from django.urls import reverse
+
+    client.force_login(make_user("root@example.test", superuser=True))
+    for model in django_admin.site._registry:
+        url = reverse(f"admin:{model._meta.app_label}_{model._meta.model_name}_changelist")
+        assert client.get(url, follow=True).status_code == 200, url
+
+
+def test_section_page_follows_the_menu(client, site, beheerder):
+    client.force_login(beheerder)
+    page = client.get("/beheer/licences/").content.decode()
+    assert "/beheer/licences/licence/" in page and "/beheer/licences/vendor/" in page
+    assert "admin/packdesk/section_index.html" in [t.name for t in client.get("/beheer/licences/").templates]

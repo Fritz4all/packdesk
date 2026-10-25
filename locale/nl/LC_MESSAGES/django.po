@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 11:00+0100\n"
+"POT-Creation-Date: 2026-10-25 11:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/accounts/admin.py:44 apps/accounts/admin.py:97
+#: apps/accounts/admin.py:46 apps/accounts/admin.py:99
 msgid "Permissions"
 msgstr "Rechten"
 
-#: apps/accounts/admin.py:48
+#: apps/accounts/admin.py:50
 msgid ""
 "Tick what users with this role may see and do. You can only grant rights you "
 "have yourself."
@@ -28,16 +28,16 @@ msgstr ""
 "Vink aan wat gebruikers met deze rol mogen zien en doen. U kunt alleen "
 "rechten toekennen die u zelf hebt."
 
-#: apps/accounts/admin.py:93 apps/accounts/apps.py:8
+#: apps/accounts/admin.py:95 apps/accounts/apps.py:8
 #: apps/dashboard/navigation.py:357
 msgid "Users"
 msgstr "Gebruikers"
 
-#: apps/accounts/admin.py:111 apps/accounts/admin.py:245
+#: apps/accounts/admin.py:113 apps/accounts/admin.py:273
 msgid "Role"
 msgstr "Rol"
 
-#: apps/accounts/admin.py:115
+#: apps/accounts/admin.py:117
 msgid ""
 "Required for staff. The role decides what this user sees and may do in the "
 "admin."
@@ -45,72 +45,99 @@ msgstr ""
 "Verplicht voor medewerkers. De rol bepaalt wat deze gebruiker in het beheer "
 "ziet en mag doen."
 
-#: apps/accounts/admin.py:130
+#: apps/accounts/admin.py:132
 msgid "Staff users need a role."
 msgstr "Medewerkers moeten een rol hebben."
 
-#: apps/accounts/admin.py:156 apps/accounts/admin.py:169
-#: apps/core/setup_views.py:51 apps/core/setup_views.py:96
-#: apps/customers/forms.py:51
+#: apps/accounts/admin.py:149 apps/accounts/admin.py:171
+#: apps/accounts/admin.py:197 apps/core/setup_views.py:51
+#: apps/core/setup_views.py:96 apps/customers/forms.py:51
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: apps/accounts/admin.py:159
+#: apps/accounts/admin.py:152 apps/accounts/admin.py:174
 msgid "Set"
 msgstr "Ingesteld"
 
-#: apps/accounts/admin.py:160
+#: apps/accounts/admin.py:153 apps/accounts/admin.py:175
 msgid "Must choose a new one"
 msgstr "Moet een nieuw kiezen"
 
-#: apps/accounts/admin.py:162
+#: apps/accounts/admin.py:177
+msgid "Disable selected users (they can no longer log in)"
+msgstr "Geselecteerde gebruikers uitschakelen (ze kunnen niet meer inloggen)"
+
+#: apps/accounts/admin.py:181
+#, python-format
+msgid "%(n)s user(s) disabled."
+msgstr "%(n)s gebruiker(s) uitgeschakeld."
+
+#: apps/accounts/admin.py:183
+msgid "You cannot disable yourself; your own account was skipped."
+msgstr "Je kunt jezelf niet uitschakelen; je eigen account is overgeslagen."
+
+#: apps/accounts/admin.py:185
+msgid "Enable selected users"
+msgstr "Geselecteerde gebruikers inschakelen"
+
+#: apps/accounts/admin.py:188
+#, python-format
+msgid "%(n)s user(s) enabled."
+msgstr "%(n)s gebruiker(s) ingeschakeld."
+
+#: apps/accounts/admin.py:190
 msgid "Make selected users choose a new password (email with link)"
 msgstr ""
 "Geselecteerde gebruikers een nieuw wachtwoord laten kiezen (e-mail met link)"
 
-#: apps/accounts/admin.py:176
+#: apps/accounts/admin.py:204
 msgid "Password set"
 msgstr "Wachtwoord ingesteld"
 
-#: apps/accounts/admin.py:178 apps/customers/admin.py:391
-#: apps/customers/overview.py:71
+#: apps/accounts/admin.py:206 apps/customers/admin.py:373
+#: apps/customers/admin.py:404 apps/customers/overview.py:71
 msgid "Must choose a new password"
 msgstr "Moet een nieuw wachtwoord kiezen"
 
-#: apps/accounts/admin.py:185
+#: apps/accounts/admin.py:213
 msgid "Set password"
 msgstr "Wachtwoord instellen"
 
-#: apps/accounts/admin.py:187
-msgid "The current password stops working and the user gets an email to choose a new one. Continue?"
-msgstr "Het huidige wachtwoord werkt dan niet meer en de gebruiker krijgt een e-mail om een nieuw wachtwoord te kiezen. Doorgaan?"
+#: apps/accounts/admin.py:215
+msgid ""
+"The current password stops working and the user gets an email to choose a "
+"new one. Continue?"
+msgstr ""
+"Het huidige wachtwoord werkt dan niet meer en de gebruiker krijgt een e-mail "
+"om een nieuw wachtwoord te kiezen. Doorgaan?"
 
-#: apps/accounts/admin.py:189
+#: apps/accounts/admin.py:217
 msgid "Send reset email"
 msgstr "Resetmail sturen"
 
-#: apps/accounts/admin.py:190
+#: apps/accounts/admin.py:218
 msgid "Passwords are stored encrypted and can never be shown."
-msgstr "Wachtwoorden worden versleuteld opgeslagen en kunnen nooit worden getoond."
+msgstr ""
+"Wachtwoorden worden versleuteld opgeslagen en kunnen nooit worden getoond."
 
-#: apps/accounts/admin.py:208 apps/accounts/admin.py:214
+#: apps/accounts/admin.py:236 apps/accounts/admin.py:242
 msgid "Personal info"
 msgstr "Persoonlijke gegevens"
 
-#: apps/accounts/admin.py:209 apps/accounts/admin.py:215
-#: apps/accounts/admin.py:220
+#: apps/accounts/admin.py:237 apps/accounts/admin.py:243
+#: apps/accounts/admin.py:248
 msgid "Access"
 msgstr "Toegang"
 
-#: apps/accounts/admin.py:210 apps/accounts/admin.py:216
+#: apps/accounts/admin.py:238 apps/accounts/admin.py:244
 msgid "Dates"
 msgstr "Datums"
 
-#: apps/accounts/admin.py:248
+#: apps/accounts/admin.py:276
 msgid "Superuser"
 msgstr "Superuser"
 
-#: apps/accounts/admin.py:268
+#: apps/accounts/admin.py:298
 #, python-format
 msgid ""
 "%(n)s email(s) sent with a link to choose a new password; the old passwords "
@@ -119,7 +146,7 @@ msgstr ""
 "%(n)s e-mail(s) verstuurd met een link om een nieuw wachtwoord te kiezen; de "
 "oude wachtwoorden werken niet meer."
 
-#: apps/accounts/admin.py:271
+#: apps/accounts/admin.py:301
 #, python-format
 msgid "Not sent (no email address or not active): %(list)s"
 msgstr "Niet verstuurd (geen e-mailadres of niet actief): %(list)s"
@@ -407,75 +434,75 @@ msgstr "Testmail verstuurd naar %(email)s."
 msgid "PackDesk is ready. Everything can be changed later in the admin."
 msgstr "PackDesk is klaar. Alles is later in het beheer aan te passen."
 
-#: apps/customers/admin.py:30 apps/customers/models.py:19
+#: apps/customers/admin.py:31 apps/customers/models.py:19
 #: apps/customers/models.py:61
 msgid "customer type"
 msgstr "klanttype"
 
-#: apps/customers/admin.py:31
+#: apps/customers/admin.py:32
 msgid "(none)"
 msgstr "(geen)"
 
-#: apps/customers/admin.py:56 apps/customers/admin.py:384
-#: apps/customers/overview.py:112
+#: apps/customers/admin.py:57 apps/customers/admin.py:368
+#: apps/customers/admin.py:397 apps/customers/overview.py:112
 msgid "Login"
 msgstr "Login"
 
-#: apps/customers/admin.py:59
+#: apps/customers/admin.py:60
 msgid "No login yet"
 msgstr "Nog geen login"
 
-#: apps/customers/admin.py:60 apps/customers/admin.py:392
-#: apps/customers/models.py:50 apps/customers/overview.py:73
-#: apps/legacy/parts.py:117
+#: apps/customers/admin.py:61 apps/customers/admin.py:374
+#: apps/customers/admin.py:405 apps/customers/models.py:50
+#: apps/customers/overview.py:73 apps/legacy/parts.py:117
 msgid "Active"
 msgstr "Actief"
 
-#: apps/customers/admin.py:60
+#: apps/customers/admin.py:61
 msgid "Not active (waiting for approval or blocked)"
 msgstr "Niet actief (wacht op goedkeuring of geblokkeerd)"
 
-#: apps/customers/admin.py:78 apps/parts/admin.py:179
+#: apps/customers/admin.py:79 apps/parts/admin.py:179
 msgid "Approve"
 msgstr "Goedkeuren"
 
-#: apps/customers/admin.py:79
+#: apps/customers/admin.py:80
 msgid "Send login to contacts without one"
 msgstr "Login sturen naar contactpersonen zonder login"
 
-#: apps/customers/admin.py:81
+#: apps/customers/admin.py:82
 msgid "Block"
 msgstr "Blokkeren"
 
-#: apps/customers/admin.py:82
+#: apps/customers/admin.py:83
 msgid "Block this customer? Its contacts can no longer log in."
 msgstr ""
 "Deze klant blokkeren? De contactpersonen kunnen dan niet meer inloggen."
 
-#: apps/customers/admin.py:83
+#: apps/customers/admin.py:84
 #: templates/admin/customers/customer/change_list.html:5
 msgid "Export"
 msgstr "Exporteren"
 
-#: apps/customers/admin.py:86 apps/parts/admin.py:385
+#: apps/customers/admin.py:87 apps/parts/admin.py:385
 #: apps/siteconfig/admin.py:129
 #: templates/admin/customers/customer/overview.html:23
 msgid "General"
 msgstr "Algemeen"
 
-#: apps/customers/admin.py:89
+#: apps/customers/admin.py:90
 msgid "Email addresses"
 msgstr "E-mailadressen"
 
-#: apps/customers/admin.py:90
+#: apps/customers/admin.py:91
 msgid "Prices and invoices"
 msgstr "Prijzen en facturen"
 
-#: apps/customers/admin.py:91
+#: apps/customers/admin.py:92
 msgid "Notes"
 msgstr "Notities"
 
-#: apps/customers/admin.py:108 apps/customers/overview.py:114
+#: apps/customers/admin.py:109 apps/customers/overview.py:114
 #: apps/customers/overview.py:117 apps/customers/overview.py:119
 #: apps/customers/overview.py:121 apps/customers/overview.py:141
 #: apps/customers/overview.py:143 apps/customers/overview.py:159
@@ -486,62 +513,62 @@ msgstr "Notities"
 msgid "Number"
 msgstr "Nummer"
 
-#: apps/customers/admin.py:112 apps/customers/forms.py:40
+#: apps/customers/admin.py:113 apps/customers/forms.py:40
 #: apps/legacy/parts.py:118 apps/licences/forms.py:37 apps/orders/forms.py:59
 #: apps/parts/forms.py:69
 msgid "City"
 msgstr "Plaats"
 
-#: apps/customers/admin.py:117 apps/customers/overview.py:114
+#: apps/customers/admin.py:118 apps/customers/overview.py:114
 #: apps/customers/overview.py:121 apps/customers/overview.py:141
 #: apps/customers/overview.py:143 apps/faults/admin.py:70
-#: apps/legacy/admin.py:228 apps/legacy/admin.py:232 apps/licences/admin.py:176
-#: apps/numbering/admin.py:167 apps/numbering/admin.py:181
-#: apps/parts/admin.py:106 apps/parts/admin.py:221
+#: apps/legacy/admin.py:228 apps/legacy/admin.py:232 apps/licences/admin.py:122
+#: apps/licences/admin.py:193 apps/numbering/admin.py:167
+#: apps/numbering/admin.py:181 apps/parts/admin.py:106 apps/parts/admin.py:221
 #: templates/faults/my_reports.html:9 templates/orders/my_licences.html:13
 #: templates/parts/overview.html:8 templates/parts/overview.html:15
 #: templates/parts/request_detail.html:13
 msgid "Status"
 msgstr "Status"
 
-#: apps/customers/admin.py:121 apps/customers/overview.py:111
+#: apps/customers/admin.py:122 apps/customers/overview.py:111
 #: apps/dashboard/navigation.py:85 apps/legacy/old_shop/importer.py:113
 #: apps/legacy/parts.py:122
 msgid "Contacts"
 msgstr "Contactpersonen"
 
-#: apps/customers/admin.py:138
+#: apps/customers/admin.py:139
 msgid "Approve selected customers"
 msgstr "Geselecteerde klanten goedkeuren"
 
-#: apps/customers/admin.py:142
+#: apps/customers/admin.py:143
 #, python-format
 msgid "%(n)s customer(s) approved."
 msgstr "%(n)s klant(en) goedgekeurd."
 
-#: apps/customers/admin.py:144
+#: apps/customers/admin.py:145
 msgid "Block selected customers"
 msgstr "Geselecteerde klanten blokkeren"
 
-#: apps/customers/admin.py:148
+#: apps/customers/admin.py:149
 #, python-format
 msgid "%(n)s customer(s) blocked."
 msgstr "%(n)s klant(en) geblokkeerd."
 
-#: apps/customers/admin.py:150
+#: apps/customers/admin.py:151
 msgid "Change customer type of selected customers"
 msgstr "Klanttype van geselecteerde klanten wijzigen"
 
-#: apps/customers/admin.py:156
+#: apps/customers/admin.py:157
 #, python-format
 msgid "Customer type of %(n)s customer(s) set to %(type)s."
 msgstr "Klanttype van %(n)s klant(en) gewijzigd in %(type)s."
 
-#: apps/customers/admin.py:161
+#: apps/customers/admin.py:162
 msgid "Change customer type"
 msgstr "Klanttype wijzigen"
 
-#: apps/customers/admin.py:189
+#: apps/customers/admin.py:190
 #, python-format
 msgid ""
 "Not deleted: %(names)s%(more)s. Customers with invoices, orders, licences or "
@@ -553,117 +580,119 @@ msgstr ""
 "geschiedenis bewaard moet blijven. Blokkeer de klant in plaats daarvan: de "
 "contactpersonen kunnen dan niet meer inloggen."
 
-#: apps/customers/admin.py:236 apps/customers/forms.py:32
+#: apps/customers/admin.py:237 apps/customers/forms.py:32
 #: apps/customers/overview.py:112 apps/legacy/parts.py:112
 #: apps/legacy/parts.py:126 apps/licences/forms.py:38 apps/parts/forms.py:71
 #: templates/customers/my_details.html:12
 msgid "Phone"
 msgstr "Telefoon"
 
-#: apps/customers/admin.py:236 apps/customers/overview.py:112
+#: apps/customers/admin.py:237 apps/customers/overview.py:112
 #: apps/legacy/parts.py:112 apps/legacy/parts.py:125 apps/legacy/parts.py:134
 msgid "Email"
 msgstr "E-mail"
 
-#: apps/customers/admin.py:237 apps/customers/forms.py:35
+#: apps/customers/admin.py:238 apps/customers/forms.py:35
 msgid "Website"
 msgstr "Website"
 
-#: apps/customers/admin.py:237 apps/customers/forms.py:33
+#: apps/customers/admin.py:238 apps/customers/forms.py:33
 #: apps/customers/models.py:65 apps/customers/models.py:271
 #: apps/legacy/parts.py:111 apps/siteconfig/models.py:148
 #: templates/customers/my_details.html:11
 msgid "VAT number"
 msgstr "btw-nummer"
 
-#: apps/customers/admin.py:238 apps/customers/forms.py:34
+#: apps/customers/admin.py:239 apps/customers/forms.py:34
 #: apps/customers/models.py:66 apps/customers/models.py:273
 #: apps/legacy/parts.py:111 apps/siteconfig/models.py:147
 msgid "Chamber of Commerce number"
 msgstr "KvK-nummer"
 
-#: apps/customers/admin.py:239
+#: apps/customers/admin.py:240
 msgid "Customer since"
 msgstr "Klant sinds"
 
-#: apps/customers/admin.py:242 apps/customers/models.py:71
+#: apps/customers/admin.py:243 apps/customers/models.py:71
 msgid "email for orders"
 msgstr "e-mail voor bestellingen"
 
-#: apps/customers/admin.py:242 apps/customers/models.py:72
+#: apps/customers/admin.py:243 apps/customers/models.py:72
 msgid "email for spare parts"
 msgstr "e-mail voor onderdelen"
 
-#: apps/customers/admin.py:243 apps/customers/models.py:73
+#: apps/customers/admin.py:244 apps/customers/models.py:73
 msgid "email for invoices"
 msgstr "e-mail voor facturen"
 
-#: apps/customers/admin.py:244 apps/customers/models.py:75
+#: apps/customers/admin.py:245 apps/customers/models.py:75
 msgid "margin service packs (%)"
 msgstr "marge servicepacks (%)"
 
-#: apps/customers/admin.py:245 apps/customers/models.py:76
+#: apps/customers/admin.py:246 apps/customers/models.py:76
 msgid "margin spare parts (%)"
 msgstr "marge onderdelen (%)"
 
-#: apps/customers/admin.py:265
+#: apps/customers/admin.py:266
 msgid "Make the contacts of the selected customers choose a new password"
 msgstr ""
 "Contactpersonen van geselecteerde klanten een nieuw wachtwoord laten kiezen"
 
-#: apps/customers/admin.py:274
+#: apps/customers/admin.py:275
 msgid "Export selected customers"
 msgstr "Geselecteerde klanten exporteren"
 
-#: apps/customers/admin.py:300
+#: apps/customers/admin.py:301
 #, python-format
 msgid "Customer approved with number %(n)s."
 msgstr "Klant goedgekeurd met nummer %(n)s."
 
-#: apps/customers/admin.py:304
+#: apps/customers/admin.py:305
 msgid "Customer blocked; its contacts can no longer log in."
 msgstr "Klant geblokkeerd; de contactpersonen kunnen niet meer inloggen."
 
-#: apps/customers/admin.py:322
+#: apps/customers/admin.py:323
 #, python-format
 msgid "Logins created; %(n)s invitation(s) sent."
 msgstr "Logins aangemaakt; %(n)s uitnodiging(en) verstuurd."
 
-#: apps/customers/admin.py:324
+#: apps/customers/admin.py:325
 #, python-format
 msgid "Email address already in use: %(list)s"
 msgstr "E-mailadres al in gebruik: %(list)s"
 
-#: apps/customers/admin.py:343
+#: apps/customers/admin.py:344
 msgid "New customers"
 msgstr "Nieuwe klanten"
 
-#: apps/customers/admin.py:344
+#: apps/customers/admin.py:345
 msgid "Sign-up form"
 msgstr "Aanmeldformulier"
 
-#: apps/customers/admin.py:347
+#: apps/customers/admin.py:348
 msgid "Form fields"
 msgstr "Formuliervelden"
 
-#: apps/customers/admin.py:353
+#: apps/customers/admin.py:354
 msgid "Activation email"
 msgstr "Activeringsmail"
 
-#: apps/customers/admin.py:380 apps/customers/overview.py:112
+#: apps/customers/admin.py:371 apps/customers/admin.py:400
+#: apps/customers/overview.py:67
+msgid "No login"
+msgstr "Geen login"
+
+#: apps/customers/admin.py:372 apps/customers/admin.py:402
+#: apps/customers/overview.py:69
+msgid "Not active"
+msgstr "Niet actief"
+
+#: apps/customers/admin.py:393 apps/customers/overview.py:112
 #: apps/legacy/old_shop/importer.py:138 apps/legacy/parts.py:110
 msgid "Name"
 msgstr "Naam"
 
-#: apps/customers/admin.py:387 apps/customers/overview.py:67
-msgid "No login"
-msgstr "Geen login"
-
-#: apps/customers/admin.py:389 apps/customers/overview.py:69
-msgid "Not active"
-msgstr "Niet actief"
-
-#: apps/customers/admin.py:394
+#: apps/customers/admin.py:407
 msgid "Make selected contacts choose a new password (email with link)"
 msgstr ""
 "Geselecteerde contactpersonen een nieuw wachtwoord laten kiezen (e-mail met "
@@ -1214,7 +1243,7 @@ msgid "Service pack"
 msgstr "Servicepack"
 
 #: apps/customers/overview.py:114 apps/customers/overview.py:121
-#: apps/licences/admin.py:133 apps/licences/views.py:23
+#: apps/licences/admin.py:150 apps/licences/views.py:23
 #: apps/licences/views.py:137 templates/faults/email_report.txt:4
 #: templates/faults/email_report.txt:6 templates/faults/my_reports.html:9
 #: templates/licences/check.html:15 templates/orders/my_licences.html:13
@@ -2091,7 +2120,7 @@ msgstr "Downloaden"
 msgid "Invoice %(number)s has been sent to %(email)s."
 msgstr "Factuur %(number)s is verstuurd naar %(email)s."
 
-#: apps/invoices/admin.py:102 apps/licences/admin.py:188
+#: apps/invoices/admin.py:102 apps/licences/admin.py:205
 #: apps/orders/admin.py:87 apps/parts/admin.py:390
 msgid "Texts"
 msgstr "Teksten"
@@ -3099,19 +3128,31 @@ msgstr "Details"
 msgid "Search in both databases"
 msgstr "Zoeken in beide databases"
 
-#: apps/licences/admin.py:90
+#: apps/licences/admin.py:94
 msgid "Registration"
 msgstr "Registratie"
 
-#: apps/licences/admin.py:107
+#: apps/licences/admin.py:111
 msgid "Number of licences"
 msgstr "Aantal licenties"
 
-#: apps/licences/admin.py:108
+#: apps/licences/admin.py:112
 msgid "Each gets its own licence number."
 msgstr "Elke licentie krijgt een eigen nummer."
 
-#: apps/licences/admin.py:130 apps/licences/views.py:20
+#: apps/licences/admin.py:125 apps/licences/models.py:239
+msgid "Not registered"
+msgstr "Niet geregistreerd"
+
+#: apps/licences/admin.py:126 apps/licences/models.py:240
+msgid "Registered"
+msgstr "Geregistreerd"
+
+#: apps/licences/admin.py:128 apps/licences/models.py:241
+msgid "Ended"
+msgstr "Afgelopen"
+
+#: apps/licences/admin.py:147 apps/licences/views.py:20
 #: templates/licences/check.html:11 templates/licences/contact.html:7
 #: templates/licences/done.html:8 templates/licences/options.html:9
 #: templates/licences/step.html:12 templates/orders/email_confirmation.txt:11
@@ -3119,16 +3160,16 @@ msgstr "Elke licentie krijgt een eigen nummer."
 msgid "Licence"
 msgstr "Licentie"
 
-#: apps/licences/admin.py:136
+#: apps/licences/admin.py:153
 msgid "End customer and reseller"
 msgstr "Eindklant en reseller"
 
-#: apps/licences/admin.py:171
+#: apps/licences/admin.py:188
 #, python-format
 msgid "%(n)s licence(s) created: %(list)s"
 msgstr "%(n)s licentie(s) aangemaakt: %(list)s"
 
-#: apps/licences/admin.py:184
+#: apps/licences/admin.py:201
 msgid "Rules"
 msgstr "Regels"
 
@@ -3488,18 +3529,6 @@ msgstr "tekst voor 'registreren via contact'"
 #: apps/licences/models.py:213 apps/licences/models.py:214
 msgid "licence settings"
 msgstr "licentie-instellingen"
-
-#: apps/licences/models.py:239
-msgid "Not registered"
-msgstr "Niet geregistreerd"
-
-#: apps/licences/models.py:240
-msgid "Registered"
-msgstr "Geregistreerd"
-
-#: apps/licences/models.py:241
-msgid "Ended"
-msgstr "Afgelopen"
 
 #: apps/licences/models.py:243
 msgid "licence number"

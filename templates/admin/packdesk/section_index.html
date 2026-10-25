@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block breadcrumbs %}{% endblock %}
+{% block content %}
+{% for section in sections %}
+<section class="mb-6">
+  <h1 class="font-semibold text-lg mb-3 text-font-important-light dark:text-font-important-dark">{{ section.title }}</h1>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {% for item in section.items %}
+    <a class="pd-stat" style="display:flex;align-items:center;gap:.75rem" href="{{ item.link }}">
+      <span class="material-symbols-outlined text-primary-600 dark:text-primary-500">{{ item.icon }}</span>
+      <span class="font-medium">{{ item.title }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

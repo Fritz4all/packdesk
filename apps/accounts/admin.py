@@ -3,7 +3,7 @@ from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 from django.core.exceptions import PermissionDenied
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import path, reverse
@@ -14,6 +14,8 @@ from unfold.admin import ModelAdmin
 from unfold.decorators import display
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 from unfold.widgets import UnfoldAdminSelectWidget
+
+from apps.core.column_filters import ValueListFilter
 
 from .models import Role, User
 from .password_reset import force_reset
@@ -143,8 +145,18 @@ class PackDeskUserChangeForm(RoleFieldMixin, UserChangeForm):
         fields = "__all__"
 
 
+class PasswordFilter(ValueListFilter):
+    title = _("Password")
+    parameter_name = "pw"  # Django refuses parameters that start with "password"
+    options = [
+        ("set", _("Set"), lambda qs: qs.exclude(password__startswith="!")),
+        ("new", _("Must choose a new one"), Q(password__startswith="!")),
+    ]
+
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin, ModelAdmin):
+    column_filters = {"show_password": PasswordFilter, "show_role": "groups"}
     form = PackDeskUserChangeForm
     add_form = PackDeskUserCreationForm
     change_password_form = AdminPasswordChangeForm
@@ -154,13 +166,26 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
     class Media:
         js = ["admin/user-kind.js"]
     list_filter = ["kind", "is_active", "groups"]
-    actions = ["send_password_reset"]
+    actions = ["deactivate_selected", "activate_selected", "send_password_reset"]
 
     @display(description=_("Password"), label={"set": "success", "waiting": "warning"})
     def show_password(self, obj):
         if obj.has_usable_password():
             return "set", gettext("Set")
         return "waiting", gettext("Must choose a new one")
+
+    @admin.action(description=_("Disable selected users (they can no longer log in)"), permissions=["change"])
+    def deactivate_selected(self, request, queryset):
+        own = queryset.filter(pk=request.user.pk).exists()
+        n = queryset.exclude(pk=request.user.pk).filter(is_active=True).update(is_active=False)
+        messages.success(request, gettext("%(n)s user(s) disabled.") % {"n": n})
+        if own:
+            messages.warning(request, gettext("You cannot disable yourself; your own account was skipped."))
+
+    @admin.action(description=_("Enable selected users"), permissions=["change"])
+    def activate_selected(self, request, queryset):
+        n = queryset.filter(is_active=False).update(is_active=True)
+        messages.success(request, gettext("%(n)s user(s) enabled.") % {"n": n})
 
     @admin.action(description=_("Make selected users choose a new password (email with link)"), permissions=["change"])
     def send_password_reset(self, request, queryset):
