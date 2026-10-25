@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "Telephony" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Telephony calculator" %}</h1>
+  <a class="btn btn-ghost" href="{% url 'telephony_quotes' %}">{% translate "My telephony quotes" %}</a>
+  {% if rules.intro %}<p class="lead">{{ rules.intro|linebreaksbr }}</p>{% else %}<p class="lead">{% translate "Fill in what is needed and compare hiring with buying. Quantities marked automatic are counted for you." %}</p>{% endif %}</div>
+<form method="post" class="form-card" id="pd-telephony" novalidate>
+  {% csrf_token %}
+  {% for category, rows in groups.items %}
+  <fieldset><legend>{{ category }}</legend>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>{% translate "Item" %}</th><th>{% translate "Hire per month" %}</th><th>{% translate "Purchase price" %}</th><th>{% translate "Per month when bought" %}</th><th>{% translate "Quantity" %}</th></tr></thead>
+      <tbody>{% for row in rows %}<tr>
+        <td>{{ row.item.name }}{% if row.item.description %}<br><small class="muted">{{ row.item.description|linebreaksbr }}</small>{% endif %}</td>
+        <td>{% if row.item.hire_per_month is not None %}€ {{ row.item.hire_per_month|money }}{% else %}—{% endif %}</td>
+        <td>{% if row.item.buy_price is not None %}€ {{ row.item.buy_price|money }}{% else %}—{% endif %}</td>
+        <td>{% if row.item.buy_per_month is not None %}€ {{ row.item.buy_per_month|money }}{% else %}—{% endif %}</td>
+        <td><input type="number" min="0" max="9999" name="q-{{ row.item.pk }}" value="{{ row.quantity }}" style="width:6rem" data-item="{{ row.item.pk }}"{% if row.automatic %} readonly data-sources="{{ row.sources }}" title="{% translate 'Counted automatically' %}"{% endif %} aria-label="{% translate 'Quantity' %} {{ row.item.name }}">{% if row.automatic %}<br><small class="muted">{% translate "automatic" %}</small>{% endif %}</td>
+      </tr>{% endfor %}</tbody>
+    </table></div>
+  </fieldset>
+  {% endfor %}
+  <fieldset><legend>{% translate "Quote" %}</legend>
+    <div class="form-grid">
+      <label class="field"><span>{% translate "Reference" %}</span><input type="text" name="reference" maxlength="200" value="{{ reference }}"></label>
+      <label class="field"><span>{% translate "Margin hire (%)" %}</span><input type="number" step="0.01" min="0" name="margin_hire" value="{{ margin_hire }}"></label>
+      <label class="field"><span>{% translate "Margin purchase (%)" %}</span><input type="number" step="0.01" min="0" name="margin_buy" value="{{ margin_buy }}"></label>
+      <fieldset class="field"><legend>{% translate "Quote view" %}</legend>{% for value, label in views %}<label class="field-check"><input type="radio" name="view" value="{{ value }}"{% if value == view %} checked{% endif %}> {{ label }}</label>{% endfor %}</fieldset>
+    </div>
+  </fieldset>
+  {% if calculated %}{% include "telephony/_totals.html" %}<p class="muted">{% translate "Prices in the totals include your margin." %}</p>{% endif %}
+  <div class="hero-actions">
+    <button class="btn btn-lg" type="submit" name="action" value="calculate">{% translate "Calculate" %}</button>
+    <button class="btn btn-primary btn-lg" type="submit" name="action" value="save">{% translate "Save as quote" %}</button>
+  </div>
+</form>
+<script>
+(function () {
+  var form = document.getElementById("pd-telephony");
+  function input(pk) { return form.querySelector('[data-item="' + pk + '"]'); }
+  function recount() {
+    for (var round = 0; round < 5; round++) {
+      form.querySelectorAll("[data-sources]").forEach(function (el) {
+        var total = 0;
+        el.dataset.sources.split(",").forEach(function (pk) { var s = input(pk); if (s) total += parseInt(s.value || "0", 10) || 0; });
+        el.value = total;
+      });
+    }
+  }
+  form.addEventListener("input", recount);
+})();
+</script>
+{% endblock %}

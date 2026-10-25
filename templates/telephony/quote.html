@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "Telephony quote" %} T{{ quote.pk }} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Telephony quote" %} T{{ quote.pk }}</h1>
+  <p class="muted">{{ quote.created_at|date:"j F Y" }}{% if quote.reference %} · {{ quote.reference }}{% endif %} · {{ quote.get_view_display }}</p></div>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Item" %}</th><th>{% translate "Quantity" %}</th>
+    {% if quote.view == "reseller" %}<th>{% translate "Hire per month (cost)" %}</th>{% endif %}<th>{% translate "Hire per month" %}</th>
+    {% if quote.view == "reseller" %}<th>{% translate "Purchase price (cost)" %}</th>{% endif %}<th>{% translate "Purchase price" %}</th><th>{% translate "Per month when bought" %}</th></tr></thead>
+  <tbody>{% for line in totals.lines %}<tr><td>{{ line.item.name }}</td><td>{{ line.quantity }}</td>
+    {% if quote.view == "reseller" %}<td>{% if line.hire_per_month_cost is not None %}€ {{ line.hire_per_month_cost|money }}{% endif %}</td>{% endif %}
+    <td>{% if line.hire_per_month is not None %}€ {{ line.hire_per_month|money }}{% else %}—{% endif %}</td>
+    {% if quote.view == "reseller" %}<td>{% if line.buy_price_cost is not None %}€ {{ line.buy_price_cost|money }}{% endif %}</td>{% endif %}
+    <td>{% if line.buy_price is not None %}€ {{ line.buy_price|money }}{% else %}—{% endif %}</td>
+    <td>{% if line.buy_per_month is not None %}€ {{ line.buy_per_month|money }}{% else %}—{% endif %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% include "telephony/_totals.html" %}
+{% if quote.view == "reseller" %}<p class="muted">{% blocktranslate with hire=quote.margin_hire|floatformat:"-2" buy=quote.margin_buy|floatformat:"-2" %}Margin: hire {{ hire }} %, purchase {{ buy }} %.{% endblocktranslate %}</p>{% endif %}
+{% if quote.old_price_per_port %}<p class="muted">{% translate "Price per port (previous webshop)" %}: € {{ quote.old_price_per_port|money }}</p>{% endif %}
+{% if rules.terms_text %}<p class="muted">{{ rules.terms_text|linebreaksbr }}</p>{% endif %}
+<p class="hero-actions"><button class="btn" onclick="window.print()">{% translate "Print" %}</button> <a href="{% url 'telephony_quotes' %}">{% translate "All telephony quotes" %}</a></p>
+{% endblock %}

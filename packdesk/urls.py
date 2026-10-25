@@ -33,6 +33,7 @@ urlpatterns = [
     path("", include("apps.orders.urls")),
     path("", include("apps.invoices.urls")),
     path("", include("apps.parts.urls")),
+    path("", include("apps.telephony.urls")),
     path("", include("apps.core.urls")),
     # Public assets such as the logo. Private documents (invoices) get
     # their own authenticated views later and never live under MEDIA_URL.

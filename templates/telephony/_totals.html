@@ -1,0 +1,13 @@
+{% load i18n humanize_nl %}<div class="two-col">
+  <div class="card"><h2>{% translate "Hire" %}</h2>
+    <dl class="details totals">
+      <dt>{% translate "Per month" %}</dt><dd><strong>€ {{ totals.hire_per_month|money }}</strong></dd>
+      {% if totals.hire_once %}<dt>{% translate "One-off installation" %}</dt><dd>€ {{ totals.hire_once|money }}</dd>{% endif %}
+    </dl></div>
+  <div class="card"><h2>{% translate "Buy" %}</h2>
+    <dl class="details totals">
+      <dt>{% translate "One-off" %}</dt><dd><strong>€ {{ totals.buy_once|money }}</strong></dd>
+      <dt>{% translate "Per month" %}</dt><dd>€ {{ totals.buy_per_month|money }}</dd>
+    </dl></div>
+</div>
+<p class="muted">{% translate "All prices excl. VAT." %}</p>

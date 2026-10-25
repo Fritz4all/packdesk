@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "My telephony quotes" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "My telephony quotes" %}</h1><a class="btn btn-primary" href="{% url 'telephony_calculator' %}">{% translate "New calculation" %}</a></div>
+<div class="card table-wrap"><table class="table">
+  <thead><tr><th>{% translate "Quote" %}</th><th>{% translate "Date" %}</th><th>{% translate "Reference" %}</th><th>{% translate "View" %}</th></tr></thead>
+  <tbody>{% for q in quotes %}<tr><td><a href="{% url 'telephony_quote' q.pk %}">T{{ q.pk }}</a></td><td>{{ q.created_at|date:"j M Y" }}</td><td>{{ q.reference }}</td><td>{{ q.get_view_display }}</td></tr>
+  {% empty %}<tr><td colspan="4" class="muted">{% translate "No quotes yet." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}
