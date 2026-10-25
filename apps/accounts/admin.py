@@ -150,6 +150,9 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
     change_password_form = AdminPasswordChangeForm
 
     list_display = ["email", "first_name", "last_name", "kind", "show_role", "is_active", "show_password", "last_login"]
+
+    class Media:
+        js = ["admin/user-kind.js"]
     list_filter = ["kind", "is_active", "groups"]
     actions = ["send_password_reset"]
 
@@ -248,8 +251,10 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
         return role.name if role else ("—" if not obj.is_superuser else _("Superuser"))
 
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser:
-            obj.is_superuser = False
+        if not request.user.is_superuser or obj.kind == User.Kind.CUSTOMER:
+            obj.is_superuser = False  # only superusers make superusers, and customers never are one
+        if obj.kind == User.Kind.CUSTOMER:
+            obj.admin_language = ""
         # Staff (admin users) and customers are told apart by `kind`.
         obj.is_staff = obj.kind == User.Kind.STAFF or obj.is_superuser
         super().save_model(request, obj, form, change)
