@@ -59,3 +59,20 @@ def test_username_is_generated(db):
     user = make_user("auto@example.test")
     assert len(user.username) == 32
     assert User.objects.get(pk=user.pk).email == "auto@example.test"
+
+
+def test_user_page_shows_password_status_not_the_hash(client, site):
+    from django.core import mail
+
+    admin_user = make_user("root@example.test", superuser=True)
+    user = make_user("medewerker@example.test", staff=True, role="Service")
+    client.force_login(admin_user)
+    page = client.get(f"/beheer/accounts/user/{user.pk}/change/").content.decode()
+    assert "Password set" in page or "Wachtwoord ingesteld" in page
+    assert "pbkdf2" not in page and f"/beheer/accounts/user/{user.pk}/password/" in page
+    assert client.get(f"/beheer/accounts/user/{user.pk}/send-reset/").status_code == 405
+    client.post(f"/beheer/accounts/user/{user.pk}/send-reset/")
+    user.refresh_from_db()
+    assert not user.has_usable_password() and mail.outbox[-1].to == ["medewerker@example.test"]
+    page = client.get(f"/beheer/accounts/user/{user.pk}/change/").content.decode()
+    assert "Must choose a new password" in page or "Moet een nieuw wachtwoord kiezen" in page

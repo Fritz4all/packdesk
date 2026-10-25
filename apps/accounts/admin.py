@@ -2,7 +2,12 @@ from django import forms
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
+from django.core.exceptions import PermissionDenied
 from django.db.models import Count
+from django.http import HttpResponseNotAllowed
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import path, reverse
+from django.utils.html import escapejs, format_html
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from unfold.admin import ModelAdmin
@@ -159,16 +164,53 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
         report_reset(request, *force_reset(queryset, request))
     search_fields = ["email", "first_name", "last_name"]
     ordering = ["email"]
-    readonly_fields = ["last_login", "date_joined"]
+    readonly_fields = ["last_login", "date_joined", "password_status"]
+
+    @display(description=_("Password"))
+    def password_status(self, obj):
+        """Whether a password is set, instead of the technical hash; with buttons to set one or to let the
+        user choose one by email. The real password is never stored, so it cannot be shown."""
+        if obj is None or not obj.pk:
+            return "–"
+        if obj.has_usable_password():
+            status, colour = gettext("Password set"), "text-green-700 dark:text-green-400"
+        else:
+            status, colour = gettext("Must choose a new password"), "text-orange-700 dark:text-orange-400"
+        return format_html(
+            '<div class="flex flex-wrap items-center gap-3"><span class="font-semibold {}">{}</span>'
+            '<a class="pd-btn" href="{}"><span class="material-symbols-outlined text-[18px]">password</span>{}</a>'
+            '<button type="submit" class="pd-btn" formaction="{}" formnovalidate '
+            'onclick="return confirm(\'{}\')"><span class="material-symbols-outlined text-[18px]">mail</span>{}</button>'
+            '</div><div class="text-sm text-base-500 mt-1">{}</div>',
+            colour, status, reverse("admin:auth_user_password_change", args=[obj.pk]), gettext("Set password"),
+            reverse("admin:accounts_user_send_reset", args=[obj.pk]),
+            escapejs(gettext("The current password stops working and the user gets an email to choose a new one. "
+                             "Continue?")),
+            gettext("Send reset email"),
+            gettext("Passwords are stored encrypted and can never be shown."),
+        )
+
+    def get_urls(self):
+        return [path("<int:pk>/send-reset/", self.admin_site.admin_view(self.send_reset_view),
+                     name="accounts_user_send_reset")] + super().get_urls()
+
+    def send_reset_view(self, request, pk):
+        if request.method != "POST":
+            return HttpResponseNotAllowed(["POST"])
+        user = get_object_or_404(self.get_queryset(request), pk=pk)
+        if not self.has_change_permission(request, user):
+            raise PermissionDenied
+        report_reset(request, *force_reset(User.objects.filter(pk=user.pk), request))
+        return redirect("admin:accounts_user_change", user.pk)
 
     staff_fieldsets = [
-        (None, {"fields": ["email", "password"]}),
+        (None, {"fields": ["email", "password_status"]}),
         (_("Personal info"), {"fields": ["first_name", "last_name", "admin_language"]}),
         (_("Access"), {"fields": ["kind", "role", "is_active"]}),
         (_("Dates"), {"fields": ["last_login", "date_joined"]}),
     ]
     superuser_fieldsets = [
-        (None, {"fields": ["email", "password"]}),
+        (None, {"fields": ["email", "password_status"]}),
         (_("Personal info"), {"fields": ["first_name", "last_name", "admin_language"]}),
         (_("Access"), {"fields": ["kind", "role", "is_active", "is_superuser"]}),
         (_("Dates"), {"fields": ["last_login", "date_joined"]}),

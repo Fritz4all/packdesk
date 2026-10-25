@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 10:43+0100\n"
+"POT-Creation-Date: 2026-10-25 11:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/accounts/admin.py:39 apps/accounts/admin.py:92
+#: apps/accounts/admin.py:44 apps/accounts/admin.py:97
 msgid "Permissions"
 msgstr "Rechten"
 
-#: apps/accounts/admin.py:43
+#: apps/accounts/admin.py:48
 msgid ""
 "Tick what users with this role may see and do. You can only grant rights you "
 "have yourself."
@@ -28,16 +28,16 @@ msgstr ""
 "Vink aan wat gebruikers met deze rol mogen zien en doen. U kunt alleen "
 "rechten toekennen die u zelf hebt."
 
-#: apps/accounts/admin.py:88 apps/accounts/apps.py:8
+#: apps/accounts/admin.py:93 apps/accounts/apps.py:8
 #: apps/dashboard/navigation.py:357
 msgid "Users"
 msgstr "Gebruikers"
 
-#: apps/accounts/admin.py:106 apps/accounts/admin.py:203
+#: apps/accounts/admin.py:111 apps/accounts/admin.py:245
 msgid "Role"
 msgstr "Rol"
 
-#: apps/accounts/admin.py:110
+#: apps/accounts/admin.py:115
 msgid ""
 "Required for staff. The role decides what this user sees and may do in the "
 "admin."
@@ -45,46 +45,72 @@ msgstr ""
 "Verplicht voor medewerkers. De rol bepaalt wat deze gebruiker in het beheer "
 "ziet en mag doen."
 
-#: apps/accounts/admin.py:125
+#: apps/accounts/admin.py:130
 msgid "Staff users need a role."
 msgstr "Medewerkers moeten een rol hebben."
 
-#: apps/accounts/admin.py:151 apps/core/setup_views.py:51
-#: apps/core/setup_views.py:96 apps/customers/forms.py:51
+#: apps/accounts/admin.py:156 apps/accounts/admin.py:169
+#: apps/core/setup_views.py:51 apps/core/setup_views.py:96
+#: apps/customers/forms.py:51
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: apps/accounts/admin.py:154
+#: apps/accounts/admin.py:159
 msgid "Set"
 msgstr "Ingesteld"
 
-#: apps/accounts/admin.py:155
+#: apps/accounts/admin.py:160
 msgid "Must choose a new one"
 msgstr "Moet een nieuw kiezen"
 
-#: apps/accounts/admin.py:157
+#: apps/accounts/admin.py:162
 msgid "Make selected users choose a new password (email with link)"
 msgstr ""
 "Geselecteerde gebruikers een nieuw wachtwoord laten kiezen (e-mail met link)"
 
-#: apps/accounts/admin.py:166 apps/accounts/admin.py:172
+#: apps/accounts/admin.py:176
+msgid "Password set"
+msgstr "Wachtwoord ingesteld"
+
+#: apps/accounts/admin.py:178 apps/customers/admin.py:391
+#: apps/customers/overview.py:71
+msgid "Must choose a new password"
+msgstr "Moet een nieuw wachtwoord kiezen"
+
+#: apps/accounts/admin.py:185
+msgid "Set password"
+msgstr "Wachtwoord instellen"
+
+#: apps/accounts/admin.py:187
+msgid "The current password stops working and the user gets an email to choose a new one. Continue?"
+msgstr "Het huidige wachtwoord werkt dan niet meer en de gebruiker krijgt een e-mail om een nieuw wachtwoord te kiezen. Doorgaan?"
+
+#: apps/accounts/admin.py:189
+msgid "Send reset email"
+msgstr "Resetmail sturen"
+
+#: apps/accounts/admin.py:190
+msgid "Passwords are stored encrypted and can never be shown."
+msgstr "Wachtwoorden worden versleuteld opgeslagen en kunnen nooit worden getoond."
+
+#: apps/accounts/admin.py:208 apps/accounts/admin.py:214
 msgid "Personal info"
 msgstr "Persoonlijke gegevens"
 
-#: apps/accounts/admin.py:167 apps/accounts/admin.py:173
-#: apps/accounts/admin.py:178
+#: apps/accounts/admin.py:209 apps/accounts/admin.py:215
+#: apps/accounts/admin.py:220
 msgid "Access"
 msgstr "Toegang"
 
-#: apps/accounts/admin.py:168 apps/accounts/admin.py:174
+#: apps/accounts/admin.py:210 apps/accounts/admin.py:216
 msgid "Dates"
 msgstr "Datums"
 
-#: apps/accounts/admin.py:206
+#: apps/accounts/admin.py:248
 msgid "Superuser"
 msgstr "Superuser"
 
-#: apps/accounts/admin.py:226
+#: apps/accounts/admin.py:268
 #, python-format
 msgid ""
 "%(n)s email(s) sent with a link to choose a new password; the old passwords "
@@ -93,7 +119,7 @@ msgstr ""
 "%(n)s e-mail(s) verstuurd met een link om een nieuw wachtwoord te kiezen; de "
 "oude wachtwoorden werken niet meer."
 
-#: apps/accounts/admin.py:229
+#: apps/accounts/admin.py:271
 #, python-format
 msgid "Not sent (no email address or not active): %(list)s"
 msgstr "Niet verstuurd (geen e-mailadres of niet actief): %(list)s"
@@ -517,8 +543,15 @@ msgstr "Klanttype wijzigen"
 
 #: apps/customers/admin.py:189
 #, python-format
-msgid "Not deleted: %(names)s%(more)s. Customers with invoices, orders, licences or other history cannot be deleted, because that history must be kept. Block the customer instead: its contacts can then no longer log in."
-msgstr "Niet verwijderd: %(names)s%(more)s. Klanten met facturen, bestellingen, licenties of andere geschiedenis kunnen niet worden verwijderd, omdat die geschiedenis bewaard moet blijven. Blokkeer de klant in plaats daarvan: de contactpersonen kunnen dan niet meer inloggen."
+msgid ""
+"Not deleted: %(names)s%(more)s. Customers with invoices, orders, licences or "
+"other history cannot be deleted, because that history must be kept. Block "
+"the customer instead: its contacts can then no longer log in."
+msgstr ""
+"Niet verwijderd: %(names)s%(more)s. Klanten met facturen, bestellingen, "
+"licenties of andere geschiedenis kunnen niet worden verwijderd, omdat die "
+"geschiedenis bewaard moet blijven. Blokkeer de klant in plaats daarvan: de "
+"contactpersonen kunnen dan niet meer inloggen."
 
 #: apps/customers/admin.py:236 apps/customers/forms.py:32
 #: apps/customers/overview.py:112 apps/legacy/parts.py:112
@@ -629,10 +662,6 @@ msgstr "Geen login"
 #: apps/customers/admin.py:389 apps/customers/overview.py:69
 msgid "Not active"
 msgstr "Niet actief"
-
-#: apps/customers/admin.py:391 apps/customers/overview.py:71
-msgid "Must choose a new password"
-msgstr "Moet een nieuw wachtwoord kiezen"
 
 #: apps/customers/admin.py:394
 msgid "Make selected contacts choose a new password (email with link)"
