@@ -176,6 +176,7 @@ of de `SETUP_CODE` uit `.env`), bevestig dat je een back-up hebt gemaakt en klik
 
 Voor een geautomatiseerde installatie kan alles ook zonder wizard: zet de database en de mailserver in
 `.env` en maak de eerste beheerder met
-`docker compose exec web python manage.py create_user --email <e-mailadres> --superuser`.
+`docker compose exec web python manage.py create_user --email <e-mailadres> --superuser`
+(het wachtwoord wordt gevraagd; in een script geef je het mee met `-e PACKDESK_PASSWORD=…`).
 Daarmee is de installatie afgerond en opent de wizard niet meer. Wijzigingen van een nieuwe versie
 voert PackDesk bij het starten zelf door als je `RUN_MIGRATIONS=1` in `.env` zet.

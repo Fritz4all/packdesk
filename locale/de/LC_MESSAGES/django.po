@@ -380,8 +380,22 @@ msgid "The database cannot be used."
 msgstr "Die Datenbank kann nicht verwendet werden."
 
 #: apps/core/server_setup.py:147
-msgid "The database user and password come from the docker-compose file or .env, so they can only be changed there. Check that DB_PASSWORD is the same as the password of the database user (with the MariaDB of the docker-compose file: MARIADB_PASSWORD). Note: MariaDB only uses MARIADB_PASSWORD when its data is created for the first time. For a new, empty installation, remove the database data (docker compose down -v) and start again; otherwise change the password in MariaDB."
-msgstr "Datenbankbenutzer und Passwort stammen aus der docker-compose-Datei oder .env und können nur dort geändert werden. Prüfen Sie, ob DB_PASSWORD mit dem Passwort des Datenbankbenutzers übereinstimmt (bei der MariaDB aus der docker-compose-Datei: MARIADB_PASSWORD). Hinweis: MariaDB verwendet MARIADB_PASSWORD nur, wenn die Daten zum ersten Mal angelegt werden. Bei einer neuen, leeren Installation: Datenbankdaten entfernen (docker compose down -v) und neu starten; sonst das Passwort in MariaDB selbst ändern."
+msgid ""
+"The database user and password come from the docker-compose file or .env, so "
+"they can only be changed there. Check that DB_PASSWORD is the same as the "
+"password of the database user (with the MariaDB of the docker-compose file: "
+"MARIADB_PASSWORD). Note: MariaDB only uses MARIADB_PASSWORD when its data is "
+"created for the first time. For a new, empty installation, remove the "
+"database data (docker compose down -v) and start again; otherwise change the "
+"password in MariaDB."
+msgstr ""
+"Datenbankbenutzer und Passwort stammen aus der docker-compose-Datei "
+"oder .env und können nur dort geändert werden. Prüfen Sie, ob DB_PASSWORD "
+"mit dem Passwort des Datenbankbenutzers übereinstimmt (bei der MariaDB aus "
+"der docker-compose-Datei: MARIADB_PASSWORD). Hinweis: MariaDB verwendet "
+"MARIADB_PASSWORD nur, wenn die Daten zum ersten Mal angelegt werden. Bei "
+"einer neuen, leeren Installation: Datenbankdaten entfernen (docker compose "
+"down -v) und neu starten; sonst das Passwort in MariaDB selbst ändern."
 
 #: apps/core/setup_views.py:28 apps/core/setup_views.py:39
 #: templates/setup/database.html:14 templates/setup/update.html:12
@@ -2490,10 +2504,11 @@ msgstr "Keine Verbindung"
 #: apps/legacy/admin.py:90
 #, python-format
 msgid ""
-"%(n)s table mapping(s) for the previous webshop added. Existing mappings were kept."
+"%(n)s table mapping(s) for the previous webshop added. Existing mappings "
+"were kept."
 msgstr ""
-"%(n)s Zuordnung(en) für den vorherigen Webshop hinzugefügt. Bestehende Zuordnungen "
-"wurden beibehalten."
+"%(n)s Zuordnung(en) für den vorherigen Webshop hinzugefügt. Bestehende "
+"Zuordnungen wurden beibehalten."
 
 #: apps/legacy/admin.py:120 apps/legacy/models.py:107
 msgid "PackDesk field"
@@ -2580,10 +2595,12 @@ msgid "This is a database of the previous webshop."
 msgstr "Dies ist eine Datenbank des vorherigen Webshops."
 
 #: apps/legacy/connection.py:142
-msgid "No previous webshop tables found; comparing is not possible with this database."
+msgid ""
+"No previous webshop tables found; comparing is not possible with this "
+"database."
 msgstr ""
-"Keine Tabellen des vorherigen Webshops gefunden; mit dieser Datenbank ist kein "
-"Vergleich möglich."
+"Keine Tabellen des vorherigen Webshops gefunden; mit dieser Datenbank ist "
+"kein Vergleich möglich."
 
 #: apps/legacy/connection.py:143
 #, python-format
@@ -2951,11 +2968,11 @@ msgstr ""
 #: apps/legacy/old_shop/importer.py:659
 #, python-format
 msgid ""
-"Licence number %(nr)s was used %(n)s times in the previous webshop; renumbered on "
-"import."
+"Licence number %(nr)s was used %(n)s times in the previous webshop; "
+"renumbered on import."
 msgstr ""
-"Lizenznummer %(nr)s wurde im vorherigen Webshop %(n)s-mal verwendet; beim Import neu "
-"nummeriert."
+"Lizenznummer %(nr)s wurde im vorherigen Webshop %(n)s-mal verwendet; beim "
+"Import neu nummeriert."
 
 #: apps/legacy/old_shop/importer.py:784
 #, python-format
@@ -2965,11 +2982,11 @@ msgstr ""
 
 #: apps/legacy/old_shop/importer.py:796
 msgid ""
-"Licence numbers of the previous webshop have different formats; the licence counter "
-"is not changed. Check it under Number sequences."
+"Licence numbers of the previous webshop have different formats; the licence "
+"counter is not changed. Check it under Number sequences."
 msgstr ""
-"Die Lizenznummern des vorherigen Webshops haben unterschiedliche Formate; der "
-"Lizenzzähler wurde nicht geändert. Prüfen Sie ihn unter Nummernkreise."
+"Die Lizenznummern des vorherigen Webshops haben unterschiedliche Formate; "
+"der Lizenzzähler wurde nicht geändert. Prüfen Sie ihn unter Nummernkreise."
 
 #: apps/legacy/old_shop/parts_import.py:272
 msgid ""
@@ -2993,13 +3010,13 @@ msgstr ""
 
 #: apps/legacy/old_shop/phase3_import.py:152
 msgid ""
-"Printing services are kept as an archive: the previous webshop no longer offered "
-"them and its calculation rules are not known, so PackDesk shows them but "
-"makes no new quotes. ps_printer_option was empty."
+"Printing services are kept as an archive: the previous webshop no longer "
+"offered them and its calculation rules are not known, so PackDesk shows them "
+"but makes no new quotes. ps_printer_option was empty."
 msgstr ""
-"Druckdienste werden als Archiv übernommen: der vorherige Webshop bot sie nicht mehr "
-"an und die Berechnungsregeln sind nicht bekannt, daher zeigt PackDesk sie, "
-"erstellt aber keine neuen Angebote. ps_printer_option war leer."
+"Druckdienste werden als Archiv übernommen: der vorherige Webshop bot sie "
+"nicht mehr an und die Berechnungsregeln sind nicht bekannt, daher zeigt "
+"PackDesk sie, erstellt aber keine neuen Angebote. ps_printer_option war leer."
 
 #: apps/legacy/old_shop/phase3_import.py:194
 msgid ""
@@ -3012,12 +3029,12 @@ msgstr ""
 #: apps/legacy/old_shop/phase3_import.py:229
 msgid ""
 "The telephony calculator is switched off until you switch it on under "
-"Telephony settings. The previous webshop's price per port cannot be recalculated; "
-"old quotes show the stored value."
+"Telephony settings. The previous webshop's price per port cannot be "
+"recalculated; old quotes show the stored value."
 msgstr ""
 "Der Telefonie-Rechner ist ausgeschaltet, bis Sie ihn unter Einstellungen "
-"Telefonie einschalten. Der Preis pro Port des vorherigen Webshops lässt sich nicht "
-"nachrechnen; alte Angebote zeigen den gespeicherten Wert."
+"Telefonie einschalten. Der Preis pro Port des vorherigen Webshops lässt sich "
+"nicht nachrechnen; alte Angebote zeigen den gespeicherten Wert."
 
 #: apps/legacy/parts.py:110 apps/legacy/parts.py:127 apps/legacy/parts.py:176
 #: templates/admin/customers/_import_outcome.html:3
@@ -6612,17 +6629,17 @@ msgstr "Ergebnis"
 
 #: templates/legacy/import_start.html:6
 msgid ""
-"Imports everything from the previous webshop that PackDesk knows: the catalogue, "
-"customers with addresses, contacts and logins (with their own passwords), "
-"orders, licences with options and extensions, invoices with payments, spare "
-"parts requests and orders, printing services (as an archive), telephony, and "
-"the number counters."
+"Imports everything from the previous webshop that PackDesk knows: the "
+"catalogue, customers with addresses, contacts and logins (with their own "
+"passwords), orders, licences with options and extensions, invoices with "
+"payments, spare parts requests and orders, printing services (as an "
+"archive), telephony, and the number counters."
 msgstr ""
-"Importiert alles aus dem vorherigen Webshop, was PackDesk kennt: den Katalog, Kunden "
-"mit Adressen, Ansprechpartner und Logins (mit ihrem eigenen Passwort), "
-"Bestellungen, Lizenzen mit Optionen und Verlängerungen, Rechnungen mit "
-"Zahlungen, Ersatzteilanfragen und -bestellungen, Druckdienste (als Archiv), "
-"Telefonie sowie die Nummernzähler."
+"Importiert alles aus dem vorherigen Webshop, was PackDesk kennt: den "
+"Katalog, Kunden mit Adressen, Ansprechpartner und Logins (mit ihrem eigenen "
+"Passwort), Bestellungen, Lizenzen mit Optionen und Verlängerungen, "
+"Rechnungen mit Zahlungen, Ersatzteilanfragen und -bestellungen, Druckdienste "
+"(als Archiv), Telefonie sowie die Nummernzähler."
 
 #: templates/legacy/import_start.html:7
 msgid ""
@@ -6638,8 +6655,8 @@ msgstr ""
 
 #: templates/legacy/import_start.html:8
 msgid ""
-"This database has no table mappings yet. Load the mapping for the previous webshop "
-"first."
+"This database has no table mappings yet. Load the mapping for the previous "
+"webshop first."
 msgstr ""
 "Diese Datenbank hat noch keine Zuordnungen. Laden Sie zuerst die Zuordnung "
 "für den vorherigen Webshop."
@@ -7607,19 +7624,3 @@ msgstr "%(model)s hinzufügen"
 #, python-format
 msgid "View selected %(model)s"
 msgstr "%(model)s anzeigen"
-
-#~ msgid "Packs sold"
-#~ msgstr "Verkaufte Pakete"
-
-#~ msgid "packs"
-#~ msgstr "Pakete"
-
-#~ msgid "Packs"
-#~ msgstr "Pakete"
-
-#~ msgid ""
-#~ "Optional. Regular expression for documents in the archive folder; the "
-#~ "first group is the number, e.g. invoice_(\\d+)\\.pdf"
-#~ msgstr ""
-#~ "Optional. Regulärer Ausdruck für Dokumente im Archivordner; die erste "
-#~ "Gruppe ist die Nummer, z. B. invoice_(\\d+)\\.pdf"

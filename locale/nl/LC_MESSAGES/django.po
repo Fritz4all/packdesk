@@ -377,8 +377,22 @@ msgid "The database cannot be used."
 msgstr "De database kan niet worden gebruikt."
 
 #: apps/core/server_setup.py:147
-msgid "The database user and password come from the docker-compose file or .env, so they can only be changed there. Check that DB_PASSWORD is the same as the password of the database user (with the MariaDB of the docker-compose file: MARIADB_PASSWORD). Note: MariaDB only uses MARIADB_PASSWORD when its data is created for the first time. For a new, empty installation, remove the database data (docker compose down -v) and start again; otherwise change the password in MariaDB."
-msgstr "De databasegebruiker en het wachtwoord komen uit het docker-compose-bestand of .env en zijn alleen daar te wijzigen. Controleer of DB_PASSWORD hetzelfde is als het wachtwoord van de databasegebruiker (bij de MariaDB uit het docker-compose-bestand: MARIADB_PASSWORD). Let op: MariaDB gebruikt MARIADB_PASSWORD alleen als de data voor het eerst wordt aangemaakt. Bij een nieuwe, lege installatie: verwijder de databasedata (docker compose down -v) en start opnieuw; anders het wachtwoord in MariaDB zelf aanpassen."
+msgid ""
+"The database user and password come from the docker-compose file or .env, so "
+"they can only be changed there. Check that DB_PASSWORD is the same as the "
+"password of the database user (with the MariaDB of the docker-compose file: "
+"MARIADB_PASSWORD). Note: MariaDB only uses MARIADB_PASSWORD when its data is "
+"created for the first time. For a new, empty installation, remove the "
+"database data (docker compose down -v) and start again; otherwise change the "
+"password in MariaDB."
+msgstr ""
+"De databasegebruiker en het wachtwoord komen uit het docker-compose-bestand "
+"of .env en zijn alleen daar te wijzigen. Controleer of DB_PASSWORD hetzelfde "
+"is als het wachtwoord van de databasegebruiker (bij de MariaDB uit het "
+"docker-compose-bestand: MARIADB_PASSWORD). Let op: MariaDB gebruikt "
+"MARIADB_PASSWORD alleen als de data voor het eerst wordt aangemaakt. Bij een "
+"nieuwe, lege installatie: verwijder de databasedata (docker compose down -v) "
+"en start opnieuw; anders het wachtwoord in MariaDB zelf aanpassen."
 
 #: apps/core/setup_views.py:28 apps/core/setup_views.py:39
 #: templates/setup/database.html:14 templates/setup/update.html:12
@@ -2484,10 +2498,11 @@ msgstr "Geen verbinding"
 #: apps/legacy/admin.py:90
 #, python-format
 msgid ""
-"%(n)s table mapping(s) for the previous webshop added. Existing mappings were kept."
+"%(n)s table mapping(s) for the previous webshop added. Existing mappings "
+"were kept."
 msgstr ""
-"%(n)s koppeling(en) voor de vorige webshop toegevoegd. Bestaande koppelingen zijn "
-"behouden."
+"%(n)s koppeling(en) voor de vorige webshop toegevoegd. Bestaande koppelingen "
+"zijn behouden."
 
 #: apps/legacy/admin.py:120 apps/legacy/models.py:107
 msgid "PackDesk field"
@@ -2573,10 +2588,12 @@ msgid "This is a database of the previous webshop."
 msgstr "Dit is een database van de vorige webshop."
 
 #: apps/legacy/connection.py:142
-msgid "No previous webshop tables found; comparing is not possible with this database."
+msgid ""
+"No previous webshop tables found; comparing is not possible with this "
+"database."
 msgstr ""
-"Geen tabellen van de vorige webshop gevonden; vergelijken kan met deze database "
-"niet."
+"Geen tabellen van de vorige webshop gevonden; vergelijken kan met deze "
+"database niet."
 
 #: apps/legacy/connection.py:143
 #, python-format
@@ -2941,11 +2958,11 @@ msgstr ""
 #: apps/legacy/old_shop/importer.py:659
 #, python-format
 msgid ""
-"Licence number %(nr)s was used %(n)s times in the previous webshop; renumbered on "
-"import."
+"Licence number %(nr)s was used %(n)s times in the previous webshop; "
+"renumbered on import."
 msgstr ""
-"Licentienummer %(nr)s is in de vorige webshop %(n)s keer gebruikt; bij de import "
-"hernummerd."
+"Licentienummer %(nr)s is in de vorige webshop %(n)s keer gebruikt; bij de "
+"import hernummerd."
 
 #: apps/legacy/old_shop/importer.py:784
 #, python-format
@@ -2955,8 +2972,8 @@ msgstr ""
 
 #: apps/legacy/old_shop/importer.py:796
 msgid ""
-"Licence numbers of the previous webshop have different formats; the licence counter "
-"is not changed. Check it under Number sequences."
+"Licence numbers of the previous webshop have different formats; the licence "
+"counter is not changed. Check it under Number sequences."
 msgstr ""
 "Licentienummers van de vorige webshop hebben verschillende vormen; de "
 "licentieteller is niet aangepast. Controleer hem onder Nummerreeksen."
@@ -2983,13 +3000,13 @@ msgstr ""
 
 #: apps/legacy/old_shop/phase3_import.py:152
 msgid ""
-"Printing services are kept as an archive: the previous webshop no longer offered "
-"them and its calculation rules are not known, so PackDesk shows them but "
-"makes no new quotes. ps_printer_option was empty."
+"Printing services are kept as an archive: the previous webshop no longer "
+"offered them and its calculation rules are not known, so PackDesk shows them "
+"but makes no new quotes. ps_printer_option was empty."
 msgstr ""
-"Printing services zijn als archief bewaard: de vorige webshop bood ze niet meer "
-"aan en de rekenregels zijn niet bekend, dus PackDesk toont ze maar maakt "
-"geen nieuwe offertes. ps_printer_option was leeg."
+"Printing services zijn als archief bewaard: de vorige webshop bood ze niet "
+"meer aan en de rekenregels zijn niet bekend, dus PackDesk toont ze maar "
+"maakt geen nieuwe offertes. ps_printer_option was leeg."
 
 #: apps/legacy/old_shop/phase3_import.py:194
 msgid ""
@@ -3002,12 +3019,12 @@ msgstr ""
 #: apps/legacy/old_shop/phase3_import.py:229
 msgid ""
 "The telephony calculator is switched off until you switch it on under "
-"Telephony settings. The previous webshop's price per port cannot be recalculated; "
-"old quotes show the stored value."
+"Telephony settings. The previous webshop's price per port cannot be "
+"recalculated; old quotes show the stored value."
 msgstr ""
 "De telefoniecalculator staat uit tot je hem aanzet onder Instellingen "
-"telefonie. De prijs per poort van de vorige webshop is niet na te rekenen; oude "
-"offertes tonen de opgeslagen waarde."
+"telefonie. De prijs per poort van de vorige webshop is niet na te rekenen; "
+"oude offertes tonen de opgeslagen waarde."
 
 #: apps/legacy/parts.py:110 apps/legacy/parts.py:127 apps/legacy/parts.py:176
 #: templates/admin/customers/_import_outcome.html:3
@@ -6594,14 +6611,14 @@ msgstr "Resultaat"
 
 #: templates/legacy/import_start.html:6
 msgid ""
-"Imports everything from the previous webshop that PackDesk knows: the catalogue, "
-"customers with addresses, contacts and logins (with their own passwords), "
-"orders, licences with options and extensions, invoices with payments, spare "
-"parts requests and orders, printing services (as an archive), telephony, and "
-"the number counters."
+"Imports everything from the previous webshop that PackDesk knows: the "
+"catalogue, customers with addresses, contacts and logins (with their own "
+"passwords), orders, licences with options and extensions, invoices with "
+"payments, spare parts requests and orders, printing services (as an "
+"archive), telephony, and the number counters."
 msgstr ""
-"Importeert alles uit de vorige webshop wat PackDesk kent: de catalogus, klanten "
-"met adressen, contactpersonen en logins (met hun eigen wachtwoord), "
+"Importeert alles uit de vorige webshop wat PackDesk kent: de catalogus, "
+"klanten met adressen, contactpersonen en logins (met hun eigen wachtwoord), "
 "bestellingen, licenties met opties en verlengingen, facturen met betalingen, "
 "onderdelenaanvragen en -bestellingen, printing services (als archief), "
 "telefonie en de nummertellers."
@@ -6620,8 +6637,8 @@ msgstr ""
 
 #: templates/legacy/import_start.html:8
 msgid ""
-"This database has no table mappings yet. Load the mapping for the previous webshop "
-"first."
+"This database has no table mappings yet. Load the mapping for the previous "
+"webshop first."
 msgstr ""
 "Deze database heeft nog geen koppelingen. Laad eerst de koppeling voor de "
 "vorige webshop."
@@ -7582,19 +7599,3 @@ msgstr "%(model)s toevoegen"
 #, python-format
 msgid "View selected %(model)s"
 msgstr "%(model)s bekijken"
-
-#~ msgid "Packs sold"
-#~ msgstr "Verkochte packs"
-
-#~ msgid "packs"
-#~ msgstr "packs"
-
-#~ msgid "Packs"
-#~ msgstr "Packs"
-
-#~ msgid ""
-#~ "Optional. Regular expression for documents in the archive folder; the "
-#~ "first group is the number, e.g. invoice_(\\d+)\\.pdf"
-#~ msgstr ""
-#~ "Optioneel. Reguliere expressie voor documenten in de archiefmap; de "
-#~ "eerste groep is het nummer, bijv. invoice_(\\d+)\\.pdf"

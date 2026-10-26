@@ -214,6 +214,9 @@ niet meer bekend.
     kunt bekijken zonder dat er iets verandert. Daarna **importeren** (eerst een back-up maken).
   - Opnieuw importeren werkt bij wat eerder is overgenomen en maakt niets dubbel aan; er wordt niets
     verwijderd. Zo kun je nu testen en bij de echte overstap opnieuw importeren.
+  - Ook vanaf de opdrachtregel: `docker compose exec web python manage.py import_old_shop --database <nummer>`
+    is een proefimport, met `--apply` erachter echt. Het nummer is het ID van de externe database (te zien
+    in de adresbalk als je hem in het beheer opent).
   - Het **verslag** (CSV) heeft één regel per rij van de oude database: nieuw, bijgewerkt, ongewijzigd of
     overgeslagen, met de reden. Het bevat persoonsgegevens; bewaar het zorgvuldig.
   - Wat bewust niet meekomt: contactpersonen en opties die in de vorige webshop verwijderd waren, een tweede
