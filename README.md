@@ -33,11 +33,11 @@ prijzen, teksten, huisstijl, nummering, rechten van medewerkers.
 Nodig: [Docker](https://docs.docker.com/get-docker/) met Docker Compose.
 
 ```bash
-# Haal PackDesk binnen en ga naar de map.
-git clone https://github.com/Fritz4all/packdesk.git
-cd packdesk
+# Maak een map voor PackDesk en download het startbestand (met een eigen PostgreSQL-database).
+mkdir packdesk && cd packdesk
+curl -fsSL -o docker-compose.yml https://raw.githubusercontent.com/Fritz4all/packdesk/main/docker-compose.yml
 
-# Start PackDesk met een eigen database op de achtergrond (de eerste keer een paar minuten).
+# Download het kant-en-klare image en start PackDesk op de achtergrond.
 docker compose up -d
 
 # Toon de installatiecode die je zo nodig hebt.

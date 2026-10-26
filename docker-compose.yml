@@ -4,6 +4,8 @@
 #
 # Other variants: docker-compose.mariadb.yml (with MariaDB) and docker-compose.external-db.yml
 # (an existing database server). Settings can be put in .env (see .env.example); none are required.
+# Only this file is needed: save it as docker-compose.yml in an empty folder. The PackDesk image comes
+# ready-made from GitHub (ghcr.io/fritz4all/packdesk); nothing to download or build.
 name: packdesk
 
 services:
@@ -23,8 +25,9 @@ services:
       retries: 30
 
   web:
-    build: .
-    image: packdesk:latest
+    # The ready-made image; nothing to build. PACKDESK_VERSION in .env picks a version (e.g. 1.2);
+    # default: the newest. Update with: docker compose pull && docker compose up -d
+    image: ghcr.io/fritz4all/packdesk:${PACKDESK_VERSION:-latest}
     restart: unless-stopped
     depends_on:
       db:

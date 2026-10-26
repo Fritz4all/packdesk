@@ -1,8 +1,10 @@
-# PackDesk with its own MariaDB database. Start with:  docker compose -f docker-compose.mariadb.yml up -d
+# PackDesk with its own MariaDB database. Start with:  docker compose up -d
 # Then open http://<server>:8000 and follow the installation wizard (the installation code is shown
-# with: docker compose -f docker-compose.mariadb.yml logs web | grep "Installation code").
+# with: docker compose logs web | grep "Installation code").
 # Settings can be put in .env (see .env.example); none are required.
 # phpMyAdmin runs alongside, on http://localhost:8081 of the server (see the phpmyadmin service below).
+# Only this file is needed: save it as docker-compose.yml in an empty folder. The PackDesk image comes
+# ready-made from GitHub (ghcr.io/fritz4all/packdesk); nothing to download or build.
 name: packdesk
 
 services:
@@ -41,8 +43,9 @@ services:
       - "${PHPMYADMIN_ADDRESS:-127.0.0.1}:${PHPMYADMIN_PORT:-8081}:80"
 
   web:
-    build: .
-    image: packdesk:latest
+    # The ready-made image; nothing to build. PACKDESK_VERSION in .env picks a version (e.g. 1.2);
+    # default: the newest. Update with: docker compose pull && docker compose up -d
+    image: ghcr.io/fritz4all/packdesk:${PACKDESK_VERSION:-latest}
     restart: unless-stopped
     depends_on:
       db:
@@ -65,5 +68,5 @@ services:
       - ${DATA_DIR:-../packdesk-data}:/data
 
 volumes:
-  # The database. Back up with: docker compose -f docker-compose.mariadb.yml exec db mariadb-dump -u packdesk -p packdesk > packdesk.sql
+  # The database. Back up with: docker compose exec db mariadb-dump -u packdesk -p packdesk > packdesk.sql
   mariadb-data:

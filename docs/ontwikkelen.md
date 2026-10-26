@@ -122,3 +122,19 @@ automatisch aangepast.
 - Bestaande gegevens worden nooit ongemerkt overschreven: imports tonen eerst een controle.
 - Externe databases worden alleen gelezen.
 - Klantgegevens, wachtwoorden en bestanden komen nooit in Git.
+
+## Een nieuwe versie uitbrengen
+
+Na elke push naar `main` draaien de tests; slagen ze, dan bouwt GitHub het image en zet het op
+`ghcr.io/fritz4all/packdesk` met de tags `latest` en de korte commit-ID. Installaties halen het op met
+`docker compose pull && docker compose up -d`.
+
+Een vaste versie maak je met een tag:
+
+```bash
+# Markeer de huidige versie als 1.2.0 en zet de tag op GitHub; het image krijgt dan ook de tags 1.2.0 en 1.2.
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+Wie een vaste versie wil draaien, zet `PACKDESK_VERSION=1.2` in `.env`.

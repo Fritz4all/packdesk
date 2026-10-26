@@ -16,13 +16,17 @@ weggooien en vervangen door een nieuwe versie zonder dat er iets verloren gaat.
 
 ## 1. Kies een variant
 
-Er zijn drie kant-en-klare startbestanden. Kies er één:
+Er zijn drie kant-en-klare startbestanden. Je hebt er maar één nodig; de code van PackDesk hoef je
+niet te downloaden of te bouwen, het image komt kant-en-klaar van GitHub (`ghcr.io/fritz4all/packdesk`).
 
-| Bestand | Database | Starten met |
-|---|---|---|
-| `docker-compose.yml` | eigen **PostgreSQL**, draait mee | `docker compose up -d` |
-| `docker-compose.mariadb.yml` | eigen **MariaDB**, draait mee | `docker compose -f docker-compose.mariadb.yml up -d` |
-| `docker-compose.external-db.yml` | een **bestaande databaseserver** (MariaDB, MySQL of PostgreSQL) | `docker compose -f docker-compose.external-db.yml up -d` |
+| Bestand | Database |
+|---|---|
+| [`docker-compose.yml`](https://raw.githubusercontent.com/Fritz4all/packdesk/main/docker-compose.yml) | eigen **PostgreSQL**, draait mee |
+| [`docker-compose.mariadb.yml`](https://raw.githubusercontent.com/Fritz4all/packdesk/main/docker-compose.mariadb.yml) | eigen **MariaDB**, draait mee, met phpMyAdmin |
+| [`docker-compose.external-db.yml`](https://raw.githubusercontent.com/Fritz4all/packdesk/main/docker-compose.external-db.yml) | een **bestaande databaseserver** (MariaDB, MySQL of PostgreSQL) |
+
+Twijfel je, kies dan de eerste. De database draait dan in een eigen container en is alleen bereikbaar
+voor PackDesk.
 
 Bij `docker-compose.mariadb.yml` draait ook **phpMyAdmin** mee, om in de database te kijken:
 `http://<server>:8081`, inloggen als `packdesk` met het `DB_PASSWORD` uit `.env` (standaard
@@ -30,32 +34,28 @@ Bij `docker-compose.mariadb.yml` draait ook **phpMyAdmin** mee, om in de databas
 `ssh -L 8081:localhost:8081 <server>` en dan `http://localhost:8081`; of zet op een vertrouwd netwerk
 `PHPMYADMIN_ADDRESS=0.0.0.0` in `.env` (andere poort: `PHPMYADMIN_PORT=`).
 
-Twijfel je, kies dan de eerste. De database draait dan in een eigen container en is alleen bereikbaar
-voor PackDesk.
-
-Bij een andere variant dan de eerste zet je in de opdrachten hieronder steeds `-f <bestand>` achter
-`docker compose`.
-
 ## 2. Starten
 
+Sla het gekozen bestand op als `docker-compose.yml` in een lege map, bijvoorbeeld:
+
 ```bash
-# Haal PackDesk binnen en ga naar de map.
-git clone https://github.com/Fritz4all/packdesk.git
-cd packdesk
-
-# Bouw en start PackDesk (en de database van je variant) op de achtergrond. De eerste keer duurt dit
-# een paar minuten. Een nieuwe, lege database krijgt vanzelf zijn tabellen.
+# Maak een map voor PackDesk en ga erheen.
+mkdir packdesk && cd packdesk
+# Download het startbestand (hier de variant met MariaDB) als docker-compose.yml.
+curl -fsSL -o docker-compose.yml https://raw.githubusercontent.com/Fritz4all/packdesk/main/docker-compose.mariadb.yml
+# Download het PackDesk-image en start alles op de achtergrond. Een nieuwe, lege database krijgt vanzelf zijn tabellen.
 docker compose up -d
-
 # Toon de installatiecode die de wizard vraagt.
 docker compose logs web | grep "Installation code"
 ```
 
-Een `.env`-bestand is niet nodig. Wie liever vooraf instelt, kopieert `.env.example` naar `.env`:
-wat daar staat, gaat altijd vóór wat de wizard vraagt.
+Een `.env`-bestand is niet nodig. Wie liever vooraf instelt, downloadt
+[`.env.example`](https://raw.githubusercontent.com/Fritz4all/packdesk/main/.env.example), slaat het op als `.env` naast `docker-compose.yml` en vult het
+in: wat daar staat, gaat altijd vóór wat de wizard vraagt.
 
 Standaard luistert PackDesk op poort 8000 en staan de bestanden in `../packdesk-data` (naast de map
-van PackDesk). Anders? Zet `PORT=` of `DATA_DIR=` in `.env`.
+van PackDesk). Anders? Zet `PORT=` of `DATA_DIR=` in `.env`. Een vaste versie in plaats van de nieuwste:
+`PACKDESK_VERSION=` (bijv. `1.2`).
 
 ## 3. De installatiewizard
 
@@ -129,8 +129,7 @@ services:
 ```
 
 en zet `DOCUMENT_ARCHIVE=<map met de pdf's>` in `.env`. Docker Compose leest het override-bestand
-vanzelf bij `docker-compose.yml`; bij de andere varianten geef je het mee:
-`docker compose -f docker-compose.mariadb.yml -f docker-compose.override.yml up -d`.
+vanzelf naast `docker-compose.yml`.
 
 ## 7. Back-ups
 
@@ -138,7 +137,7 @@ Maak regelmatig een back-up van:
 
 1. **de database**, bijvoorbeeld
    `docker compose exec db pg_dump -U packdesk packdesk > packdesk.sql` (PostgreSQL) of
-   `docker compose -f docker-compose.mariadb.yml exec db mariadb-dump -u packdesk -p packdesk > packdesk.sql`
+   `docker compose exec db mariadb-dump -u packdesk -p packdesk > packdesk.sql`
    (MariaDB). Bij een bestaande databaseserver: met de back-up van die server.
 2. **de datamap** (standaard `../packdesk-data`). Daar staan ook de instellingen uit de wizard, met
    wachtwoorden: bewaar de back-up veilig.
@@ -148,10 +147,10 @@ Maak regelmatig een back-up van:
 
 ```bash
 # 1. Maak eerst een back-up (zie hierboven).
-# 2. Haal de nieuwe versie op.
-git pull
-# 3. Bouw en start de nieuwe versie; database en datamap blijven staan.
-docker compose up -d --build
+# 2. Haal het nieuwe image op (de nieuwste, of de versie uit PACKDESK_VERSION).
+docker compose pull
+# 3. Start de nieuwe versie; database en datamap blijven staan.
+docker compose up -d
 ```
 
 Heeft de nieuwe versie wijzigingen voor de database, dan tonen website en beheer de pagina
