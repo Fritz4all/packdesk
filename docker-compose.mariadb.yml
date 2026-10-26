@@ -2,6 +2,7 @@
 # Then open http://<server>:8000 and follow the installation wizard (the installation code is shown
 # with: docker compose -f docker-compose.mariadb.yml logs web | grep "Installation code").
 # Settings can be put in .env (see .env.example); none are required.
+# phpMyAdmin runs alongside, on http://localhost:8081 of the server (see the phpmyadmin service below).
 name: packdesk
 
 services:
@@ -23,6 +24,21 @@ services:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 3s
       retries: 30
+
+  # phpMyAdmin to look into the database: http://<server>:8081. Log in as user packdesk with DB_PASSWORD.
+  # Only reachable from the server itself (127.0.0.1); from another computer use an SSH tunnel
+  # (ssh -L 8081:localhost:8081 <server>), or set PHPMYADMIN_ADDRESS=0.0.0.0 in .env on a trusted network.
+  phpmyadmin:
+    image: phpmyadmin:5.2.2
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 512M
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${PHPMYADMIN_ADDRESS:-127.0.0.1}:${PHPMYADMIN_PORT:-8081}:80"
 
   web:
     build: .

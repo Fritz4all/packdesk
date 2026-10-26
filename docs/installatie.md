@@ -24,6 +24,12 @@ Er zijn drie kant-en-klare startbestanden. Kies er één:
 | `docker-compose.mariadb.yml` | eigen **MariaDB**, draait mee | `docker compose -f docker-compose.mariadb.yml up -d` |
 | `docker-compose.external-db.yml` | een **bestaande databaseserver** (MariaDB, MySQL of PostgreSQL) | `docker compose -f docker-compose.external-db.yml up -d` |
 
+Bij `docker-compose.mariadb.yml` draait ook **phpMyAdmin** mee, om in de database te kijken:
+`http://<server>:8081`, inloggen als `packdesk` met het `DB_PASSWORD` uit `.env` (standaard
+`packdesk-internal`). phpMyAdmin is alleen vanaf de server zelf bereikbaar. Vanaf een andere computer:
+`ssh -L 8081:localhost:8081 <server>` en dan `http://localhost:8081`; of zet op een vertrouwd netwerk
+`PHPMYADMIN_ADDRESS=0.0.0.0` in `.env` (andere poort: `PHPMYADMIN_PORT=`).
+
 Twijfel je, kies dan de eerste. De database draait dan in een eigen container en is alleen bereikbaar
 voor PackDesk.
 
