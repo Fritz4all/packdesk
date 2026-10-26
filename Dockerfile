@@ -17,8 +17,8 @@ RUN pip install -r /tmp/requirements.txt
 
 WORKDIR /app
 COPY . .
-RUN SECRET_KEY=build DATABASE_URL=sqlite:////tmp/build.db python manage.py compilemessages --ignore=/venv \
- && SECRET_KEY=build DATABASE_URL=sqlite:////tmp/build.db python manage.py collectstatic --noinput
+RUN SECRET_KEY=build python manage.py compilemessages --ignore=/venv \
+ && SECRET_KEY=build python manage.py collectstatic --noinput
 
 # --- dev: build stage plus test tools, used by docker-compose.yml and CI
 FROM build AS dev
