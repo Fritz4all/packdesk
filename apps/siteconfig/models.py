@@ -1,7 +1,7 @@
 from urllib.parse import quote
 
 from django.conf import settings
-from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -61,6 +61,17 @@ class SiteSettings(models.Model):
     session_timeout_customers = models.PositiveIntegerField(
         _("log out customers after (minutes without activity)"), default=60,
         help_text=_("0 = stay logged in (at most two weeks)."),
+    )
+    password_min_length_staff = models.PositiveSmallIntegerField(
+        _("minimum password length for staff"), default=10,
+        validators=[MinValueValidator(6), MaxValueValidator(64)],
+        help_text=_("Number of characters, for staff and administrators (the admin). 12 or more is recommended."),
+    )
+    password_min_length_customers = models.PositiveSmallIntegerField(
+        _("minimum password length for customers"), default=10,
+        validators=[MinValueValidator(6), MaxValueValidator(64)],
+        help_text=_("Number of characters, for customers on the website. Applies to new passwords; existing "
+                    "ones keep working."),
     )
     trash_retention_days = models.PositiveIntegerField(
         _("empty the trash after (days)"), default=30,

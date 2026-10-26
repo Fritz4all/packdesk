@@ -1,3 +1,4 @@
+import pytest
 from django.contrib.auth.models import Group
 
 from apps.accounts.models import User
@@ -123,3 +124,28 @@ def test_role_filter_has_superuser_for_superusers_only(client, site):
     page = client.get("/beheer/accounts/user/").content.decode()
     assert "?role=superuser" not in page
     assert "Superuser" not in client.get("/beheer/accounts/role/").content.decode()  # not a role
+
+
+def test_minimum_password_length_per_kind_of_user(site):
+    from django.contrib.auth.password_validation import password_validators_help_texts, validate_password
+    from django.core.exceptions import ValidationError
+
+    site.password_min_length_staff, site.password_min_length_customers = 14, 8
+    site.save()
+    staff, customer = User(email="s@example.test", kind=User.Kind.STAFF, is_staff=True), User(email="k@example.test")
+    validate_password("Paars-Konijn7", customer)  # 13 characters: enough for a customer
+    with pytest.raises(ValidationError) as exc:
+        validate_password("Paars-Konijn7", staff)
+    assert "14" in str(exc.value)
+    validate_password("Paars-Konijn-77", staff)
+    assert any("14" in text and "8" in text for text in password_validators_help_texts())
+
+
+def test_wizard_says_how_long_the_admin_password_must_be(site):
+    from apps.core.setup_views import AdminForm
+
+    site.password_min_length_staff = 12
+    site.save()
+    form = AdminForm({"email": "beheer@example.test", "password1": "Kort-1234", "password2": "Kort-1234"})
+    assert "12" in str(form.fields["password1"].help_text)
+    assert not form.is_valid() and "12" in str(form.errors["password1"])

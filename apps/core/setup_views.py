@@ -51,6 +51,14 @@ class AdminForm(forms.Form):
     password1 = forms.CharField(label=gettext_lazy("Password"), widget=forms.PasswordInput, strip=False)
     password2 = forms.CharField(label=gettext_lazy("Password again"), widget=forms.PasswordInput, strip=False)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from apps.accounts.password_rules import min_length
+
+        self.fields["password1"].help_text = _(
+            "At least %(n)d characters. The minimum length for staff and for customers can be changed later "
+            "under Settings → Security.") % {"n": min_length(staff=True)}
+
     def clean_email(self):
         email = self.cleaned_data["email"].strip().lower()
         if User.objects.filter(email__iexact=email).exists():
@@ -62,7 +70,8 @@ class AdminForm(forms.Form):
         if cleaned.get("password1") and cleaned.get("password1") != cleaned.get("password2"):
             self.add_error("password2", _("The passwords are not the same."))
         elif cleaned.get("password1"):
-            user = User(email=cleaned.get("email", ""), first_name=cleaned.get("first_name", ""))
+            user = User(email=cleaned.get("email", ""), first_name=cleaned.get("first_name", ""), kind=User.Kind.STAFF,
+                        is_staff=True, is_superuser=True)
             try:
                 password_validation.validate_password(cleaned["password1"], user)
             except forms.ValidationError as exc:

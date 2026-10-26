@@ -15,6 +15,7 @@ def settings_form(**overrides):
         "mail_security": "starttls",
         "session_timeout_staff": "120",
         "session_timeout_customers": "60",
+        "password_min_length_staff": "10", "password_min_length_customers": "10",
         "trash_retention_days": "30",
         "primary_color": "#112233",
         "accent_color": "#ffffff",

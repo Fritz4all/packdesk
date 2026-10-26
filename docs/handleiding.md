@@ -173,7 +173,10 @@ niet meer bekend.
     zichtbaar voor iedereen, alleen gasten of alleen ingelogde klanten.
 - **Instellingen → Beveiliging:** na hoeveel minuten zonder activiteit medewerkers en klanten
   automatisch worden uitgelogd (standaard 120 en 60 minuten; 0 = ingelogd blijven, hooguit twee
-  weken), en na hoeveel dagen de prullenbak wordt geleegd.
+  weken), hoe lang wachtwoorden minstens moeten zijn, apart voor medewerkers en klanten (standaard 10
+  tekens, kies 6 tot 64; geldt voor nieuwe wachtwoorden, bestaande blijven werken), en na hoeveel dagen
+  de prullenbak wordt geleegd. Tijdens de installatie geldt de standaard van 10 tekens voor de eerste
+  beheerder.
 - **Prullenbak:** alles wat je in het beheer verwijdert, komt hier terecht, samen met wat er automatisch
   mee verwijderd werd (bijv. de adressen en contactpersonen van een klant). Zoeken, sorteren op elke
   kolom en filteren op soort, datum en wie het verwijderde. Vink items aan om ze in één keer
