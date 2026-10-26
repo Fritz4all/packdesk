@@ -60,7 +60,6 @@ Liever MariaDB, of een bestaande databaseserver? Daarvoor zijn er kant-en-klare 
 | [Waar staat wat](docs/opslag.md) | beheerders | waar gegevens, bestanden en instellingen bewaard worden |
 | [Ontwikkelen](docs/ontwikkelen.md) | ontwikkelaars | techniek, tests, vertalingen |
 | [Roadmap](docs/roadmap.md) | iedereen | wat er is en wat er nog komt |
-| [Vorige webshop](docs/vorige-webshop/) | wie de overstap begeleidt | analyse en werking van de webshop die PackDesk vervangt |
 
 ## Techniek in het kort
 
