@@ -1,12 +1,14 @@
 {% load i18n humanize_nl %}<!doctype html>
-<html lang="{{ site.language }}">
+<html lang="{{ language }}">
 <head>
 <meta charset="utf-8">
 <title>{% translate "Invoice" %} {{ invoice.number }}</title>
 {% comment %}
-PackDesk invoice. Layout: coloured bar on the left (brand colour), logo top right, addressee and invoice
-numbers, lines with the discount as its own line, totals in a grey block, and the company details in the
-footer of every page. All company data comes from the settings.
+PackDesk invoice. Layout: coloured bar on the left, logo top right, addressee and invoice numbers, lines with
+the discount as its own line, totals in a grey block, and the company details in the footer of every page.
+Which parts are shown and their wording come from the invoice design (`d`, `style`); company data from the
+settings. `preview` is the browser preview of the design editor: switched-off parts are shown faded there,
+and data-el marks each part so it can be clicked.
 {% endcomment %}
 <style>
   @page {
@@ -14,20 +16,19 @@ footer of every page. All company data comes from the settings.
     margin: 16mm 14mm 42mm 22mm;
     @bottom-left { content: element(page-footer); vertical-align: top; width: 100%; }
   }
-  .bar { position: fixed; top: -16mm; left: -22mm; width: 7mm; height: 297mm; background: {{ site.primary_color }}; }
+  .bar { position: fixed; top: -16mm; left: -22mm; width: 7mm; height: 297mm; background: {{ style.bar_color }}; }
   body { font-family: "DejaVu Sans", sans-serif; font-size: 9.5pt; color: #1b1f24; }
-  .accent { color: {{ site.accent_color }}; }
   .top { text-align: right; height: 24mm; margin-bottom: 10mm; }
-  .top img { max-height: 18mm; max-width: 80mm; }
-  .top .name { font-size: 20pt; font-weight: bold; color: {{ site.primary_color }}; }
+  .top img { max-height: {{ style.logo_height }}mm; max-width: 80mm; }
+  .top .name { font-size: 20pt; font-weight: bold; color: {{ style.bar_color }}; }
   .head { display: flex; justify-content: space-between; margin-bottom: 7mm; }
   .head > div { width: 48%; line-height: 1.5; }
   .head table { border-collapse: collapse; }
   .head td { padding: 0.4mm 0; vertical-align: top; }
   .head td.label { width: 45mm; }
   .head td.value { font-weight: bold; }
-  .numbers td.value { color: {{ site.accent_color }}; font-size: 10.5pt; }
-  .hint { font-size: 7pt; color: {{ site.accent_color }}; }
+  .numbers td.value { color: {{ style.accent_color }}; font-size: 10.5pt; }
+  .hint { font-size: 7pt; color: {{ style.accent_color }}; }
   hr { border: 0; border-top: .6pt solid #999; margin: 6mm 0 4mm; }
   table.lines { width: 100%; border-collapse: collapse; }
   table.lines th { text-align: left; font-weight: bold; padding: 1.5mm 1.5mm; }
@@ -47,60 +48,90 @@ footer of every page. All company data comes from the settings.
   #page-footer .question { text-align: center; color: #888; font-size: 9pt; padding-bottom: 3mm; border-bottom: .6pt solid #999; margin-bottom: 6mm; }
   #page-footer table { border-collapse: collapse; }
   #page-footer td { padding: 0 2mm 0 0; vertical-align: top; line-height: 1.35; }
-  #page-footer td.label { color: {{ site.accent_color }}; font-size: 6.5pt; padding-left: 6mm; }
+  #page-footer td.label { color: {{ style.accent_color }}; font-size: 6.5pt; padding-left: 6mm; }
   #page-footer .pages { text-align: right; color: #999; font-size: 7pt; margin-top: 2mm; }
-  #page-footer .pages::after { content: "{% translate 'page' %} " counter(page) " / " counter(pages); }
+  #page-footer .pages .count::after { content: counter(page) " / " counter(pages); }
+{% if preview %}
+  html { background: #fff; }
+  body { position: relative; box-sizing: border-box; width: 210mm; min-height: 297mm; margin: 0;
+         padding: 16mm 14mm 42mm 22mm; overflow: hidden; }
+  .bar { position: absolute; top: 0; left: 0; }
+  #page-footer { position: absolute; left: 22mm; right: 14mm; bottom: 6mm; width: auto; }
+  #page-footer .pages .count::after { content: "1 / 1"; }
+  [data-el] { cursor: pointer; }
+  [data-el]:hover, [data-el].pd-active { outline: 2px dashed #9333ea; outline-offset: 1px; }
+  .pd-off { opacity: .25; }
+{% endif %}
 </style>
 </head>
 <body>
-<div class="bar"></div>
+{% if d.color_bar.show %}<div class="bar {{ d.color_bar.cls }}" data-el="color_bar"></div>{% endif %}
 
 <div id="page-footer">
-  {% if rules.footer_text %}<div class="question">{{ rules.footer_text|linebreaksbr }}</div>{% endif %}
+  {% translate "(empty: fill in under Invoice settings → Texts)" as empty_text %}{% translate "(empty: fill in under Settings → Company details)" as empty_company %}{% if rules.footer_text or preview %}{% if d.footer_text.show %}<div class="question {{ d.footer_text.cls }}" data-el="footer_text">{{ rules.footer_text|default:empty_text|linebreaksbr }}</div>{% endif %}{% endif %}
   {% firstof company_address.phone site.phone as phone %}{% firstof company_address.email site.email as email %}
   <table>
     <tr>
-      <td>{{ site.display_name }}{% if company_address %}<br>{{ company_address.line1 }}{% if company_address.line2 %}<br>{{ company_address.line2 }}{% endif %}<br>{{ company_address.postal_code }} {{ company_address.city }}{% endif %}</td>
-      <td class="label">{% if phone %}{% translate "Phone" %}<br>{% endif %}{% if email %}{% translate "Email" %}<br>{% endif %}{% if site.website %}{% translate "Web" %}{% endif %}</td>
-      <td>{% if phone %}{{ phone }}<br>{% endif %}{% if email %}{{ email }}<br>{% endif %}{% if site.website %}{{ site.website }}{% endif %}</td>
-      <td class="label">{% if site.iban %}IBAN<br>{% endif %}{% if site.coc_number %}{% translate "CoC" %}<br>{% endif %}{% if site.vat_number %}{% translate "VAT" %}{% endif %}</td>
-      <td>{% if site.iban %}{{ site.iban }}<br>{% endif %}{% if site.coc_number %}{{ site.coc_number }}<br>{% endif %}{% if site.vat_number %}{{ site.vat_number }}{% endif %}</td>
+      <td>{% if d.footer_address.show %}<div class="{{ d.footer_address.cls }}" data-el="footer_address">{{ site.display_name }}{% if company_address %}<br>{{ company_address.line1 }}{% if company_address.line2 %}<br>{{ company_address.line2 }}{% endif %}<br>{{ company_address.postal_code }} {{ company_address.city }}{% endif %}</div>{% endif %}</td>
+      <td class="label">
+        {% if phone or preview %}{% if d.footer_phone.show %}<div class="{{ d.footer_phone.cls }}" data-el="footer_phone">{{ d.footer_phone.label }}</div>{% endif %}{% endif %}
+        {% if email or preview %}{% if d.footer_email.show %}<div class="{{ d.footer_email.cls }}" data-el="footer_email">{{ d.footer_email.label }}</div>{% endif %}{% endif %}
+        {% if site.website or preview %}{% if d.footer_web.show %}<div class="{{ d.footer_web.cls }}" data-el="footer_web">{{ d.footer_web.label }}</div>{% endif %}{% endif %}
+      </td>
+      <td>
+        {% if phone or preview %}{% if d.footer_phone.show %}<div class="{{ d.footer_phone.cls }}" data-el="footer_phone">{{ phone|default:empty_company }}</div>{% endif %}{% endif %}
+        {% if email or preview %}{% if d.footer_email.show %}<div class="{{ d.footer_email.cls }}" data-el="footer_email">{{ email|default:empty_company }}</div>{% endif %}{% endif %}
+        {% if site.website or preview %}{% if d.footer_web.show %}<div class="{{ d.footer_web.cls }}" data-el="footer_web">{{ site.website|default:empty_company }}</div>{% endif %}{% endif %}
+      </td>
+      <td class="label">
+        {% if site.iban or preview %}{% if d.footer_iban.show %}<div class="{{ d.footer_iban.cls }}" data-el="footer_iban">{{ d.footer_iban.label }}</div>{% endif %}{% endif %}
+        {% if site.coc_number or preview %}{% if d.footer_coc.show %}<div class="{{ d.footer_coc.cls }}" data-el="footer_coc">{{ d.footer_coc.label }}</div>{% endif %}{% endif %}
+        {% if site.vat_number or preview %}{% if d.footer_vat.show %}<div class="{{ d.footer_vat.cls }}" data-el="footer_vat">{{ d.footer_vat.label }}</div>{% endif %}{% endif %}
+      </td>
+      <td>
+        {% if site.iban or preview %}{% if d.footer_iban.show %}<div class="{{ d.footer_iban.cls }}" data-el="footer_iban">{{ site.iban|default:empty_company }}</div>{% endif %}{% endif %}
+        {% if site.coc_number or preview %}{% if d.footer_coc.show %}<div class="{{ d.footer_coc.cls }}" data-el="footer_coc">{{ site.coc_number|default:empty_company }}</div>{% endif %}{% endif %}
+        {% if site.vat_number or preview %}{% if d.footer_vat.show %}<div class="{{ d.footer_vat.cls }}" data-el="footer_vat">{{ site.vat_number|default:empty_company }}</div>{% endif %}{% endif %}
+      </td>
     </tr>
   </table>
-  <div class="pages"></div>
+  {% if d.page_number.show %}<div class="pages {{ d.page_number.cls }}" data-el="page_number">{{ d.page_number.label }} <span class="count"></span></div>{% endif %}
 </div>
 
-<div class="top">{% if logo_url %}<img src="file://{{ logo_url }}" alt="{{ site.name }}">{% else %}<span class="name">{{ site.name }}</span>{% endif %}</div>
+<div class="top">{% if d.logo.show %}<span class="{{ d.logo.cls }}" data-el="logo">{% if logo_src %}<img src="{{ logo_src }}" alt="{{ site.name }}">{% else %}<span class="name">{{ site.name }}</span>{% endif %}</span>{% endif %}</div>
 
 <div class="head">
   <div>
+    {% if d.customer_details.show %}<div class="{{ d.customer_details.cls }}" data-el="customer_details">
     {{ invoice.customer_name }}<br>
     {% if invoice.address_attention %}{% translate "Attn." %} {{ invoice.address_attention }}<br>{% endif %}
     {{ invoice.address_line1 }}<br>{% if invoice.address_line2 %}{{ invoice.address_line2 }}<br>{% endif %}
     {{ invoice.address_postal_code }}&nbsp;&nbsp;{{ invoice.address_city }}{% if invoice.address_country %}<br>{{ invoice.address_country }}{% endif %}
+    </div>{% endif %}
   </div>
   <div>
     <table class="numbers">
-      <tr><td class="label">{% translate "Invoice number" %}</td><td class="value">{{ invoice.number }}</td></tr>
-      {% if invoice.customer_number %}<tr><td class="label">{% translate "Customer number" %}</td><td class="value">{{ invoice.customer_number }}</td></tr>{% endif %}
+      {% if d.invoice_number.show %}<tr class="{{ d.invoice_number.cls }}" data-el="invoice_number"><td class="label">{{ d.invoice_number.label }}</td><td class="value">{{ invoice.number }}</td></tr>{% endif %}
+      {% if invoice.customer_number and d.customer_number.show %}<tr class="{{ d.customer_number.cls }}" data-el="customer_number"><td class="label">{{ d.customer_number.label }}</td><td class="value">{{ invoice.customer_number }}</td></tr>{% endif %}
     </table>
-    <div class="hint">{% translate "Please mention these numbers with your payment" %}</div>
+    {% if d.payment_hint.show %}<div class="hint {{ d.payment_hint.cls }}" data-el="payment_hint">{{ d.payment_hint.label }}</div>{% endif %}
   </div>
 </div>
 
 <div class="head">
   <div>
     <table>
-      {% if invoice.order %}<tr><td class="label">{% translate "Our reference" %}</td><td class="value">{{ invoice.order.number }}</td></tr>{% elif invoice.part_order %}<tr><td class="label">{% translate "Our reference" %}</td><td class="value">{{ invoice.part_order.number }}</td></tr>{% endif %}
-      {% if invoice.reference %}<tr><td class="label">{% translate "Your order" %}</td><td class="value">{{ invoice.reference }}</td></tr>{% endif %}
-      {% if invoice.customer_vat %}<tr><td class="label">{% translate "Your VAT number" %}</td><td class="value">{{ invoice.customer_vat }}</td></tr>{% endif %}
+      {% if our_reference and d.our_reference.show %}<tr class="{{ d.our_reference.cls }}" data-el="our_reference"><td class="label">{{ d.our_reference.label }}</td><td class="value">{{ our_reference }}</td></tr>{% endif %}
+      {% if d.handled_by.value and d.handled_by.show %}<tr class="{{ d.handled_by.cls }}" data-el="handled_by"><td class="label">{{ d.handled_by.label }}</td><td class="value">{{ d.handled_by.value }}</td></tr>{% endif %}
+      {% if invoice.reference and d.your_order.show %}<tr class="{{ d.your_order.cls }}" data-el="your_order"><td class="label">{{ d.your_order.label }}</td><td class="value">{{ invoice.reference }}</td></tr>{% endif %}
+      {% if invoice.customer_vat and d.customer_vat.show %}<tr class="{{ d.customer_vat.cls }}" data-el="customer_vat"><td class="label">{{ d.customer_vat.label }}</td><td class="value">{{ invoice.customer_vat }}</td></tr>{% endif %}
     </table>
   </div>
   <div>
     <table>
-      <tr><td class="label">{% translate "Invoice date" %}</td><td class="value">{{ invoice.issued_on|date:"d-m-Y" }}</td></tr>
-      {% if invoice.due_on %}<tr><td class="label">{% translate "Due date" %}</td><td class="value">{{ invoice.due_on|date:"d-m-Y" }}</td></tr>{% endif %}
-      <tr><td class="label">{% translate "Payment method" %}</td><td class="value">{% if invoice.part_order.payment_method %}{{ invoice.part_order.payment_method }}{% else %}{% translate "On account" %}{% endif %}</td></tr>
+      {% if d.invoice_date.show %}<tr class="{{ d.invoice_date.cls }}" data-el="invoice_date"><td class="label">{{ d.invoice_date.label }}</td><td class="value">{{ invoice.issued_on|date:"d-m-Y" }}</td></tr>{% endif %}
+      {% if invoice.due_on and d.due_date.show %}<tr class="{{ d.due_date.cls }}" data-el="due_date"><td class="label">{{ d.due_date.label }}</td><td class="value">{{ invoice.due_on|date:"d-m-Y" }}</td></tr>{% endif %}
+      {% if d.payment_method.show %}<tr class="{{ d.payment_method.cls }}" data-el="payment_method"><td class="label">{{ d.payment_method.label }}</td><td class="value">{% if invoice.part_order.payment_method %}{{ invoice.part_order.payment_method }}{% else %}{{ d.payment_method.value }}{% endif %}</td></tr>{% endif %}
     </table>
   </div>
 </div>
@@ -108,22 +139,43 @@ footer of every page. All company data comes from the settings.
 <hr>
 
 <table class="lines">
-  <thead><tr><th class="nr"></th><th class="code">{% translate "Article no." %}</th><th class="product">{% translate "Product" %}</th><th class="num">{% translate "Price each" %}</th><th class="num">{% translate "Quantity" %}</th><th class="num">{% translate "Amount" %}</th></tr></thead>
+  <thead><tr>
+    {% if d.line_number.show %}<th class="nr {{ d.line_number.cls }}" data-el="line_number"></th>{% endif %}
+    {% if d.article_code.show %}<th class="code {{ d.article_code.cls }}" data-el="article_code">{{ d.article_code.label }}</th>{% endif %}
+    {% if d.product.show %}<th class="product {{ d.product.cls }}" data-el="product">{{ d.product.label }}</th>{% endif %}
+    {% if d.unit_price.show %}<th class="num {{ d.unit_price.cls }}" data-el="unit_price">{{ d.unit_price.label }}</th>{% endif %}
+    {% if d.quantity.show %}<th class="num {{ d.quantity.cls }}" data-el="quantity">{{ d.quantity.label }}</th>{% endif %}
+    {% if d.amount.show %}<th class="num {{ d.amount.cls }}" data-el="amount">{{ d.amount.label }}</th>{% endif %}
+  </tr></thead>
   <tbody>
-  {% for line in lines %}<tr><td class="nr">{{ forloop.counter }}</td><td class="code">{{ line.code }}</td><td class="product">{{ line.description }}</td><td class="num">{{ line.unit_price|money }}</td><td class="num">{{ line.quantity|floatformat:"-2" }}</td><td class="num">{{ line.amount|money }}</td></tr>{% endfor %}
-  {% if invoice.discount %}<tr><td class="nr">{{ lines|length|add:1 }}</td><td class="code">{% translate "DISCOUNT" %}</td><td class="product">{% blocktranslate with pct=invoice.discount_pct|floatformat:"-2" %}Discount {{ pct }}%{% endblocktranslate %}</td><td class="num">-{{ invoice.discount|money }}</td><td class="num">1</td><td class="num">-{{ invoice.discount|money }}</td></tr>{% endif %}
+  {% for line in lines %}<tr>
+    {% if d.line_number.show %}<td class="nr {{ d.line_number.cls }}" data-el="line_number">{{ forloop.counter }}</td>{% endif %}
+    {% if d.article_code.show %}<td class="code {{ d.article_code.cls }}" data-el="article_code">{{ line.code }}</td>{% endif %}
+    {% if d.product.show %}<td class="product {{ d.product.cls }}" data-el="product">{{ line.description }}</td>{% endif %}
+    {% if d.unit_price.show %}<td class="num {{ d.unit_price.cls }}" data-el="unit_price">{{ line.unit_price|money }}</td>{% endif %}
+    {% if d.quantity.show %}<td class="num {{ d.quantity.cls }}" data-el="quantity">{{ line.quantity|floatformat:"-2" }}</td>{% endif %}
+    {% if d.amount.show %}<td class="num {{ d.amount.cls }}" data-el="amount">{{ line.amount|money }}</td>{% endif %}
+  </tr>{% endfor %}
+  {% if invoice.discount and d.discount_line.show %}<tr class="{{ d.discount_line.cls }}" data-el="discount_line">
+    {% if d.line_number.show %}<td class="nr">{{ lines|length|add:1 }}</td>{% endif %}
+    {% if d.article_code.show %}<td class="code">{{ d.discount_line.label|upper }}</td>{% endif %}
+    {% if d.product.show %}<td class="product">{{ d.discount_line.label }} {{ invoice.discount_pct|floatformat:"-2" }}%</td>{% endif %}
+    {% if d.unit_price.show %}<td class="num">-{{ invoice.discount|money }}</td>{% endif %}
+    {% if d.quantity.show %}<td class="num">1</td>{% endif %}
+    {% if d.amount.show %}<td class="num">-{{ invoice.discount|money }}</td>{% endif %}
+  </tr>{% endif %}
   </tbody>
 </table>
 
 <div class="totals">
   <table>
-    <tr><td>{% translate "Net total" %}</td><td>€</td><td class="amount">{{ invoice.net|money }}</td></tr>
-    <tr><td>{% blocktranslate with rate=invoice.vat_rate|floatformat:"-2" %}VAT {{ rate }}%{% endblocktranslate %}</td><td>€</td><td class="amount">{{ invoice.vat|money }}</td></tr>
-    <tr class="grand"><td>{% translate "Total amount" %}</td><td>€</td><td class="amount">{{ invoice.total|money }}</td></tr>
+    {% if d.net_total.show %}<tr class="{{ d.net_total.cls }}" data-el="net_total"><td>{{ d.net_total.label }}</td><td>€</td><td class="amount">{{ invoice.net|money }}</td></tr>{% endif %}
+    {% if d.vat_total.show %}<tr class="{{ d.vat_total.cls }}" data-el="vat_total"><td>{{ d.vat_total.label }} {{ invoice.vat_rate|floatformat:"-2" }}%</td><td>€</td><td class="amount">{{ invoice.vat|money }}</td></tr>{% endif %}
+    {% if d.grand_total.show %}<tr class="grand {{ d.grand_total.cls }}" data-el="grand_total"><td>{{ d.grand_total.label }}</td><td>€</td><td class="amount">{{ invoice.total|money }}</td></tr>{% endif %}
   </table>
 </div>
 
-{% if rules.notice_text %}<div class="notice">{{ rules.notice_text|linebreaksbr }}</div>{% endif %}
-{% if payment_text %}<div class="payment">{{ payment_text|linebreaksbr }}</div>{% endif %}
+{% if rules.notice_text or preview %}{% if d.notice.show %}<div class="notice {{ d.notice.cls }}" data-el="notice">{{ rules.notice_text|default:empty_text|linebreaksbr }}</div>{% endif %}{% endif %}
+{% if payment_text or preview %}{% if d.payment_text.show %}<div class="payment {{ d.payment_text.cls }}" data-el="payment_text">{{ payment_text|default:empty_text|linebreaksbr }}</div>{% endif %}{% endif %}
 </body>
 </html>

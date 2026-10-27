@@ -131,6 +131,12 @@ SECTIONS = [
                 "permission": lambda request: request.user.has_perm("invoices.view_invoicesettings"),
             },
             {
+                "title": _("Invoice design"),
+                "icon": "design_services",
+                "link": reverse_lazy("admin:invoices_invoicesettings_design"),
+                "permission": lambda request: request.user.has_perm("invoices.view_invoicesettings"),
+            },
+            {
                 "title": _("Order settings"),
                 "icon": "tune",
                 "link": reverse_lazy("admin:orders_ordersettings_changelist"),

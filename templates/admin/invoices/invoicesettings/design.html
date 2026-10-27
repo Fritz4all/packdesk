@@ -1,0 +1,139 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<form method="post" id="pd-design" class="pd-design">
+  {% csrf_token %}
+  <div class="pd-design-bar">
+    <h1 class="font-semibold text-lg text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
+    <label class="text-sm">{% translate "Language" %}
+      <select name="preview_language" id="pd-design-lang" class="pd-input">
+        {% for code, name in languages %}<option value="{{ code }}"{% if code == language %} selected{% endif %}>{{ name }}</option>{% endfor %}
+      </select>
+    </label>
+    <a class="pd-btn" href="{{ settings_url }}"><span class="material-symbols-outlined text-[18px]">arrow_back</span>{% translate "Invoice settings" %}</a>
+    <button type="submit" class="pd-btn" formaction="{% url 'admin:invoices_invoicesettings_design_pdf' %}" formtarget="_blank"><span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>{% translate "Example PDF" %}</button>
+    {% if can_change %}
+    <button type="submit" class="pd-btn" name="reset" value="1" onclick="return confirm('{% translate "Set every part back to the standard wording and colours?"|escapejs %}')"><span class="material-symbols-outlined text-[18px]">restart_alt</span>{% translate "Standard" %}</button>
+    <button type="submit" class="pd-btn pd-btn-primary"><span class="material-symbols-outlined text-[18px]">check</span>{% translate "Save" %}</button>
+    {% endif %}
+  </div>
+  <p class="text-sm mb-4 text-base-500">
+    {% blocktranslate with lang=invoice_language %}Switch parts on or off and change their wording; the example invoice shows the result straight away. Click a part in the example to find it in the list. Empty text = the standard wording. Invoices are made in the default language of the website ({{ lang }}); the other languages are kept for when that changes.{% endblocktranslate %}
+  </p>
+
+  <div class="pd-design-grid">
+    <div class="pd-design-preview" id="pd-design-preview">
+      <iframe id="pd-design-frame" title="{% translate 'Example invoice' %}" srcdoc="{{ preview_html|force_escape }}"></iframe>
+    </div>
+
+    <div class="pd-design-controls">
+      {% for group in groups %}
+      <section class="pd-widget mb-4">
+        <h2 class="font-semibold mb-2">{{ group.title }}</h2>
+        {% for row in group.rows %}
+        <div class="pd-design-row" data-el="{{ row.key }}">
+          <label class="pd-design-name">
+            <input type="checkbox" name="on_{{ row.key }}" value="1"{% if row.on %} checked{% endif %}{% if not can_change %} disabled{% endif %}>
+            <span>{{ row.name }}</span>
+          </label>
+          {% for field in row.fields %}
+            {% for item in field.languages %}
+            <input type="text" class="pd-input pd-design-text" name="{{ item.name }}" value="{{ item.value }}" placeholder="{{ item.standard }}"
+                   data-lang="{{ item.lang }}" maxlength="200"{% if item.lang != language %} hidden{% endif %}{% if not can_change %} readonly{% endif %}
+                   title="{% if field.field == 'label' %}{% translate 'Wording' %}{% else %}{% translate 'Text' %}{% endif %}">
+            {% endfor %}
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </section>
+      {% endfor %}
+
+      <section class="pd-widget mb-4">
+        <h2 class="font-semibold mb-2">{% translate "Colours and logo" %}</h2>
+        <div class="pd-design-row" data-el="color_bar">
+          <label class="pd-design-name" for="pd-bar-color">{% translate "Colour of the bar and the name" %}</label>
+          <input type="color" id="pd-bar-color" name="bar_color" value="{{ style.bar_color }}"{% if not can_change %} disabled{% endif %}>
+        </div>
+        <div class="pd-design-row" data-el="invoice_number">
+          <label class="pd-design-name" for="pd-accent-color">{% translate "Colour of numbers and footer labels" %}</label>
+          <input type="color" id="pd-accent-color" name="accent_color" value="{{ style.accent_color }}"{% if not can_change %} disabled{% endif %}>
+        </div>
+        <div class="pd-design-row" data-el="logo">
+          <label class="pd-design-name" for="pd-logo-height">{% translate "Height of the logo (mm)" %}</label>
+          <input type="number" id="pd-logo-height" class="pd-input" name="logo_height" min="{{ logo_min }}" max="{{ logo_max }}" value="{{ style.logo_height }}"{% if not can_change %} disabled{% endif %}>
+        </div>
+        <p class="text-xs text-base-500 mt-2">{% translate "The logo itself is set under Invoice settings → Layout; empty = the logo of the website." %}</p>
+      </section>
+    </div>
+  </div>
+</form>
+
+<script>
+(function () {
+  const form = document.getElementById("pd-design");
+  const frame = document.getElementById("pd-design-frame");
+  const box = document.getElementById("pd-design-preview");
+  const lang = document.getElementById("pd-design-lang");
+  const previewUrl = "{% url 'admin:invoices_invoicesettings_design_preview' %}";
+  const PAGE_W = 794, PAGE_H = 1123;  // A4 at 96 dpi
+  let timer = null, request = 0;
+
+  function fit() {
+    const scale = box.clientWidth / PAGE_W;
+    frame.style.transform = `scale(${scale})`;
+    box.style.height = `${PAGE_H * scale}px`;
+  }
+
+  function rows(key) { return form.querySelectorAll(`.pd-design-row[data-el="${key}"]`); }
+
+  function select(key) {
+    form.querySelectorAll(".pd-design-row.pd-active").forEach(r => r.classList.remove("pd-active"));
+    const row = rows(key)[0];
+    if (!row) return;
+    row.classList.add("pd-active");
+    row.scrollIntoView({behavior: "smooth", block: "center"});
+    const input = row.querySelector("input.pd-design-text:not([hidden])") || row.querySelector("input");
+    if (input) input.focus({preventScroll: true});
+  }
+
+  function mark(key, on) {
+    const doc = frame.contentDocument;
+    if (doc) doc.querySelectorAll(`[data-el="${key}"]`).forEach(el => el.classList.toggle("pd-active", on));
+  }
+
+  function wire() {
+    const doc = frame.contentDocument;
+    if (!doc) return;
+    doc.addEventListener("click", event => {
+      const el = event.target.closest("[data-el]");
+      if (!el) return;
+      event.preventDefault();
+      select(el.dataset.el);
+    });
+  }
+
+  function refresh() {
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      const mine = ++request;
+      const response = await fetch(previewUrl, {method: "POST", body: new FormData(form), credentials: "same-origin"});
+      if (response.ok && mine === request) frame.srcdoc = await response.text();
+    }, 300);
+  }
+
+  form.addEventListener("input", refresh);
+  form.addEventListener("change", refresh);
+  lang.addEventListener("change", () => {
+    form.querySelectorAll("input.pd-design-text").forEach(i => { i.hidden = i.dataset.lang !== lang.value; });
+  });
+  form.querySelectorAll(".pd-design-row").forEach(row => {
+    row.addEventListener("mouseenter", () => mark(row.dataset.el, true));
+    row.addEventListener("mouseleave", () => mark(row.dataset.el, false));
+  });
+  frame.addEventListener("load", () => { fit(); wire(); });
+  window.addEventListener("resize", fit);
+  new ResizeObserver(fit).observe(box);
+  fit();
+})();
+</script>
+{% endblock %}

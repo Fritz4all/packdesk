@@ -134,3 +134,21 @@ html.dark .pd-colfilter-menu { border-color: rgb(55 65 81); background: rgb(17 2
 .pd-colfilter-menu a:hover { background: rgb(147 51 234 / .12); }
 .pd-colfilter-menu a.pd-selected { font-weight: 600; color: rgb(147 51 234); }
 .pd-colfilter-menu a.pd-empty { opacity: .45; }
+
+/* Invoice design page: example invoice on the left, parts on the right. */
+.pd-design-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-bottom: .75rem; }
+.pd-design-bar h1 { flex: 1; }
+.pd-design-bar label { display: inline-flex; align-items: center; gap: .4rem; }
+.pd-design-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+@media (max-width: 1100px) { .pd-design-grid { grid-template-columns: minmax(0, 1fr); } }
+.pd-design-preview { position: sticky; top: 1rem; overflow: hidden; border: 1px solid rgb(229 231 235); border-radius: 8px;
+  background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / .08); }
+html.dark .pd-design-preview { border-color: rgb(55 65 81); }
+.pd-design-preview iframe { width: 794px; height: 1123px; border: 0; transform-origin: 0 0; display: block; }
+.pd-design-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .35rem .4rem; border-radius: 6px; }
+.pd-design-row:hover, .pd-design-row.pd-active { background: rgb(147 51 234 / .08); }
+.pd-design-row.pd-active { outline: 2px dashed rgb(147 51 234); }
+.pd-design-name { display: inline-flex; align-items: center; gap: .5rem; min-width: 14rem; flex: 1; font-size: .875rem; }
+.pd-design-text { flex: 1.4; min-width: 12rem; height: 34px; }
+.pd-design-row input[type="color"] { width: 3.5rem; height: 34px; cursor: pointer; }
+.pd-design-row input[type="number"] { width: 6rem; height: 34px; }

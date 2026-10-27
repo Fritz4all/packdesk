@@ -197,3 +197,54 @@ def test_settings_page_warns_when_the_iban_is_missing(client, site, beheerder):
     site.iban = "NL00BANK0123456789"
     site.save()
     assert not [m for m in client.get(url).context["messages"] if m.level == WARNING]
+
+
+# --- Invoice design -----------------------------------------------------------
+
+def test_design_parts_can_be_switched_off_and_renamed(site, shop, client):
+    from apps.invoices import services
+
+    place(client, shop)
+    invoice = Invoice.objects.get()
+    html = services.render_html(invoice)
+    assert 'data-el="customer_number"' in html and 'data-el="handled_by"' in html
+    rules = InvoiceSettings.load()
+    rules.design = {"elements": {"customer_number": {"on": False}, "invoice_number": {"on": True, "label": {"nl": "Factuurnr."}},
+                                 "handled_by": {"on": True, "value": {"nl": "Team Verkoop"}}},
+                    "style": {"bar_color": "#123456", "accent_color": "red;}", "logo_height": 99}}
+    rules.save()
+    html = services.render_html(invoice)
+    assert 'data-el="customer_number"' not in html
+    assert "Factuurnr." in html and "Team Verkoop" in html
+    assert "#123456" in html and "red;}" not in html  # only real colours reach the stylesheet
+    assert "max-height: 40mm" in html  # logo height kept within limits
+
+
+def test_design_page_saves_and_previews(client, site, beheerder):
+    client.force_login(beheerder)
+    url = "/admin/invoices/invoicesettings/design/"
+    page = client.get(url)
+    assert page.status_code == 200 and "srcdoc=" in page.content.decode()
+    data = {"on_invoice_number": "1", "label_invoice_number_nl": "Factuurnr.", "label_product_nl": "Product",
+            "bar_color": site.primary_color, "logo_height": "18", "preview_language": "nl"}
+    preview = client.post(f"{url}preview/", data).content.decode()
+    assert "Factuurnr." in preview and 'pd-off" data-el="customer_number"' in preview  # off: shown faded
+    assert client.post(f"{url}pdf/", data).content.startswith(b"%PDF")
+    client.post(url, data)
+    design = InvoiceSettings.load().design
+    assert design["elements"]["invoice_number"] == {"on": True, "label": {"nl": "Factuurnr."}}
+    assert design["elements"]["customer_number"] == {"on": False}
+    assert "label" not in design["elements"]["product"]  # the standard wording is not stored
+    assert design["style"] == {}
+    client.post(url, {"reset": "1"})
+    assert InvoiceSettings.load().design == {}
+
+
+def test_design_page_is_read_only_without_change_permission(client, site):
+    user = make_user("kijker@example.test", staff=True, role="Medewerker")
+    client.force_login(user)
+    if not user.has_perm("invoices.view_invoicesettings"):
+        assert client.get("/admin/invoices/invoicesettings/design/").status_code in (302, 403)
+        return
+    if not user.has_perm("invoices.change_invoicesettings"):
+        assert client.post("/admin/invoices/invoicesettings/design/", {"reset": "1"}).status_code == 403

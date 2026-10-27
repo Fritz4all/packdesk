@@ -22,6 +22,8 @@ class InvoiceSettings(models.Model):
         _("logo on invoices"), upload_to="invoice-logo/", blank=True,
         help_text=_("Shown top right on the invoice. Empty = the logo of the website (Settings → Branding)."),
     )
+    design = models.JSONField(_("design"), default=dict, blank=True,
+                              help_text=_("Which parts of the invoice are shown and their wording (Invoice design page)."))
     payment_text = models.TextField(
         _("payment text"), blank=True, help_text=_("Placeholders: {days}, {number}, {iban}, {due_date}."),
     )

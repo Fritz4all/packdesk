@@ -1,6 +1,7 @@
 """Making, rendering and sending invoices."""
 
 from datetime import timedelta
+from decimal import Decimal
 
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -17,6 +18,7 @@ from apps.numbering.models import NumberSequence
 from apps.siteconfig.language import in_customer_language
 from apps.siteconfig.models import SiteSettings
 
+from . import design as invoice_design
 from .models import Invoice, InvoiceEmail, InvoiceLine, InvoiceSettings
 
 
@@ -102,19 +104,90 @@ def invoice_logo_path(rules, site):
     return logo.path if logo else ""
 
 
-def render_html(invoice):
-    rules, site = InvoiceSettings.load(), SiteSettings.load()
-    context = {
-        "invoice": invoice, "lines": invoice.lines.all(), "site": site, "rules": rules,
+def _logo_data_uri(path):
+    """The logo embedded in the page, for the browser preview (which cannot read files on the server)."""
+    import base64
+    import mimetypes
+
+    try:
+        with open(path, "rb") as f:
+            data = base64.b64encode(f.read()).decode()
+    except OSError:
+        return ""
+    return f"data:{mimetypes.guess_type(path)[0] or 'image/png'};base64,{data}"
+
+
+def invoice_context(invoice, lines, rules, site, design=None, language=None, preview=False):
+    """What the invoice template gets. `design` and `language` override the stored ones (design editor)."""
+    language = language or site.language
+    design = rules.design if design is None else design
+    logo = invoice_logo_path(rules, site)
+    if invoice.order:
+        our_reference = invoice.order.number
+    else:
+        our_reference = invoice.part_order.number if invoice.part_order else ""
+    return {
+        "invoice": invoice, "lines": lines, "site": site, "rules": rules,
         "company_address": site.address_for("invoice"),
         "payment_text": _fmt(rules.payment_text, days=rules.payment_term_days, number=invoice.number, iban=site.iban,
                              due_date=invoice.due_on.strftime("%d-%m-%Y") if invoice.due_on else ""),
-        "logo_url": invoice_logo_path(rules, site),
+        "logo_url": logo,
+        "logo_src": (_logo_data_uri(logo) if preview else f"file://{logo}") if logo else "",
+        "our_reference": our_reference,
+        "d": invoice_design.elements(design, language, preview), "style": invoice_design.style(design, site),
+        "preview": preview, "language": language,
     }
-    with translation.override(site.language):
+
+
+def _render(context, rules, language):
+    with translation.override(language):
         if rules.custom_template.strip():
             return Template(rules.custom_template).render(Context(context))
         return render_to_string("invoices/invoice_pdf.html", context)
+
+
+def render_html(invoice):
+    rules, site = InvoiceSettings.load(), SiteSettings.load()
+    return _render(invoice_context(invoice, invoice.lines.all(), rules, site), rules, site.language)
+
+
+def sample_invoice(rules):
+    """A made-up invoice for the design editor: every element filled in, nothing stored."""
+    from types import SimpleNamespace
+
+    today = timezone.localdate()
+    line = SimpleNamespace(code="IS-1001", description="Storage Service Pack, 3 years 24x7, 4 hours onsite",
+                           quantity=Decimal("1"), unit_price=Decimal("955.00"), amount=Decimal("955.00"))
+    second = SimpleNamespace(code="IS-2040", description="Server Service Pack, 1 year next business day",
+                             quantity=Decimal("2"), unit_price=Decimal("120.00"), amount=Decimal("240.00"))
+    gross = line.amount + second.amount
+    discount = (gross * Decimal("0.05")).quantize(Decimal("0.01"))
+    net = gross - discount
+    vat = (net * Decimal("0.21")).quantize(Decimal("0.01"))
+    invoice = SimpleNamespace(
+        number="2026-0001", customer_name="Example B.V.", address_attention="J. Jansen",
+        address_line1="Main Street 1", address_line2="", address_postal_code="1234 AB", address_city="Example City",
+        address_country="", customer_number="10001", customer_vat="NL000099998B57", reference="PO-1234",
+        issued_on=today, due_on=today + timedelta(days=rules.payment_term_days),
+        order=SimpleNamespace(number="ORD-2026-0001"), part_order=None,
+        gross=gross, discount_pct=Decimal("5"), discount=discount, net=net, vat_rate=Decimal("21"), vat=vat,
+        total=net + vat,
+    )
+    return invoice, [line, second]
+
+
+def render_sample(design, language, preview=True):
+    """The made-up invoice with an unsaved design: HTML for the browser preview."""
+    rules, site = InvoiceSettings.load(), SiteSettings.load()
+    invoice, lines = sample_invoice(rules)
+    context = invoice_context(invoice, lines, rules, site, design=design, language=language, preview=preview)
+    return _render(context, rules, language)
+
+
+def render_sample_pdf(design, language):
+    from weasyprint import HTML
+
+    return HTML(string=render_sample(design, language, preview=False), base_url=str(settings.MEDIA_ROOT)).write_pdf()
 
 
 def render_pdf(invoice):

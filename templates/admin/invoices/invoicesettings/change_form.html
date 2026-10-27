@@ -1,0 +1,7 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% block form_before %}{{ block.super }}
+<div class="flex flex-row flex-wrap gap-2 items-center mb-4">
+  <a class="pd-obj-btn" href="{{ design_url }}"><span class="material-symbols-outlined text-[18px]">design_services</span>{% translate "Design" %}</a>
+</div>
+{% endblock %}
