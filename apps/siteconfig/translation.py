@@ -10,6 +10,7 @@ class SiteSettingsTranslationOptions(TranslationOptions):
         "intro_text",
         "meta_description",
         "hero_button_text",
+        "footer_heading",
         "footer_text",
         "maintenance_message",
         "announcement_text",

@@ -146,6 +146,7 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
             {
                 "classes": ["tab"],
                 "fields": [
+                    "footer_heading",
                     "footer_text",
                     ("footer_show_address", "footer_show_phone", "footer_show_email"),
                     ("footer_show_coc", "footer_show_vat"),

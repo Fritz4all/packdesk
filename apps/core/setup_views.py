@@ -214,7 +214,12 @@ def _basics(request, site):
     initial = {} if site.domain else {"domain": _suggested_domain(request)}
     form = BasicsForm(_posted(request), request.FILES or None, instance=site, initial=initial)
     if request.method == "POST" and form.is_valid():
-        form.save()
+        site = form.save()
+        if not site.footer_heading:  # start with the shop name in the footer; changeable under Footer
+            fields = [f"footer_heading_{code}" for code, _name in settings.LANGUAGES]
+            for field in fields:
+                setattr(site, field, site.display_name)
+            site.save(update_fields=fields)
         return redirect("setup_step", "mail")
     return _render(request, "basics", form)
 

@@ -73,9 +73,9 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>
-        <strong>{{ site_settings.display_name }}</strong>
+        {% if site_settings.footer_heading %}<strong>{{ site_settings.footer_heading }}</strong>{% endif %}
         {% with address=site_settings.website_address %}
-        {% if site_settings.footer_show_address and address %}<br>{{ address.one_line }}{% endif %}
+        {% if site_settings.footer_show_address and address %}{% if site_settings.footer_heading %}<br>{% endif %}{{ address.one_line }}{% endif %}
       </div>
       <div class="footer-meta">
         {% firstof address.phone site_settings.phone as phone %}{% firstof address.email site_settings.email as email %}

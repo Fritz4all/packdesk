@@ -18,6 +18,7 @@ def test_there_is_only_ever_one_settings_row(db):
 
 def test_home_shows_name_colour_and_company_details(client, site):
     site.legal_name = "Testshop B.V."
+    site.footer_heading_nl = "Testshop B.V."
     site.coc_number = "12345678"
     site.save()
     Address.objects.create(settings=site, label="Bezoek", line1="Koningsbeltweg 41F", postal_code="1329 AB",
@@ -85,3 +86,13 @@ def test_login_page_shows_site_name_not_host(client, site):
     page = client.get("/login/").content.decode()
     assert "Testshop" in page
     assert "testserver" not in page
+
+
+def test_footer_heading_is_its_own_text(client, site):
+    site.footer_heading_nl = "Onze Winkel BV"
+    site.save()
+    assert "<strong>Onze Winkel BV</strong>" in client.get("/").content.decode()
+    site.footer_heading_nl = site.footer_heading_en = site.footer_heading_de = ""
+    site.save()
+    footer = client.get("/").content.decode().split('class="site-footer"')[1]
+    assert "<strong>" not in footer.split('class="footer-meta"')[0]  # no heading at all

@@ -124,6 +124,11 @@ class SiteSettings(models.Model):
     )
 
     # Footer
+    footer_heading = models.CharField(
+        _("footer heading"), max_length=200, blank=True,
+        help_text=_("Bold line at the top of the footer, above the address and the footer text, e.g. the company "
+                    "name. Empty = no heading."),
+    )
     footer_text = models.TextField(_("footer text"), blank=True, help_text=_("Extra text at the bottom of every page."))
     footer_show_address = models.BooleanField(_("show address"), default=True)
     footer_show_phone = models.BooleanField(_("show phone"), default=True)
