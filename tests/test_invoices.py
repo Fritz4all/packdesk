@@ -170,3 +170,30 @@ def test_relink_after_customers_are_imported(site, folders, monkeypatch):
 def test_parse_uses_date_elsewhere_when_label_is_empty():
     text = OLD_INVOICE.replace("Factuurdatum                    2026-10-23", "Factuurdatum") + "\nGeleverd op 2025-03-04\n"
     assert str(parse(text)["issued_on"]) == "2025-03-04"
+
+
+def test_invoice_logo_falls_back_to_the_website_logo(site):
+    from apps.invoices.services import invoice_logo_path
+
+    rules = InvoiceSettings.load()
+    assert invoice_logo_path(rules, site) == ""
+    site.logo = "website-logo.png"
+    assert invoice_logo_path(rules, site).endswith("website-logo.png")
+    rules.logo = "invoice-logo/factuur.png"
+    assert invoice_logo_path(rules, site).endswith("invoice-logo/factuur.png")
+
+
+def test_settings_page_warns_when_the_iban_is_missing(client, site, beheerder):
+    from django.contrib.messages import WARNING
+
+    client.force_login(beheerder)
+    rules = InvoiceSettings.load()
+    rules.payment_text_nl = "Over te maken op {iban}."
+    rules.save()
+    url = f"/admin/invoices/invoicesettings/{rules.pk}/change/"
+    page = client.get(url)
+    assert 'name="logo"' in page.content.decode()
+    assert [m for m in page.context["messages"] if m.level == WARNING]
+    site.iban = "NL00BANK0123456789"
+    site.save()
+    assert not [m for m in client.get(url).context["messages"] if m.level == WARNING]

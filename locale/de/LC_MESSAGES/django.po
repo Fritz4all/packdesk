@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 22:11+0100\n"
+"POT-Creation-Date: 2026-10-27 22:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -283,7 +283,7 @@ msgstr ""
 "mindestens %(customers)d Zeichen enthalten."
 
 #: apps/accounts/permissions.py:12 apps/customers/overview.py:159
-#: apps/invoices/admin.py:87 templates/invoices/my_invoices.html:14
+#: apps/invoices/admin.py:88 templates/invoices/my_invoices.html:14
 #: templates/telephony/my_quotes.html:7
 msgid "View"
 msgstr "Anzeigen"
@@ -690,13 +690,13 @@ msgstr ""
 #: apps/customers/overview.py:112 apps/legacy/parts.py:112
 #: apps/legacy/parts.py:126 apps/licences/forms.py:38 apps/parts/forms.py:71
 #: templates/customers/my_details.html:12
-#: templates/invoices/invoice_pdf.html:62
+#: templates/invoices/invoice_pdf.html:64
 msgid "Phone"
 msgstr "Telefon"
 
 #: apps/customers/admin.py:237 apps/customers/overview.py:112
 #: apps/legacy/parts.py:112 apps/legacy/parts.py:125 apps/legacy/parts.py:134
-#: templates/invoices/invoice_pdf.html:62
+#: templates/invoices/invoice_pdf.html:64
 msgid "Email"
 msgstr "E-Mail"
 
@@ -956,7 +956,7 @@ msgid "is reseller"
 msgstr "ist Reseller"
 
 #: apps/customers/models.py:16 apps/customers/models.py:36
-#: apps/faults/models.py:15 apps/invoices/models.py:62
+#: apps/faults/models.py:15 apps/invoices/models.py:66
 #: apps/licences/models.py:43 apps/licences/models.py:59
 #: apps/orders/models.py:84 apps/parts/models.py:106 apps/parts/models.py:127
 #: apps/printing/models.py:63 apps/siteconfig/models.py:265
@@ -969,7 +969,7 @@ msgstr "Reihenfolge"
 msgid "customer types"
 msgstr "Kundentypen"
 
-#: apps/customers/models.py:30 apps/invoices/models.py:131
+#: apps/customers/models.py:30 apps/invoices/models.py:135
 #: apps/licences/models.py:158 apps/numbering/models.py:17
 #: apps/parts/models.py:104 apps/parts/models.py:118 apps/printing/models.py:58
 msgid "code"
@@ -994,7 +994,7 @@ msgid "active"
 msgstr "aktiv"
 
 #: apps/customers/models.py:39 apps/customers/models.py:163
-#: apps/invoices/models.py:78 apps/siteconfig/models.py:254
+#: apps/invoices/models.py:82 apps/siteconfig/models.py:254
 msgid "country"
 msgstr "Land"
 
@@ -1011,7 +1011,7 @@ msgid "Blocked"
 msgstr "Gesperrt"
 
 #: apps/customers/models.py:54 apps/customers/transfer.py:343
-#: apps/invoices/models.py:71 templates/core/dashboard.html:7
+#: apps/invoices/models.py:75 templates/core/dashboard.html:7
 msgid "customer number"
 msgstr "Kundennummer"
 
@@ -1094,7 +1094,7 @@ msgstr "freigegeben von"
 msgid "ID in old system"
 msgstr "ID im alten System"
 
-#: apps/customers/models.py:93 apps/invoices/models.py:93
+#: apps/customers/models.py:93 apps/invoices/models.py:97
 #: apps/legacy/models.py:28 apps/legacy/old_shop/importer.py:129
 #: apps/licences/models.py:277 apps/parts/models.py:239
 #: apps/parts/models.py:396
@@ -1108,7 +1108,7 @@ msgid "updated"
 msgstr "aktualisiert"
 
 #: apps/customers/models.py:97 apps/faults/models.py:76
-#: apps/invoices/models.py:60 apps/licences/models.py:249
+#: apps/invoices/models.py:64 apps/licences/models.py:249
 #: apps/orders/models.py:59 apps/parts/admin.py:64 apps/parts/models.py:170
 #: apps/parts/models.py:323 apps/printing/models.py:101
 #: apps/printing/models.py:142 apps/telephony/models.py:91
@@ -1141,28 +1141,28 @@ msgstr "Rechnungsadresse"
 msgid "Delivery address"
 msgstr "Lieferadresse"
 
-#: apps/customers/models.py:158 apps/invoices/models.py:73
+#: apps/customers/models.py:158 apps/invoices/models.py:77
 msgid "attention of"
 msgstr "zu Händen von"
 
 #: apps/customers/models.py:159 apps/faults/models.py:96
-#: apps/invoices/models.py:74 apps/printing/models.py:148
+#: apps/invoices/models.py:78 apps/printing/models.py:148
 #: apps/siteconfig/models.py:250 apps/siteconfig/models.py:268
 msgid "address"
 msgstr "Adresse"
 
 #: apps/customers/models.py:160 apps/customers/models.py:279
-#: apps/invoices/models.py:75 apps/siteconfig/models.py:251
+#: apps/invoices/models.py:79 apps/siteconfig/models.py:251
 msgid "address line 2"
 msgstr "Adresszeile 2"
 
 #: apps/customers/models.py:161 apps/faults/models.py:97
-#: apps/invoices/models.py:76 apps/siteconfig/models.py:252
+#: apps/invoices/models.py:80 apps/siteconfig/models.py:252
 msgid "postal code"
 msgstr "Postleitzahl"
 
 #: apps/customers/models.py:162 apps/faults/models.py:98
-#: apps/invoices/models.py:77 apps/siteconfig/models.py:253
+#: apps/invoices/models.py:81 apps/siteconfig/models.py:253
 msgid "city"
 msgstr "Ort"
 
@@ -1407,7 +1407,7 @@ msgid "Total"
 msgstr "Gesamt"
 
 #: apps/customers/overview.py:118 apps/dashboard/navigation.py:122
-#: apps/invoices/admin.py:101 apps/invoices/apps.py:7
+#: apps/invoices/admin.py:102 apps/invoices/apps.py:7
 #: apps/legacy/old_shop/importer.py:116 apps/legacy/parts.py:170
 msgid "Invoices"
 msgstr "Rechnungen"
@@ -1503,7 +1503,7 @@ msgstr "Lizenzen"
 msgid "fault reports"
 msgstr "Störungsmeldungen"
 
-#: apps/customers/transfer.py:357 apps/invoices/models.py:97
+#: apps/customers/transfer.py:357 apps/invoices/models.py:101
 #: apps/siteconfig/models.py:259
 msgid "invoices"
 msgstr "Rechnungen"
@@ -1677,7 +1677,7 @@ msgstr "Länder"
 msgid "Orders and invoices"
 msgstr "Bestellungen und Rechnungen"
 
-#: apps/dashboard/navigation.py:128 apps/invoices/models.py:41
+#: apps/dashboard/navigation.py:128 apps/invoices/models.py:45
 msgid "Invoice settings"
 msgstr "Rechnungseinstellungen"
 
@@ -2104,7 +2104,7 @@ msgstr "Beschreibung der Störung"
 msgid "desired handling"
 msgstr "gewünschte Bearbeitung"
 
-#: apps/faults/models.py:92 apps/invoices/models.py:67 apps/orders/models.py:63
+#: apps/faults/models.py:92 apps/invoices/models.py:71 apps/orders/models.py:63
 #: apps/parts/models.py:173 apps/parts/models.py:327
 msgid "your reference"
 msgstr "Ihre Referenz"
@@ -2183,58 +2183,62 @@ msgstr "Höchstens %(n)s Anhänge."
 msgid "The attachments together may be at most %(n)s MB."
 msgstr "Die Anhänge dürfen zusammen höchstens %(n)s MB groß sein."
 
-#: apps/invoices/admin.py:55
+#: apps/invoices/admin.py:56
 msgid "Send again to customer"
 msgstr "Erneut an Kunden senden"
 
-#: apps/invoices/admin.py:58 apps/orders/admin.py:61 apps/parts/admin.py:225
+#: apps/invoices/admin.py:59 apps/orders/admin.py:61 apps/parts/admin.py:225
 #: templates/invoices/invoice_pdf.html:5 templates/parts/email.txt:36
 #: templates/parts/order_detail.html:15
 msgid "Invoice"
 msgstr "Rechnung"
 
-#: apps/invoices/admin.py:61 apps/parts/admin.py:196
+#: apps/invoices/admin.py:62 apps/parts/admin.py:196
 msgid "Amounts"
 msgstr "Beträge"
 
-#: apps/invoices/admin.py:64
+#: apps/invoices/admin.py:65
 msgid "Customer details on invoice"
 msgstr "Kundendaten auf der Rechnung"
 
-#: apps/invoices/admin.py:68
+#: apps/invoices/admin.py:69
 msgid "Archive"
 msgstr "Archiv"
 
-#: apps/invoices/admin.py:77 apps/legacy/admin.py:165
+#: apps/invoices/admin.py:78 apps/legacy/admin.py:165
 #: apps/numbering/admin.py:183
 msgid "Source"
 msgstr "Quelle"
 
-#: apps/invoices/admin.py:79
+#: apps/invoices/admin.py:80
 msgid "Old archive"
 msgstr "Altes Archiv"
 
-#: apps/invoices/admin.py:81 apps/invoices/models.py:89
+#: apps/invoices/admin.py:82 apps/invoices/models.py:93
 msgid "PDF"
 msgstr "PDF"
 
-#: apps/invoices/admin.py:87 templates/invoices/my_invoices.html:15
+#: apps/invoices/admin.py:88 templates/invoices/my_invoices.html:15
 msgid "Download"
 msgstr "Herunterladen"
 
-#: apps/invoices/admin.py:95 apps/invoices/views.py:53
+#: apps/invoices/admin.py:96 apps/invoices/views.py:53
 #, python-format
 msgid "Invoice %(number)s has been sent to %(email)s."
 msgstr "Rechnung %(number)s wurde an %(email)s gesendet."
 
-#: apps/invoices/admin.py:102 apps/licences/admin.py:205
+#: apps/invoices/admin.py:103 apps/licences/admin.py:205
 #: apps/orders/admin.py:87 apps/parts/admin.py:390
 msgid "Texts"
 msgstr "Texte"
 
-#: apps/invoices/admin.py:103
+#: apps/invoices/admin.py:104
 msgid "Layout"
 msgstr "Layout"
+
+#: apps/invoices/admin.py:116
+msgid "The payment text mentions the IBAN, but no IBAN is filled in. Fill it in under Settings → Company details, or change the payment text."
+msgstr "Der Zahlungstext nennt die IBAN, aber es ist keine IBAN eingetragen. Tragen Sie sie unter Einstellungen → Firmendaten ein oder ändern Sie den Zahlungstext."
 
 #: apps/invoices/models.py:16
 msgid "make invoice when an order is placed"
@@ -2253,49 +2257,57 @@ msgid "payment term (days)"
 msgstr "Zahlungsfrist (Tage)"
 
 #: apps/invoices/models.py:22
+msgid "logo on invoices"
+msgstr "Logo auf Rechnungen"
+
+#: apps/invoices/models.py:23
+msgid "Shown top right on the invoice. Empty = the logo of the website (Settings → Branding)."
+msgstr "Steht oben rechts auf der Rechnung. Leer = das Logo der Website (Einstellungen → Erscheinungsbild)."
+
+#: apps/invoices/models.py:26
 msgid "payment text"
 msgstr "Zahlungstext"
 
-#: apps/invoices/models.py:22
+#: apps/invoices/models.py:26
 #, python-brace-format
 msgid "Placeholders: {days}, {number}, {iban}, {due_date}."
 msgstr "Platzhalter: {days}, {number}, {iban}, {due_date}."
 
-#: apps/invoices/models.py:25
+#: apps/invoices/models.py:29
 msgid "notice on invoice"
 msgstr "Hinweis auf der Rechnung"
 
-#: apps/invoices/models.py:25
+#: apps/invoices/models.py:29
 msgid "Highlighted text, e.g. a changed bank account."
 msgstr "Hervorgehobener Text, z. B. eine geänderte Bankverbindung."
 
-#: apps/invoices/models.py:27 apps/siteconfig/models.py:132
+#: apps/invoices/models.py:31 apps/siteconfig/models.py:132
 msgid "footer text"
 msgstr "Fußzeilentext"
 
-#: apps/invoices/models.py:28
+#: apps/invoices/models.py:32
 msgid "email subject"
 msgstr "E-Mail-Betreff"
 
-#: apps/invoices/models.py:29
+#: apps/invoices/models.py:33
 #, python-brace-format
 msgid "Placeholders: {number}, {company}."
 msgstr "Platzhalter: {number}, {company}."
 
-#: apps/invoices/models.py:30
+#: apps/invoices/models.py:34
 msgid "email text"
 msgstr "E-Mail-Text"
 
-#: apps/invoices/models.py:30
+#: apps/invoices/models.py:34
 #, python-brace-format
 msgid "Placeholders: {number}, {company}, {name}, {total}."
 msgstr "Platzhalter: {number}, {company}, {name}, {total}."
 
-#: apps/invoices/models.py:32
+#: apps/invoices/models.py:36
 msgid "own invoice layout (HTML)"
 msgstr "eigenes Rechnungslayout (HTML)"
 
-#: apps/invoices/models.py:33
+#: apps/invoices/models.py:37
 msgid ""
 "Advanced: a Django template that replaces the standard layout. Leave empty "
 "for the standard one."
@@ -2303,87 +2315,87 @@ msgstr ""
 "Fortgeschritten: ein Django-Template, das das Standardlayout ersetzt. Leer "
 "lassen für das Standardlayout."
 
-#: apps/invoices/models.py:37 apps/invoices/models.py:38
+#: apps/invoices/models.py:41 apps/invoices/models.py:42
 msgid "invoice settings"
 msgstr "Rechnungseinstellungen"
 
-#: apps/invoices/models.py:58
+#: apps/invoices/models.py:62
 msgid "invoice number"
 msgstr "Rechnungsnummer"
 
-#: apps/invoices/models.py:64 apps/parts/models.py:358
+#: apps/invoices/models.py:68 apps/parts/models.py:358
 msgid "spare parts order"
 msgstr "Ersatzteilbestellung"
 
-#: apps/invoices/models.py:65
+#: apps/invoices/models.py:69
 msgid "invoice date"
 msgstr "Rechnungsdatum"
 
-#: apps/invoices/models.py:66
+#: apps/invoices/models.py:70
 msgid "due date"
 msgstr "Fälligkeitsdatum"
 
-#: apps/invoices/models.py:70
+#: apps/invoices/models.py:74
 msgid "customer name"
 msgstr "Kundenname"
 
-#: apps/invoices/models.py:72
+#: apps/invoices/models.py:76
 msgid "customer VAT number"
 msgstr "USt-IdNr. des Kunden"
 
-#: apps/invoices/models.py:79
+#: apps/invoices/models.py:83
 msgid "invoice email"
 msgstr "E-Mail für Rechnungen"
 
-#: apps/invoices/models.py:81 apps/orders/models.py:65
+#: apps/invoices/models.py:85 apps/orders/models.py:65
 msgid "subtotal"
 msgstr "Zwischensumme"
 
-#: apps/invoices/models.py:82 apps/orders/models.py:66 apps/parts/models.py:336
+#: apps/invoices/models.py:86 apps/orders/models.py:66 apps/parts/models.py:336
 msgid "discount (%)"
 msgstr "Rabatt (%)"
 
-#: apps/invoices/models.py:83 apps/orders/models.py:67 apps/parts/models.py:345
+#: apps/invoices/models.py:87 apps/orders/models.py:67 apps/parts/models.py:345
 msgid "discount"
 msgstr "Rabatt"
 
-#: apps/invoices/models.py:84 apps/orders/models.py:68 apps/parts/models.py:346
+#: apps/invoices/models.py:88 apps/orders/models.py:68 apps/parts/models.py:346
 msgid "total excl. VAT"
 msgstr "Summe netto"
 
-#: apps/invoices/models.py:85 apps/orders/models.py:21 apps/orders/models.py:69
+#: apps/invoices/models.py:89 apps/orders/models.py:21 apps/orders/models.py:69
 #: apps/parts/models.py:59 apps/parts/models.py:343
 msgid "VAT rate (%)"
 msgstr "MwSt.-Satz (%)"
 
-#: apps/invoices/models.py:86 apps/orders/models.py:70 apps/parts/models.py:347
-#: templates/base.html:86 templates/invoices/invoice_pdf.html:64
+#: apps/invoices/models.py:90 apps/orders/models.py:70 apps/parts/models.py:347
+#: templates/base.html:86 templates/invoices/invoice_pdf.html:66
 #: templates/orders/email_confirmation.txt:16
 #: templates/orders/order_detail.html:15 templates/parts/email.txt:23
 msgid "VAT"
 msgstr "USt"
 
-#: apps/invoices/models.py:87 apps/orders/models.py:71 apps/parts/models.py:348
+#: apps/invoices/models.py:91 apps/orders/models.py:71 apps/parts/models.py:348
 msgid "total incl. VAT"
 msgstr "Summe brutto"
 
-#: apps/invoices/models.py:90
+#: apps/invoices/models.py:94
 msgid "from old archive"
 msgstr "aus altem Archiv"
 
-#: apps/invoices/models.py:91
+#: apps/invoices/models.py:95
 msgid "file in archive"
 msgstr "Datei im Archiv"
 
-#: apps/invoices/models.py:92
+#: apps/invoices/models.py:96
 msgid "paid on"
 msgstr "bezahlt am"
 
-#: apps/invoices/models.py:96
+#: apps/invoices/models.py:100
 msgid "invoice"
 msgstr "Rechnung"
 
-#: apps/invoices/models.py:132 apps/licences/models.py:163
+#: apps/invoices/models.py:136 apps/licences/models.py:163
 #: apps/licences/models.py:263 apps/licences/models.py:358
 #: apps/orders/models.py:102 apps/parts/models.py:223
 #: apps/printing/models.py:13 apps/printing/models.py:59
@@ -2391,64 +2403,64 @@ msgstr "Rechnung"
 msgid "description"
 msgstr "Beschreibung"
 
-#: apps/invoices/models.py:133 apps/orders/models.py:103
+#: apps/invoices/models.py:137 apps/orders/models.py:103
 #: apps/parts/models.py:222 apps/parts/models.py:393 apps/parts/models.py:424
 #: apps/parts/models.py:441 apps/printing/models.py:212
 #: apps/telephony/models.py:121 templates/dashboard/report.html:50
 msgid "quantity"
 msgstr "Anzahl"
 
-#: apps/invoices/models.py:134 apps/orders/models.py:104
+#: apps/invoices/models.py:138 apps/orders/models.py:104
 #: apps/parts/models.py:395
 msgid "price each"
 msgstr "Stückpreis"
 
-#: apps/invoices/models.py:135 apps/invoices/models.py:150
+#: apps/invoices/models.py:139 apps/invoices/models.py:154
 #: apps/orders/models.py:105
 msgid "amount"
 msgstr "Betrag"
 
-#: apps/invoices/models.py:138
+#: apps/invoices/models.py:142
 msgid "invoice line"
 msgstr "Rechnungsposition"
 
-#: apps/invoices/models.py:139
+#: apps/invoices/models.py:143
 msgid "invoice lines"
 msgstr "Rechnungspositionen"
 
-#: apps/invoices/models.py:151
+#: apps/invoices/models.py:155
 msgid "paid at"
 msgstr "bezahlt am"
 
-#: apps/invoices/models.py:153
+#: apps/invoices/models.py:157
 msgid "recorded by"
 msgstr "erfasst von"
 
-#: apps/invoices/models.py:156
+#: apps/invoices/models.py:160
 msgid "payment"
 msgstr "Zahlung"
 
-#: apps/invoices/models.py:157
+#: apps/invoices/models.py:161
 msgid "payments"
 msgstr "Zahlungen"
 
-#: apps/invoices/models.py:168 apps/printing/models.py:193
+#: apps/invoices/models.py:172 apps/printing/models.py:193
 msgid "sent at"
 msgstr "gesendet am"
 
-#: apps/invoices/models.py:169
+#: apps/invoices/models.py:173
 msgid "sent to"
 msgstr "gesendet an"
 
-#: apps/invoices/models.py:171 apps/printing/models.py:195
+#: apps/invoices/models.py:175 apps/printing/models.py:195
 msgid "sent by"
 msgstr "gesendet von"
 
-#: apps/invoices/models.py:174
+#: apps/invoices/models.py:178
 msgid "sent invoice email"
 msgstr "gesendete Rechnungs-E-Mail"
 
-#: apps/invoices/models.py:175
+#: apps/invoices/models.py:179
 msgid "sent invoice emails"
 msgstr "gesendete Rechnungs-E-Mails"
 
@@ -2473,12 +2485,12 @@ msgstr ""
 "Steuerschuldnerschaft des Leistungsempfängers: innergemeinschaftliche "
 "Lieferung"
 
-#: apps/invoices/services.py:132
+#: apps/invoices/services.py:138
 #, python-brace-format
 msgid "Invoice {number}"
 msgstr "Rechnung {number}"
 
-#: apps/invoices/services.py:133
+#: apps/invoices/services.py:139
 #, python-brace-format
 msgid "Attached is invoice {number}."
 msgstr "Anbei die Rechnung {number}."
@@ -3080,7 +3092,7 @@ msgstr ""
 #: apps/legacy/parts.py:110 apps/legacy/parts.py:127 apps/legacy/parts.py:176
 #: templates/admin/customers/_import_outcome.html:3
 #: templates/customers/my_details.html:10
-#: templates/invoices/invoice_pdf.html:83
+#: templates/invoices/invoice_pdf.html:85
 msgid "Customer number"
 msgstr "Kundennummer"
 
@@ -3194,12 +3206,12 @@ msgstr "Lizenz (alte ID)"
 msgid "Matched on invoice number."
 msgstr "Über die Rechnungsnummer zugeordnet."
 
-#: apps/legacy/parts.py:174 templates/invoices/invoice_pdf.html:82
+#: apps/legacy/parts.py:174 templates/invoices/invoice_pdf.html:84
 #: templates/invoices/my_invoices.html:7
 msgid "Invoice number"
 msgstr "Rechnungsnummer"
 
-#: apps/legacy/parts.py:174 templates/invoices/invoice_pdf.html:99
+#: apps/legacy/parts.py:174 templates/invoices/invoice_pdf.html:101
 msgid "Invoice date"
 msgstr "Rechnungsdatum"
 
@@ -3349,7 +3361,7 @@ msgstr "Typ"
 
 #: apps/licences/forms.py:118 apps/orders/forms.py:23 apps/parts/forms.py:15
 #: templates/dashboard/report.html:72 templates/dashboard/report.html:82
-#: templates/invoices/invoice_pdf.html:109 templates/licences/options.html:16
+#: templates/invoices/invoice_pdf.html:111 templates/licences/options.html:16
 #: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
 #: templates/orders/review.html:9 templates/parts/order_detail.html:8
 #: templates/parts/request_detail.html:19 templates/parts/review.html:8
@@ -4274,7 +4286,7 @@ msgstr "Alles ist beantwortet; der Kunde wurde benachrichtigt."
 msgid "The customer has been emailed."
 msgstr "Der Kunde wurde benachrichtigt."
 
-#: apps/parts/admin.py:150 templates/invoices/invoice_pdf.html:109
+#: apps/parts/admin.py:150 templates/invoices/invoice_pdf.html:111
 #: templates/orders/order_detail.html:7 templates/orders/review.html:9
 #: templates/parts/order_detail.html:8 templates/parts/review.html:8
 msgid "Amount"
@@ -4439,7 +4451,7 @@ msgstr "Pflichtfeld."
 msgid "We check whether urgent delivery is possible and what it costs."
 msgstr "Wir prüfen, ob eine Eillieferung möglich ist und was sie kostet."
 
-#: apps/parts/forms.py:104 templates/invoices/invoice_pdf.html:101
+#: apps/parts/forms.py:104 templates/invoices/invoice_pdf.html:103
 #: templates/parts/email.txt:17 templates/parts/order_detail.html:14
 #: templates/parts/review.html:12
 msgid "Payment method"
@@ -6322,7 +6334,7 @@ msgstr "Abmelden"
 msgid "Log in"
 msgstr "Anmelden"
 
-#: templates/base.html:85 templates/invoices/invoice_pdf.html:64
+#: templates/base.html:85 templates/invoices/invoice_pdf.html:66
 msgid "CoC"
 msgstr "HRB"
 
@@ -6550,7 +6562,7 @@ msgstr "Klicken Sie im Diagramm auf einen Monat, um nur diesen Monat zu sehen."
 msgid "Order or licence"
 msgstr "Bestellung oder Lizenz"
 
-#: templates/dashboard/report.html:82 templates/invoices/invoice_pdf.html:109
+#: templates/dashboard/report.html:82 templates/invoices/invoice_pdf.html:111
 msgid "Product"
 msgstr "Produkt"
 
@@ -6675,70 +6687,70 @@ msgstr ""
 msgid "Send fault report"
 msgstr "Störungsmeldung senden"
 
-#: templates/invoices/invoice_pdf.html:50
+#: templates/invoices/invoice_pdf.html:52
 msgid "page"
 msgstr "Seite"
 
-#: templates/invoices/invoice_pdf.html:62
+#: templates/invoices/invoice_pdf.html:64
 msgid "Web"
 msgstr "Web"
 
-#: templates/invoices/invoice_pdf.html:76
+#: templates/invoices/invoice_pdf.html:78
 msgid "Attn."
 msgstr "z. Hd."
 
-#: templates/invoices/invoice_pdf.html:85
+#: templates/invoices/invoice_pdf.html:87
 msgid "Please mention these numbers with your payment"
 msgstr "Bei Zahlung diese Angaben nennen"
 
-#: templates/invoices/invoice_pdf.html:92
+#: templates/invoices/invoice_pdf.html:94
 msgid "Our reference"
 msgstr "Unsere Referenz"
 
-#: templates/invoices/invoice_pdf.html:93
+#: templates/invoices/invoice_pdf.html:95
 msgid "Your order"
 msgstr "Ihr Auftrag"
 
-#: templates/invoices/invoice_pdf.html:94
+#: templates/invoices/invoice_pdf.html:96
 msgid "Your VAT number"
 msgstr "Ihre USt-IdNr."
 
-#: templates/invoices/invoice_pdf.html:100
+#: templates/invoices/invoice_pdf.html:102
 msgid "Due date"
 msgstr "Fälligkeitsdatum"
 
-#: templates/invoices/invoice_pdf.html:101
+#: templates/invoices/invoice_pdf.html:103
 msgid "On account"
 msgstr "Auf Rechnung"
 
-#: templates/invoices/invoice_pdf.html:109
+#: templates/invoices/invoice_pdf.html:111
 msgid "Article no."
 msgstr "Artikelnr."
 
-#: templates/invoices/invoice_pdf.html:109 templates/orders/review.html:9
+#: templates/invoices/invoice_pdf.html:111 templates/orders/review.html:9
 #: templates/parts/review.html:8
 msgid "Price each"
 msgstr "Stückpreis"
 
-#: templates/invoices/invoice_pdf.html:112
+#: templates/invoices/invoice_pdf.html:114
 msgid "DISCOUNT"
 msgstr "RABATT"
 
-#: templates/invoices/invoice_pdf.html:112
+#: templates/invoices/invoice_pdf.html:114
 #, python-format
 msgid "Discount %(pct)s%%"
 msgstr "Rabatt %(pct)s%%"
 
-#: templates/invoices/invoice_pdf.html:118
+#: templates/invoices/invoice_pdf.html:120
 msgid "Net total"
 msgstr "Nettosumme"
 
-#: templates/invoices/invoice_pdf.html:119
+#: templates/invoices/invoice_pdf.html:121
 #, python-format
 msgid "VAT %(rate)s%%"
 msgstr "MwSt. %(rate)s%%"
 
-#: templates/invoices/invoice_pdf.html:120
+#: templates/invoices/invoice_pdf.html:122
 msgid "Total amount"
 msgstr "Gesamtbetrag"
 

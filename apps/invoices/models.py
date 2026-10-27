@@ -18,6 +18,10 @@ class InvoiceSettings(models.Model):
     )
     send_on_create = models.BooleanField(_("email invoice when it is made"), default=True)
     payment_term_days = models.PositiveSmallIntegerField(_("payment term (days)"), default=14)
+    logo = models.ImageField(
+        _("logo on invoices"), upload_to="invoice-logo/", blank=True,
+        help_text=_("Shown top right on the invoice. Empty = the logo of the website (Settings → Branding)."),
+    )
     payment_text = models.TextField(
         _("payment text"), blank=True, help_text=_("Placeholders: {days}, {number}, {iban}, {due_date}."),
     )

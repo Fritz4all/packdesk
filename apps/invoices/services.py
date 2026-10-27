@@ -96,6 +96,12 @@ def create_for_part_order(order):
     return _create(order.customer, order, lines, gross=gross, part_order=order)
 
 
+def invoice_logo_path(rules, site):
+    """The logo for invoices: the one set for invoices, otherwise the website's logo."""
+    logo = rules.logo or site.logo
+    return logo.path if logo else ""
+
+
 def render_html(invoice):
     rules, site = InvoiceSettings.load(), SiteSettings.load()
     context = {
@@ -103,7 +109,7 @@ def render_html(invoice):
         "company_address": site.address_for("invoice"),
         "payment_text": _fmt(rules.payment_text, days=rules.payment_term_days, number=invoice.number, iban=site.iban,
                              due_date=invoice.due_on.strftime("%d-%m-%Y") if invoice.due_on else ""),
-        "logo_url": site.logo.path if site.logo else "",
+        "logo_url": invoice_logo_path(rules, site),
     }
     with translation.override(site.language):
         if rules.custom_template.strip():

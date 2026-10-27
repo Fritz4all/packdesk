@@ -33,6 +33,8 @@ footer of every page. All company data comes from the settings.
   table.lines th { text-align: left; font-weight: bold; padding: 1.5mm 1.5mm; }
   table.lines td { padding: 1.2mm 1.5mm; vertical-align: top; }
   table.lines .nr { width: 8mm; padding-left: 0; }
+  table.lines .code { white-space: nowrap; }
+  table.lines .product { width: 100%; }
   .num { text-align: right; white-space: nowrap; }
   .totals { margin-top: 10mm; background: #e6e6e6; padding: 3mm 0 3mm; }
   .totals table { margin-left: auto; border-collapse: collapse; }
@@ -106,10 +108,10 @@ footer of every page. All company data comes from the settings.
 <hr>
 
 <table class="lines">
-  <thead><tr><th class="nr"></th><th>{% translate "Article no." %}</th><th>{% translate "Product" %}</th><th class="num">{% translate "Price each" %}</th><th class="num">{% translate "Quantity" %}</th><th class="num">{% translate "Amount" %}</th></tr></thead>
+  <thead><tr><th class="nr"></th><th class="code">{% translate "Article no." %}</th><th class="product">{% translate "Product" %}</th><th class="num">{% translate "Price each" %}</th><th class="num">{% translate "Quantity" %}</th><th class="num">{% translate "Amount" %}</th></tr></thead>
   <tbody>
-  {% for line in lines %}<tr><td class="nr">{{ forloop.counter }}</td><td>{{ line.code }}</td><td>{{ line.description }}</td><td class="num">{{ line.unit_price|money }}</td><td class="num">{{ line.quantity|floatformat:"-2" }}</td><td class="num">{{ line.amount|money }}</td></tr>{% endfor %}
-  {% if invoice.discount %}<tr><td class="nr">{{ lines|length|add:1 }}</td><td>{% translate "DISCOUNT" %}</td><td>{% blocktranslate with pct=invoice.discount_pct|floatformat:"-2" %}Discount {{ pct }}%{% endblocktranslate %}</td><td class="num">-{{ invoice.discount|money }}</td><td class="num">1</td><td class="num">-{{ invoice.discount|money }}</td></tr>{% endif %}
+  {% for line in lines %}<tr><td class="nr">{{ forloop.counter }}</td><td class="code">{{ line.code }}</td><td class="product">{{ line.description }}</td><td class="num">{{ line.unit_price|money }}</td><td class="num">{{ line.quantity|floatformat:"-2" }}</td><td class="num">{{ line.amount|money }}</td></tr>{% endfor %}
+  {% if invoice.discount %}<tr><td class="nr">{{ lines|length|add:1 }}</td><td class="code">{% translate "DISCOUNT" %}</td><td class="product">{% blocktranslate with pct=invoice.discount_pct|floatformat:"-2" %}Discount {{ pct }}%{% endblocktranslate %}</td><td class="num">-{{ invoice.discount|money }}</td><td class="num">1</td><td class="num">-{{ invoice.discount|money }}</td></tr>{% endif %}
   </tbody>
 </table>
 

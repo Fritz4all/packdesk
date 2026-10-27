@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin, messages
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -100,11 +101,21 @@ class InvoiceSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
     fieldsets = [
         (_("Invoices"), {"classes": ["tab"], "fields": ["auto_on_order", "send_on_create", "payment_term_days"]}),
         (_("Texts"), {"classes": ["tab"], "fields": ["payment_text", "notice_text", "footer_text", "email_subject", "email_body"]}),
-        (_("Layout"), {"classes": ["tab"], "fields": ["custom_template"]}),
+        (_("Layout"), {"classes": ["tab"], "fields": ["logo", "custom_template"]}),
     ]
 
     def changelist_view(self, request, extra_context=None):
         return redirect(reverse("admin:invoices_invoicesettings_change", args=[InvoiceSettings.load().pk]))
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        from apps.siteconfig.models import SiteSettings
+
+        rules = InvoiceSettings.load()
+        if not SiteSettings.load().iban and any("{iban}" in (getattr(rules, f"payment_text_{code}", "") or "")
+                                                for code, _name in settings.LANGUAGES):
+            messages.warning(request, gettext("The payment text mentions the IBAN, but no IBAN is filled in. Fill it in "
+                                              "under Settings → Company details, or change the payment text."))
+        return super().change_view(request, object_id, form_url, extra_context)
 
     def has_add_permission(self, request):
         return False
