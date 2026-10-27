@@ -6,32 +6,32 @@ from .conftest import make_user
 
 def test_header_path_shows_repeated_titles_once(client, site, beheerder):
     client.force_login(beheerder)
-    page = client.get("/beheer/siteconfig/sitesettings/1/change/").content.decode()
+    page = client.get("/admin/siteconfig/sitesettings/1/change/").content.decode()
     header = page.split("chevron_right")
     assert page.count(">\n            Instellingen\n") <= 1 or len(header) <= 3
 
 
 def test_add_button_next_to_search(client, site, beheerder):
     client.force_login(beheerder)
-    page = client.get("/beheer/customers/customer/").content.decode()
+    page = client.get("/admin/customers/customer/").content.decode()
     assert "klant toevoegen" in page.lower()
 
 
 def test_object_actions_are_buttons_in_form_and_post_only(client, site, beheerder):
     customer = Customer.objects.create(name="Wacht", status=Customer.Status.PENDING)
     client.force_login(beheerder)
-    page = client.get(f"/beheer/customers/customer/{customer.pk}/change/").content.decode()
-    assert f"/beheer/customers/customer/{customer.pk}/action/approve/" in page
+    page = client.get(f"/admin/customers/customer/{customer.pk}/change/").content.decode()
+    assert f"/admin/customers/customer/{customer.pk}/action/approve/" in page
     assert "/action/block/" in page
-    assert client.get(f"/beheer/customers/customer/{customer.pk}/action/approve/").status_code == 405
+    assert client.get(f"/admin/customers/customer/{customer.pk}/action/approve/").status_code == 405
 
 
 def test_approve_button_hidden_for_active_customer(client, site, beheerder):
     customer = Customer.objects.create(name="Actief", status=Customer.Status.ACTIVE, number="3")
     client.force_login(beheerder)
-    page = client.get(f"/beheer/customers/customer/{customer.pk}/change/").content.decode()
+    page = client.get(f"/admin/customers/customer/{customer.pk}/change/").content.decode()
     assert "/action/approve/" not in page
-    assert client.post(f"/beheer/customers/customer/{customer.pk}/action/approve/").status_code == 403
+    assert client.post(f"/admin/customers/customer/{customer.pk}/action/approve/").status_code == 403
 
 
 def test_inline_titles_summarise_rows(site):
@@ -50,7 +50,7 @@ def test_inline_titles_summarise_rows(site):
 def test_related_menu_has_short_labels_and_no_delete(client, site, beheerder):
     customer = Customer.objects.create(name="Klant")
     client.force_login(beheerder)
-    page = client.get(f"/beheer/customers/customer/{customer.pk}/change/?edit=1").content.decode()
+    page = client.get(f"/admin/customers/customer/{customer.pk}/change/?edit=1").content.decode()
     assert 'title="klanttype toevoegen"' in page
     assert 'title="Geselecteerde klanttype' not in page and 'title="Nog een klanttype' not in page
     assert 'id="delete_id_customer_type"' not in page
@@ -61,7 +61,7 @@ def test_every_admin_field_uses_the_admin_styling(rf, site):
     from django.contrib import admin as django_admin
     from django.forms import widgets as plain
 
-    request = rf.get("/beheer/")
+    request = rf.get("/admin/")
     request.user = make_user("root@example.test", superuser=True)
     allowed_plain = (plain.HiddenInput, plain.MultipleHiddenInput)
     bad = []
@@ -91,12 +91,12 @@ def test_column_headers_get_filters_and_they_work(client, site):
     waiting.set_unusable_password()
     waiting.save()
     client.force_login(root)
-    page = client.get("/beheer/accounts/user/").content.decode()
+    page = client.get("/admin/accounts/user/").content.decode()
     data = json.loads(re.search(r'id="pd-column-filters" type="application/json">(.*?)</script>', page).group(1))
     assert {"kind", "is_active", "show_password"} <= set(data)
     assert len(data["show_password"]["choices"]) == 3  # all, set, must choose a new one
     url = data["show_password"]["choices"][2]["url"]
-    result = client.get(f"/beheer/accounts/user/{url}").context["cl"].result_list
+    result = client.get(f"/admin/accounts/user/{url}").context["cl"].result_list
     assert list(result) == [waiting]
 
 
@@ -112,6 +112,6 @@ def test_every_list_still_opens(client, site):
 
 def test_section_page_follows_the_menu(client, site, beheerder):
     client.force_login(beheerder)
-    page = client.get("/beheer/licences/").content.decode()
-    assert "/beheer/licences/licence/" in page and "/beheer/licences/vendor/" in page
-    assert "admin/packdesk/section_index.html" in [t.name for t in client.get("/beheer/licences/").templates]
+    page = client.get("/admin/licences/").content.decode()
+    assert "/admin/licences/licence/" in page and "/admin/licences/vendor/" in page
+    assert "admin/packdesk/section_index.html" in [t.name for t in client.get("/admin/licences/").templates]

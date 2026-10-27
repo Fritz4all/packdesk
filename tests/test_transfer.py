@@ -182,28 +182,28 @@ def test_admin_import_flow(client, site, tmp_path, graph):
     Customer.objects.filter(pk=graph["customer"].pk).update(name="Nieuwe naam")
 
     with open(path, "rb") as f:
-        page = client.post("/beheer/customers/customer/import/", {"step": "upload", "file": f})
+        page = client.post("/admin/customers/customer/import/", {"step": "upload", "file": f})
     assert page.status_code == 200 and page.context["conflicts"] == 1
     token = page.context["token"]
     assert Customer.objects.get().name == "Nieuwe naam"
 
-    done = client.post("/beheer/customers/customer/import/", {"step": "run", "token": token, "choice-0": "overwrite"})
+    done = client.post("/admin/customers/customer/import/", {"step": "run", "token": token, "choice-0": "overwrite"})
     assert done.status_code == 200 and Customer.objects.get().name == "Koper BV"
-    again = client.post("/beheer/customers/customer/import/", {"step": "run", "token": token, "choice-0": "new"})
+    again = client.post("/admin/customers/customer/import/", {"step": "run", "token": token, "choice-0": "new"})
     assert again.status_code == 302 and Customer.objects.count() == 1  # a token works once
 
 
 def test_admin_export_downloads_zip(client, site, graph):
     client.force_login(make_user("root@example.test", superuser=True))
-    response = client.post("/beheer/customers/customer/export/", {"include_files": "on"})
+    response = client.post("/admin/customers/customer/export/", {"include_files": "on"})
     assert response.status_code == 200 and response["Content-Type"] == "application/zip"
     assert b"".join(response.streaming_content)[:2] == b"PK"
 
 
 def test_import_and_export_need_permission(client, site, graph):
     client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
-    assert client.get("/beheer/customers/customer/import/").status_code == 403
-    assert client.get("/beheer/customers/customer/export/").status_code == 403
+    assert client.get("/admin/customers/customer/import/").status_code == 403
+    assert client.get("/admin/customers/customer/export/").status_code == 403
 
 
 def test_bad_upload_shows_error(client, site, tmp_path):
@@ -211,11 +211,11 @@ def test_bad_upload_shows_error(client, site, tmp_path):
     path = tmp_path / "x.json"
     path.write_text("[]")
     with open(path, "rb") as f:
-        page = client.post("/beheer/customers/customer/import/", {"step": "upload", "file": f})
+        page = client.post("/admin/customers/customer/import/", {"step": "upload", "file": f})
     assert page.status_code == 200 and page.context["form"].errors
 
 
 def test_import_page_has_a_clear_file_picker(client, site):
     client.force_login(make_user("root@example.test", superuser=True))
-    html = client.get("/beheer/customers/customer/import/").content.decode()
+    html = client.get("/admin/customers/customer/import/").content.decode()
     assert "data-dropzone" in html and 'accept=".zip,.json"' in html

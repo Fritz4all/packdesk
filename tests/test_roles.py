@@ -4,8 +4,8 @@ from apps.accounts.models import Role, User
 
 from .conftest import make_user
 
-ROLES = "/beheer/accounts/role/"
-USERS = "/beheer/accounts/user/"
+ROLES = "/admin/accounts/role/"
+USERS = "/admin/accounts/user/"
 
 
 def perm(code):
@@ -108,11 +108,11 @@ def test_role_decides_what_admin_user_sees(client, site):
     viewer.permissions.set([perm("siteconfig.view_sitesettings")])
     user = make_user("kijker@example.test", staff=True, role="Alleen instellingen")
     client.force_login(user)
-    assert client.get("/beheer/siteconfig/sitesettings/1/change/").status_code == 200
+    assert client.get("/admin/siteconfig/sitesettings/1/change/").status_code == 200
     assert client.get(USERS).status_code == 403
-    assert client.get("/beheer/numbering/numbersequence/").status_code == 403
+    assert client.get("/admin/numbering/numbersequence/").status_code == 403
     # Read-only: posting changes is refused.
-    assert client.post("/beheer/siteconfig/sitesettings/1/change/", {"name": "X"}).status_code == 403
+    assert client.post("/admin/siteconfig/sitesettings/1/change/", {"name": "X"}).status_code == 403
 
 
 def test_cannot_assign_role_with_more_rights(client, site):
@@ -133,5 +133,5 @@ def test_new_staff_user_can_log_in_to_admin(client, site, beheerder):
     client.force_login(beheerder)
     add_user(client, "nieuw@example.test", role=Role.objects.get(name="Service"))
     client.logout()
-    client.post("/beheer/login/", {"username": "nieuw@example.test", "password": "Een-lang-wachtwoord-42"})
-    assert client.get("/beheer/").status_code == 200
+    client.post("/admin/login/", {"username": "nieuw@example.test", "password": "Een-lang-wachtwoord-42"})
+    assert client.get("/admin/").status_code == 200

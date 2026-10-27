@@ -53,7 +53,7 @@ def test_database_is_not_empty_and_up_to_date(db):
 
 def test_every_page_leads_to_the_wizard_until_finished(client, new_install):
     assert client.get("/").url == "/installatie/"
-    assert client.get("/beheer/").url == "/installatie/"
+    assert client.get("/admin/").url == "/installatie/"
     assert client.get("/installatie/").url == "/installatie/code/"
 
 
@@ -93,9 +93,9 @@ def test_wizard_from_code_to_finished(client, new_install):
     assert client.post("/installatie/numbering/", data).url == "/installatie/demo/"
     assert all(s.next_number == 5000 for s in NumberSequence.objects.all())
 
-    assert client.post("/installatie/demo/", {}).url == "/beheer/"
+    assert client.post("/installatie/demo/", {}).url == "/admin/"
     assert SiteSettings.load().setup_completed
-    assert client.get("/installatie/").url == "/beheer/"  # closed for good
+    assert client.get("/installatie/").url == "/admin/"  # closed for good
     assert client.get("/").status_code == 200
 
 
@@ -108,8 +108,8 @@ def test_wizard_refuses_weak_or_different_passwords(client, new_install):
 def test_after_the_administrator_only_that_administrator_continues(client, new_install):
     make_user("baas@bedrijf.test", superuser=True)
     response = client.get("/installatie/basics/")
-    assert response.url.startswith("/beheer/login/")
-    assert client.get("/installatie/code/").url.startswith("/beheer/login/")  # no second administrator
+    assert response.url.startswith("/admin/login/")
+    assert client.get("/installatie/code/").url.startswith("/admin/login/")  # no second administrator
     client.force_login(User.objects.get(email="baas@bedrijf.test"))
     assert client.get("/installatie/code/").url == "/installatie/basics/"
 
@@ -137,7 +137,7 @@ def test_update_needs_backup_confirmation_and_code(client, db, waiting_changes):
     assert client.post("/database-bijwerken/", {"code": "fout", "backup": "1"}).status_code == 503
     assert not waiting_changes
     response = client.post("/database-bijwerken/", {"code": setup_code.get_code(), "backup": "1"})
-    assert response.status_code == 302 and response.url == "/beheer/" and waiting_changes
+    assert response.status_code == 302 and response.url == "/admin/" and waiting_changes
 
 
 # --- domain and mail server ----------------------------------------------------------------------

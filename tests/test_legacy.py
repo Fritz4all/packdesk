@@ -86,12 +86,12 @@ def test_admin_stores_password_encrypted_and_keeps_it_when_left_empty(client, si
     client.force_login(make_user("root@example.test", superuser=True))
     data = {"name": "Oud", "engine": "mariadb", "host": "10.0.0.5", "port": "", "database": "oudeshop",
             "user": "lezer", "password": "s3cret", "notes": ""}
-    client.post("/beheer/legacy/externaldatabase/add/", data)
+    client.post("/admin/legacy/externaldatabase/add/", data)
     db = ExternalDatabase.objects.get()
     assert db.password_encrypted and "s3cret" not in db.password_encrypted and db.get_password() == "s3cret"
-    page = client.get(f"/beheer/legacy/externaldatabase/{db.pk}/change/").content.decode()
+    page = client.get(f"/admin/legacy/externaldatabase/{db.pk}/change/").content.decode()
     assert "s3cret" not in page and db.password_encrypted not in page
-    client.post(f"/beheer/legacy/externaldatabase/{db.pk}/change/", {**data, "password": "", "host": "10.0.0.6"})
+    client.post(f"/admin/legacy/externaldatabase/{db.pk}/change/", {**data, "password": "", "host": "10.0.0.6"})
     db.refresh_from_db()
     assert db.host == "10.0.0.6" and db.get_password() == "s3cret"
 
@@ -215,42 +215,42 @@ def _saved(old_db):
 def test_compare_pages(client, site, mapped, packdesk):
     db = mapped
     client.force_login(make_user("root@example.test", superuser=True))
-    assert client.get("/beheer/vergelijken/").status_code == 302  # one database: straight to it
-    page = client.get(f"/beheer/vergelijken/{db.pk}/")
+    assert client.get("/admin/compare/").status_code == 302  # one database: straight to it
+    page = client.get(f"/admin/compare/{db.pk}/")
     assert page.status_code == 200 and any(s["key"] == "customers" and s["only_old"] == 1 for s in page.context["summaries"])
-    detail = client.get(f"/beheer/vergelijken/{db.pk}/customers/different/")
+    detail = client.get(f"/admin/compare/{db.pk}/customers/different/")
     assert detail.status_code == 200 and "020-111" in detail.content.decode()
-    csv = client.get(f"/beheer/vergelijken/{db.pk}/licences/only_old/?format=csv")
+    csv = client.get(f"/admin/compare/{db.pk}/licences/only_old/?format=csv")
     assert csv["Content-Type"].startswith("text/csv") and "900002CD-1" in csv.content.decode("utf-8-sig")
-    found = client.get(f"/beheer/vergelijken/{db.pk}/zoeken/?q=Koper")
+    found = client.get(f"/admin/compare/{db.pk}/search/?q=Koper")
     assert found.status_code == 200 and found.context["results"]
-    assert client.post(f"/beheer/vergelijken/{db.pk}/").status_code == 302  # compare again
+    assert client.post(f"/admin/compare/{db.pk}/").status_code == 302  # compare again
 
 
 def test_compare_needs_permission(client, site, old_db):
     db = _saved(old_db)
     client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
-    assert client.get(f"/beheer/vergelijken/{db.pk}/").status_code == 403
-    assert client.get("/beheer/legacy/externaldatabase/").status_code == 403
+    assert client.get(f"/admin/compare/{db.pk}/").status_code == 403
+    assert client.get("/admin/legacy/externaldatabase/").status_code == 403
 
 
 def test_compare_without_mappings_explains_what_to_do(client, site, old_db):
     db = _saved(old_db)
     client.force_login(make_user("root@example.test", superuser=True))
-    page = client.get(f"/beheer/vergelijken/{db.pk}/")
+    page = client.get(f"/admin/compare/{db.pk}/")
     assert page.status_code == 200 and not page.context["summaries"]
-    assert f"/beheer/legacy/tablemapping/add/?database={db.pk}" in page.content.decode()
+    assert f"/admin/legacy/tablemapping/add/?database={db.pk}" in page.content.decode()
 
 
 def test_preset_button_and_mapping_page(client, site, old_db):
     db = _saved(old_db)
     client.force_login(make_user("root@example.test", superuser=True))
-    client.post(f"/beheer/legacy/externaldatabase/{db.pk}/action/preset/")
+    client.post(f"/admin/legacy/externaldatabase/{db.pk}/action/preset/")
     assert db.mappings.count() == len(OLD_SHOP_PRESET)
     mapping = db.mappings.get(part="customers")
-    page = client.get(f"/beheer/legacy/tablemapping/{mapping.pk}/change/").content.decode()
+    page = client.get(f"/admin/legacy/tablemapping/{mapping.pk}/change/").content.decode()
     assert 'id="pd-columns"' in page and "number_deb" in page and "Koper BV" in page  # columns and example rows
-    assert client.get("/beheer/legacy/tablemapping/add/").status_code == 200
+    assert client.get("/admin/legacy/tablemapping/add/").status_code == 200
 
 
 def test_highest_number_ignores_notes_in_number_fields():

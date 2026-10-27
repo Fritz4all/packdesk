@@ -254,21 +254,21 @@ def test_import_pages(client, site, old_db, monkeypatch, archived):
     monkeypatch.setattr(import_views.threading, "Thread", lambda target, args, daemon: type(
         "T", (), {"start": lambda self: run_import(ImportRun.objects.get(pk=args[0]))})())
     client.force_login(make_user("root@example.test", superuser=True))
-    assert client.get(f"/beheer/importeren/{old_db.pk}/").status_code == 200
-    response = client.post(f"/beheer/importeren/{old_db.pk}/", {"mode": "apply"})
+    assert client.get(f"/admin/import/{old_db.pk}/").status_code == 200
+    response = client.post(f"/admin/import/{old_db.pk}/", {"mode": "apply"})
     assert not ImportRun.objects.exists()  # backup not confirmed
-    response = client.post(f"/beheer/importeren/{old_db.pk}/", {"mode": "trial"})
+    response = client.post(f"/admin/import/{old_db.pk}/", {"mode": "trial"})
     run = ImportRun.objects.get()
-    assert response.url == f"/beheer/legacy/importrun/{run.pk}/change/"
+    assert response.url == f"/admin/legacy/importrun/{run.pk}/change/"
     page = client.get(response.url).content.decode()
     assert "verslag" in page.lower() or "report" in page.lower()
-    report = client.get(f"/beheer/importeren/verslag/{run.pk}/")
+    report = client.get(f"/admin/import/report/{run.pk}/")
     assert report.status_code == 200 and b"customer" in b"".join(report.streaming_content)
 
 
 def test_import_needs_permission(client, site, old_db):
     client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
-    assert client.get(f"/beheer/importeren/{old_db.pk}/").status_code == 403
+    assert client.get(f"/admin/import/{old_db.pk}/").status_code == 403
 
 
 # --- forced password reset -------------------------------------------------------------------------
@@ -279,7 +279,7 @@ def test_selected_contacts_must_choose_a_new_password(client, site):
     user = make_user("klant@example.test")
     contact = Contact.objects.create(customer=customer, user=user, last_name="K", email=user.email)
     client.force_login(make_user("root@example.test", superuser=True))
-    client.post("/beheer/customers/contact/", {"action": "send_password_reset", "_selected_action": [contact.pk]})
+    client.post("/admin/customers/contact/", {"action": "send_password_reset", "_selected_action": [contact.pk]})
     user.refresh_from_db()
     assert not user.has_usable_password() and len(mail.outbox) == 1 and "/wachtwoord-instellen/" in mail.outbox[0].body
     # An expired link is no dead end: "forgot password" works for this account.
@@ -294,7 +294,7 @@ def test_password_reset_for_the_contacts_of_selected_customers(client, site):
         user = make_user(f"k{n}@example.test")
         Contact.objects.create(customer=customer, user=user, last_name="K", email=user.email)
     client.force_login(make_user("root@example.test", superuser=True))
-    client.post("/beheer/customers/customer/", {"action": "send_password_reset", "_selected_action": [customer.pk]})
+    client.post("/admin/customers/customer/", {"action": "send_password_reset", "_selected_action": [customer.pk]})
     assert len(mail.outbox) == 2 and not User.objects.get(email="k0@example.test").has_usable_password()
 
 

@@ -11,7 +11,7 @@ from apps.numbering.models import CounterChange, GapNote, NumberSequence
 
 from .conftest import make_user
 
-URL = "/beheer/numbering/numbersequence/"
+URL = "/admin/numbering/numbersequence/"
 
 
 @pytest.fixture

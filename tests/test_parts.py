@@ -147,7 +147,7 @@ def test_staff_deliver_correct_and_cancel(client, site, parts, beheerder):
     order = PartOrder.objects.create(number="WS17000AA-1", request=request, customer=parts["customer"])
     line = order.lines.create(request_line=request.lines.get(), packing="new", quantity=3, unit_price=Decimal("20"))
     client.force_login(make_user("service@example.test", staff=True, role="Service"))
-    url = f"/beheer/parts/partorder/{order.pk}"
+    url = f"/admin/parts/partorder/{order.pk}"
     assert client.post(f"{url}/deliver/", {f"deliver-{line.pk}": "5"}).status_code == 200  # more than ordered
     client.post(f"{url}/deliver/", {f"deliver-{line.pk}": "1"})
     assert line.delivered() == 1 and PartOrder.objects.get().status == PartOrder.Status.TO_DELIVER
@@ -158,22 +158,22 @@ def test_staff_deliver_correct_and_cancel(client, site, parts, beheerder):
     assert mail.outbox[0].to == ["parts@example.test"] and "40,00" in mail.outbox[0].body  # 2 × € 20
 
     other = PartOrder.objects.create(number="WS17000AA-2", request=request, customer=parts["customer"])
-    client.post(f"/beheer/parts/partorder/{other.pk}/cancel/", {"reason": "Klant wil niet meer"})
+    client.post(f"/admin/parts/partorder/{other.pk}/cancel/", {"reason": "Klant wil niet meer"})
     assert PartOrder.objects.get(pk=other.pk).status == PartOrder.Status.CANCELLED
-    assert client.get(f"/beheer/parts/partorder/{other.pk}/picklist/").status_code == 200
+    assert client.get(f"/admin/parts/partorder/{other.pk}/picklist/").status_code == 200
 
 
 def test_employee_cannot_deliver(client, site, parts):
     request = answered_request(parts)
     order = PartOrder.objects.create(number="WS17000AA-1", request=request, customer=parts["customer"])
     client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
-    assert client.get(f"/beheer/parts/partorder/{order.pk}/deliver/").status_code == 403
+    assert client.get(f"/admin/parts/partorder/{order.pk}/deliver/").status_code == 403
 
 
 def test_customer_page_shows_parts(client, site, parts, beheerder):
     answered_request(parts)
     client.force_login(beheerder)
-    page = client.get(f"/beheer/customers/customer/{parts['customer'].pk}/change/").content.decode()
+    page = client.get(f"/admin/customers/customer/{parts['customer'].pk}/change/").content.decode()
     assert "WS17000AA" in page
 
 
@@ -187,9 +187,9 @@ def test_parts_in_sales_report(client, site, parts, beheerder):
     PartOrder.objects.create(number="WS17000AA-2", request=request, customer=parts["customer"],
                              status=PartOrder.Status.CANCELLED, small_order_costs=Decimal("15"))
     client.force_login(beheerder)
-    report = client.get("/beheer/rapportage/", {"kind": "parts"}).context["report"]
+    report = client.get("/admin/reports/", {"kind": "parts"}).context["report"]
     # 2 parts left × € 20 − 10% = 36, + surcharge 15 = 51; cost 2 × € 10 = 20; the cancelled order is left out
     assert report["totals"]["revenue"] == Decimal("51.00") and report["totals"]["cost"] == Decimal("20.00")
     assert report["totals"]["count"] == 2
-    assert client.get("/beheer/rapportage/", {"kind": "packs"}).context["report"]["totals"]["revenue"] == 0
-    assert client.get("/beheer/rapportage/").context["report"]["totals"]["revenue"] == Decimal("51.00")
+    assert client.get("/admin/reports/", {"kind": "packs"}).context["report"]["totals"]["revenue"] == 0
+    assert client.get("/admin/reports/").context["report"]["totals"]["revenue"] == Decimal("51.00")

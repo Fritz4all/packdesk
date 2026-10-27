@@ -93,7 +93,7 @@ def test_counter_behind_archive_blocks_invoice_and_warns(client, site, shop, fol
     NumberSequence.objects.filter(key="invoice").update(next_number=1030954)
     order = shop["customer"].orders.get()
     client.force_login(beheerder)
-    client.post(f"/beheer/orders/order/{order.pk}/action/invoice/")
+    client.post(f"/admin/orders/order/{order.pk}/action/invoice/")
     assert Invoice.objects.get(order=order).number == "1030954"
 
 
@@ -125,10 +125,10 @@ def test_admin_resend_and_no_delete(client, site, shop, beheerder):
     invoice = Invoice.objects.get()
     client.force_login(beheerder)
     mail.outbox.clear()
-    client.post(f"/beheer/invoices/invoice/{invoice.pk}/action/resend/")
+    client.post(f"/admin/invoices/invoice/{invoice.pk}/action/resend/")
     assert mail.outbox[0].to == ["facturen@koper.test"]
     assert InvoiceEmail.objects.filter(invoice=invoice, sent_by=beheerder).exists()
-    assert client.get(f"/beheer/invoices/invoice/{invoice.pk}/delete/").status_code == 403
+    assert client.get(f"/admin/invoices/invoice/{invoice.pk}/delete/").status_code == 403
 
 
 # --- old archive -------------------------------------------------------------------

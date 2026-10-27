@@ -10,7 +10,7 @@ from apps.numbering.models import NumberSequence
 
 from .conftest import make_user
 
-CUSTOMERS = "/beheer/customers/customer/"
+CUSTOMERS = "/admin/customers/customer/"
 
 
 @pytest.fixture
@@ -233,7 +233,7 @@ def test_customer_opens_as_overview_with_edit_button(client, site, beheerder):
 
     customer = Customer.objects.create(name="Overzicht BV", number="77", status=Customer.Status.ACTIVE)
     client.force_login(beheerder)
-    url = f"/beheer/customers/customer/{customer.pk}/change/"
+    url = f"/admin/customers/customer/{customer.pk}/change/"
     page = client.get(url)
     assert [t.name for t in page.templates][0] == "admin/customers/customer/overview.html"
     assert "?edit=1" in page.content.decode() and 'name="_save"' not in page.content.decode()
@@ -249,10 +249,10 @@ def test_customer_opens_as_overview_with_edit_button(client, site, beheerder):
 
     reseller = CustomerType.objects.create(name="Reseller")
     other = Customer.objects.create(name="Tweede", number="78")
-    form = client.post("/beheer/customers/customer/", {"action": "change_type_selected",
+    form = client.post("/admin/customers/customer/", {"action": "change_type_selected",
                                                        "_selected_action": [customer.pk, other.pk]})
     assert form.status_code == 200 and b"Tweede" in form.content
-    client.post("/beheer/customers/customer/", {"action": "change_type_selected", "apply": "1",
+    client.post("/admin/customers/customer/", {"action": "change_type_selected", "apply": "1",
                                                 "_selected_action": [customer.pk, other.pk],
                                                 "customer_type": reseller.pk})
     assert Customer.objects.filter(customer_type=reseller).count() == 2
@@ -266,12 +266,12 @@ def test_customer_with_history_is_not_deleted_but_explained(client, site, beheer
     Invoice.objects.create(number="F1", customer=kept)
     loose = Customer.objects.create(name="Zonder iets", number="81")
     client.force_login(make_user("root@example.test", superuser=True))
-    response = client.post("/beheer/customers/customer/", {"action": "delete_selected",
+    response = client.post("/admin/customers/customer/", {"action": "delete_selected",
                                                            "_selected_action": [kept.pk, loose.pk]}, follow=True)
     page = response.content.decode()
     assert "Met factuur" in page and "Block the customer instead" in page or "Blokkeer" in page
     assert Customer.objects.count() == 2 and not TrashEntry.objects.exists()
-    response = client.get(f"/beheer/customers/customer/{kept.pk}/delete/")
+    response = client.get(f"/admin/customers/customer/{kept.pk}/delete/")
     assert response.status_code == 302 and response["Location"].endswith("?edit=1")
-    client.post("/beheer/customers/customer/", {"action": "delete_selected", "_selected_action": [loose.pk], "post": "yes"})
+    client.post("/admin/customers/customer/", {"action": "delete_selected", "_selected_action": [loose.pk], "post": "yes"})
     assert not Customer.objects.filter(pk=loose.pk).exists()

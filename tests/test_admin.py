@@ -3,7 +3,7 @@ from apps.siteconfig.models import Address, SiteSettings
 
 from .conftest import make_user
 
-SETTINGS_URL = "/beheer/siteconfig/sitesettings/"
+SETTINGS_URL = "/admin/siteconfig/sitesettings/"
 
 
 def settings_form(**overrides):
@@ -71,16 +71,16 @@ def test_beheerder_does_not_see_superusers(client, site, beheerder):
     root = make_user("root@example.test", superuser=True)
     make_user("klant@example.test")
     client.force_login(beheerder)
-    page = client.get("/beheer/accounts/user/").content.decode()
+    page = client.get("/admin/accounts/user/").content.decode()
     assert "klant@example.test" in page and "root@example.test" not in page
-    assert client.get(f"/beheer/accounts/user/{root.pk}/change/").status_code == 302
+    assert client.get(f"/admin/accounts/user/{root.pk}/change/").status_code == 302
 
 
 def test_beheerder_cannot_make_superuser(client, site, beheerder):
     target = make_user("klant@example.test")
     client.force_login(beheerder)
     client.post(
-        f"/beheer/accounts/user/{target.pk}/change/",
+        f"/admin/accounts/user/{target.pk}/change/",
         {"email": "klant@example.test", "kind": "customer", "is_active": "on", "is_superuser": "on"},
     )
     assert not User.objects.get(pk=target.pk).is_superuser
@@ -89,7 +89,7 @@ def test_beheerder_cannot_make_superuser(client, site, beheerder):
 def test_beheerder_creates_user(client, site, beheerder):
     client.force_login(beheerder)
     client.post(
-        "/beheer/accounts/user/add/",
+        "/admin/accounts/user/add/",
         {"email": "nieuw@example.test", "password1": "Een-lang-wachtwoord-42", "password2": "Een-lang-wachtwoord-42",
          "kind": "customer"},
     )
@@ -97,7 +97,7 @@ def test_beheerder_creates_user(client, site, beheerder):
 
 
 def test_admin_login_asks_for_email(client, site):
-    page = client.get("/beheer/login/").content.decode()
+    page = client.get("/admin/login/").content.decode()
     assert "E-mailadres" in page
 
 

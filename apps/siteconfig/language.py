@@ -12,7 +12,7 @@ from functools import wraps
 from django.conf import settings
 from django.utils import translation
 
-ADMIN_PREFIX = "/beheer/"
+ADMIN_PREFIX = "/admin/"
 _in_admin = ContextVar("packdesk_in_admin", default=False)
 CODES = {code for code, _name in settings.LANGUAGES}
 

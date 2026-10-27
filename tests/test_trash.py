@@ -99,8 +99,8 @@ def test_admin_delete_and_bulk_delete_go_to_the_trash(client, site, customer):
     other = Customer.objects.create(name="Ook weg", number="903")
     admin_user = make_user("root@example.test", superuser=True)
     client.force_login(admin_user)
-    client.post(f"/beheer/customers/customer/{customer.pk}/delete/", {"post": "yes"})
-    client.post("/beheer/customers/customer/", {"action": "delete_selected", "_selected_action": [other.pk],
+    client.post(f"/admin/customers/customer/{customer.pk}/delete/", {"post": "yes"})
+    client.post("/admin/customers/customer/", {"action": "delete_selected", "_selected_action": [other.pk],
                                                  "post": "yes"})
     assert not Customer.objects.exists()
     assert TrashEntry.objects.count() == 2 and TrashEntry.objects.filter(deleted_by=admin_user).count() == 2
@@ -125,16 +125,16 @@ def test_trash_page_search_restore_and_delete_for_good(client, site, customer):
     delete_to_trash(customer)
     delete_to_trash(other)
     client.force_login(make_user("root@example.test", superuser=True))
-    page = client.get("/beheer/trash/trashentry/?q=Tweede")
+    page = client.get("/admin/trash/trashentry/?q=Tweede")
     assert page.status_code == 200 and "Tweede BV" in page.content.decode() and "Weg BV" not in page.content.decode()
-    assert client.get("/beheer/trash/trashentry/?o=-1").status_code == 200  # sortable
+    assert client.get("/admin/trash/trashentry/?o=-1").status_code == 200  # sortable
 
     entries = list(TrashEntry.objects.values_list("pk", flat=True))
-    client.post("/beheer/trash/trashentry/", {"action": "restore_selected", "_selected_action": entries})
+    client.post("/admin/trash/trashentry/", {"action": "restore_selected", "_selected_action": entries})
     assert Customer.objects.count() == 2 and not TrashEntry.objects.exists()
 
     delete_to_trash(Customer.objects.get(number="904"))
-    client.post("/beheer/trash/trashentry/", {"action": "delete_selected_for_good",
+    client.post("/admin/trash/trashentry/", {"action": "delete_selected_for_good",
                                               "_selected_action": list(TrashEntry.objects.values_list("pk", flat=True))})
     assert not TrashEntry.objects.exists() and not Customer.objects.filter(number="904").exists()
 
@@ -142,7 +142,7 @@ def test_trash_page_search_restore_and_delete_for_good(client, site, customer):
 def test_trash_needs_permission(client, site, customer):
     delete_to_trash(customer)
     client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
-    assert client.get("/beheer/trash/trashentry/").status_code == 403
+    assert client.get("/admin/trash/trashentry/").status_code == 403
 
 
 # --- logout timeout ----------------------------------------------------------------------------
@@ -152,7 +152,7 @@ def test_logout_timeout_for_staff_and_customers(client, site):
     site.session_timeout_staff, site.session_timeout_customers = 30, 5
     site.save()
     client.force_login(make_user("root@example.test", superuser=True))
-    client.get("/beheer/")
+    client.get("/admin/")
     assert client.session.get_expiry_age() == 30 * 60
     client.force_login(make_user("klant@example.test"))
     client.get("/")

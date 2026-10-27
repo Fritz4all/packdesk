@@ -120,7 +120,7 @@ def test_post_warranty_uses_start_date_minus_one_day(catalogue, reseller):
 
 def test_admin_creates_several_licences(client, site, catalogue, reseller, beheerder):
     client.force_login(beheerder)
-    response = client.post("/beheer/licences/licence/add/", {
+    response = client.post("/admin/licences/licence/add/", {
         "pack": catalogue["pack"].pk, "customer": reseller.pk, "order_reference": "PO-9", "quantity": "3",
     })
     assert response.status_code == 302, response.content.decode()[:2000]
@@ -130,8 +130,8 @@ def test_admin_creates_several_licences(client, site, catalogue, reseller, behee
 def test_employee_role_can_only_view_licences(client, site, catalogue, reseller):
     lic = Licence.create_for(catalogue["pack"], reseller)[0]
     client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
-    assert client.get(f"/beheer/licences/licence/{lic.pk}/change/").status_code == 200
-    assert client.get("/beheer/licences/licence/add/").status_code == 403
+    assert client.get(f"/admin/licences/licence/{lic.pk}/change/").status_code == 200
+    assert client.get("/admin/licences/licence/add/").status_code == 403
 
 
 # --- registration wizard ---------------------------------------------------------

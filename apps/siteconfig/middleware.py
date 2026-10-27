@@ -44,7 +44,7 @@ class MaintenanceModeMiddleware:
     Customers who are logged in are logged out; the login page is blocked too.
     """
 
-    ALWAYS_ALLOWED = ("/beheer/", "/static/", "/media/", "/taal/")
+    ALWAYS_ALLOWED = ("/admin/", "/static/", "/media/", "/taal/")
 
     def __init__(self, get_response):
         self.get_response = get_response

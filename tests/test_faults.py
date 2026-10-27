@@ -153,9 +153,9 @@ def test_admin_status_actions(client, site, beheerder):
     client.post("/storing-melden/", form_data())
     fault = FaultReport.objects.get()
     client.force_login(beheerder)
-    page = client.get(f"/beheer/faults/faultreport/{fault.pk}/change/").content.decode()
+    page = client.get(f"/admin/faults/faultreport/{fault.pk}/change/").content.decode()
     assert "/action/in-progress/" in page
-    client.post(f"/beheer/faults/faultreport/{fault.pk}/action/close/")
+    client.post(f"/admin/faults/faultreport/{fault.pk}/action/close/")
     fault.refresh_from_db()
     assert fault.status == "closed"
 

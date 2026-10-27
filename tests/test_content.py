@@ -106,10 +106,10 @@ def test_logged_in_customer_is_logged_out(client, site):
 
 def test_staff_can_work_during_maintenance(client, site, beheerder):
     maintenance_on(site)
-    assert client.get("/beheer/login/").status_code == 200
+    assert client.get("/admin/login/").status_code == 200
     client.force_login(beheerder)
     assert client.get("/").status_code == 200
-    assert client.get("/beheer/siteconfig/sitesettings/1/change/").status_code == 200
+    assert client.get("/admin/siteconfig/sitesettings/1/change/").status_code == 200
 
 
 def test_site_back_after_maintenance(client, site):

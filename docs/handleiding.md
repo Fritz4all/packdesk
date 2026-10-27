@@ -1,7 +1,7 @@
 # Handleiding
 
 Wat PackDesk kan en hoe je het gebruikt, per onderdeel van het beheer en het klantportaal.
-Het beheer staat op `/beheer/`. Wat een medewerker ziet en mag, hangt af van zijn rol.
+Het beheer staat op `/admin/`. Wat een medewerker ziet en mag, hangt af van zijn rol.
 
 ## Werken in het beheer
 

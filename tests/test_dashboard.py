@@ -26,14 +26,14 @@ def test_dashboard_shows_totals(client, site, beheerder):
     Customer.objects.create(name="Wacht", status=Customer.Status.PENDING)
     make_licences(2)
     client.force_login(beheerder)
-    page = client.get("/beheer/").content.decode()
+    page = client.get("/admin/").content.decode()
     assert 'data-key="stats"' in page and "Te keuren aanmeldingen" in page
     assert "pd-stat-warn" in page  # a sign-up is waiting
 
 
 def test_dashboard_blocks_follow_permissions(client, site):
     client.force_login(make_user("leeg@example.test", staff=True, role="Medewerker"))
-    page = client.get("/beheer/").content.decode()
+    page = client.get("/admin/").content.decode()
     assert 'data-key="pending_signups"' in page  # Medewerker may view customers
     assert "Nummerreeksen met problemen" not in page
 
@@ -41,21 +41,21 @@ def test_dashboard_blocks_follow_permissions(client, site):
 def test_layout_is_saved_per_user_and_can_be_reset(client, site, beheerder):
     client.force_login(beheerder)
     order = ["recent_actions", "stats", "pending_signups", "recent_registrations", "ending_licences"]
-    client.post("/beheer/dashboard/layout/", json.dumps({"order": order, "hidden": ["ending_licences", "bogus"]}),
+    client.post("/admin/dashboard/layout/", json.dumps({"order": order, "hidden": ["ending_licences", "bogus"]}),
                 content_type="application/json")
     layout = DashboardLayout.objects.get(user=beheerder)
     assert layout.order[0] == "recent_actions" and layout.hidden == ["ending_licences"]
-    page = client.get("/beheer/").content.decode()
+    page = client.get("/admin/").content.decode()
     assert page.index('data-key="recent_actions"') < page.index('data-key="stats"')
     assert 'class="pd-widget' in page and 'data-key="ending_licences" draggable' not in page
-    client.post("/beheer/dashboard/reset/")
+    client.post("/admin/dashboard/reset/")
     assert not DashboardLayout.objects.filter(user=beheerder).exists()
 
 
 def test_layout_endpoints_need_staff_and_post(client, site):
-    assert client.post("/beheer/dashboard/reset/").status_code == 302  # to login
+    assert client.post("/admin/dashboard/reset/").status_code == 302  # to login
     client.force_login(make_user("klant@example.test"))
-    assert client.post("/beheer/dashboard/reset/").status_code == 302
+    assert client.post("/admin/dashboard/reset/").status_code == 302
 
 
 # --- reports ---------------------------------------------------------------------
@@ -63,7 +63,7 @@ def test_layout_endpoints_need_staff_and_post(client, site):
 def test_report_numbers(client, site, beheerder):
     make_licences(2, margin=Decimal("10"))
     client.force_login(beheerder)
-    response = client.get("/beheer/rapportage/")
+    response = client.get("/admin/reports/")
     report = response.context["report"]
     assert report["totals"]["count"] == 2
     assert report["totals"]["revenue"] == Decimal("180.00")  # 2 × 100 minus 10 % discount
@@ -73,7 +73,7 @@ def test_report_numbers(client, site, beheerder):
 
 def test_report_needs_permission(client, site):
     client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
-    assert client.get("/beheer/rapportage/").status_code == 403
+    assert client.get("/admin/reports/").status_code == 403
 
 
 # --- global search ---------------------------------------------------------------------
@@ -106,7 +106,7 @@ def test_report_custom_range_and_month_drilldown(client, site, beheerder):
     Licence.objects.filter(pk=old.pk).update(created_at=timezone.now().replace(year=timezone.now().year - 2))
     client.force_login(beheerder)
     today = timezone.localdate()
-    response = client.get("/beheer/rapportage/", {"from": today.replace(day=1).isoformat(), "to": today.isoformat()})
+    response = client.get("/admin/reports/", {"from": today.replace(day=1).isoformat(), "to": today.isoformat()})
     assert response.context["period"] == "custom"
     assert response.context["report"]["totals"]["count"] == 1
     page = response.content.decode()
@@ -116,7 +116,7 @@ def test_report_custom_range_and_month_drilldown(client, site, beheerder):
 
 def test_report_active_period_is_highlighted(client, site, beheerder):
     client.force_login(beheerder)
-    page = client.get("/beheer/rapportage/", {"period": "this_year"}).content.decode()
+    page = client.get("/admin/reports/", {"period": "this_year"}).content.decode()
     assert 'value="this_year" class="pd-btn pd-btn-primary"' in page
 
 
@@ -133,7 +133,7 @@ def test_menu_sections_can_be_reordered_per_user(client, site, beheerder, rf):
 
     client.force_login(beheerder)
     new = ["configuration", "users", "faults", "licences", "parts", "telephony", "printing", "orders", "customers", "overview"]
-    client.post("/beheer/dashboard/layout/", json.dumps({"sidebar": new + ["bogus"]}), content_type="application/json")
+    client.post("/admin/dashboard/layout/", json.dumps({"sidebar": new + ["bogus"]}), content_type="application/json")
     request = rf.get("/")
     request.user = beheerder
     assert [s["key"] for s in sidebar(request)] == new
@@ -144,9 +144,9 @@ def test_menu_sections_can_be_reordered_per_user(client, site, beheerder, rf):
 
 def test_single_tiles_can_be_hidden(client, site, beheerder):
     client.force_login(beheerder)
-    client.post("/beheer/dashboard/layout/", json.dumps({"hidden_items": ["stats:active_customers", "nope:x"]}),
+    client.post("/admin/dashboard/layout/", json.dumps({"hidden_items": ["stats:active_customers", "nope:x"]}),
                 content_type="application/json")
     assert DashboardLayout.objects.get(user=beheerder).hidden_items == ["stats:active_customers"]
-    page = client.get("/beheer/").content.decode()
+    page = client.get("/admin/").content.decode()
     assert 'data-item="stats:active_customers"' in page  # offered again in the hidden panel
     assert 'pd-stat-wrap" data-item="stats:active_customers"' not in page

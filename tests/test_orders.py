@@ -150,7 +150,7 @@ def test_admin_order_list_and_number_source(client, site, shop, beheerder):
     payload = client.post("/mijn/bestellen/", order_post([(shop["new"], 1)])).context["payload"]
     client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload})
     client.force_login(beheerder)
-    assert "Koper BV" in client.get("/beheer/orders/order/").content.decode()
+    assert "Koper BV" in client.get("/admin/orders/order/").content.decode()
     assert check(NumberSequence.objects.get(key="order")).status == "ok"
 
 
@@ -160,6 +160,6 @@ def test_report_uses_order_prices(client, site, shop, beheerder):
     client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload})
     SupportPack.objects.filter(pk=shop["new"].pk).update(price=Decimal("999"), cost_price=Decimal("50"))
     client.force_login(beheerder)
-    report = client.get("/beheer/rapportage/").context["report"]
+    report = client.get("/admin/reports/").context["report"]
     assert report["totals"]["revenue"] == Decimal("180.00")  # 2 × 100 at order time, minus 10 %
     assert report["totals"]["cost"] == Decimal("100.00") and report["totals"]["estimated"] == 0

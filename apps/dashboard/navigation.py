@@ -391,13 +391,13 @@ def sidebar(request):
 
 
 def section_index(request, app_label, extra_context=None):
-    """The page behind a section in the breadcrumbs (e.g. /beheer/licences/): the menu section(s) with items in
+    """The page behind a section in the breadcrumbs (e.g. /admin/licences/): the menu section(s) with items in
     that part of the admin, with the same names, icons and rights as the sidebar, instead of Django's list of
     all tables of the app."""
     from django.contrib import admin
     from django.template.response import TemplateResponse
 
-    prefix = f"/beheer/{app_label}/"
+    prefix = f"/admin/{app_label}/"
     sections = []
     for section in sidebar(request):
         items = [i for i in section["items"] if not i.get("permission") or i["permission"](request)]

@@ -155,7 +155,7 @@ class DatabaseUpdateMiddleware:
                     error = _("The update failed. The details are in the log (docker compose logs web).")
                 else:
                     setup_code.forget()
-                    return redirect("/beheer/")
+                    return redirect("/admin/")
         html = render_to_string("setup/update.html", {
             "pending": database_state.pending(), "error": error, "code_from_env": setup_code.from_env(),
             "update_path": UPDATE_PATH,
@@ -166,7 +166,7 @@ class DatabaseUpdateMiddleware:
 class FirstRunMiddleware:
     """Runs after the site settings and authentication middleware."""
 
-    ALLOWED = ("/static/", "/media/", "/taal/", WIZARD_PATH, "/beheer/login/")
+    ALLOWED = ("/static/", "/media/", "/taal/", WIZARD_PATH, "/admin/login/")
 
     def __init__(self, get_response):
         self.get_response = get_response

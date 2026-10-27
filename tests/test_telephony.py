@@ -66,7 +66,7 @@ def test_admin_pages_and_printing_is_read_only(client, site, phones, beheerder):
     client.force_login(beheerder)
     for url in ("telephony/quote", "telephony/item", "telephony/category", "printing/printquote", "printing/printer",
                 "printing/printcontract", "printing/suppliesorder", "printing/consumable", "printing/supportplan"):
-        assert client.get(f"/beheer/{url}/").status_code == 200, url
-    assert client.get("/beheer/printing/printquote/add/").status_code == 403
-    page = client.get(f"/beheer/customers/customer/{phones['customer'].pk}/change/").content.decode()
+        assert client.get(f"/admin/{url}/").status_code == 200, url
+    assert client.get("/admin/printing/printquote/add/").status_code == 403
+    page = client.get(f"/admin/customers/customer/{phones['customer'].pk}/change/").content.decode()
     assert "Kantoor" in page

@@ -98,7 +98,7 @@ PackDesk zelf maakt, verdwijnt na gebruik.
 
 ## 4. Verder inrichten
 
-In het beheer (`/beheer/`):
+In het beheer (`/admin/`):
 
 1. **Instellingen:** kleuren, adressen, homepage, bedrijfsgegevens (KvK, btw, IBAN).
 2. **Catalogus:** categorieën, merken, apparaattypes en servicepakketten met prijzen.
