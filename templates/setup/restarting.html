@@ -10,8 +10,8 @@
 <script>
   // Try again until the restarted PackDesk answers, then continue with the wizard.
   setTimeout(function poll() {
-    fetch("/installatie/", {cache: "no-store"})
-      .then(function (r) { if (r.ok) { location.href = "/installatie/"; } else { setTimeout(poll, 2000); } })
+    fetch("/setup/", {cache: "no-store"})
+      .then(function (r) { if (r.ok) { location.href = "/setup/"; } else { setTimeout(poll, 2000); } })
       .catch(function () { setTimeout(poll, 2000); });
   }, 3000);
 </script>

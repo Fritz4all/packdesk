@@ -65,7 +65,7 @@ def test_markup_like_the_old_shop(db):
 
 def test_customer_sends_a_request(client, site, parts):
     client.force_login(parts["user"])
-    response = client.post("/mijn/onderdelen/aanvragen/", request_post(parts["vendor"]))
+    response = client.post("/my/parts/request/", request_post(parts["vendor"]))
     request = PartRequest.objects.get()
     assert response.status_code == 302 and request.number.startswith("WS17000") and request.created_by == parts["user"]
     assert request.lines.get().quantity == 2 and request.status == PartRequest.Status.TO_HANDLE
@@ -74,7 +74,7 @@ def test_customer_sends_a_request(client, site, parts):
 
 def test_urgent_request_needs_an_address(client, site, parts):
     client.force_login(parts["user"])
-    response = client.post("/mijn/onderdelen/aanvragen/", request_post(parts["vendor"], urgent="on"))
+    response = client.post("/my/parts/request/", request_post(parts["vendor"], urgent="on"))
     assert response.status_code == 200 and not PartRequest.objects.exists()
 
 
@@ -91,30 +91,30 @@ def test_answer_logs_and_emails_once(parts):
 def test_order_totals_invoice_and_mail(client, site, parts):
     request = answered_request(parts)
     client.force_login(parts["user"])
-    review = client.post(f"/mijn/onderdelen/aanvraag/{request.pk}/", order_post(request))
+    review = client.post(f"/my/parts/requests/{request.pk}/", order_post(request))
     order = review.context["order"]
     # 2 × € 20 = 40, 10% discount = 36, small order surcharge 15 = 51, VAT 21% = 10.71
     assert (order.gross, order.discount, order.small_order_costs, order.net, order.vat, order.total) == (
         Decimal("40.00"), Decimal("4.00"), Decimal("15.00"), Decimal("51.00"), Decimal("10.71"), Decimal("61.71"))
-    response = client.post(f"/mijn/onderdelen/aanvraag/{request.pk}/",
+    response = client.post(f"/my/parts/requests/{request.pk}/",
                            {"action": "confirm", "payload": review.context["payload"]})
     order = PartOrder.objects.get()
     assert response.status_code == 302 and order.number == "WS17000AA-1" and order.status == PartOrder.Status.TO_DELIVER
     invoice = Invoice.objects.get(part_order=order)
     assert invoice.total == Decimal("61.71") and invoice.gross == Decimal("55.00")  # parts + surcharge
-    assert invoice.lines.count() == 2 and client.get(f"/mijn/onderdelen/bestelling/{order.pk}/").status_code == 200
+    assert invoice.lines.count() == 2 and client.get(f"/my/parts/orders/{order.pk}/").status_code == 200
 
 
 def test_tampered_or_foreign_requests_are_refused(client, site, parts):
     request = answered_request(parts)
     client.force_login(parts["user"])
-    response = client.post(f"/mijn/onderdelen/aanvraag/{request.pk}/", {"action": "confirm", "payload": "x"})
+    response = client.post(f"/my/parts/requests/{request.pk}/", {"action": "confirm", "payload": "x"})
     assert response.status_code == 302 and not PartOrder.objects.exists()
     other = Customer.objects.create(name="Ander", number="10", status=Customer.Status.ACTIVE)
     other_user = make_user("ander@x.test")
     Contact.objects.create(customer=other, user=other_user, last_name="A", email=other_user.email)
     client.force_login(other_user)
-    assert client.get(f"/mijn/onderdelen/aanvraag/{request.pk}/").status_code == 404
+    assert client.get(f"/my/parts/requests/{request.pk}/").status_code == 404
 
 
 def test_abroad_costs_and_no_vat(client, site, parts):
@@ -122,7 +122,7 @@ def test_abroad_costs_and_no_vat(client, site, parts):
     CustomerAddress.objects.create(customer=parts["customer"], kind="invoice", line1="Rue 1", postal_code="1000",
                                    city="Brussel", country=parts["be"])
     client.force_login(parts["user"])
-    order = client.post(f"/mijn/onderdelen/aanvraag/{request.pk}/",
+    order = client.post(f"/my/parts/requests/{request.pk}/",
                         order_post(request, delivery_country="België")).context["order"]
     assert order.delivery_costs == Decimal("18.00") and order.vat_rate == 0 and order.total == order.net
 
@@ -133,12 +133,12 @@ def test_large_or_prepaid_orders_wait(client, site, parts):
     rules.approval_limit = Decimal("50")
     rules.save()
     client.force_login(parts["user"])
-    review = client.post(f"/mijn/onderdelen/aanvraag/{request.pk}/", order_post(request))
-    client.post(f"/mijn/onderdelen/aanvraag/{request.pk}/", {"action": "confirm", "payload": review.context["payload"]})
+    review = client.post(f"/my/parts/requests/{request.pk}/", order_post(request))
+    client.post(f"/my/parts/requests/{request.pk}/", {"action": "confirm", "payload": review.context["payload"]})
     assert PartOrder.objects.get().status == PartOrder.Status.AWAITING_APPROVAL
-    review = client.post(f"/mijn/onderdelen/aanvraag/{request.pk}/", order_post(
+    review = client.post(f"/my/parts/requests/{request.pk}/", order_post(
         request, payment_method=PaymentMethod.objects.get(code="proforma").pk))
-    client.post(f"/mijn/onderdelen/aanvraag/{request.pk}/", {"action": "confirm", "payload": review.context["payload"]})
+    client.post(f"/my/parts/requests/{request.pk}/", {"action": "confirm", "payload": review.context["payload"]})
     assert PartOrder.objects.get(number="WS17000AA-2").status == PartOrder.Status.AWAITING_PAYMENT
 
 

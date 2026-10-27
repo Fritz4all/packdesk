@@ -63,7 +63,7 @@ def test_fixed_dark_theme_without_switch(client, site):
 
 
 def test_theme_switch_is_translated(client, site):
-    client.post("/taal/", {"language": "de", "next": "/"})
+    client.post("/language/", {"language": "de", "next": "/"})
     page = client.get("/").content.decode()
     assert "Hell" in page and "Dunkel" in page
 
@@ -82,6 +82,6 @@ def test_address_specific_contact_details(site):
 
 
 def test_login_page_shows_site_name_not_host(client, site):
-    page = client.get("/inloggen/").content.decode()
+    page = client.get("/login/").content.decode()
     assert "Testshop" in page
     assert "testserver" not in page

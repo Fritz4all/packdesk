@@ -7,7 +7,7 @@ from .conftest import PASSWORD, make_user
 
 
 def login(client, email, password=PASSWORD):
-    return client.post("/inloggen/", {"username": email, "password": password})
+    return client.post("/login/", {"username": email, "password": password})
 
 
 def test_login_with_email_is_case_insensitive(client, site):
@@ -41,12 +41,12 @@ def test_email_is_unique_regardless_of_case(db):
 
 
 def test_dashboard_requires_login(client, site):
-    assert client.get("/mijn/").status_code == 302
+    assert client.get("/my/").status_code == 302
 
 
 def test_logout(client, site):
     client.force_login(make_user("uit@example.test"))
-    client.post("/uitloggen/")
+    client.post("/logout/")
     assert "_auth_user_id" not in client.session
 
 

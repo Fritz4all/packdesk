@@ -5548,10 +5548,10 @@ msgstr "Link"
 
 #: apps/siteconfig/models.py:311
 msgid ""
-"Page address, e.g. /mijn/ or https://…; or just mailto: for an email to the "
+"Page address, e.g. /my/ or https://…; or just mailto: for an email to the "
 "general email address, with the title as subject."
 msgstr ""
-"Seitenadresse, z. B. /mijn/ oder https://…; oder nur mailto: für eine E-Mail "
+"Seitenadresse, z. B. /my/ oder https://…; oder nur mailto: für eine E-Mail "
 "an die allgemeine E-Mail-Adresse, mit dem Titel als Betreff."
 
 #: apps/siteconfig/models.py:315 apps/siteconfig/models.py:346
@@ -5567,8 +5567,8 @@ msgid "home page blocks"
 msgstr "Startseitenblöcke"
 
 #: apps/siteconfig/models.py:344
-msgid "Page address, e.g. /mijn/ or https://…"
-msgstr "Seitenadresse, z. B. /mijn/ oder https://…"
+msgid "Page address, e.g. /my/ or https://…"
+msgstr "Seitenadresse, z. B. /my/ oder https://…"
 
 #: apps/siteconfig/models.py:345
 msgid "open in new tab"
@@ -5828,8 +5828,12 @@ msgid "Error 400"
 msgstr "Fehler 400"
 
 #: templates/400.html:7
-msgid "Something in the request was not right, for example an unknown web address. Try again from the home page."
-msgstr "Etwas an der Anfrage stimmte nicht, zum Beispiel eine unbekannte Webadresse. Versuchen Sie es erneut von der Startseite aus."
+msgid ""
+"Something in the request was not right, for example an unknown web address. "
+"Try again from the home page."
+msgstr ""
+"Etwas an der Anfrage stimmte nicht, zum Beispiel eine unbekannte Webadresse. "
+"Versuchen Sie es erneut von der Startseite aus."
 
 #: templates/403.html:3 templates/403.html:6
 msgid "No access"
@@ -5840,8 +5844,12 @@ msgid "Error 403"
 msgstr "Fehler 403"
 
 #: templates/403.html:7
-msgid "Your account does not have access to this page. Ask an administrator if you need it."
-msgstr "Ihr Konto hat keinen Zugriff auf diese Seite. Fragen Sie einen Administrator, wenn Sie ihn benötigen."
+msgid ""
+"Your account does not have access to this page. Ask an administrator if you "
+"need it."
+msgstr ""
+"Ihr Konto hat keinen Zugriff auf diese Seite. Fragen Sie einen "
+"Administrator, wenn Sie ihn benötigen."
 
 #: templates/403.html:7
 msgid "Log in to see this page."
@@ -5856,8 +5864,12 @@ msgid "Error 404"
 msgstr "Fehler 404"
 
 #: templates/404.html:7
-msgid "This page does not exist (any more). Check the address, or go to the home page."
-msgstr "Diese Seite existiert nicht (mehr). Prüfen Sie die Adresse oder gehen Sie zur Startseite."
+msgid ""
+"This page does not exist (any more). Check the address, or go to the home "
+"page."
+msgstr ""
+"Diese Seite existiert nicht (mehr). Prüfen Sie die Adresse oder gehen Sie "
+"zur Startseite."
 
 #: templates/500.html:9 templates/500.html:19
 msgid "Something went wrong"
@@ -5868,8 +5880,12 @@ msgid "Error 500"
 msgstr "Fehler 500"
 
 #: templates/500.html:20
-msgid "This is our fault, not yours. Try again in a moment. If it keeps happening, let us know what you were doing."
-msgstr "Das liegt an uns, nicht an Ihnen. Versuchen Sie es gleich noch einmal. Wenn es weiterhin passiert, teilen Sie uns mit, was Sie gerade getan haben."
+msgid ""
+"This is our fault, not yours. Try again in a moment. If it keeps happening, "
+"let us know what you were doing."
+msgstr ""
+"Das liegt an uns, nicht an Ihnen. Versuchen Sie es gleich noch einmal. Wenn "
+"es weiterhin passiert, teilen Sie uns mit, was Sie gerade getan haben."
 
 #: templates/500.html:22 templates/errors/_page.html:14
 msgid "To the home page"

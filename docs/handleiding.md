@@ -49,7 +49,7 @@ Het beheer staat op `/admin/`. Wat een medewerker ziet en mag, hangt af van zijn
   - *Login sturen naar contactpersonen zonder login* stuurt een uitnodiging met een link om zelf een
     wachtwoord te kiezen. PackDesk mailt nooit wachtwoorden.
 - **Klantsoorten en landen** beheer je zelf, in drie talen. Per land kun je een btw-nummer verplicht maken.
-- **Aanmelden:** bedrijven melden zich zelf aan via `/aanmelden/`. Onder *Klantinstellingen* bepaal je
+- **Aanmelden:** bedrijven melden zich zelf aan via `/signup/`. Onder *Klantinstellingen* bepaal je
   of dat kan, welke teksten er staan, of je aanmeldingen eerst goedkeurt, wie een melding krijgt, de
   activeringsmail, de standaardkorting en per veld of het verborgen, optioneel of verplicht is.
 - **Exporteren en importeren:** *Exporteren* maakt een zip-bestand met klanten en alles wat erbij hoort
@@ -248,9 +248,9 @@ Ingelogde klanten zien *Mijn omgeving* met:
   orderbevestiging.
 - **Mijn licenties:** status en einddatum, filters en zoeken. Licenties die binnenkort aflopen hebben
   een knop *Verlengen*; de nieuwe licentie sluit aan op de oude.
-- **Licentie registreren** (`/registreren/`): een wizard van licentienummer via eindklant, reseller en
+- **Licentie registreren** (`/register/`): een wizard van licentienummer via eindklant, reseller en
   apparaat naar opties en controle. Het servicecertificaat gaat per mail naar de eindklant.
-- **Storing melden** (`/storing-melden/`): een licentie- of serienummer opzoeken vult apparaat en
+- **Storing melden** (`/report-fault/`): een licentie- of serienummer opzoeken vult apparaat en
   reseller in en laat zien of het apparaat onder contract valt; daarna de storing, de locatie en
   bijlagen. Melder en interne ontvangers krijgen een mail. Onder *Mijn storingsmeldingen* volgt de klant
   de afhandeling.

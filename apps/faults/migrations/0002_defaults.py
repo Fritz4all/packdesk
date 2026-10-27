@@ -46,9 +46,9 @@ def add(apps, schema_editor):
             setattr(obj, f"{field}_{lang}", text)
     obj.save()
     site, _ = SiteSettings.objects.get_or_create(pk=1)
-    if not HomeBlock.objects.filter(link_url="/storing-melden/").exists():
+    if not HomeBlock.objects.filter(link_url="/report-fault/").exists():
         HomeBlock.objects.create(
-            settings=site, icon="🛠", position=3, link_url="/storing-melden/",
+            settings=site, icon="🛠", position=3, link_url="/report-fault/",
             title="Storing melden", title_nl="Storing melden", title_en="Report a fault", title_de="Störung melden",
             text="Meld een hardwarestoring en volg de afhandeling.",
             text_nl="Meld een hardwarestoring en volg de afhandeling.",

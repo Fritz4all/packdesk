@@ -22,8 +22,8 @@ from . import database_state, server_setup, setup_code
 
 log = logging.getLogger(__name__)
 
-SERVER_PATH = "/installatie/database/"
-UPDATE_PATH = "/database-bijwerken/"
+SERVER_PATH = "/setup/database/"
+UPDATE_PATH = "/database-update/"
 NAME = re.compile(r"^[A-Za-z0-9_]{1,63}$")
 
 
@@ -124,7 +124,7 @@ class ServerSetupMiddleware:
         return False
 
 
-WIZARD_PATH = "/installatie/"
+WIZARD_PATH = "/setup/"
 
 
 class DatabaseUpdateMiddleware:
@@ -166,7 +166,7 @@ class DatabaseUpdateMiddleware:
 class FirstRunMiddleware:
     """Runs after the site settings and authentication middleware."""
 
-    ALLOWED = ("/static/", "/media/", "/taal/", WIZARD_PATH, "/admin/login/")
+    ALLOWED = ("/static/", "/media/", "/language/", WIZARD_PATH, "/admin/login/")
 
     def __init__(self, get_response):
         self.get_response = get_response

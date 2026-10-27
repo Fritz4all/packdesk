@@ -27,7 +27,7 @@ def phones(db):
 
 def test_calculator_counts_licences_and_compares_hire_with_buy(client, site, phones):
     client.force_login(phones["user"])
-    response = client.post("/mijn/telefonie/", {"action": "calculate", f"q-{phones['phone'].pk}": "4",
+    response = client.post("/my/telephony/", {"action": "calculate", f"q-{phones['phone'].pk}": "4",
                                                 f"q-{phones['licence'].pk}": "0", "margin_hire": "10", "margin_buy": "0"})
     totals = response.context["totals"]
     # hire: 4 × 2.60 + 4 × 5.90 = 34.00, + 10% = 2.86 + 6.49 each → 11.44 + 25.96
@@ -37,11 +37,11 @@ def test_calculator_counts_licences_and_compares_hire_with_buy(client, site, pho
 
 def test_save_quote_and_see_it(client, site, phones):
     client.force_login(phones["user"])
-    response = client.post("/mijn/telefonie/", {"action": "save", f"q-{phones['phone'].pk}": "2", "reference": "Kantoor",
+    response = client.post("/my/telephony/", {"action": "save", f"q-{phones['phone'].pk}": "2", "reference": "Kantoor",
                                                 "view": "reseller", "margin_hire": "10", "margin_buy": "10"})
     quote = Quote.objects.get()
     assert response.status_code == 302 and quote.customer == phones["customer"] and quote.lines.count() == 2
-    page = client.get(f"/mijn/telefonie/offertes/{quote.pk}/")
+    page = client.get(f"/my/telephony/quotes/{quote.pk}/")
     assert page.status_code == 200 and "Gebruikerslicentie" in page.content.decode()
     # Later price changes do not change a saved quote.
     Item.objects.filter(pk=phones["phone"].pk).update(hire_per_month=Decimal("99"))
@@ -50,15 +50,15 @@ def test_save_quote_and_see_it(client, site, phones):
 
 def test_calculator_off_or_other_customer(client, site, phones):
     client.force_login(phones["user"])
-    client.post("/mijn/telefonie/", {"action": "save", f"q-{phones['phone'].pk}": "1"})
+    client.post("/my/telephony/", {"action": "save", f"q-{phones['phone'].pk}": "1"})
     quote = Quote.objects.get()
     other = Customer.objects.create(name="Ander", number="6", status=Customer.Status.ACTIVE)
     other_user = make_user("ander@x.test")
     Contact.objects.create(customer=other, user=other_user, last_name="A", email=other_user.email)
     client.force_login(other_user)
-    assert client.get(f"/mijn/telefonie/offertes/{quote.pk}/").status_code == 404
+    assert client.get(f"/my/telephony/quotes/{quote.pk}/").status_code == 404
     TelephonySettings.objects.filter(pk=1).update(enabled=False)
-    assert client.get("/mijn/telefonie/").status_code == 403
+    assert client.get("/my/telephony/").status_code == 403
 
 
 def test_admin_pages_and_printing_is_read_only(client, site, phones, beheerder):

@@ -6,27 +6,27 @@ from .views import PasswordResetView
 
 urlpatterns = [
     path(
-        "inloggen/",
+        "login/",
         auth_views.LoginView.as_view(authentication_form=EmailAuthenticationForm, redirect_authenticated_user=True),
         name="login",
     ),
-    path("uitloggen/", auth_views.LogoutView.as_view(), name="logout"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path(
-        "wachtwoord-vergeten/",
+        "password-reset/",
         PasswordResetView.as_view(),
         name="password_reset",
     ),
-    path("wachtwoord-vergeten/verzonden/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path("password-reset/sent/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
     path(
-        "wachtwoord-instellen/<uidb64>/<token>/",
+        "set-password/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
     ),
-    path("wachtwoord-instellen/klaar/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
+    path("set-password/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path(
-        "mijn/wachtwoord/",
+        "my/password/",
         auth_views.PasswordChangeView.as_view(success_url=reverse_lazy("password_change_done")),
         name="password_change",
     ),
-    path("mijn/wachtwoord/gewijzigd/", auth_views.PasswordChangeDoneView.as_view(), name="password_change_done"),
+    path("my/password/changed/", auth_views.PasswordChangeDoneView.as_view(), name="password_change_done"),
 ]

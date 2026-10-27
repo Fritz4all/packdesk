@@ -281,10 +281,10 @@ def test_selected_contacts_must_choose_a_new_password(client, site):
     client.force_login(make_user("root@example.test", superuser=True))
     client.post("/admin/customers/contact/", {"action": "send_password_reset", "_selected_action": [contact.pk]})
     user.refresh_from_db()
-    assert not user.has_usable_password() and len(mail.outbox) == 1 and "/wachtwoord-instellen/" in mail.outbox[0].body
+    assert not user.has_usable_password() and len(mail.outbox) == 1 and "/set-password/" in mail.outbox[0].body
     # An expired link is no dead end: "forgot password" works for this account.
     client.logout()
-    client.post("/wachtwoord-vergeten/", {"email": "klant@example.test"})
+    client.post("/password-reset/", {"email": "klant@example.test"})
     assert len(mail.outbox) == 2
 
 

@@ -308,7 +308,7 @@ class HomeBlock(models.Model):
     text = models.TextField(_("text"), blank=True)
     link_url = models.CharField(
         _("link"), max_length=300, blank=True,
-        help_text=_("Page address, e.g. /mijn/ or https://…; or just mailto: for an email to the general email "
+        help_text=_("Page address, e.g. /my/ or https://…; or just mailto: for an email to the general email "
                     "address, with the title as subject."),
     )
     link_text = models.CharField(_("link text"), max_length=60, blank=True)
@@ -341,7 +341,7 @@ class MenuItem(models.Model):
 
     settings = models.ForeignKey(SiteSettings, on_delete=models.CASCADE, related_name="menu_items")
     label = models.CharField(_("text"), max_length=60)
-    url = models.CharField(_("link"), max_length=300, help_text=_("Page address, e.g. /mijn/ or https://…"))
+    url = models.CharField(_("link"), max_length=300, help_text=_("Page address, e.g. /my/ or https://…"))
     new_tab = models.BooleanField(_("open in new tab"), default=False)
     visibility = models.CharField(_("visible for"), max_length=12, choices=Visibility.choices, default=Visibility.ALL)
     is_active = models.BooleanField(_("active"), default=True)

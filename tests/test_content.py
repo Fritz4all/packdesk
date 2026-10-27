@@ -40,7 +40,7 @@ def test_menu_items_in_header(client, site):
 
 def test_translated_block_title(client, site):
     block = HomeBlock.objects.create(settings=site, title_nl="Hallo", title_de="Guten Tag")
-    client.post("/taal/", {"language": "de", "next": "/"})
+    client.post("/language/", {"language": "de", "next": "/"})
     assert block.title_de in client.get("/").content.decode()
 
 
@@ -92,15 +92,15 @@ def test_maintenance_page_for_visitors(client, site):
 def test_login_blocked_during_maintenance(client, site):
     make_user("klant@example.test")
     maintenance_on(site)
-    assert client.get("/inloggen/").status_code == 503
-    client.post("/inloggen/", {"username": "klant@example.test", "password": PASSWORD})
+    assert client.get("/login/").status_code == 503
+    client.post("/login/", {"username": "klant@example.test", "password": PASSWORD})
     assert "_auth_user_id" not in client.session
 
 
 def test_logged_in_customer_is_logged_out(client, site):
     client.force_login(make_user("klant@example.test"))
     maintenance_on(site)
-    assert client.get("/mijn/").status_code == 503
+    assert client.get("/my/").status_code == 503
     assert "_auth_user_id" not in client.session
 
 
@@ -148,3 +148,12 @@ def test_friendly_error_pages(client, site, settings):
 def test_old_admin_addresses_lead_to_the_new_ones(client, site):
     assert client.get("/beheer/customers/customer/?q=a")["Location"] == "/admin/customers/customer/?q=a"
     assert client.get("/beheer/vergelijken/3/zoeken/")["Location"] == "/admin/compare/3/search/"
+
+
+def test_old_dutch_website_addresses_lead_to_the_english_ones(client, site):
+    assert client.get("/inloggen/")["Location"] == "/login/"
+    assert client.get("/mijn/bestellingen/12/?x=1")["Location"] == "/my/orders/12/?x=1"
+    assert client.get("/wachtwoord-instellen/MQ/abc-klaar/")["Location"] == "/set-password/MQ/abc-klaar/"
+    posted = client.post("/storing-melden/", {"a": "b"})
+    assert posted.status_code == 308 and posted["Location"] == "/report-fault/"  # form data kept
+    assert client.get("/over-ons/").status_code == 404  # unknown addresses are not touched

@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='homeblock',
             name='link_url',
-            field=models.CharField(blank=True, help_text='Page address, e.g. /mijn/ or https://…; or just mailto: for an email to the general email address, with the title as subject.', max_length=300, verbose_name='link'),
+            field=models.CharField(blank=True, help_text='Page address, e.g. /my/ or https://…; or just mailto: for an email to the general email address, with the title as subject.', max_length=300, verbose_name='link'),
         ),
         migrations.RunPython(add_info_links, migrations.RunPython.noop),
     ]

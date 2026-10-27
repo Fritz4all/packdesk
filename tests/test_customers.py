@@ -48,8 +48,8 @@ def test_default_types_and_countries(db):
 # --- sign-up form ------------------------------------------------------------------
 
 def test_signup_creates_pending_customer(client, signup_settings):
-    response = client.post("/aanmelden/", signup_data())
-    assert response.status_code == 302 and response["Location"] == "/aanmelden/verzonden/"
+    response = client.post("/signup/", signup_data())
+    assert response.status_code == 302 and response["Location"] == "/signup/sent/"
     customer = Customer.objects.get(name="Nieuwe Reseller BV")
     assert customer.status == Customer.Status.PENDING and customer.number is None
     assert customer.signup_message == "Graag!"
@@ -61,35 +61,35 @@ def test_signup_creates_pending_customer(client, signup_settings):
 
 
 def test_pending_customer_cannot_log_in(client, signup_settings):
-    client.post("/aanmelden/", signup_data())
-    client.post("/inloggen/", {"username": "jan@reseller.test", "password": "Een-lang-wachtwoord-42"})
+    client.post("/signup/", signup_data())
+    client.post("/login/", {"username": "jan@reseller.test", "password": "Een-lang-wachtwoord-42"})
     assert "_auth_user_id" not in client.session
 
 
 def test_signup_without_approval_is_active_at_once(client, signup_settings):
     signup_settings.require_approval = False
     signup_settings.save()
-    client.post("/aanmelden/", signup_data())
+    client.post("/signup/", signup_data())
     customer = Customer.objects.get(name="Nieuwe Reseller BV")
     assert customer.status == Customer.Status.ACTIVE and customer.number == "1"
     assert customer.contacts.get().user.is_active
 
 
 def test_vat_number_required_for_foreign_country(client, signup_settings):
-    response = client.post("/aanmelden/", signup_data(country=Country.objects.get(code="BE").pk))
+    response = client.post("/signup/", signup_data(country=Country.objects.get(code="BE").pk))
     assert response.status_code == 200 and "een btw-nummer verplicht" in response.content.decode()
 
 
 def test_duplicate_email_rejected(client, signup_settings):
     make_user("jan@reseller.test")
-    response = client.post("/aanmelden/", signup_data())
+    response = client.post("/signup/", signup_data())
     assert response.status_code == 200 and not Customer.objects.exists()
 
 
 def test_bots_are_rejected(client, signup_settings):
-    client.post("/aanmelden/", signup_data(homepage="http://spam.test"))
-    client.post("/aanmelden/", signup_data(started=signing.dumps(time.time())))
-    client.post("/aanmelden/", signup_data(started="forged"))
+    client.post("/signup/", signup_data(homepage="http://spam.test"))
+    client.post("/signup/", signup_data(started=signing.dumps(time.time())))
+    client.post("/signup/", signup_data(started="forged"))
     assert not Customer.objects.exists()
 
 
@@ -97,29 +97,29 @@ def test_field_modes_are_applied(client, signup_settings):
     signup_settings.field_phone = "hidden"
     signup_settings.field_coc_number = "required"
     signup_settings.save()
-    page = client.get("/aanmelden/").content.decode()
+    page = client.get("/signup/").content.decode()
     assert 'name="phone"' not in page and 'name="coc_number"' in page
-    response = client.post("/aanmelden/", signup_data())
+    response = client.post("/signup/", signup_data())
     assert response.status_code == 200  # KvK now required
-    assert client.post("/aanmelden/", signup_data(coc_number="12345678")).status_code == 302
+    assert client.post("/signup/", signup_data(coc_number="12345678")).status_code == 302
 
 
 def test_signup_disabled(client, signup_settings):
     signup_settings.enabled = False
     signup_settings.save()
-    assert client.get("/aanmelden/").status_code == 404
-    assert 'href="/aanmelden/"' not in client.get("/inloggen/").content.decode()
+    assert client.get("/signup/").status_code == 404
+    assert 'href="/signup/"' not in client.get("/login/").content.decode()
 
 
 def test_signup_texts_per_language(client, signup_settings):
-    client.post("/taal/", {"language": "de", "next": "/"})
-    assert "Reseller werden" in client.get("/aanmelden/").content.decode()
+    client.post("/language/", {"language": "de", "next": "/"})
+    assert "Reseller werden" in client.get("/signup/").content.decode()
 
 
 # --- approval in the admin ------------------------------------------------------
 
 def test_approve_gives_number_activates_and_mails(client, signup_settings, beheerder):
-    client.post("/aanmelden/", signup_data())
+    client.post("/signup/", signup_data())
     customer = Customer.objects.get()
     NumberSequence.objects.filter(key="customer").update(pattern="D{nr:5}", next_number=900)
     mail.outbox.clear()
@@ -151,7 +151,7 @@ def test_invite_creates_login_and_sends_link(client, site, beheerder):
     client.post(f"{CUSTOMERS}{customer.pk}/action/invite/")
     user = User.objects.get(email="piet@klant.test")
     assert user.kind == "customer" and not user.has_usable_password()
-    assert "/wachtwoord-instellen/" in mail.outbox[0].body
+    assert "/set-password/" in mail.outbox[0].body
     # The link lets the customer choose a password.
     link = mail.outbox[0].body.split("http://testserver")[1].split()[0]
     response = client.get(link, follow=True)
@@ -195,25 +195,25 @@ def test_customer_sees_and_edits_own_details(client, site):
     user = make_user("ik@bedrijf.test")
     Contact.objects.create(customer=customer, user=user, last_name="Oud", email=user.email)
     client.force_login(user)
-    assert "Mijn Bedrijf" in client.get("/mijn/").content.decode()
-    page = client.get("/mijn/gegevens/").content.decode()
+    assert "Mijn Bedrijf" in client.get("/my/").content.decode()
+    page = client.get("/my/details/").content.decode()
     assert "Mijn Bedrijf" in page and "77" in page
-    client.post("/mijn/gegevens/", {"last_name": "Nieuw", "first_name": "Ik"})
+    client.post("/my/details/", {"last_name": "Nieuw", "first_name": "Ik"})
     user.refresh_from_db()
     assert user.last_name == "Nieuw" and Contact.objects.get(user=user).last_name == "Nieuw"
 
 
 def test_password_reset_email(client, site):
     make_user("vergeten@example.test")
-    client.post("/wachtwoord-vergeten/", {"email": "vergeten@example.test"})
-    assert len(mail.outbox) == 1 and "/wachtwoord-instellen/" in mail.outbox[0].body
+    client.post("/password-reset/", {"email": "vergeten@example.test"})
+    assert len(mail.outbox) == 1 and "/set-password/" in mail.outbox[0].body
     assert site.name in mail.outbox[0].subject
 
 
 def test_password_change(client, site):
     user = make_user("wijzig@example.test")
     client.force_login(user)
-    client.post("/mijn/wachtwoord/", {"old_password": "correct-horse-battery", "new_password1": "Heel-nieuw-wachtwoord-1",
+    client.post("/my/password/", {"old_password": "correct-horse-battery", "new_password1": "Heel-nieuw-wachtwoord-1",
                                      "new_password2": "Heel-nieuw-wachtwoord-1"})
     user.refresh_from_db()
     assert user.check_password("Heel-nieuw-wachtwoord-1")
@@ -221,7 +221,7 @@ def test_password_change(client, site):
 
 def test_signup_texts_in_default_language(client, signup_settings):
     """Regression: a translated text equal to the field default fell back to English."""
-    page = client.get("/aanmelden/").content.decode()
+    page = client.get("/signup/").content.decode()
     assert "<h1>Reseller worden</h1>" in page and "Become a reseller" not in page
 
 

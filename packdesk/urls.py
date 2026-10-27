@@ -1,8 +1,6 @@
-import re
-
 from django.conf import settings
 from django.contrib import admin
-from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
+from django.http import Http404, HttpResponse
 from django.template import loader
 from django.urls import include, path, re_path
 from django.views.i18n import set_language
@@ -10,6 +8,7 @@ from django.views.static import serve
 
 from apps.accounts import views as account_views
 from apps.accounts.forms import EmailAdminAuthenticationForm
+from apps.core import old_addresses
 from apps.dashboard import navigation as dashboard_navigation
 from apps.dashboard import reports as dashboard_reports
 from apps.dashboard import views as dashboard_views
@@ -18,18 +17,6 @@ from apps.legacy import views as legacy_views
 
 admin.site.login_form = EmailAdminAuthenticationForm
 admin.site.app_index = dashboard_navigation.section_index  # section pages follow the menu
-
-
-def old_admin_address(request, rest=""):
-    """The admin used to be at /beheer/ with Dutch sub-addresses; old links and bookmarks still work."""
-    for old, new in (("importeren/verslag/", "import/report/"), ("vergelijken/", "compare/"),
-                     ("importeren/", "import/"), ("rapportage/", "reports/"), ("taal/", "language/")):
-        if rest.startswith(old):
-            rest = new + rest[len(old):]
-            break
-    rest = re.sub(r"^(compare/\d+/)zoeken/", r"\1search/", rest)
-    query = request.META.get("QUERY_STRING")
-    return HttpResponsePermanentRedirect(f"/admin/{rest}" + (f"?{query}" if query else ""))
 
 
 def preview_error_page(request, code):
@@ -54,8 +41,9 @@ urlpatterns = [
     path("admin/language/", account_views.set_admin_language, name="admin_language"),
     path("admin/reports/", dashboard_reports.report_view, name="reports"),
     path("admin/", admin.site.urls),
-    re_path(r"^beheer(?:/(?P<rest>.*))?$", old_admin_address),
-    path("taal/", set_language, name="set_language"),
+    # Old Dutch addresses (/beheer/, /inloggen/, /mijn/... ) lead to the English ones.
+    re_path(old_addresses.PATTERN, old_addresses.redirect_old_address),
+    path("language/", set_language, name="set_language"),
     path("", include("apps.accounts.urls")),
     path("", include("apps.customers.urls")),
     path("", include("apps.licences.urls")),

@@ -66,8 +66,8 @@ def test_default_options_and_texts(db):
 
 def test_report_without_licence(client, site):
     FaultSettings.objects.filter(pk=1).update(recipients="service@example.test", cc="chef@example.test")
-    response = client.post("/storing-melden/", form_data())
-    assert response.status_code == 302 and response["Location"] == "/storing-melden/verzonden/"
+    response = client.post("/report-fault/", form_data())
+    assert response.status_code == 302 and response["Location"] == "/report-fault/sent/"
     fault = FaultReport.objects.get()
     assert fault.number == "1" and fault.status == "new" and not fault.is_covered and fault.licence is None
     report, confirmation = mail.outbox
@@ -77,27 +77,27 @@ def test_report_without_licence(client, site):
 
 
 def test_lookup_fills_device_and_shows_cover(client, site, registered):
-    page = client.post("/storing-melden/", {"action": "lookup", "lookup": registered.full_number}).content.decode()
+    page = client.post("/report-fault/", {"action": "lookup", "lookup": registered.full_number}).content.decode()
     assert 'value="CZJ123"' in page and 'value="Reseller BV"' in page
     assert "message-success" in page
 
 
 def test_lookup_by_option_serial(client, site, registered):
-    page = client.post("/storing-melden/", {"action": "lookup", "lookup": "czj123/001"}).content.decode()
+    page = client.post("/report-fault/", {"action": "lookup", "lookup": "czj123/001"}).content.decode()
     assert 'value="CZJ123/001"' in page and 'value="1 TB"' in page
 
 
 def test_expired_licence_is_reported_as_not_covered(client, site, registered):
     Licence.objects.filter(pk=registered.pk).update(end_date=TODAY - datetime.timedelta(days=1))
-    page = client.post("/storing-melden/", {"action": "lookup", "lookup": "CZJ123"}).content.decode()
+    page = client.post("/report-fault/", {"action": "lookup", "lookup": "CZJ123"}).content.decode()
     assert "message-error" in page
-    client.post("/storing-melden/", form_data(serial_nr="CZJ123"))
+    client.post("/report-fault/", form_data(serial_nr="CZJ123"))
     fault = FaultReport.objects.get()
     assert fault.licence == registered and not fault.is_covered
 
 
 def test_covered_report_links_licence_and_customer(client, site, registered):
-    client.post("/storing-melden/", form_data(serial_nr="CZJ123", lookup=registered.full_number))
+    client.post("/report-fault/", form_data(serial_nr="CZJ123", lookup=registered.full_number))
     fault = FaultReport.objects.get()
     assert fault.licence == registered and fault.customer == registered.customer and fault.is_covered
     assert "UNDER CONTRACT" in mail.outbox[0].subject or "ONDER CONTRACT" in mail.outbox[0].subject
@@ -106,15 +106,15 @@ def test_covered_report_links_licence_and_customer(client, site, registered):
 def test_attachments_are_stored_privately_and_mailed(client, site, beheerder):
     data = form_data()
     data["attachments"] = [SimpleUploadedFile("foto.jpg", b"jpgdata", content_type="image/jpeg")]
-    client.post("/storing-melden/", data)
+    client.post("/report-fault/", data)
     item = FaultAttachment.objects.get()
     assert item.name == "foto.jpg" and item.size == 7
     assert mail.outbox[0].attachments[0][0] == "foto.jpg"
-    assert client.get(f"/storing-bijlage/{item.pk}/").status_code == 302  # not logged in → login page
+    assert client.get(f"/fault-attachment/{item.pk}/").status_code == 302  # not logged in → login page
     client.force_login(make_user("klant@example.test"))
-    assert client.get(f"/storing-bijlage/{item.pk}/").status_code == 302  # customers are not staff
+    assert client.get(f"/fault-attachment/{item.pk}/").status_code == 302  # customers are not staff
     client.force_login(beheerder)
-    response = client.get(f"/storing-bijlage/{item.pk}/")
+    response = client.get(f"/fault-attachment/{item.pk}/")
     assert response.status_code == 200 and b"".join(response.streaming_content) == b"jpgdata"
 
 
@@ -122,14 +122,14 @@ def test_attachment_limits(client, site):
     FaultSettings.objects.filter(pk=1).update(max_attachments=1, max_attachment_mb=1)
     data = form_data()
     data["attachments"] = [SimpleUploadedFile("a.txt", b"a"), SimpleUploadedFile("b.txt", b"b")]
-    assert client.post("/storing-melden/", data).status_code == 200
+    assert client.post("/report-fault/", data).status_code == 200
     data["attachments"] = [SimpleUploadedFile("big.bin", b"x" * (1024 * 1024 + 1))]
-    assert client.post("/storing-melden/", data).status_code == 200
+    assert client.post("/report-fault/", data).status_code == 200
     assert not FaultReport.objects.exists()
 
 
 def test_required_fields(client, site):
-    response = client.post("/storing-melden/", form_data(location_email="", description=""))
+    response = client.post("/report-fault/", form_data(location_email="", description=""))
     assert response.status_code == 200 and not FaultReport.objects.exists()
 
 
@@ -137,20 +137,20 @@ def test_logged_in_customer_gets_prefilled_form_and_list(client, site, registere
     user = make_user("ik@reseller.test")
     Contact.objects.create(customer=registered.customer, user=user, last_name="Ik", email=user.email)
     client.force_login(user)
-    assert 'value="Reseller BV"' in client.get("/storing-melden/").content.decode()
-    client.post("/storing-melden/", form_data())
+    assert 'value="Reseller BV"' in client.get("/report-fault/").content.decode()
+    client.post("/report-fault/", form_data())
     fault = FaultReport.objects.get()
     assert fault.customer == registered.customer and fault.reported_by == user
-    assert fault.number in client.get("/mijn/storingen/").content.decode()
+    assert fault.number in client.get("/my/faults/").content.decode()
 
 
 def test_disabled_form(client, site):
     FaultSettings.objects.filter(pk=1).update(enabled=False)
-    assert client.get("/storing-melden/").status_code == 404
+    assert client.get("/report-fault/").status_code == 404
 
 
 def test_admin_status_actions(client, site, beheerder):
-    client.post("/storing-melden/", form_data())
+    client.post("/report-fault/", form_data())
     fault = FaultReport.objects.get()
     client.force_login(beheerder)
     page = client.get(f"/admin/faults/faultreport/{fault.pk}/change/").content.decode()
@@ -161,4 +161,4 @@ def test_admin_status_actions(client, site, beheerder):
 
 
 def test_home_page_links_to_fault_form(client, site):
-    assert 'href="/storing-melden/"' in client.get("/").content.decode()
+    assert 'href="/report-fault/"' in client.get("/").content.decode()

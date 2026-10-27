@@ -5,7 +5,7 @@ from apps.siteconfig.models import SiteSettings
 
 
 def switch(client, language):
-    return client.post("/taal/", {"language": language, "next": "/"})
+    return client.post("/language/", {"language": language, "next": "/"})
 
 
 def test_three_languages_are_configured():

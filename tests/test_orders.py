@@ -46,7 +46,7 @@ def order_post(lines, **extra):
 
 def test_review_shows_totals_like_old_shop(client, site, shop):
     client.force_login(shop["user"])
-    response = client.post("/mijn/bestellen/", order_post([(shop["new"], 2), (shop["ext"], 1)]))
+    response = client.post("/my/order/", order_post([(shop["new"], 2), (shop["ext"], 1)]))
     totals = response.context["totals"]
     assert totals["gross"] == Decimal("240.00")
     assert totals["discount"] == Decimal("24.00")  # customer discount 10 %
@@ -58,9 +58,9 @@ def test_review_shows_totals_like_old_shop(client, site, shop):
 
 def test_confirm_places_order_with_licences_and_mail(client, site, shop):
     client.force_login(shop["user"])
-    payload = client.post("/mijn/bestellen/", order_post([(shop["new"], 2)])).context["payload"]
-    response = client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload})
-    assert response["Location"] == "/mijn/bestellen/geplaatst/"
+    payload = client.post("/my/order/", order_post([(shop["new"], 2)])).context["payload"]
+    response = client.post("/my/order/", {"action": "confirm", "payload": payload})
+    assert response["Location"] == "/my/order/placed/"
     order = Order.objects.get()
     assert order.number == "1" and order.reference == "PO-77" and order.total == Decimal("217.80")
     licences = Licence.objects.filter(order_line__order=order)
@@ -72,31 +72,31 @@ def test_confirm_places_order_with_licences_and_mail(client, site, shop):
 
 def test_tampered_payload_is_rejected(client, site, shop):
     client.force_login(shop["user"])
-    payload = client.post("/mijn/bestellen/", order_post([(shop["new"], 1)])).context["payload"]
-    client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload[:-2] + "xx"})
+    payload = client.post("/my/order/", order_post([(shop["new"], 1)])).context["payload"]
+    client.post("/my/order/", {"action": "confirm", "payload": payload[:-2] + "xx"})
     assert not Order.objects.exists()
 
 
 def test_payload_of_other_customer_is_refused(client, site, shop):
     client.force_login(shop["user"])
-    payload = client.post("/mijn/bestellen/", order_post([(shop["new"], 1)])).context["payload"]
+    payload = client.post("/my/order/", order_post([(shop["new"], 1)])).context["payload"]
     other = Customer.objects.create(name="Ander", status=Customer.Status.ACTIVE)
     user2 = make_user("ander@ander.test")
     Contact.objects.create(customer=other, user=user2, last_name="A", email=user2.email)
     client.force_login(user2)
-    assert client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload}).status_code == 403
+    assert client.post("/my/order/", {"action": "confirm", "payload": payload}).status_code == 403
 
 
 def test_empty_order_and_box_address_validation(client, site, shop):
     client.force_login(shop["user"])
-    assert "payload" not in (client.post("/mijn/bestellen/", order_post([])).context or {})
-    response = client.post("/mijn/bestellen/", order_post([(shop["new"], 1)], send_boxes="on"))
+    assert "payload" not in (client.post("/my/order/", order_post([])).context or {})
+    response = client.post("/my/order/", order_post([(shop["new"], 1)], send_boxes="on"))
     assert "payload" not in response.context
 
 
 def test_only_active_customers_can_order(client, site, shop):
     client.force_login(make_user("losse@gebruiker.test"))
-    assert client.get("/mijn/bestellen/").status_code == 403
+    assert client.get("/my/order/").status_code == 403
     Customer.objects.filter(pk=shop["customer"].pk).update(status=Customer.Status.BLOCKED)
 
 
@@ -110,36 +110,36 @@ def test_extend_licence(client, site, shop):
     old.save()
     LicenceOption.objects.create(licence=old, option_type=OptionType.objects.create(name="Disk"), serial_nr="SN1/001")
     client.force_login(shop["user"])
-    page = client.get("/mijn/licenties/?show=ending").content.decode()
-    assert f"/mijn/licenties/{old.pk}/verlengen/" in page
-    review = client.post(f"/mijn/licenties/{old.pk}/verlengen/", {"pack": shop["ext"].pk})
+    page = client.get("/my/licences/?show=ending").content.decode()
+    assert f"/my/licences/{old.pk}/extend/" in page
+    review = client.post(f"/my/licences/{old.pk}/extend/", {"pack": shop["ext"].pk})
     assert review.context["totals"]["net"] == Decimal("36.00")
-    client.post(f"/mijn/licenties/{old.pk}/verlengen/", {"action": "confirm", "payload": review.context["payload"]})
+    client.post(f"/my/licences/{old.pk}/extend/", {"action": "confirm", "payload": review.context["payload"]})
     new = Licence.objects.get(prolongation_of=old)
     assert new.registered_on and new.serial_nr == "SN1" and new.system == old.system
     assert new.start_date == old.end_date + datetime.timedelta(days=1)
     assert new.end_date == add_years(new.start_date, 1) - datetime.timedelta(days=1)
     assert new.options.get().serial_nr == "SN1/001"
     # Already extended: no second extend button.
-    assert f"/mijn/licenties/{old.pk}/verlengen/" not in client.get("/mijn/licenties/").content.decode()
+    assert f"/my/licences/{old.pk}/extend/" not in client.get("/my/licences/").content.decode()
 
 
 def test_customer_cannot_extend_someone_elses_licence(client, site, shop):
     other = Customer.objects.create(name="Ander", status=Customer.Status.ACTIVE)
     lic = Licence.create_for(shop["new"], other)[0]
     client.force_login(shop["user"])
-    assert client.get(f"/mijn/licenties/{lic.pk}/verlengen/").status_code == 404
+    assert client.get(f"/my/licences/{lic.pk}/extend/").status_code == 404
 
 
 def test_my_orders_and_detail(client, site, shop):
     client.force_login(shop["user"])
-    payload = client.post("/mijn/bestellen/", order_post([(shop["new"], 1)])).context["payload"]
-    client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload})
+    payload = client.post("/my/order/", order_post([(shop["new"], 1)])).context["payload"]
+    client.post("/my/order/", {"action": "confirm", "payload": payload})
     order = Order.objects.get()
-    assert order.number in client.get("/mijn/bestellingen/").content.decode()
-    assert client.get(f"/mijn/bestellingen/{order.pk}/").status_code == 200
+    assert order.number in client.get("/my/orders/").content.decode()
+    assert client.get(f"/my/orders/{order.pk}/").status_code == 200
     client.force_login(make_user("vreemd@x.test"))
-    assert client.get(f"/mijn/bestellingen/{order.pk}/").status_code == 403
+    assert client.get(f"/my/orders/{order.pk}/").status_code == 403
 
 
 def test_admin_order_list_and_number_source(client, site, shop, beheerder):
@@ -147,8 +147,8 @@ def test_admin_order_list_and_number_source(client, site, shop, beheerder):
     from apps.numbering.models import NumberSequence
 
     client.force_login(shop["user"])
-    payload = client.post("/mijn/bestellen/", order_post([(shop["new"], 1)])).context["payload"]
-    client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload})
+    payload = client.post("/my/order/", order_post([(shop["new"], 1)])).context["payload"]
+    client.post("/my/order/", {"action": "confirm", "payload": payload})
     client.force_login(beheerder)
     assert "Koper BV" in client.get("/admin/orders/order/").content.decode()
     assert check(NumberSequence.objects.get(key="order")).status == "ok"
@@ -156,8 +156,8 @@ def test_admin_order_list_and_number_source(client, site, shop, beheerder):
 
 def test_report_uses_order_prices(client, site, shop, beheerder):
     client.force_login(shop["user"])
-    payload = client.post("/mijn/bestellen/", order_post([(shop["new"], 2)])).context["payload"]
-    client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload})
+    payload = client.post("/my/order/", order_post([(shop["new"], 2)])).context["payload"]
+    client.post("/my/order/", {"action": "confirm", "payload": payload})
     SupportPack.objects.filter(pk=shop["new"].pk).update(price=Decimal("999"), cost_price=Decimal("50"))
     client.force_login(beheerder)
     report = client.get("/admin/reports/").context["report"]

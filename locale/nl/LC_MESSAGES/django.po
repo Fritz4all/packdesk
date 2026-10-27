@@ -5527,11 +5527,11 @@ msgstr "link"
 
 #: apps/siteconfig/models.py:311
 msgid ""
-"Page address, e.g. /mijn/ or https://…; or just mailto: for an email to the "
+"Page address, e.g. /my/ or https://…; or just mailto: for an email to the "
 "general email address, with the title as subject."
 msgstr ""
-"Paginaadres, bijv. /mijn/ of https://…; of alleen mailto: voor een e-mail "
-"naar het algemene e-mailadres, met de titel als onderwerp."
+"Paginaadres, bijv. /my/ of https://…; of alleen mailto: voor een e-mail naar "
+"het algemene e-mailadres, met de titel als onderwerp."
 
 #: apps/siteconfig/models.py:315 apps/siteconfig/models.py:346
 msgid "visible for"
@@ -5546,8 +5546,8 @@ msgid "home page blocks"
 msgstr "homepageblokken"
 
 #: apps/siteconfig/models.py:344
-msgid "Page address, e.g. /mijn/ or https://…"
-msgstr "Paginaadres, bijv. /mijn/ of https://…"
+msgid "Page address, e.g. /my/ or https://…"
+msgstr "Paginaadres, bijv. /my/ of https://…"
 
 #: apps/siteconfig/models.py:345
 msgid "open in new tab"
@@ -5806,8 +5806,12 @@ msgid "Error 400"
 msgstr "Fout 400"
 
 #: templates/400.html:7
-msgid "Something in the request was not right, for example an unknown web address. Try again from the home page."
-msgstr "Er klopte iets niet aan het verzoek, bijvoorbeeld een onbekend webadres. Probeer het opnieuw vanaf de homepage."
+msgid ""
+"Something in the request was not right, for example an unknown web address. "
+"Try again from the home page."
+msgstr ""
+"Er klopte iets niet aan het verzoek, bijvoorbeeld een onbekend webadres. "
+"Probeer het opnieuw vanaf de homepage."
 
 #: templates/403.html:3 templates/403.html:6
 msgid "No access"
@@ -5818,8 +5822,12 @@ msgid "Error 403"
 msgstr "Fout 403"
 
 #: templates/403.html:7
-msgid "Your account does not have access to this page. Ask an administrator if you need it."
-msgstr "Je account heeft geen toegang tot deze pagina. Vraag een beheerder als je die nodig hebt."
+msgid ""
+"Your account does not have access to this page. Ask an administrator if you "
+"need it."
+msgstr ""
+"Je account heeft geen toegang tot deze pagina. Vraag een beheerder als je "
+"die nodig hebt."
 
 #: templates/403.html:7
 msgid "Log in to see this page."
@@ -5834,8 +5842,11 @@ msgid "Error 404"
 msgstr "Fout 404"
 
 #: templates/404.html:7
-msgid "This page does not exist (any more). Check the address, or go to the home page."
-msgstr "Deze pagina bestaat niet (meer). Controleer het adres of ga naar de homepage."
+msgid ""
+"This page does not exist (any more). Check the address, or go to the home "
+"page."
+msgstr ""
+"Deze pagina bestaat niet (meer). Controleer het adres of ga naar de homepage."
 
 #: templates/500.html:9 templates/500.html:19
 msgid "Something went wrong"
@@ -5846,8 +5857,12 @@ msgid "Error 500"
 msgstr "Fout 500"
 
 #: templates/500.html:20
-msgid "This is our fault, not yours. Try again in a moment. If it keeps happening, let us know what you were doing."
-msgstr "Dit ligt aan ons, niet aan jou. Probeer het zo nog eens. Blijft het gebeuren, laat ons dan weten wat je aan het doen was."
+msgid ""
+"This is our fault, not yours. Try again in a moment. If it keeps happening, "
+"let us know what you were doing."
+msgstr ""
+"Dit ligt aan ons, niet aan jou. Probeer het zo nog eens. Blijft het "
+"gebeuren, laat ons dan weten wat je aan het doen was."
 
 #: templates/500.html:22 templates/errors/_page.html:14
 msgid "To the home page"

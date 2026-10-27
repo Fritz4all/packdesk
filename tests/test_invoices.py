@@ -58,8 +58,8 @@ def place(client, shop, qty=2):
     client.force_login(shop["user"])
     data = {"lines-TOTAL_FORMS": "1", "lines-INITIAL_FORMS": "0", "lines-MIN_NUM_FORMS": "0", "lines-MAX_NUM_FORMS": "50",
             "lines-0-pack": shop["pack"].pk, "lines-0-quantity": str(qty), "reference": "PO-9"}
-    payload = client.post("/mijn/bestellen/", data).context["payload"]
-    client.post("/mijn/bestellen/", {"action": "confirm", "payload": payload})
+    payload = client.post("/my/order/", data).context["payload"]
+    client.post("/my/order/", {"action": "confirm", "payload": payload})
 
 
 def test_order_makes_invoice_with_pdf_and_email(client, site, shop):
@@ -100,7 +100,7 @@ def test_counter_behind_archive_blocks_invoice_and_warns(client, site, shop, fol
 def test_pdf_access(client, site, shop, beheerder):
     place(client, shop)
     invoice = Invoice.objects.get()
-    url = f"/factuur/{invoice.pk}/pdf/"
+    url = f"/invoice/{invoice.pk}/pdf/"
     assert client.get(url).status_code == 200  # still logged in as the customer
     assert client.get(url + "?download=1")["Content-Disposition"].startswith("attachment")
     client.force_login(make_user("vreemd@x.test"))
@@ -114,9 +114,9 @@ def test_pdf_access(client, site, shop, beheerder):
 def test_customer_list_and_send_to_me(client, site, shop):
     place(client, shop)
     invoice = Invoice.objects.get()
-    assert invoice.number in client.get("/mijn/facturen/").content.decode()
+    assert invoice.number in client.get("/my/invoices/").content.decode()
     mail.outbox.clear()
-    client.post(f"/mijn/facturen/{invoice.pk}/sturen/")
+    client.post(f"/my/invoices/{invoice.pk}/send/")
     assert mail.outbox[0].to == ["inkoop@koper.test"] and mail.outbox[0].attachments
 
 
@@ -152,8 +152,8 @@ def test_import_archive_links_customer_and_serves_original(client, site, shop, f
     call_command("import_invoice_archive")  # running again adds nothing
     assert Invoice.objects.count() == 1
     client.force_login(shop["user"])
-    assert "1030953" in client.get("/mijn/facturen/").content.decode()
-    response = client.get(f"/factuur/{invoice.pk}/pdf/")
+    assert "1030953" in client.get("/my/invoices/").content.decode()
+    response = client.get(f"/invoice/{invoice.pk}/pdf/")
     assert response.content == original
 
 

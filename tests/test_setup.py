@@ -52,37 +52,37 @@ def test_database_is_not_empty_and_up_to_date(db):
 
 
 def test_every_page_leads_to_the_wizard_until_finished(client, new_install):
-    assert client.get("/").url == "/installatie/"
-    assert client.get("/admin/").url == "/installatie/"
-    assert client.get("/installatie/").url == "/installatie/code/"
+    assert client.get("/").url == "/setup/"
+    assert client.get("/admin/").url == "/setup/"
+    assert client.get("/setup/").url == "/setup/code/"
 
 
 def test_wizard_from_code_to_finished(client, new_install):
-    assert client.post("/installatie/code/", {"code": "verkeerd"}).status_code == 200
-    assert client.get("/installatie/admin/").url == "/installatie/code/"  # not without the code
+    assert client.post("/setup/code/", {"code": "verkeerd"}).status_code == 200
+    assert client.get("/setup/admin/").url == "/setup/code/"  # not without the code
 
-    client.post("/installatie/code/", {"code": setup_code.get_code()})
-    response = client.post("/installatie/admin/", {
+    client.post("/setup/code/", {"code": setup_code.get_code()})
+    response = client.post("/setup/admin/", {
         "email": "Baas@Bedrijf.test", "first_name": "Bea", "last_name": "Baas",
         "password1": "lang-genoeg-wachtwoord", "password2": "lang-genoeg-wachtwoord",
     })
-    assert response.url == "/installatie/basics/"
+    assert response.url == "/setup/basics/"
     admin = User.objects.get(email="baas@bedrijf.test")
     assert admin.is_superuser and admin.is_staff and admin.kind == User.Kind.STAFF
 
-    response = client.post("/installatie/basics/", {
+    response = client.post("/setup/basics/", {
         "name": "Bedrijf BV", "domain": "shop.bedrijf.test", "language": "nl", "languages": ["nl", "en"],
         "admin_language": "en", "email": "info@bedrijf.test",
     })
-    assert response.url == "/installatie/mail/"
+    assert response.url == "/setup/mail/"
     site = SiteSettings.load()
     assert site.name == "Bedrijf BV" and site.language_codes == ["nl", "en"] and site.admin_language == "en"
 
-    response = client.post("/installatie/mail/", {
+    response = client.post("/setup/mail/", {
         "mail_host": "smtp.bedrijf.test", "mail_port": "587", "mail_security": "starttls",
         "mail_user": "shop", "mail_password": "mail-geheim", "test_mail": "on",
     })
-    assert response.url == "/installatie/numbering/"
+    assert response.url == "/setup/numbering/"
     site = SiteSettings.load()
     assert site.mail_host == "smtp.bedrijf.test" and site.get_mail_password() == "mail-geheim"
     assert "mail-geheim" not in site.mail_password_encrypted
@@ -90,28 +90,28 @@ def test_wizard_from_code_to_finished(client, new_install):
 
     sequences = list(NumberSequence.objects.all())
     data = {f"next_{s.pk}": 5000 for s in sequences}
-    assert client.post("/installatie/numbering/", data).url == "/installatie/demo/"
+    assert client.post("/setup/numbering/", data).url == "/setup/demo/"
     assert all(s.next_number == 5000 for s in NumberSequence.objects.all())
 
-    assert client.post("/installatie/demo/", {}).url == "/admin/"
+    assert client.post("/setup/demo/", {}).url == "/admin/"
     assert SiteSettings.load().setup_completed
-    assert client.get("/installatie/").url == "/admin/"  # closed for good
+    assert client.get("/setup/").url == "/admin/"  # closed for good
     assert client.get("/").status_code == 200
 
 
 def test_wizard_refuses_weak_or_different_passwords(client, new_install):
-    client.post("/installatie/code/", {"code": setup_code.get_code()})
-    page = client.post("/installatie/admin/", {"email": "a@b.test", "password1": "kort", "password2": "anders"})
+    client.post("/setup/code/", {"code": setup_code.get_code()})
+    page = client.post("/setup/admin/", {"email": "a@b.test", "password1": "kort", "password2": "anders"})
     assert page.status_code == 200 and not User.objects.exists()
 
 
 def test_after_the_administrator_only_that_administrator_continues(client, new_install):
     make_user("baas@bedrijf.test", superuser=True)
-    response = client.get("/installatie/basics/")
+    response = client.get("/setup/basics/")
     assert response.url.startswith("/admin/login/")
-    assert client.get("/installatie/code/").url.startswith("/admin/login/")  # no second administrator
+    assert client.get("/setup/code/").url.startswith("/admin/login/")  # no second administrator
     client.force_login(User.objects.get(email="baas@bedrijf.test"))
-    assert client.get("/installatie/code/").url == "/installatie/basics/"
+    assert client.get("/setup/code/").url == "/setup/basics/"
 
 
 # --- database update page ------------------------------------------------------------------------
@@ -133,10 +133,10 @@ def test_update_page_instead_of_the_site(client, db, waiting_changes):
 
 
 def test_update_needs_backup_confirmation_and_code(client, db, waiting_changes):
-    assert client.post("/database-bijwerken/", {"code": setup_code.get_code()}).status_code == 503
-    assert client.post("/database-bijwerken/", {"code": "fout", "backup": "1"}).status_code == 503
+    assert client.post("/database-update/", {"code": setup_code.get_code()}).status_code == 503
+    assert client.post("/database-update/", {"code": "fout", "backup": "1"}).status_code == 503
     assert not waiting_changes
-    response = client.post("/database-bijwerken/", {"code": setup_code.get_code(), "backup": "1"})
+    response = client.post("/database-update/", {"code": setup_code.get_code(), "backup": "1"})
     assert response.status_code == 302 and response.url == "/admin/" and waiting_changes
 
 
@@ -195,8 +195,8 @@ def test_database_step_when_database_is_missing(client, monkeypatch, settings, t
     data = {"code": setup_code.get_code(), "engine": "mariadb", "host": "db.bedrijf.test", "port": "",
             "name": "packdesk", "user": "packdesk", "password": "pd-geheim",
             "create": "1", "admin_user": "root", "admin_password": "root-geheim"}
-    assert client.post("/installatie/database/", {**data, "name": "bad name;"}).status_code == 503 and not calls
-    response = client.post("/installatie/database/", data)
+    assert client.post("/setup/database/", {**data, "name": "bad name;"}).status_code == 503 and not calls
+    response = client.post("/setup/database/", data)
     assert response.status_code == 503 and "restart" in calls and ("packdesk", "root", "root-geheim") in calls
     saved = server_config.read(settings.DATA_ROOT)
     assert saved["DB_HOST"] == "db.bedrijf.test" and saved["DB_PASSWORD"] == "pd-geheim"
@@ -228,12 +228,12 @@ def test_empty_values_count_as_not_set(tmp_path, monkeypatch):
 
 
 def test_mail_step_can_be_skipped(client, new_install):
-    client.post("/installatie/code/", {"code": setup_code.get_code()})
-    client.post("/installatie/admin/", {"email": "baas@bedrijf.test", "password1": "lang-genoeg-wachtwoord",
+    client.post("/setup/code/", {"code": setup_code.get_code()})
+    client.post("/setup/admin/", {"email": "baas@bedrijf.test", "password1": "lang-genoeg-wachtwoord",
                                         "password2": "lang-genoeg-wachtwoord"})
-    assert client.post("/installatie/mail/", {"skip": "1"}).url == "/installatie/numbering/"
+    assert client.post("/setup/mail/", {"skip": "1"}).url == "/setup/numbering/"
     # An empty server with the test box ticked also just goes on, without a failing test mail.
-    assert client.post("/installatie/mail/", {"mail_security": "starttls", "test_mail": "on"}).url == "/installatie/numbering/"
+    assert client.post("/setup/mail/", {"mail_security": "starttls", "test_mail": "on"}).url == "/setup/numbering/"
     assert not SiteSettings.load().mail_host
 
 
@@ -259,18 +259,18 @@ def test_database_step_explains_what_went_wrong(client, monkeypatch, settings):
     monkeypatch.setattr(server_setup, "create", lambda *a: calls.append(a))
     monkeypatch.setattr(server_setup, "test", lambda target: (server_setup.BAD_LOGIN, "1045 refused"))
 
-    page = client.post("/installatie/database/", base).content.decode()  # no admin password: not even tried
+    page = client.post("/setup/database/", base).content.decode()  # no admin password: not even tried
     assert not calls and "fill in the name and password of an administrator" in page.lower() or "beheerder" in page
 
     def refuse(*a):
         raise Exception(1045, "Access denied for user 'app'@'172.21.0.3' (using password: YES)")
 
     monkeypatch.setattr(server_setup, "create", refuse)
-    page = client.post("/installatie/database/", {**base, "admin_password": "fout"}).content.decode()
+    page = client.post("/setup/database/", {**base, "admin_password": "fout"}).content.decode()
     assert page.count('class="notice notice-error"') == 1 and "app" in page
 
     monkeypatch.setattr(server_setup, "create", lambda *a: calls.append(a))
-    page = client.post("/installatie/database/", {**base, "admin_password": "goed"}).content.decode()
+    page = client.post("/setup/database/", {**base, "admin_password": "goed"}).content.decode()
     assert calls and "prodpackdesk" in page and page.count('class="notice notice-error"') == 1
 
 
