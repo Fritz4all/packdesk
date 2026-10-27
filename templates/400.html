@@ -1,0 +1,7 @@
+{% extends "errors/_page.html" %}
+{% load i18n %}
+{% block heading_title %}{% translate "Request not understood" %}{% endblock %}
+{% block icon %}⚠️{% endblock %}
+{% block code %}{% translate "Error 400" %}{% endblock %}
+{% block heading %}{% translate "Request not understood" %}{% endblock %}
+{% block text %}{% translate "Something in the request was not right, for example an unknown web address. Try again from the home page." %}{% endblock %}

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 23:25+0100\n"
+"POT-Creation-Date: 2026-10-27 20:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -250,10 +250,16 @@ msgstr "Kies een nieuw wachtwoord voor %(company)s"
 
 #: apps/accounts/password_rules.py:33
 #, python-format
-msgid "This password is too short. It must contain at least %(min_length)d character."
-msgid_plural "This password is too short. It must contain at least %(min_length)d characters."
-msgstr[0] "Dit wachtwoord is te kort. Het moet minstens %(min_length)d teken bevatten."
-msgstr[1] "Dit wachtwoord is te kort. Het moet minstens %(min_length)d tekens bevatten."
+msgid ""
+"This password is too short. It must contain at least %(min_length)d "
+"character."
+msgid_plural ""
+"This password is too short. It must contain at least %(min_length)d "
+"characters."
+msgstr[0] ""
+"Dit wachtwoord is te kort. Het moet minstens %(min_length)d teken bevatten."
+msgstr[1] ""
+"Dit wachtwoord is te kort. Het moet minstens %(min_length)d tekens bevatten."
 
 #: apps/accounts/password_rules.py:41
 #, python-format
@@ -264,8 +270,12 @@ msgstr[1] "Je wachtwoord moet minstens %(n)d tekens bevatten."
 
 #: apps/accounts/password_rules.py:43
 #, python-format
-msgid "Your password must contain at least %(staff)d characters for staff and %(customers)d for customers."
-msgstr "Je wachtwoord moet minstens %(staff)d tekens bevatten voor medewerkers en %(customers)d voor klanten."
+msgid ""
+"Your password must contain at least %(staff)d characters for staff and "
+"%(customers)d for customers."
+msgstr ""
+"Je wachtwoord moet minstens %(staff)d tekens bevatten voor medewerkers en "
+"%(customers)d voor klanten."
 
 #: apps/accounts/permissions.py:12 apps/customers/overview.py:159
 #: apps/invoices/admin.py:87 templates/invoices/my_invoices.html:14
@@ -455,8 +465,12 @@ msgstr "Wachtwoord nogmaals"
 
 #: apps/core/setup_views.py:59
 #, python-format
-msgid "At least %(n)d characters. The minimum length for staff and for customers can be changed later under Settings → Security."
-msgstr "Minstens %(n)d tekens. De minimale lengte voor medewerkers en voor klanten pas je later aan onder Instellingen → Beveiliging."
+msgid ""
+"At least %(n)d characters. The minimum length for staff and for customers "
+"can be changed later under Settings → Security."
+msgstr ""
+"Minstens %(n)d tekens. De minimale lengte voor medewerkers en voor klanten "
+"pas je later aan onder Instellingen → Beveiliging."
 
 #: apps/core/setup_views.py:65
 msgid "This email address is already in use."
@@ -5259,16 +5273,24 @@ msgid "minimum password length for staff"
 msgstr "minimale wachtwoordlengte voor medewerkers"
 
 #: apps/siteconfig/models.py:68
-msgid "Number of characters, for staff and administrators (the admin). 12 or more is recommended."
-msgstr "Aantal tekens, voor medewerkers en beheerders (het beheer). 12 of meer wordt aangeraden."
+msgid ""
+"Number of characters, for staff and administrators (the admin). 12 or more "
+"is recommended."
+msgstr ""
+"Aantal tekens, voor medewerkers en beheerders (het beheer). 12 of meer wordt "
+"aangeraden."
 
 #: apps/siteconfig/models.py:71
 msgid "minimum password length for customers"
 msgstr "minimale wachtwoordlengte voor klanten"
 
 #: apps/siteconfig/models.py:73
-msgid "Number of characters, for customers on the website. Applies to new passwords; existing ones keep working."
-msgstr "Aantal tekens, voor klanten op de website. Geldt voor nieuwe wachtwoorden; bestaande blijven werken."
+msgid ""
+"Number of characters, for customers on the website. Applies to new "
+"passwords; existing ones keep working."
+msgstr ""
+"Aantal tekens, voor klanten op de website. Geldt voor nieuwe wachtwoorden; "
+"bestaande blijven werken."
 
 #: apps/siteconfig/models.py:77
 msgid "empty the trash after (days)"
@@ -5775,6 +5797,70 @@ msgstr "Engels"
 msgid "German"
 msgstr "Duits"
 
+#: templates/400.html:3 templates/400.html:6
+msgid "Request not understood"
+msgstr "Verzoek niet begrepen"
+
+#: templates/400.html:5
+msgid "Error 400"
+msgstr "Fout 400"
+
+#: templates/400.html:7
+msgid "Something in the request was not right, for example an unknown web address. Try again from the home page."
+msgstr "Er klopte iets niet aan het verzoek, bijvoorbeeld een onbekend webadres. Probeer het opnieuw vanaf de homepage."
+
+#: templates/403.html:3 templates/403.html:6
+msgid "No access"
+msgstr "Geen toegang"
+
+#: templates/403.html:5
+msgid "Error 403"
+msgstr "Fout 403"
+
+#: templates/403.html:7
+msgid "Your account does not have access to this page. Ask an administrator if you need it."
+msgstr "Je account heeft geen toegang tot deze pagina. Vraag een beheerder als je die nodig hebt."
+
+#: templates/403.html:7
+msgid "Log in to see this page."
+msgstr "Log in om deze pagina te zien."
+
+#: templates/404.html:3 templates/404.html:6
+msgid "Page not found"
+msgstr "Pagina niet gevonden"
+
+#: templates/404.html:5
+msgid "Error 404"
+msgstr "Fout 404"
+
+#: templates/404.html:7
+msgid "This page does not exist (any more). Check the address, or go to the home page."
+msgstr "Deze pagina bestaat niet (meer). Controleer het adres of ga naar de homepage."
+
+#: templates/500.html:9 templates/500.html:19
+msgid "Something went wrong"
+msgstr "Er ging iets mis"
+
+#: templates/500.html:18
+msgid "Error 500"
+msgstr "Fout 500"
+
+#: templates/500.html:20
+msgid "This is our fault, not yours. Try again in a moment. If it keeps happening, let us know what you were doing."
+msgstr "Dit ligt aan ons, niet aan jou. Probeer het zo nog eens. Blijft het gebeuren, laat ons dan weten wat je aan het doen was."
+
+#: templates/500.html:22 templates/errors/_page.html:14
+msgid "To the home page"
+msgstr "Naar de homepage"
+
+#: templates/500.html:23 templates/admin/customers/export.html:14
+#: templates/admin/customers/import_upload.html:20
+#: templates/admin/parts/cancel.html:13 templates/admin/parts/correct.html:21
+#: templates/admin/parts/deliver.html:19 templates/errors/_page.html:15
+#: templates/orders/extend.html:11
+msgid "Back"
+msgstr "Terug"
+
 #: templates/admin/change_list.html:17
 #, python-format
 msgid "Add %(name)s"
@@ -5867,13 +5953,6 @@ msgstr ""
 #: templates/admin/customers/export.html:13
 msgid "Download export"
 msgstr "Export downloaden"
-
-#: templates/admin/customers/export.html:14
-#: templates/admin/customers/import_upload.html:20
-#: templates/admin/parts/cancel.html:13 templates/admin/parts/correct.html:21
-#: templates/admin/parts/deliver.html:19 templates/orders/extend.html:11
-msgid "Back"
-msgstr "Terug"
 
 #: templates/admin/customers/export.html:17
 msgid ""
@@ -6440,6 +6519,10 @@ msgstr "Inkoopprijs"
 #: templates/dashboard/report.html:96
 msgid "No service packs yet."
 msgstr "Nog geen servicepacks."
+
+#: templates/errors/_page.html:16
+msgid "To the admin"
+msgstr "Naar het beheer"
 
 #: templates/faults/done.html:5
 msgid "Fault report sent"

@@ -2,7 +2,8 @@ import re
 
 from django.conf import settings
 from django.contrib import admin
-from django.http import HttpResponsePermanentRedirect
+from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
+from django.template import loader
 from django.urls import include, path, re_path
 from django.views.i18n import set_language
 from django.views.static import serve
@@ -29,6 +30,16 @@ def old_admin_address(request, rest=""):
     rest = re.sub(r"^(compare/\d+/)zoeken/", r"\1search/", rest)
     query = request.META.get("QUERY_STRING")
     return HttpResponsePermanentRedirect(f"/admin/{rest}" + (f"?{query}" if query else ""))
+
+
+def preview_error_page(request, code):
+    """Development only (DEBUG): see the error pages, which Django otherwise replaces by its technical page.
+    400 and 500 are rendered without the request, as Django does."""
+    if code not in (400, 403, 404, 500):
+        raise Http404
+    with_request = code in (403, 404)
+    body = loader.get_template(f"{code}.html").render({} if not with_request else None, request if with_request else None)
+    return HttpResponse(body, status=code)
 
 
 urlpatterns = [
@@ -58,3 +69,6 @@ urlpatterns = [
     # their own authenticated views later and never live under MEDIA_URL.
     path("media/<path:path>", serve, {"document_root": settings.MEDIA_ROOT}),
 ]
+
+if settings.DEBUG:
+    urlpatterns.insert(0, path("errors/<int:code>/", preview_error_page))

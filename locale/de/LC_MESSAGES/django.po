@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 23:25+0100\n"
+"POT-Creation-Date: 2026-10-27 20:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -253,10 +253,18 @@ msgstr "Wählen Sie ein neues Passwort für %(company)s"
 
 #: apps/accounts/password_rules.py:33
 #, python-format
-msgid "This password is too short. It must contain at least %(min_length)d character."
-msgid_plural "This password is too short. It must contain at least %(min_length)d characters."
-msgstr[0] "Dieses Passwort ist zu kurz. Es muss mindestens %(min_length)d Zeichen enthalten."
-msgstr[1] "Dieses Passwort ist zu kurz. Es muss mindestens %(min_length)d Zeichen enthalten."
+msgid ""
+"This password is too short. It must contain at least %(min_length)d "
+"character."
+msgid_plural ""
+"This password is too short. It must contain at least %(min_length)d "
+"characters."
+msgstr[0] ""
+"Dieses Passwort ist zu kurz. Es muss mindestens %(min_length)d Zeichen "
+"enthalten."
+msgstr[1] ""
+"Dieses Passwort ist zu kurz. Es muss mindestens %(min_length)d Zeichen "
+"enthalten."
 
 #: apps/accounts/password_rules.py:41
 #, python-format
@@ -267,8 +275,12 @@ msgstr[1] "Ihr Passwort muss mindestens %(n)d Zeichen enthalten."
 
 #: apps/accounts/password_rules.py:43
 #, python-format
-msgid "Your password must contain at least %(staff)d characters for staff and %(customers)d for customers."
-msgstr "Ihr Passwort muss für Mitarbeiter mindestens %(staff)d und für Kunden mindestens %(customers)d Zeichen enthalten."
+msgid ""
+"Your password must contain at least %(staff)d characters for staff and "
+"%(customers)d for customers."
+msgstr ""
+"Ihr Passwort muss für Mitarbeiter mindestens %(staff)d und für Kunden "
+"mindestens %(customers)d Zeichen enthalten."
 
 #: apps/accounts/permissions.py:12 apps/customers/overview.py:159
 #: apps/invoices/admin.py:87 templates/invoices/my_invoices.html:14
@@ -458,8 +470,12 @@ msgstr "Passwort wiederholen"
 
 #: apps/core/setup_views.py:59
 #, python-format
-msgid "At least %(n)d characters. The minimum length for staff and for customers can be changed later under Settings → Security."
-msgstr "Mindestens %(n)d Zeichen. Die Mindestlänge für Mitarbeiter und für Kunden lässt sich später unter Einstellungen → Sicherheit ändern."
+msgid ""
+"At least %(n)d characters. The minimum length for staff and for customers "
+"can be changed later under Settings → Security."
+msgstr ""
+"Mindestens %(n)d Zeichen. Die Mindestlänge für Mitarbeiter und für Kunden "
+"lässt sich später unter Einstellungen → Sicherheit ändern."
 
 #: apps/core/setup_views.py:65
 msgid "This email address is already in use."
@@ -5278,16 +5294,24 @@ msgid "minimum password length for staff"
 msgstr "Mindestlänge des Passworts für Mitarbeiter"
 
 #: apps/siteconfig/models.py:68
-msgid "Number of characters, for staff and administrators (the admin). 12 or more is recommended."
-msgstr "Anzahl Zeichen, für Mitarbeiter und Administratoren (die Verwaltung). 12 oder mehr wird empfohlen."
+msgid ""
+"Number of characters, for staff and administrators (the admin). 12 or more "
+"is recommended."
+msgstr ""
+"Anzahl Zeichen, für Mitarbeiter und Administratoren (die Verwaltung). 12 "
+"oder mehr wird empfohlen."
 
 #: apps/siteconfig/models.py:71
 msgid "minimum password length for customers"
 msgstr "Mindestlänge des Passworts für Kunden"
 
 #: apps/siteconfig/models.py:73
-msgid "Number of characters, for customers on the website. Applies to new passwords; existing ones keep working."
-msgstr "Anzahl Zeichen, für Kunden auf der Website. Gilt für neue Passwörter; bestehende funktionieren weiter."
+msgid ""
+"Number of characters, for customers on the website. Applies to new "
+"passwords; existing ones keep working."
+msgstr ""
+"Anzahl Zeichen, für Kunden auf der Website. Gilt für neue Passwörter; "
+"bestehende funktionieren weiter."
 
 #: apps/siteconfig/models.py:77
 msgid "empty the trash after (days)"
@@ -5795,6 +5819,70 @@ msgstr "Englisch"
 msgid "German"
 msgstr "Deutsch"
 
+#: templates/400.html:3 templates/400.html:6
+msgid "Request not understood"
+msgstr "Anfrage nicht verstanden"
+
+#: templates/400.html:5
+msgid "Error 400"
+msgstr "Fehler 400"
+
+#: templates/400.html:7
+msgid "Something in the request was not right, for example an unknown web address. Try again from the home page."
+msgstr "Etwas an der Anfrage stimmte nicht, zum Beispiel eine unbekannte Webadresse. Versuchen Sie es erneut von der Startseite aus."
+
+#: templates/403.html:3 templates/403.html:6
+msgid "No access"
+msgstr "Kein Zugriff"
+
+#: templates/403.html:5
+msgid "Error 403"
+msgstr "Fehler 403"
+
+#: templates/403.html:7
+msgid "Your account does not have access to this page. Ask an administrator if you need it."
+msgstr "Ihr Konto hat keinen Zugriff auf diese Seite. Fragen Sie einen Administrator, wenn Sie ihn benötigen."
+
+#: templates/403.html:7
+msgid "Log in to see this page."
+msgstr "Melden Sie sich an, um diese Seite zu sehen."
+
+#: templates/404.html:3 templates/404.html:6
+msgid "Page not found"
+msgstr "Seite nicht gefunden"
+
+#: templates/404.html:5
+msgid "Error 404"
+msgstr "Fehler 404"
+
+#: templates/404.html:7
+msgid "This page does not exist (any more). Check the address, or go to the home page."
+msgstr "Diese Seite existiert nicht (mehr). Prüfen Sie die Adresse oder gehen Sie zur Startseite."
+
+#: templates/500.html:9 templates/500.html:19
+msgid "Something went wrong"
+msgstr "Etwas ist schiefgelaufen"
+
+#: templates/500.html:18
+msgid "Error 500"
+msgstr "Fehler 500"
+
+#: templates/500.html:20
+msgid "This is our fault, not yours. Try again in a moment. If it keeps happening, let us know what you were doing."
+msgstr "Das liegt an uns, nicht an Ihnen. Versuchen Sie es gleich noch einmal. Wenn es weiterhin passiert, teilen Sie uns mit, was Sie gerade getan haben."
+
+#: templates/500.html:22 templates/errors/_page.html:14
+msgid "To the home page"
+msgstr "Zur Startseite"
+
+#: templates/500.html:23 templates/admin/customers/export.html:14
+#: templates/admin/customers/import_upload.html:20
+#: templates/admin/parts/cancel.html:13 templates/admin/parts/correct.html:21
+#: templates/admin/parts/deliver.html:19 templates/errors/_page.html:15
+#: templates/orders/extend.html:11
+msgid "Back"
+msgstr "Zurück"
+
 #: templates/admin/change_list.html:17
 #, python-format
 msgid "Add %(name)s"
@@ -5887,13 +5975,6 @@ msgstr ""
 #: templates/admin/customers/export.html:13
 msgid "Download export"
 msgstr "Export herunterladen"
-
-#: templates/admin/customers/export.html:14
-#: templates/admin/customers/import_upload.html:20
-#: templates/admin/parts/cancel.html:13 templates/admin/parts/correct.html:21
-#: templates/admin/parts/deliver.html:19 templates/orders/extend.html:11
-msgid "Back"
-msgstr "Zurück"
 
 #: templates/admin/customers/export.html:17
 msgid ""
@@ -6459,6 +6540,10 @@ msgstr "Einkaufspreis"
 #: templates/dashboard/report.html:96
 msgid "No service packs yet."
 msgstr "Noch keine Servicepakete."
+
+#: templates/errors/_page.html:16
+msgid "To the admin"
+msgstr "Zur Verwaltung"
 
 #: templates/faults/done.html:5
 msgid "Fault report sent"

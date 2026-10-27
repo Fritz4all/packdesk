@@ -138,3 +138,10 @@ git push origin v1.2.0
 ```
 
 Wie een vaste versie wil draaien, zet `PACKDESK_VERSION=1.2` in `.env`.
+
+## Foutpagina's
+
+PackDesk heeft eigen foutpagina's (404 niet gevonden, 403 geen toegang, 400 verzoek niet begrepen, 500
+er ging iets mis) in de stijl van de site: `templates/404.html` enz. Met `DEBUG=1` toont Django in plaats
+daarvan zijn technische pagina; bekijk de eigen pagina's dan op `/errors/404/`, `/errors/403/`,
+`/errors/400/` en `/errors/500/` (alleen beschikbaar met `DEBUG=1`).

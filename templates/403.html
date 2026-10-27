@@ -1,0 +1,7 @@
+{% extends "errors/_page.html" %}
+{% load i18n %}
+{% block heading_title %}{% translate "No access" %}{% endblock %}
+{% block icon %}🔒{% endblock %}
+{% block code %}{% translate "Error 403" %}{% endblock %}
+{% block heading %}{% translate "No access" %}{% endblock %}
+{% block text %}{% if request.user.is_authenticated %}{% translate "Your account does not have access to this page. Ask an administrator if you need it." %}{% else %}{% translate "Log in to see this page." %}{% endif %}{% endblock %}

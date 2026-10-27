@@ -131,3 +131,20 @@ def test_mailto_link_goes_to_the_general_email_address(client, site):
     site.email = ""
     site.save()
     assert "mailto:" not in client.get("/").content.decode()  # no address: no link
+
+
+def test_friendly_error_pages(client, site, settings):
+    settings.DEBUG = False
+    page = client.get("/does-not-exist/")
+    assert page.status_code == 404 and "404" in page.content.decode() and 'class="maintenance"' in page.content.decode()
+    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    denied = client.get("/admin/trash/trashentry/")
+    assert denied.status_code == 403 and "403" in denied.content.decode()
+    from django.template import loader
+
+    assert "500" in loader.get_template("500.html").render({})  # renders without request or database
+
+
+def test_old_admin_addresses_lead_to_the_new_ones(client, site):
+    assert client.get("/beheer/customers/customer/?q=a")["Location"] == "/admin/customers/customer/?q=a"
+    assert client.get("/beheer/vergelijken/3/zoeken/")["Location"] == "/admin/compare/3/search/"

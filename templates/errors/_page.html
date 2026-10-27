@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% comment %}PackDesk: shared layout of the error pages (404, 403, 400, 500).{% endcomment %}
+{% block title %}{% block heading_title %}{% endblock %} – {{ site_settings.name|default:"PackDesk" }}{% endblock %}
+{% block content %}
+<div class="maintenance">
+  <div class="card">
+    <div class="maintenance-icon" aria-hidden="true">{% block icon %}{% endblock %}</div>
+    <p class="muted">{% block code %}{% endblock %}</p>
+    <h1>{% block heading %}{% endblock %}</h1>
+    <p>{% block text %}{% endblock %}</p>
+    <div class="hero-actions" style="justify-content:center">
+      <a class="btn btn-primary" href="/">{% translate "To the home page" %}</a>
+      <a class="btn btn-ghost" href="javascript:history.back()">{% translate "Back" %}</a>
+      {% if request.path|slice:":7" == "/admin/" and request.user.is_staff %}<a class="btn btn-ghost" href="/admin/">{% translate "To the admin" %}</a>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

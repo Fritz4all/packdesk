@@ -1,0 +1,28 @@
+{% load i18n static %}<!doctype html>
+{% comment %}PackDesk: shown when something goes wrong on the server. Deliberately on its own (no database,
+no menu), so it works even when the cause is the database.{% endcomment %}
+<html lang="{{ LANGUAGE_CODE|default:'nl' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% translate "Something went wrong" %}</title>
+  <link rel="stylesheet" href="{% static 'css/packdesk.css' %}">
+  <style>:root { --brand: #1f6feb; --accent: #0ea5e9; }</style>
+</head>
+<body>
+  <main class="container main">
+    <div class="maintenance">
+      <div class="card">
+        <div class="maintenance-icon" aria-hidden="true">🛠</div>
+        <p class="muted">{% translate "Error 500" %}</p>
+        <h1>{% translate "Something went wrong" %}</h1>
+        <p>{% translate "This is our fault, not yours. Try again in a moment. If it keeps happening, let us know what you were doing." %}</p>
+        <div class="hero-actions" style="justify-content:center">
+          <a class="btn btn-primary" href="/">{% translate "To the home page" %}</a>
+          <a class="btn btn-ghost" href="javascript:history.back()">{% translate "Back" %}</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
