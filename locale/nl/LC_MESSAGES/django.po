@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 22:09+0100\n"
+"POT-Creation-Date: 2026-10-27 22:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -684,11 +684,13 @@ msgstr ""
 #: apps/customers/overview.py:112 apps/legacy/parts.py:112
 #: apps/legacy/parts.py:126 apps/licences/forms.py:38 apps/parts/forms.py:71
 #: templates/customers/my_details.html:12
+#: templates/invoices/invoice_pdf.html:62
 msgid "Phone"
 msgstr "Telefoon"
 
 #: apps/customers/admin.py:237 apps/customers/overview.py:112
 #: apps/legacy/parts.py:112 apps/legacy/parts.py:125 apps/legacy/parts.py:134
+#: templates/invoices/invoice_pdf.html:62
 msgid "Email"
 msgstr "E-mail"
 
@@ -2181,8 +2183,8 @@ msgid "Send again to customer"
 msgstr "Opnieuw naar klant sturen"
 
 #: apps/invoices/admin.py:58 apps/orders/admin.py:61 apps/parts/admin.py:225
-#: templates/invoices/invoice_pdf.html:5 templates/invoices/invoice_pdf.html:52
-#: templates/parts/email.txt:36 templates/parts/order_detail.html:15
+#: templates/invoices/invoice_pdf.html:5 templates/parts/email.txt:36
+#: templates/parts/order_detail.html:15
 msgid "Invoice"
 msgstr "Factuur"
 
@@ -2350,8 +2352,7 @@ msgid "VAT rate (%)"
 msgstr "btw-percentage (%)"
 
 #: apps/invoices/models.py:86 apps/orders/models.py:70 apps/parts/models.py:347
-#: templates/base.html:86 templates/invoices/invoice_pdf.html:40
-#: templates/invoices/invoice_pdf.html:74
+#: templates/base.html:86 templates/invoices/invoice_pdf.html:64
 #: templates/orders/email_confirmation.txt:16
 #: templates/orders/order_detail.html:15 templates/parts/email.txt:23
 msgid "VAT"
@@ -3067,7 +3068,7 @@ msgstr ""
 #: apps/legacy/parts.py:110 apps/legacy/parts.py:127 apps/legacy/parts.py:176
 #: templates/admin/customers/_import_outcome.html:3
 #: templates/customers/my_details.html:10
-#: templates/invoices/invoice_pdf.html:57
+#: templates/invoices/invoice_pdf.html:83
 msgid "Customer number"
 msgstr "Klantnummer"
 
@@ -3105,8 +3106,8 @@ msgstr ""
 "Gekoppeld op e-mailadres. Aan beide kanten tellen ook logins van medewerkers "
 "mee."
 
-#: apps/legacy/parts.py:140 templates/invoices/invoice_pdf.html:60
-#: templates/orders/my_orders.html:7 templates/parts/overview.html:15
+#: apps/legacy/parts.py:140 templates/orders/my_orders.html:7
+#: templates/parts/overview.html:15
 msgid "Order number"
 msgstr "Ordernummer"
 
@@ -3146,7 +3147,7 @@ msgstr "Artikelnummer"
 
 #: apps/legacy/parts.py:152 apps/legacy/parts.py:166 apps/licences/forms.py:52
 #: apps/licences/forms.py:103 apps/licences/forms.py:120 apps/parts/forms.py:16
-#: templates/admin/parts/picklist.html:9 templates/invoices/invoice_pdf.html:64
+#: templates/admin/parts/picklist.html:9
 #: templates/licences/email_certificate.txt:20
 #: templates/licences/options.html:16
 msgid "Description"
@@ -3181,12 +3182,12 @@ msgstr "Licentie (oud ID)"
 msgid "Matched on invoice number."
 msgstr "Gekoppeld op factuurnummer."
 
-#: apps/legacy/parts.py:174 templates/invoices/invoice_pdf.html:54
+#: apps/legacy/parts.py:174 templates/invoices/invoice_pdf.html:82
 #: templates/invoices/my_invoices.html:7
 msgid "Invoice number"
 msgstr "Factuurnummer"
 
-#: apps/legacy/parts.py:174 templates/invoices/invoice_pdf.html:55
+#: apps/legacy/parts.py:174 templates/invoices/invoice_pdf.html:99
 msgid "Invoice date"
 msgstr "Factuurdatum"
 
@@ -3336,7 +3337,7 @@ msgstr "Type"
 
 #: apps/licences/forms.py:118 apps/orders/forms.py:23 apps/parts/forms.py:15
 #: templates/dashboard/report.html:72 templates/dashboard/report.html:82
-#: templates/invoices/invoice_pdf.html:64 templates/licences/options.html:16
+#: templates/invoices/invoice_pdf.html:109 templates/licences/options.html:16
 #: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
 #: templates/orders/review.html:9 templates/parts/order_detail.html:8
 #: templates/parts/request_detail.html:19 templates/parts/review.html:8
@@ -4071,8 +4072,7 @@ msgid "Choose at least one service pack."
 msgstr "Kies minstens één servicepack."
 
 #: apps/orders/forms.py:52 apps/orders/forms.py:84 apps/parts/forms.py:88
-#: apps/parts/forms.py:102 templates/invoices/invoice_pdf.html:59
-#: templates/invoices/my_invoices.html:7
+#: apps/parts/forms.py:102 templates/invoices/my_invoices.html:7
 #: templates/licences/email_certificate.txt:14
 #: templates/orders/email_confirmation.txt:8 templates/orders/my_orders.html:7
 #: templates/orders/review.html:21 templates/parts/overview.html:8
@@ -4257,7 +4257,7 @@ msgstr "Alles is beantwoord; de klant is gemaild."
 msgid "The customer has been emailed."
 msgstr "De klant is gemaild."
 
-#: apps/parts/admin.py:150 templates/invoices/invoice_pdf.html:64
+#: apps/parts/admin.py:150 templates/invoices/invoice_pdf.html:109
 #: templates/orders/order_detail.html:7 templates/orders/review.html:9
 #: templates/parts/order_detail.html:8 templates/parts/review.html:8
 msgid "Amount"
@@ -4422,8 +4422,9 @@ msgstr "Verplicht."
 msgid "We check whether urgent delivery is possible and what it costs."
 msgstr "We kijken of spoedlevering mogelijk is en wat het kost."
 
-#: apps/parts/forms.py:104 templates/parts/email.txt:17
-#: templates/parts/order_detail.html:14 templates/parts/review.html:12
+#: apps/parts/forms.py:104 templates/invoices/invoice_pdf.html:101
+#: templates/parts/email.txt:17 templates/parts/order_detail.html:14
+#: templates/parts/review.html:12
 msgid "Payment method"
 msgstr "Betaalwijze"
 
@@ -5378,8 +5379,12 @@ msgid "footer heading"
 msgstr "kop in de footer"
 
 #: apps/siteconfig/models.py:129
-msgid "Bold line at the top of the footer, above the address and the footer text, e.g. the company name. Empty = no heading."
-msgstr "Vetgedrukte regel bovenaan de footer, boven het adres en de footertekst, bijv. de bedrijfsnaam. Leeg = geen kop."
+msgid ""
+"Bold line at the top of the footer, above the address and the footer text, "
+"e.g. the company name. Empty = no heading."
+msgstr ""
+"Vetgedrukte regel bovenaan de footer, boven het adres en de footertekst, "
+"bijv. de bedrijfsnaam. Leeg = geen kop."
 
 #: apps/siteconfig/models.py:132
 msgid "Extra text at the bottom of every page."
@@ -6295,7 +6300,7 @@ msgstr "Uitloggen"
 msgid "Log in"
 msgstr "Inloggen"
 
-#: templates/base.html:85 templates/invoices/invoice_pdf.html:39
+#: templates/base.html:85 templates/invoices/invoice_pdf.html:64
 msgid "CoC"
 msgstr "KvK"
 
@@ -6523,7 +6528,7 @@ msgstr "Klik op een maand in de grafiek om alleen die maand te zien."
 msgid "Order or licence"
 msgstr "Bestelling of licentie"
 
-#: templates/dashboard/report.html:82
+#: templates/dashboard/report.html:82 templates/invoices/invoice_pdf.html:109
 msgid "Product"
 msgstr "Product"
 
@@ -6649,54 +6654,78 @@ msgstr ""
 msgid "Send fault report"
 msgstr "Storingsmelding versturen"
 
-#: templates/invoices/invoice_pdf.html:7
+#: templates/invoices/invoice_pdf.html:50
 msgid "page"
 msgstr "pagina"
 
-#: templates/invoices/invoice_pdf.html:47
+#: templates/invoices/invoice_pdf.html:62
+msgid "Web"
+msgstr "Web"
+
+#: templates/invoices/invoice_pdf.html:76
 msgid "Attn."
 msgstr "T.a.v."
 
-#: templates/invoices/invoice_pdf.html:56
-msgid "Due date"
-msgstr "Vervaldatum"
+#: templates/invoices/invoice_pdf.html:85
+msgid "Please mention these numbers with your payment"
+msgstr "Bij betaling deze gegevens vermelden"
 
-#: templates/invoices/invoice_pdf.html:58
+#: templates/invoices/invoice_pdf.html:92
+msgid "Our reference"
+msgstr "Onze referentie"
+
+#: templates/invoices/invoice_pdf.html:93
+msgid "Your order"
+msgstr "Uw opdracht"
+
+#: templates/invoices/invoice_pdf.html:94
 msgid "Your VAT number"
 msgstr "Uw btw-nummer"
 
-#: templates/invoices/invoice_pdf.html:64
-msgid "Code"
-msgstr "Code"
+#: templates/invoices/invoice_pdf.html:100
+msgid "Due date"
+msgstr "Vervaldatum"
 
-#: templates/invoices/invoice_pdf.html:64 templates/orders/review.html:9
+#: templates/invoices/invoice_pdf.html:101
+msgid "On account"
+msgstr "Per factuur"
+
+#: templates/invoices/invoice_pdf.html:109
+msgid "Article no."
+msgstr "Artikelnr"
+
+#: templates/invoices/invoice_pdf.html:109 templates/orders/review.html:9
 #: templates/parts/review.html:8
 msgid "Price each"
 msgstr "Prijs per stuk"
 
-#: templates/invoices/invoice_pdf.html:71
-#: templates/orders/email_confirmation.txt:13
-#: templates/orders/order_detail.html:13 templates/orders/review.html:15
-msgid "Subtotal"
-msgstr "Subtotaal"
+#: templates/invoices/invoice_pdf.html:112
+msgid "DISCOUNT"
+msgstr "KORTING"
 
-#: templates/invoices/invoice_pdf.html:72
-#: templates/orders/email_confirmation.txt:14
-#: templates/orders/order_detail.html:14 templates/parts/email.txt:20
-msgid "Discount"
-msgstr "Korting"
+#: templates/invoices/invoice_pdf.html:112
+#, python-format
+msgid "Discount %(pct)s%%"
+msgstr "Korting %(pct)s%%"
 
-#: templates/invoices/invoice_pdf.html:73
-#: templates/orders/email_confirmation.txt:15 templates/orders/review.html:17
-#: templates/parts/email.txt:22 templates/parts/totals.html:5
-msgid "Total excl. VAT"
-msgstr "Totaal excl. btw"
+#: templates/invoices/invoice_pdf.html:118
+msgid "Net total"
+msgstr "Netto totaal"
 
-#: templates/invoices/invoice_pdf.html:75 templates/invoices/my_invoices.html:7
-#: templates/orders/done.html:7 templates/orders/email_confirmation.txt:17
-#: templates/orders/my_orders.html:7 templates/orders/order_detail.html:16
-#: templates/orders/review.html:19 templates/parts/email.txt:24
-#: templates/parts/overview.html:15 templates/parts/totals.html:7
+#: templates/invoices/invoice_pdf.html:119
+#, python-format
+msgid "VAT %(rate)s%%"
+msgstr "Btw %(rate)s%%"
+
+#: templates/invoices/invoice_pdf.html:120
+msgid "Total amount"
+msgstr "Totaalbedrag"
+
+#: templates/invoices/my_invoices.html:7 templates/orders/done.html:7
+#: templates/orders/email_confirmation.txt:17 templates/orders/my_orders.html:7
+#: templates/orders/order_detail.html:16 templates/orders/review.html:19
+#: templates/parts/email.txt:24 templates/parts/overview.html:15
+#: templates/parts/totals.html:7
 msgid "Total incl. VAT"
 msgstr "Totaal incl. btw"
 
@@ -7018,6 +7047,21 @@ msgstr "Orderbevestiging"
 #: templates/orders/email_confirmation.txt:11
 msgid "registered"
 msgstr "geregistreerd"
+
+#: templates/orders/email_confirmation.txt:13
+#: templates/orders/order_detail.html:13 templates/orders/review.html:15
+msgid "Subtotal"
+msgstr "Subtotaal"
+
+#: templates/orders/email_confirmation.txt:14
+#: templates/orders/order_detail.html:14 templates/parts/email.txt:20
+msgid "Discount"
+msgstr "Korting"
+
+#: templates/orders/email_confirmation.txt:15 templates/orders/review.html:17
+#: templates/parts/email.txt:22 templates/parts/totals.html:5
+msgid "Total excl. VAT"
+msgstr "Totaal excl. btw"
 
 #: templates/orders/email_confirmation.txt:19 templates/orders/review.html:22
 msgid "Physical packs are sent to"
