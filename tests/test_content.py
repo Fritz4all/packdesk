@@ -157,3 +157,14 @@ def test_old_dutch_website_addresses_lead_to_the_english_ones(client, site):
     posted = client.post("/storing-melden/", {"a": "b"})
     assert posted.status_code == 308 and posted["Location"] == "/report-fault/"  # form data kept
     assert client.get("/over-ons/").status_code == 404  # unknown addresses are not touched
+
+
+def test_development_shows_the_friendly_404_page_too(settings, monkeypatch):
+    from django.apps import apps
+    from django.views import debug
+    from django.views.defaults import page_not_found
+
+    monkeypatch.setattr(debug, "technical_404_response", debug.technical_404_response)  # restored afterwards
+    settings.DEBUG, settings.TECHNICAL_404 = True, False
+    apps.get_app_config("core").ready()
+    assert debug.technical_404_response is page_not_found

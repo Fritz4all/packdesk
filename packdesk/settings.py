@@ -36,6 +36,8 @@ server_config.ensure_secret_key(DATA_ROOT)
 
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
+# Development only: show Django's technical page for an unknown address instead of the 404 page.
+TECHNICAL_404 = env.bool("TECHNICAL_404", default=False)
 
 # Without a fixed list every host name is accepted, and the domain from the settings in the admin
 # is checked instead (apps.siteconfig.middleware); a fresh installation must be reachable by IP.
