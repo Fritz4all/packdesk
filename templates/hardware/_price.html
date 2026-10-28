@@ -1,0 +1,9 @@
+{% load i18n humanize_nl %}{% if price %}
+<div class="hw-price">
+  {% if incl_vat %}<strong>€ {{ price.incl|money }}</strong> <span class="muted">{% translate "incl. VAT" %}</span>
+    <div class="hw-price-other muted">€ {{ price.excl|money }} {% translate "excl. VAT" %}</div>
+  {% else %}<strong>€ {{ price.excl|money }}</strong> <span class="muted">{% translate "excl. VAT" %}</span>
+    <div class="hw-price-other muted">€ {{ price.incl|money }} {% translate "incl. VAT" %}</div>{% endif %}
+  {% if price.discount_pct %}<div class="hw-price-other muted">{% blocktranslate with pct=price.discount_pct|floatformat:"-2" %}Your price: {{ pct }}% discount on € {% endblocktranslate %}{% if incl_vat %}{{ price.list_incl|money }}{% else %}{{ price.list_excl|money }}{% endif %}</div>{% endif %}
+</div>
+{% else %}<div class="hw-price muted">{% translate "Price on request" %}</div>{% endif %}

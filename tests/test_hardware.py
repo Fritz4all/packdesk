@@ -17,7 +17,8 @@ def laptop():
 
 
 def make_device(serial="SN-1", **extra):
-    return Device.objects.create(device_type=laptop(), model="Latitude 5440", serial_nr=serial, **extra)
+    extra.setdefault("model", "Latitude 5440")
+    return Device.objects.create(device_type=laptop(), serial_nr=serial, **extra)
 
 
 def test_device_gets_a_stock_number_and_prices_with_and_without_vat(site):
@@ -144,3 +145,58 @@ def test_new_customer_gets_the_default_hardware_margin(site):
 
     signup = SignupSettings.load()
     assert hasattr(signup, "default_margin_hardware")
+
+
+# --- the shop on the website -------------------------------------------------------------------------------
+
+def test_visitors_see_what_is_for_sale_with_prices_incl_and_excl_vat(client, site):
+    make_device("SN-SALE", status=Device.Status.FOR_SALE, sale_price=Decimal("500.00"), specs={"ram_gb": 16})
+    make_device("SN-DRAFT", model="Geheim", sale_price=Decimal("100.00"))
+    page = client.get("/hardware/").content.decode()
+    assert "Latitude 5440" in page and "Geheim" not in page
+    assert "605,00" in page and "500,00" in page  # incl. VAT first, excl. VAT next to it
+    assert "16 GB" in page
+    page = client.get("/hardware/?vat=excl").content.decode()
+    assert page.index("500,00") < page.index("605,00")  # now excl. VAT first, remembered
+    assert client.session["hardware_prices_incl_vat"] is False
+
+
+def test_shop_filters_and_sorts(client, site):
+    make_device("A", status=Device.Status.FOR_SALE, sale_price=Decimal("900"), model="Duur")
+    monitor = DeviceType.objects.get(name_en="Monitor")
+    Device.objects.create(device_type=monitor, model="Scherm", serial_nr="B", status=Device.Status.FOR_SALE,
+                          sale_price=Decimal("100"))
+    page = client.get(f"/hardware/?type={monitor.pk}").content.decode()
+    assert "Scherm" in page and "Duur" not in page
+    page = client.get("/hardware/?sort=price").content.decode()
+    assert page.index("Scherm") < page.index("Duur")
+    assert "Duur" in client.get("/hardware/?q=duur").content.decode()
+
+
+def test_device_page_and_customer_price(client, site):
+    from apps.customers.models import Contact, Customer
+
+    device = make_device("SN-1", status=Device.Status.FOR_SALE, sale_price=Decimal("1000.00"))
+    page = client.get(f"/hardware/{device.number}/").content.decode()
+    assert "1.210,00" in page and "/signup/" in page  # visitors: log in or sign up to order
+    customer = Customer.objects.create(name="Koper BV", status=Customer.Status.ACTIVE, margin_hardware=Decimal("10"))
+    user = make_user("koper@example.test")
+    Contact.objects.create(customer=customer, user=user, last_name="Koper")
+    client.force_login(user)
+    page = client.get(f"/hardware/{device.number}/").content.decode()
+    assert "1.089,00" in page  # 10% discount, incl. VAT
+    device.status = Device.Status.SOLD
+    device.save()
+    page = client.get(f"/hardware/{device.number}/").content.decode()
+    assert "1.089,00" not in page and "niet meer te koop" in page
+    device.status = Device.Status.DRAFT
+    device.save()
+    assert client.get(f"/hardware/{device.number}/").status_code == 404
+
+
+def test_shop_can_be_switched_off_and_is_in_the_website_menu(client, site):
+    from apps.siteconfig.models import MenuItem
+
+    assert MenuItem.objects.filter(url="/hardware/").exists()
+    HardwareSettings.objects.update(enabled=False)
+    assert client.get("/hardware/").status_code == 404

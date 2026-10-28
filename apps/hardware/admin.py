@@ -35,8 +35,9 @@ class SingletonAdmin(ModelAdmin, TabbedTranslationAdmin):
 @admin.register(HardwareSettings)
 class HardwareSettingsAdmin(SingletonAdmin):
     fieldsets = [
-        (_("General"), {"classes": ["tab"], "fields": ["enabled", "notify_emails"]}),
-        (_("Prices"), {"classes": ["tab"], "fields": ["vat_rate", "default_markup", "default_warranty_months"]}),
+        (_("General"), {"classes": ["tab"], "fields": ["enabled", "per_page", "notify_emails"]}),
+        (_("Prices"), {"classes": ["tab"], "fields": ["vat_rate", "default_markup", "default_warranty_months",
+                                                      "prices_incl_vat"]}),
         (_("Texts"), {"classes": ["tab"], "fields": ["intro", "terms_text"]}),
     ]
 

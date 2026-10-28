@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Hardware" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head hw-head">
+  <div>
+    <h1>{% translate "Hardware" %}</h1>
+    {% if settings.intro %}<p class="lead">{{ settings.intro|linebreaksbr }}</p>{% endif %}
+  </div>
+  {% include "hardware/_vat_switch.html" with query=query %}
+</div>
+
+<form method="get" class="filter-bar hw-filters">
+  <input type="search" name="q" value="{{ chosen.q }}" placeholder="{% translate 'Search, e.g. ThinkPad or i5' %}" aria-label="{% translate 'Search' %}">
+  <select name="type" aria-label="{% translate 'Device type' %}" onchange="this.form.submit()">
+    <option value="">{% translate "All types" %}</option>
+    {% for t in types %}<option value="{{ t.pk }}"{% if chosen.type == t.pk|stringformat:"s" %} selected{% endif %}>{{ t }}</option>{% endfor %}
+  </select>
+  <select name="brand" aria-label="{% translate 'Brand' %}" onchange="this.form.submit()">
+    <option value="">{% translate "All brands" %}</option>
+    {% for b in brands %}<option value="{{ b.pk }}"{% if chosen.brand == b.pk|stringformat:"s" %} selected{% endif %}>{{ b.name }}</option>{% endfor %}
+  </select>
+  <select name="condition" aria-label="{% translate 'Condition' %}" onchange="this.form.submit()">
+    <option value="">{% translate "Every condition" %}</option>
+    {% for c in conditions %}<option value="{{ c.pk }}"{% if chosen.condition == c.pk|stringformat:"s" %} selected{% endif %}>{{ c }}</option>{% endfor %}
+  </select>
+  <select name="sort" aria-label="{% translate 'Sort' %}" onchange="this.form.submit()">
+    <option value="">{% translate "Newest first" %}</option>
+    <option value="price"{% if chosen.sort == "price" %} selected{% endif %}>{% translate "Price, low to high" %}</option>
+    <option value="-price"{% if chosen.sort == "-price" %} selected{% endif %}>{% translate "Price, high to low" %}</option>
+  </select>
+  <button class="btn btn-primary" type="submit">{% translate "Search" %}</button>
+</form>
+
+<p class="muted">{% blocktranslate count n=total %}{{ n }} device{% plural %}{{ n }} devices{% endblocktranslate %}
+  {% if chosen.q or chosen.type or chosen.brand or chosen.condition %} · <a href="{% url 'hardware_shop' %}">{% translate "Show everything" %}</a>{% endif %}</p>
+
+{% if page.object_list %}
+<div class="hw-grid">
+  {% for device in page %}
+  <a class="card hw-card card-link-block" href="{% url 'hardware_device' device.number %}">
+    <div class="hw-photo">{% with photo=device.photos.all.0 %}{% if photo %}<img src="{{ photo.image.url }}" alt="" loading="lazy">{% else %}<span class="hw-no-photo" aria-hidden="true">🖥</span>{% endif %}{% endwith %}</div>
+    <div class="hw-card-body">
+      <div class="hw-meta muted">{{ device.device_type }}{% if device.condition %} · {{ device.condition }}{% endif %}</div>
+      <h2 class="hw-title">{% if device.brand %}{{ device.brand.name }} {% endif %}{{ device.model }}</h2>
+      {% if device.spec_rows %}<ul class="hw-specs">{% for name, value in device.spec_rows %}<li><span class="muted">{{ name }}</span> {{ value }}</li>{% endfor %}</ul>{% endif %}
+      {% include "hardware/_price.html" with price=device.shop_price %}
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% if page.has_other_pages %}
+<nav class="hw-pages" aria-label="{% translate 'Pages' %}">
+  {% if page.has_previous %}<a class="btn btn-ghost" href="?{% if query %}{{ query }}&amp;{% endif %}page={{ page.previous_page_number }}">← {% translate "Previous" %}</a>{% endif %}
+  <span class="muted">{% blocktranslate with n=page.number total=page.paginator.num_pages %}Page {{ n }} of {{ total }}{% endblocktranslate %}</span>
+  {% if page.has_next %}<a class="btn btn-ghost" href="?{% if query %}{{ query }}&amp;{% endif %}page={{ page.next_page_number }}">{% translate "Next" %} →</a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<div class="card card-muted"><p>{% translate "Nothing for sale matches your choice right now." %}</p></div>
+{% endif %}
+{% endblock %}

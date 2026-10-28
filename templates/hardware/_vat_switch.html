@@ -1,0 +1,4 @@
+{% load i18n %}<div class="hw-vat-switch" role="group" aria-label="{% translate 'Show prices' %}">
+  <a href="?{% if query %}{{ query }}&amp;{% endif %}vat=incl" class="{% if incl_vat %}is-current{% endif %}"{% if incl_vat %} aria-current="true"{% endif %}>{% translate "incl. VAT" %}</a>
+  <a href="?{% if query %}{{ query }}&amp;{% endif %}vat=excl" class="{% if not incl_vat %}is-current{% endif %}"{% if not incl_vat %} aria-current="true"{% endif %}>{% translate "excl. VAT" %}</a>
+</div>

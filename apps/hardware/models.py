@@ -26,6 +26,12 @@ class HardwareSettings(models.Model):
         help_text=_("Used when a device has no selling price: purchase price plus this percentage."),
     )
     default_warranty_months = models.PositiveSmallIntegerField(_("standard warranty (months)"), default=12)
+    prices_incl_vat = models.BooleanField(
+        _("show prices incl. VAT first"), default=True,
+        help_text=_("How prices are shown on the website at first; visitors can switch between incl. and excl. VAT."),
+    )
+    per_page = models.PositiveSmallIntegerField(_("devices per page"), default=24,
+                                                validators=[MinValueValidator(6), MaxValueValidator(96)])
     intro = models.TextField(_("introduction on the hardware page"), blank=True)
     terms_text = models.TextField(_("terms shown before ordering"), blank=True)
     notify_emails = models.CharField(

@@ -75,17 +75,17 @@ h2 { font-size: 1.15rem; }
   top: 0;
   z-index: 10;
 }
-.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 64px; }
+.header-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; min-height: 64px; padding-block: .5rem; }
 .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); font-weight: 700; }
 .brand:hover { text-decoration: none; }
-.brand img { max-height: 40px; width: auto; }
+.brand img { max-height: 40px; width: auto; max-width: 100%; }
 .brand-mark {
   display: grid; place-items: center;
   width: 36px; height: 36px; border-radius: 10px;
   background: linear-gradient(135deg, var(--brand), var(--accent));
   color: #fff;
 }
-.nav { display: flex; align-items: center; gap: 1rem; }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; }
 .nav form { margin: 0; }
 .nav > a:not(.btn) { color: var(--muted); font-weight: 500; }
 
@@ -246,3 +246,33 @@ a.card-link-block:hover { text-decoration: none; border-color: var(--brand); }
 .field input[type="file"] { padding: .5rem; }
 .field input[type="file"]::file-selector-button { font: inherit; font-weight: 600; margin-right: .75rem; padding: .45rem .9rem;
   border: 0; border-radius: 8px; background: var(--brand); color: #fff; cursor: pointer; }
+
+/* Hardware shop */
+.hw-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.hw-filters select { font: inherit; padding: .55rem .8rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+.hw-vat-switch { display: inline-flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; background: var(--surface); }
+.hw-vat-switch a { padding: .35rem .9rem; color: var(--muted); font-size: .9rem; }
+.hw-vat-switch a.is-current { background: var(--brand); color: #fff; font-weight: 600; }
+.hw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.card.hw-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.hw-photo { aspect-ratio: 4 / 3; background: var(--bg); display: grid; place-items: center; border-bottom: 1px solid var(--border); }
+.hw-photo img { width: 100%; height: 100%; object-fit: contain; }
+.hw-photo-large { border: 1px solid var(--border); border-radius: var(--radius); }
+.hw-no-photo { font-size: 3rem; opacity: .35; }
+.hw-card-body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .35rem; flex: 1; }
+.hw-meta { font-size: .85rem; }
+.hw-title { font-size: 1.05rem; margin: 0; }
+.hw-title-large { margin: .2rem 0 .8rem; }
+.hw-specs { list-style: none; padding: 0; margin: 0; font-size: .9rem; }
+.hw-specs li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hw-price { margin-top: auto; padding-top: .5rem; }
+.hw-detail .hw-price { margin: .8rem 0; }
+.hw-price strong { font-size: 1.3rem; color: var(--text); }
+.hw-price-other { font-size: .85rem; }
+.hw-pages { display: flex; gap: 1rem; align-items: center; justify-content: center; }
+.hw-detail { margin-bottom: 1rem; }
+.hw-gallery-main { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.hw-thumbs { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+.hw-thumb { width: 72px; height: 54px; padding: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); cursor: pointer; overflow: hidden; }
+.hw-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.hw-order { margin-top: 1rem; }
