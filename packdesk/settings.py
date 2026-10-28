@@ -238,6 +238,12 @@ LOGGING = {
 }
 
 
+def _brand_icon(size=None):
+    from apps.siteconfig.brand_views import icon_url
+
+    return icon_url(size=size)
+
+
 def _versioned(path):
     """Static URL that changes when the file changes, so browsers never keep an old copy.
     (In production the file name itself carries a hash; the query then does no harm.)"""
@@ -251,6 +257,13 @@ UNFOLD = {
     "SITE_TITLE": "PackDesk",
     "SITE_HEADER": "PackDesk",
     "SITE_SYMBOL": "inventory_2",
+    # The PackDesk icon in the colour of Settings → Branding (or the uploaded favicon).
+    "SITE_ICON": {"light": lambda request: _brand_icon(), "dark": lambda request: _brand_icon()},
+    "SITE_FAVICONS": [
+        {"rel": "icon", "type": "image/svg+xml", "href": lambda request: _brand_icon()},
+        {"rel": "icon", "sizes": "32x32", "type": "image/png", "href": lambda request: _brand_icon(32)},
+        {"rel": "apple-touch-icon", "sizes": "180x180", "href": lambda request: _brand_icon(180)},
+    ],
     "SHOW_HISTORY": True,
     "STYLES": [lambda request: _versioned("admin/packdesk-admin.css")],
     "SCRIPTS": [lambda request: _versioned("admin/packdesk-admin.js")],

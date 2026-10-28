@@ -166,7 +166,7 @@ class DatabaseUpdateMiddleware:
 class FirstRunMiddleware:
     """Runs after the site settings and authentication middleware."""
 
-    ALLOWED = ("/static/", "/media/", "/language/", WIZARD_PATH, "/admin/login/")
+    ALLOWED = ("/static/", "/media/", "/language/", "/brand/", "/favicon.ico", WIZARD_PATH, "/admin/login/")
 
     def __init__(self, get_response):
         self.get_response = get_response

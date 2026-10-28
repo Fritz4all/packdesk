@@ -17,7 +17,10 @@
       root.dataset.themeChoice = choice;
     })();
   </script>
-  {% if site_settings.favicon %}<link rel="icon" href="{{ site_settings.favicon.url }}">{% endif %}
+  {% if site_settings.favicon %}<link rel="icon" href="{{ site_settings.favicon.url }}">{% else %}
+  <link rel="icon" type="image/svg+xml" href="{% url 'brand_icon_svg' %}?c={{ site_settings.icon_hex|slice:'1:' }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% url 'brand_icon_png' 32 %}?c={{ site_settings.icon_hex|slice:'1:' }}">
+  <link rel="apple-touch-icon" href="{% url 'brand_icon_png' 180 %}?c={{ site_settings.icon_hex|slice:'1:' }}">{% endif %}
   <link rel="stylesheet" href="{% vstatic 'css/packdesk.css' %}">
   <style>:root { --brand: {{ site_settings.primary_color|default:'#1f6feb' }}; --accent: {{ site_settings.accent_color|default:'#0ea5e9' }}; }</style>
 </head>
@@ -30,7 +33,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="{% url 'home' %}">
-        {% if site_settings.logo %}<img src="{{ site_settings.logo.url }}" alt="{{ site_settings.name }}">{% else %}<span class="brand-mark">{{ site_settings.name|slice:":1" }}</span><span class="brand-name">{{ site_settings.name }}</span>{% endif %}
+        {% if site_settings.logo %}<img src="{{ site_settings.logo.url }}" alt="{{ site_settings.name }}">{% else %}<img class="brand-icon" src="{% if site_settings.favicon %}{{ site_settings.favicon.url }}{% else %}{% url 'brand_icon_svg' %}?c={{ site_settings.icon_hex|slice:'1:' }}{% endif %}" alt="" width="36" height="36"><span class="brand-name">{{ site_settings.name }}</span>{% endif %}
       </a>
       <nav class="nav">
         {% for item in menu_items %}<a href="{{ item.url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>{% endfor %}

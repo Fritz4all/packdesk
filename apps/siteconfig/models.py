@@ -6,6 +6,8 @@ from django.db import models
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from . import brand
+
 hex_color = RegexValidator(r"^#[0-9a-fA-F]{6}$", _("Use a colour like #1f6feb."))
 
 
@@ -97,6 +99,10 @@ class SiteSettings(models.Model):
     # Branding
     logo = models.ImageField(_("logo"), upload_to="branding/", blank=True)
     favicon = models.ImageField(_("favicon"), upload_to="branding/", blank=True)
+    icon_color = models.CharField(
+        _("colour of the PackDesk icon"), max_length=10, choices=brand.CHOICES, default=brand.DEFAULT,
+        help_text=_("Favicon, app icon and admin icon, as long as no own favicon is uploaded."),
+    )
     primary_color = models.CharField(_("primary colour"), max_length=7, default="#1f6feb", validators=[hex_color])
     accent_color = models.CharField(_("accent colour"), max_length=7, default="#0ea5e9", validators=[hex_color])
     theme = models.CharField(
@@ -183,6 +189,11 @@ class SiteSettings(models.Model):
 
     def delete(self, *args, **kwargs):
         raise RuntimeError("Site settings cannot be deleted.")
+
+    @property
+    def icon_hex(self):
+        """Colour of the PackDesk icon (#rrggbb)."""
+        return brand.color(self)
 
     def set_mail_password(self, raw):
         from apps.core import crypto

@@ -6,6 +6,7 @@ from django.urls import include, path, re_path
 from django.views.i18n import set_language
 from django.views.static import serve
 
+from apps.siteconfig import brand_views
 from apps.accounts import views as account_views
 from apps.accounts.forms import EmailAdminAuthenticationForm
 from apps.core import old_addresses
@@ -46,6 +47,9 @@ urlpatterns = [
     # Old Dutch addresses (/beheer/, /inloggen/, /mijn/... ) lead to the English ones.
     re_path(old_addresses.PATTERN, old_addresses.redirect_old_address),
     path("language/", set_language, name="set_language"),
+    path("brand/icon.svg", brand_views.icon_svg, name="brand_icon_svg"),
+    path("brand/icon-<int:size>.png", brand_views.icon_png, name="brand_icon_png"),
+    path("favicon.ico", brand_views.favicon, name="favicon"),
     path("", include("apps.accounts.urls")),
     path("", include("apps.customers.urls")),
     path("", include("apps.licences.urls")),

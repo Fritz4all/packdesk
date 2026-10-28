@@ -18,6 +18,7 @@ def settings_form(**overrides):
         "password_min_length_staff": "10", "password_min_length_customers": "10",
         "trash_retention_days": "30",
         "primary_color": "#112233",
+        "icon_color": "blue",
         "accent_color": "#ffffff",
         "country": "NL",
         "theme": "auto",
