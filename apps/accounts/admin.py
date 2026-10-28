@@ -10,6 +10,7 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import path, reverse
 from django.utils.html import escapejs, format_html
+from django.utils.text import format_lazy
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from unfold.admin import ModelAdmin
@@ -70,18 +71,11 @@ class RoleForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.user = user
         info = RoleInfo.objects.filter(role_id=self.instance.pk).first() if self.instance.pk else None
-        titles = {}
-        for i, (lang, name) in enumerate(settings.LANGUAGES):
-            titles[f"title_{lang}"] = forms.CharField(
-                label=f"{_('Name')} ({name})", max_length=150, required=i == 0,
-                widget=UnfoldAdminTextInputWidget,
-                initial=getattr(info, f"title_{lang}", "") if info else "",
-                help_text=_("Empty = the name in the first language.") if i else "",
-            )
-        self.fields = {**titles, **self.fields}
+        for lang, _name in settings.LANGUAGES:
+            self.fields[f"title_{lang}"].initial = getattr(info, f"title_{lang}", "") if info else ""
         if self.instance.pk and self.instance.name == SUPERADMIN:
-            del self.fields["permissions"]
-            first = next(iter(titles))
+            self.fields.pop("permissions", None)  # the admin also leaves it off the page (RoleAdmin.get_fields)
+            first = f"title_{settings.LANGUAGES[0][0]}"
             self.fields[first].help_text = _("Superadmins always have every right, also to everything added later.")
         else:
             self.fields["permissions"].queryset = grantable_permissions(user)
@@ -110,6 +104,19 @@ class RoleForm(forms.ModelForm):
         return role
 
 
+# The name per language, as fields of the form itself (so the admin puts them on the page), before the rights.
+RoleForm.base_fields = RoleForm.declared_fields = {
+    **{
+        f"title_{lang}": forms.CharField(
+            label=format_lazy("{} ({})", _("Name"), name), max_length=150, required=i == 0,
+            widget=UnfoldAdminTextInputWidget, help_text=_("Empty = the name in the first language.") if i else "",
+        )
+        for i, (lang, name) in enumerate(settings.LANGUAGES)
+    },
+    **RoleForm.declared_fields,
+}
+
+
 @admin.register(Role)
 class RoleAdmin(ModelAdmin):
     form = RoleForm
@@ -118,6 +125,12 @@ class RoleAdmin(ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("info").annotate(n_users=Count("user", distinct=True), n_perms=Count("permissions", distinct=True))
+
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj)
+        if obj is not None and obj.is_superadmin:  # every right, always: nothing to tick
+            fields = [f for f in fields if f != "permissions"]
+        return fields
 
     def get_form(self, request, obj=None, **kwargs):
         form_class = super().get_form(request, obj, **kwargs)

@@ -197,3 +197,16 @@ def test_only_superadmins_give_the_role_or_see_the_maximum(client, site, beheerd
     assert "max_superadmins" not in client.get("/admin/siteconfig/sitesettings/1/change/").content.decode()
     client.force_login(make_user("root@example.test", superuser=True))
     assert "max_superadmins" in client.get("/admin/siteconfig/sitesettings/1/change/").content.decode()
+
+
+def test_role_pages_show_the_names_per_language(client, site):
+    client.force_login(make_user("root@example.test", superuser=True))
+    for role in Role.objects.all():
+        page = client.get(f"{ROLES}{role.pk}/change/").content.decode()
+        assert 'name="title_nl"' in page and 'name="title_de"' in page, role.name
+        assert ("permission-matrix" in page) != role.is_superadmin, role.name  # Superadmin: nothing to tick
+    assert 'value="Beheerder"' in client.get(f"{ROLES}{Role.objects.get(name='Administrator').pk}/change/").content.decode()
+    superadmin = Role.objects.get(name="Superadmin")
+    response = client.post(f"{ROLES}{superadmin.pk}/change/", {"title_nl": "Hoofdbeheer", "title_en": "Head admin"})
+    assert response.status_code == 302, response.content.decode()[:2000]
+    assert superadmin.info.__class__.objects.get(pk=superadmin.pk).title_nl == "Hoofdbeheer"
