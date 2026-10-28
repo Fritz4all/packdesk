@@ -109,7 +109,7 @@ class OrderForm(DeliveryForm):
 
     def __init__(self, *args, urgent_costs=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["payment_method"].queryset = PaymentMethod.objects.filter(is_active=True)
+        self.fields["payment_method"].queryset = PaymentMethod.objects.filter(is_active=True, for_parts=True)
         if urgent_costs is None:
             del self.fields["urgent"]
         else:

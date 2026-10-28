@@ -14,7 +14,7 @@ from django.db.models import Sum
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.orders.models import HUNDRED, money
+from apps.orders.models import HUNDRED, PaymentMethod, money
 
 
 class SingletonModel(models.Model):
@@ -108,27 +108,6 @@ class DeliveryTime(models.Model):
     class Meta:
         verbose_name = _("delivery time")
         verbose_name_plural = _("delivery times")
-        ordering = ["position", "name"]
-
-    def __str__(self):
-        return self.name
-
-
-class PaymentMethod(models.Model):
-    code = models.SlugField(_("code"), max_length=32, unique=True)
-    name = models.CharField(_("name"), max_length=100)
-    on_account = models.BooleanField(
-        _("on account"), default=False,
-        help_text=_("Delivered before payment. Large orders wait for approval (see the settings). Without this, "
-                    "an order waits until it is paid."),
-    )
-    extra_costs = models.DecimalField(_("extra costs (€)"), max_digits=8, decimal_places=2, null=True, blank=True)
-    is_active = models.BooleanField(_("active"), default=True)
-    position = models.PositiveSmallIntegerField(_("order"), default=0)
-
-    class Meta:
-        verbose_name = _("payment method")
-        verbose_name_plural = _("payment methods")
         ordering = ["position", "name"]
 
     def __str__(self):

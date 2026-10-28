@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 21:20+0100\n"
+"POT-Creation-Date: 2026-10-28 21:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -258,8 +258,8 @@ msgstr "rollen"
 #: apps/hardware/models.py:143 apps/legacy/models.py:16
 #: apps/licences/models.py:32 apps/licences/models.py:57
 #: apps/licences/models.py:71 apps/licences/models.py:112
-#: apps/numbering/models.py:18 apps/parts/models.py:105
-#: apps/parts/models.py:119 apps/printing/models.py:11
+#: apps/numbering/models.py:18 apps/orders/models.py:62
+#: apps/parts/models.py:105 apps/printing/models.py:11
 #: apps/printing/models.py:37 apps/siteconfig/models.py:26
 #: apps/siteconfig/models.py:253 apps/telephony/models.py:42
 #: apps/telephony/models.py:57 apps/trash/models.py:14
@@ -1024,11 +1024,11 @@ msgstr "is reseller"
 #: apps/hardware/models.py:98 apps/hardware/models.py:125
 #: apps/hardware/models.py:147 apps/hardware/models.py:244
 #: apps/invoices/models.py:68 apps/licences/models.py:43
-#: apps/licences/models.py:59 apps/orders/models.py:84 apps/parts/models.py:106
-#: apps/parts/models.py:127 apps/printing/models.py:63
-#: apps/siteconfig/models.py:269 apps/siteconfig/models.py:326
-#: apps/siteconfig/models.py:357 apps/telephony/models.py:43
-#: apps/telephony/models.py:73
+#: apps/licences/models.py:59 apps/orders/models.py:72
+#: apps/orders/models.py:110 apps/parts/models.py:106
+#: apps/printing/models.py:63 apps/siteconfig/models.py:269
+#: apps/siteconfig/models.py:326 apps/siteconfig/models.py:357
+#: apps/telephony/models.py:43 apps/telephony/models.py:73
 msgid "order"
 msgstr "volgorde"
 
@@ -1038,8 +1038,8 @@ msgstr "klanttypes"
 
 #: apps/customers/models.py:30 apps/hardware/models.py:85
 #: apps/invoices/models.py:137 apps/licences/models.py:158
-#: apps/numbering/models.py:17 apps/parts/models.py:104
-#: apps/parts/models.py:118 apps/printing/models.py:58
+#: apps/numbering/models.py:17 apps/orders/models.py:61
+#: apps/parts/models.py:104 apps/printing/models.py:58
 msgid "code"
 msgstr "code"
 
@@ -1057,7 +1057,7 @@ msgstr "Bijv. voor klanten buiten uw eigen land."
 
 #: apps/customers/models.py:35 apps/faults/models.py:16
 #: apps/hardware/models.py:64 apps/hardware/models.py:146
-#: apps/parts/models.py:126 apps/siteconfig/models.py:325
+#: apps/orders/models.py:71 apps/siteconfig/models.py:325
 #: apps/siteconfig/models.py:356 apps/telephony/models.py:72
 msgid "active"
 msgstr "actief"
@@ -1071,7 +1071,7 @@ msgstr "land"
 msgid "countries"
 msgstr "landen"
 
-#: apps/customers/models.py:49 apps/parts/models.py:314
+#: apps/customers/models.py:49 apps/parts/models.py:293
 msgid "Waiting for approval"
 msgstr "Wacht op goedkeuring"
 
@@ -1097,8 +1097,8 @@ msgstr "bedrijfsnaam"
 
 #: apps/customers/models.py:63 apps/faults/models.py:72
 #: apps/hardware/models.py:175 apps/legacy/models.py:130
-#: apps/parts/models.py:174 apps/parts/models.py:228 apps/parts/models.py:276
-#: apps/parts/models.py:328
+#: apps/parts/models.py:153 apps/parts/models.py:207 apps/parts/models.py:255
+#: apps/parts/models.py:307
 msgid "status"
 msgstr "status"
 
@@ -1152,11 +1152,11 @@ msgid "What the customer typed in the 'Message' field of the sign-up form."
 msgstr ""
 "Wat de klant in het veld 'Bericht' van het aanmeldformulier heeft ingevuld."
 
-#: apps/customers/models.py:88 apps/parts/models.py:350
+#: apps/customers/models.py:88 apps/parts/models.py:329
 msgid "approved at"
 msgstr "goedgekeurd op"
 
-#: apps/customers/models.py:91 apps/parts/models.py:352
+#: apps/customers/models.py:91 apps/parts/models.py:331
 msgid "approved by"
 msgstr "goedgekeurd door"
 
@@ -1167,21 +1167,21 @@ msgstr "ID in oud systeem"
 
 #: apps/customers/models.py:94 apps/invoices/models.py:99
 #: apps/legacy/models.py:28 apps/legacy/old_shop/importer.py:129
-#: apps/licences/models.py:277 apps/parts/models.py:239
-#: apps/parts/models.py:396
+#: apps/licences/models.py:277 apps/parts/models.py:218
+#: apps/parts/models.py:375
 msgid "created"
 msgstr "aangemaakt"
 
 #: apps/customers/models.py:95 apps/legacy/models.py:29
-#: apps/legacy/old_shop/importer.py:129 apps/parts/models.py:182
+#: apps/legacy/old_shop/importer.py:129 apps/parts/models.py:161
 #: apps/siteconfig/models.py:171
 msgid "updated"
 msgstr "bijgewerkt"
 
 #: apps/customers/models.py:98 apps/faults/models.py:76
 #: apps/invoices/models.py:66 apps/licences/models.py:249
-#: apps/orders/models.py:59 apps/parts/admin.py:64 apps/parts/models.py:170
-#: apps/parts/models.py:323 apps/printing/models.py:101
+#: apps/orders/models.py:85 apps/parts/admin.py:64 apps/parts/models.py:149
+#: apps/parts/models.py:302 apps/printing/models.py:101
 #: apps/printing/models.py:142 apps/telephony/models.py:91
 msgid "customer"
 msgstr "klant"
@@ -1291,7 +1291,7 @@ msgid "primary contact"
 msgstr "hoofdcontactpersoon"
 
 #: apps/customers/models.py:205 apps/licences/models.py:174
-#: apps/parts/models.py:298 apps/parts/models.py:303
+#: apps/parts/models.py:277 apps/parts/models.py:282
 msgid "remark"
 msgstr "opmerking"
 
@@ -1497,7 +1497,7 @@ msgstr "Betaald"
 msgid "Fault reports"
 msgstr "Storingsmeldingen"
 
-#: apps/customers/overview.py:140 apps/dashboard/navigation.py:190
+#: apps/customers/overview.py:140 apps/dashboard/navigation.py:196
 #: apps/legacy/old_shop/importer.py:118
 msgid "Spare parts requests"
 msgstr "Onderdelenaanvragen"
@@ -1508,7 +1508,7 @@ msgstr "Onderdelenaanvragen"
 msgid "Parts"
 msgstr "Onderdelen"
 
-#: apps/customers/overview.py:142 apps/dashboard/navigation.py:196
+#: apps/customers/overview.py:142 apps/dashboard/navigation.py:202
 #: apps/legacy/old_shop/importer.py:120
 msgid "Spare parts orders"
 msgstr "Onderdelenbestellingen"
@@ -1563,11 +1563,11 @@ msgstr "Deze export is gemaakt met een nieuwere versie van PackDesk."
 msgid "addresses"
 msgstr "adressen"
 
-#: apps/customers/transfer.py:355 apps/orders/models.py:85
+#: apps/customers/transfer.py:355 apps/orders/models.py:111
 msgid "orders"
 msgstr "bestellingen"
 
-#: apps/customers/transfer.py:356 apps/orders/models.py:112
+#: apps/customers/transfer.py:356 apps/orders/models.py:138
 msgid "order lines"
 msgstr "orderregels"
 
@@ -1792,20 +1792,20 @@ msgstr "Factuurinstellingen"
 msgid "Invoice design"
 msgstr "Factuurontwerp"
 
-#: apps/dashboard/navigation.py:177 apps/orders/models.py:45
+#: apps/dashboard/navigation.py:177
+msgid "Payment methods"
+msgstr "Betaalwijzen"
+
+#: apps/dashboard/navigation.py:183 apps/orders/models.py:45
 msgid "Order settings"
 msgstr "Bestelinstellingen"
 
-#: apps/dashboard/navigation.py:187 apps/dashboard/reports.py:120
+#: apps/dashboard/navigation.py:193 apps/dashboard/reports.py:120
 #: apps/dashboard/reports.py:213 apps/parts/apps.py:7
 #: templates/core/dashboard.html:18 templates/parts/overview.html:3
 #: templates/parts/overview.html:5
 msgid "Spare parts"
 msgstr "Onderdelen"
-
-#: apps/dashboard/navigation.py:202
-msgid "Payment methods"
-msgstr "Betaalwijzen"
 
 #: apps/dashboard/navigation.py:208
 msgid "Delivery times"
@@ -2186,7 +2186,7 @@ msgstr "max. aantal bijlagen"
 msgid "fault report settings"
 msgstr "storingsinstellingen"
 
-#: apps/faults/models.py:67 apps/parts/admin.py:55 apps/parts/models.py:139
+#: apps/faults/models.py:67 apps/parts/admin.py:55 apps/parts/models.py:118
 #: templates/admin/hardware/import_review.html:24
 msgid "New"
 msgstr "Nieuw"
@@ -2231,7 +2231,7 @@ msgstr ""
 #: apps/faults/models.py:85 apps/hardware/models.py:170
 #: apps/licences/models.py:82 apps/licences/models.py:93
 #: apps/licences/models.py:261 apps/licences/models.py:357
-#: apps/parts/models.py:221 apps/printing/models.py:15
+#: apps/parts/models.py:200 apps/printing/models.py:15
 #: apps/printing/models.py:40
 msgid "brand"
 msgstr "merk"
@@ -2258,8 +2258,8 @@ msgstr "omschrijving van de storing"
 msgid "desired handling"
 msgstr "gewenste afhandeling"
 
-#: apps/faults/models.py:92 apps/invoices/models.py:73 apps/orders/models.py:63
-#: apps/parts/models.py:173 apps/parts/models.py:327
+#: apps/faults/models.py:92 apps/invoices/models.py:73 apps/orders/models.py:89
+#: apps/parts/models.py:152 apps/parts/models.py:306
 msgid "your reference"
 msgstr "uw referentie"
 
@@ -2369,7 +2369,10 @@ msgid ""
 "Choose a device type on the Device tab first; its specifications appear "
 "here. A type without specifications has nothing to fill in here (see "
 "Hardware → Specifications)."
-msgstr "Kies eerst een apparaatsoort op het tabblad Apparaat; de kenmerken daarvan verschijnen hier. Een soort zonder kenmerken heeft hier niets in te vullen (zie Hardware → Kenmerken)."
+msgstr ""
+"Kies eerst een apparaatsoort op het tabblad Apparaat; de kenmerken daarvan "
+"verschijnen hier. Een soort zonder kenmerken heeft hier niets in te vullen "
+"(zie Hardware → Kenmerken)."
 
 #: apps/hardware/admin.py:208 templates/hardware/shop.html:15
 msgid "Device type"
@@ -2411,7 +2414,7 @@ msgstr "incl. btw"
 
 #: apps/hardware/admin.py:232 apps/invoices/design.py:62
 #: apps/invoices/design.py:75 apps/invoices/models.py:92
-#: apps/orders/models.py:70 apps/parts/models.py:347 templates/base.html:86
+#: apps/orders/models.py:96 apps/parts/models.py:326 templates/base.html:86
 #: templates/orders/email_confirmation.txt:16
 #: templates/orders/order_detail.html:15 templates/parts/email.txt:23
 msgid "VAT"
@@ -2452,8 +2455,8 @@ msgid "Visitors and customers see the hardware for sale on the website."
 msgstr "Bezoekers en klanten zien de te koop staande hardware op de website."
 
 #: apps/hardware/models.py:23 apps/invoices/models.py:91
-#: apps/orders/models.py:21 apps/orders/models.py:69 apps/parts/models.py:59
-#: apps/parts/models.py:343
+#: apps/orders/models.py:21 apps/orders/models.py:95 apps/parts/models.py:59
+#: apps/parts/models.py:322
 msgid "VAT rate (%)"
 msgstr "btw-percentage (%)"
 
@@ -2668,8 +2671,8 @@ msgstr "Leeg = de standaardgarantie (Hardware-instellingen)."
 
 #: apps/hardware/models.py:190 apps/invoices/models.py:138
 #: apps/licences/models.py:163 apps/licences/models.py:263
-#: apps/licences/models.py:358 apps/orders/models.py:102
-#: apps/parts/models.py:223 apps/printing/models.py:13
+#: apps/licences/models.py:358 apps/orders/models.py:128
+#: apps/parts/models.py:202 apps/printing/models.py:13
 #: apps/printing/models.py:59 apps/telephony/models.py:58
 msgid "description"
 msgstr "omschrijving"
@@ -2687,7 +2690,7 @@ msgid "added at"
 msgstr "toegevoegd op"
 
 #: apps/hardware/models.py:198 apps/numbering/models.py:103
-#: apps/parts/models.py:273
+#: apps/parts/models.py:252
 msgid "changed at"
 msgstr "gewijzigd op"
 
@@ -3238,7 +3241,7 @@ msgstr "factuurinstellingen"
 msgid "invoice number"
 msgstr "factuurnummer"
 
-#: apps/invoices/models.py:70 apps/parts/models.py:358
+#: apps/invoices/models.py:70 apps/parts/models.py:337
 msgid "spare parts order"
 msgstr "onderdelenbestelling"
 
@@ -3262,23 +3265,23 @@ msgstr "btw-nummer klant"
 msgid "invoice email"
 msgstr "e-mail voor facturen"
 
-#: apps/invoices/models.py:87 apps/orders/models.py:65
+#: apps/invoices/models.py:87 apps/orders/models.py:91
 msgid "subtotal"
 msgstr "subtotaal"
 
-#: apps/invoices/models.py:88 apps/orders/models.py:66 apps/parts/models.py:336
+#: apps/invoices/models.py:88 apps/orders/models.py:92 apps/parts/models.py:315
 msgid "discount (%)"
 msgstr "korting (%)"
 
-#: apps/invoices/models.py:89 apps/orders/models.py:67 apps/parts/models.py:345
+#: apps/invoices/models.py:89 apps/orders/models.py:93 apps/parts/models.py:324
 msgid "discount"
 msgstr "korting"
 
-#: apps/invoices/models.py:90 apps/orders/models.py:68 apps/parts/models.py:346
+#: apps/invoices/models.py:90 apps/orders/models.py:94 apps/parts/models.py:325
 msgid "total excl. VAT"
 msgstr "totaal excl. btw"
 
-#: apps/invoices/models.py:93 apps/orders/models.py:71 apps/parts/models.py:348
+#: apps/invoices/models.py:93 apps/orders/models.py:97 apps/parts/models.py:327
 msgid "total incl. VAT"
 msgstr "totaal incl. btw"
 
@@ -3298,20 +3301,20 @@ msgstr "betaald op"
 msgid "invoice"
 msgstr "factuur"
 
-#: apps/invoices/models.py:139 apps/orders/models.py:103
-#: apps/parts/models.py:222 apps/parts/models.py:393 apps/parts/models.py:424
-#: apps/parts/models.py:441 apps/printing/models.py:212
+#: apps/invoices/models.py:139 apps/orders/models.py:129
+#: apps/parts/models.py:201 apps/parts/models.py:372 apps/parts/models.py:403
+#: apps/parts/models.py:420 apps/printing/models.py:212
 #: apps/telephony/models.py:121 templates/dashboard/report.html:50
 msgid "quantity"
 msgstr "aantal"
 
-#: apps/invoices/models.py:140 apps/orders/models.py:104
-#: apps/parts/models.py:395
+#: apps/invoices/models.py:140 apps/orders/models.py:130
+#: apps/parts/models.py:374
 msgid "price each"
 msgstr "prijs per stuk"
 
 #: apps/invoices/models.py:141 apps/invoices/models.py:156
-#: apps/orders/models.py:105
+#: apps/orders/models.py:131
 msgid "amount"
 msgstr "bedrag"
 
@@ -3718,7 +3721,7 @@ msgstr "veldkoppelingen"
 msgid "Running"
 msgstr "Bezig"
 
-#: apps/legacy/models.py:124 apps/parts/models.py:316
+#: apps/legacy/models.py:124 apps/parts/models.py:295
 #: templates/admin/index.html:12
 msgid "Done"
 msgstr "Klaar"
@@ -4429,7 +4432,7 @@ msgid "max. external options"
 msgstr "max. externe opties"
 
 #: apps/licences/models.py:178 apps/licences/models.py:248
-#: apps/orders/models.py:101
+#: apps/orders/models.py:127
 msgid "service pack"
 msgstr "servicepack"
 
@@ -4513,7 +4516,7 @@ msgstr "volledig licentienummer"
 msgid "order reference"
 msgstr "orderreferentie"
 
-#: apps/licences/models.py:252 apps/orders/models.py:111
+#: apps/licences/models.py:252 apps/orders/models.py:137
 msgid "order line"
 msgstr "orderregel"
 
@@ -4534,7 +4537,7 @@ msgid "end date"
 msgstr "einddatum"
 
 #: apps/licences/models.py:264 apps/licences/models.py:359
-#: apps/parts/models.py:219 apps/printing/models.py:12
+#: apps/parts/models.py:198 apps/printing/models.py:12
 #: apps/printing/models.py:38
 msgid "article number"
 msgstr "artikelnummer"
@@ -4817,8 +4820,8 @@ msgstr ""
 "al is uitgegeven."
 
 #: apps/numbering/models.py:104 apps/numbering/models.py:130
-#: apps/parts/models.py:275 apps/parts/models.py:296 apps/parts/models.py:426
-#: apps/parts/models.py:444
+#: apps/parts/models.py:254 apps/parts/models.py:275 apps/parts/models.py:405
+#: apps/parts/models.py:423
 msgid "by"
 msgstr "door"
 
@@ -4830,7 +4833,7 @@ msgstr "oud volgende nummer"
 msgid "new next number"
 msgstr "nieuw volgende nummer"
 
-#: apps/numbering/models.py:107 apps/parts/models.py:442
+#: apps/numbering/models.py:107 apps/parts/models.py:421
 msgid "reason"
 msgstr "reden"
 
@@ -4931,7 +4934,7 @@ msgstr "Kies minstens één servicepack."
 msgid "Your reference"
 msgstr "Uw referentie"
 
-#: apps/orders/forms.py:53 apps/orders/models.py:63 apps/parts/forms.py:103
+#: apps/orders/forms.py:53 apps/orders/models.py:89 apps/parts/forms.py:103
 msgid "Shown on the invoice."
 msgstr "Komt op de factuur."
 
@@ -4997,53 +5000,85 @@ msgstr "Bovenaan de bevestigingsmail."
 msgid "order settings"
 msgstr "bestelinstellingen"
 
-#: apps/orders/models.py:58 apps/parts/models.py:319
+#: apps/orders/models.py:64
+msgid "on account"
+msgstr "op rekening"
+
+#: apps/orders/models.py:65
+msgid ""
+"Delivered before payment. Large orders wait for approval (see the settings). "
+"Without this, an order waits until it is paid."
+msgstr ""
+"Wordt geleverd vóór betaling. Grote bestellingen wachten op vrijgave (zie de "
+"instellingen). Zonder dit wacht een bestelling tot ze betaald is."
+
+#: apps/orders/models.py:68
+msgid "extra costs (€)"
+msgstr "extra kosten (€)"
+
+#: apps/orders/models.py:69
+msgid "for spare parts"
+msgstr "voor onderdelen"
+
+#: apps/orders/models.py:70
+msgid "for hardware"
+msgstr "voor hardware"
+
+#: apps/orders/models.py:75 apps/parts/models.py:310
+msgid "payment method"
+msgstr "betaalwijze"
+
+#: apps/orders/models.py:76
+msgid "payment methods"
+msgstr "betaalwijzen"
+
+#: apps/orders/models.py:84 apps/parts/models.py:298
 msgid "order number"
 msgstr "ordernummer"
 
-#: apps/orders/models.py:61 apps/parts/models.py:325
+#: apps/orders/models.py:87 apps/parts/models.py:304
 msgid "ordered by"
 msgstr "besteld door"
 
-#: apps/orders/models.py:62 apps/parts/models.py:326
+#: apps/orders/models.py:88 apps/parts/models.py:305
 #: apps/printing/models.py:196
 msgid "ordered at"
 msgstr "besteld op"
 
-#: apps/orders/models.py:73
+#: apps/orders/models.py:99
 msgid "send physical packs"
 msgstr "fysieke packs sturen"
 
-#: apps/orders/models.py:74 apps/parts/models.py:145
+#: apps/orders/models.py:100 apps/parts/models.py:124
 msgid "delivery to (company)"
 msgstr "afleveren bij (bedrijf)"
 
-#: apps/orders/models.py:75 apps/parts/models.py:146
+#: apps/orders/models.py:101 apps/parts/models.py:125
 msgid "delivery contact"
 msgstr "contactpersoon aflevering"
 
-#: apps/orders/models.py:76 apps/parts/models.py:147
+#: apps/orders/models.py:102 apps/parts/models.py:126
 msgid "delivery address"
 msgstr "afleveradres"
 
-#: apps/orders/models.py:77 apps/parts/models.py:148
+#: apps/orders/models.py:103 apps/parts/models.py:127
 msgid "delivery postal code"
 msgstr "postcode aflevering"
 
-#: apps/orders/models.py:78 apps/parts/models.py:149
+#: apps/orders/models.py:104 apps/parts/models.py:128
 msgid "delivery city"
 msgstr "plaats aflevering"
 
-#: apps/orders/models.py:79
+#: apps/orders/models.py:105
 msgid "packs sent"
 msgstr "packs verstuurd"
 
-#: apps/orders/models.py:106 apps/printing/models.py:104
+#: apps/orders/models.py:132 apps/printing/models.py:104
 #: apps/telephony/models.py:94
 msgid "reference"
 msgstr "referentie"
 
-#: apps/orders/models.py:108
+#: apps/orders/models.py:134
 msgid "extends licence"
 msgstr "verlengt licentie"
 
@@ -5063,12 +5098,12 @@ msgstr "De klant ziet deze bij dit onderdeel."
 msgid "Selling price (before the customer's discount)"
 msgstr "Verkoopprijs (vóór de korting van de klant)"
 
-#: apps/parts/admin.py:55 apps/parts/models.py:140
+#: apps/parts/admin.py:55 apps/parts/models.py:119
 #: templates/licences/email_certificate.txt:8
 msgid "Pack"
 msgstr "Pack"
 
-#: apps/parts/admin.py:55 apps/parts/models.py:141
+#: apps/parts/admin.py:55 apps/parts/models.py:120
 msgid "Refurbished"
 msgstr "Refurbished"
 
@@ -5264,7 +5299,7 @@ msgstr "Verplicht."
 msgid "We check whether urgent delivery is possible and what it costs."
 msgstr "We kijken of spoedlevering mogelijk is en wat het kost."
 
-#: apps/parts/forms.py:106 apps/parts/models.py:369
+#: apps/parts/forms.py:106 apps/parts/models.py:348
 msgid "Urgent delivery"
 msgstr "Spoedlevering"
 
@@ -5387,308 +5422,284 @@ msgstr "levertijd"
 msgid "delivery times"
 msgstr "levertijden"
 
-#: apps/parts/models.py:121
-msgid "on account"
-msgstr "op rekening"
-
-#: apps/parts/models.py:122
-msgid ""
-"Delivered before payment. Large orders wait for approval (see the settings). "
-"Without this, an order waits until it is paid."
-msgstr ""
-"Wordt geleverd vóór betaling. Grote bestellingen wachten op vrijgave (zie de "
-"instellingen). Zonder dit wacht een bestelling tot ze betaald is."
-
-#: apps/parts/models.py:125
-msgid "extra costs (€)"
-msgstr "extra kosten (€)"
-
-#: apps/parts/models.py:130 apps/parts/models.py:331
-msgid "payment method"
-msgstr "betaalwijze"
-
-#: apps/parts/models.py:131
-msgid "payment methods"
-msgstr "betaalwijzen"
-
-#: apps/parts/models.py:150
+#: apps/parts/models.py:129
 msgid "delivery country"
 msgstr "land aflevering"
 
-#: apps/parts/models.py:151
+#: apps/parts/models.py:130
 msgid "delivery phone"
 msgstr "telefoon aflevering"
 
-#: apps/parts/models.py:165
+#: apps/parts/models.py:144
 msgid "To handle"
 msgstr "Te behandelen"
 
-#: apps/parts/models.py:166
+#: apps/parts/models.py:145
 msgid "Answered"
 msgstr "Beantwoord"
 
-#: apps/parts/models.py:168
+#: apps/parts/models.py:147
 msgid "request number"
 msgstr "aanvraagnummer"
 
-#: apps/parts/models.py:172
+#: apps/parts/models.py:151
 msgid "requested by"
 msgstr "aangevraagd door"
 
-#: apps/parts/models.py:176 apps/parts/models.py:332
+#: apps/parts/models.py:155 apps/parts/models.py:311
 #: templates/parts/overview.html:9 templates/parts/request_detail.html:6
 msgid "urgent"
 msgstr "spoed"
 
-#: apps/parts/models.py:177
+#: apps/parts/models.py:156
 msgid "urgent delivery possible"
 msgstr "spoedlevering mogelijk"
 
-#: apps/parts/models.py:178
+#: apps/parts/models.py:157
 msgid "urgent delivery costs (€)"
 msgstr "spoedkosten (€)"
 
-#: apps/parts/models.py:180
+#: apps/parts/models.py:159
 msgid "valid until"
 msgstr "geldig tot"
 
-#: apps/parts/models.py:181
+#: apps/parts/models.py:160
 msgid "requested at"
 msgstr "aangevraagd op"
 
-#: apps/parts/models.py:186
+#: apps/parts/models.py:165
 msgid "spare parts request"
 msgstr "onderdelenaanvraag"
 
-#: apps/parts/models.py:187
+#: apps/parts/models.py:166
 msgid "spare parts requests"
 msgstr "onderdelenaanvragen"
 
-#: apps/parts/models.py:212
+#: apps/parts/models.py:191
 msgid "Open"
 msgstr "Open"
 
-#: apps/parts/models.py:213
+#: apps/parts/models.py:192
 msgid "Answer follows soon"
 msgstr "Antwoord volgt zo snel mogelijk"
 
-#: apps/parts/models.py:214
+#: apps/parts/models.py:193
 msgid "More information needed"
 msgstr "Extra informatie nodig"
 
-#: apps/parts/models.py:215
+#: apps/parts/models.py:194
 msgid "Not available"
 msgstr "Niet leverbaar"
 
-#: apps/parts/models.py:216
+#: apps/parts/models.py:195
 msgid "Price known"
 msgstr "Prijs bekend"
 
-#: apps/parts/models.py:224
+#: apps/parts/models.py:203
 msgid "extra information"
 msgstr "extra informatie"
 
-#: apps/parts/models.py:225
+#: apps/parts/models.py:204
 msgid "device model"
 msgstr "model apparaat"
 
-#: apps/parts/models.py:226
+#: apps/parts/models.py:205
 msgid "device serial number"
 msgstr "serienummer apparaat"
 
-#: apps/parts/models.py:227
+#: apps/parts/models.py:206
 msgid "device description"
 msgstr "omschrijving apparaat"
 
-#: apps/parts/models.py:229
+#: apps/parts/models.py:208
 msgid "purchase price new"
 msgstr "inkoopprijs nieuw"
 
-#: apps/parts/models.py:230
+#: apps/parts/models.py:209
 msgid "purchase price pack"
 msgstr "inkoopprijs pack"
 
-#: apps/parts/models.py:231
+#: apps/parts/models.py:210
 msgid "purchase price refurbished"
 msgstr "inkoopprijs refurbished"
 
-#: apps/parts/models.py:234
+#: apps/parts/models.py:213
 msgid "delivery time new"
 msgstr "levertijd nieuw"
 
-#: apps/parts/models.py:236
+#: apps/parts/models.py:215
 msgid "delivery time pack"
 msgstr "levertijd pack"
 
-#: apps/parts/models.py:238
+#: apps/parts/models.py:217
 msgid "delivery time refurbished"
 msgstr "levertijd refurbished"
 
-#: apps/parts/models.py:243 apps/parts/models.py:391
+#: apps/parts/models.py:222 apps/parts/models.py:370
 msgid "requested part"
 msgstr "aangevraagd onderdeel"
 
-#: apps/parts/models.py:244
+#: apps/parts/models.py:223
 msgid "requested parts"
 msgstr "aangevraagde onderdelen"
 
-#: apps/parts/models.py:277
+#: apps/parts/models.py:256
 msgid "new"
 msgstr "nieuw"
 
-#: apps/parts/models.py:278
+#: apps/parts/models.py:257
 msgid "pack"
 msgstr "pack"
 
-#: apps/parts/models.py:279
+#: apps/parts/models.py:258
 msgid "refurbished"
 msgstr "refurbished"
 
-#: apps/parts/models.py:283
+#: apps/parts/models.py:262
 msgid "change"
 msgstr "wijziging"
 
-#: apps/parts/models.py:284
+#: apps/parts/models.py:263
 msgid "changes"
 msgstr "wijzigingen"
 
-#: apps/parts/models.py:297
+#: apps/parts/models.py:276
 msgid "from customer"
 msgstr "van klant"
 
-#: apps/parts/models.py:299
+#: apps/parts/models.py:278
 msgid "at"
 msgstr "op"
 
-#: apps/parts/models.py:304
+#: apps/parts/models.py:283
 msgid "remarks"
 msgstr "opmerkingen"
 
-#: apps/parts/models.py:313
+#: apps/parts/models.py:292
 msgid "Waiting for payment"
 msgstr "Wacht op betaling"
 
-#: apps/parts/models.py:315 templates/admin/parts/picklist.html:9
+#: apps/parts/models.py:294 templates/admin/parts/picklist.html:9
 msgid "To deliver"
 msgstr "Uit te leveren"
 
-#: apps/parts/models.py:317
+#: apps/parts/models.py:296
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
-#: apps/parts/models.py:321
+#: apps/parts/models.py:300
 msgid "request"
 msgstr "aanvraag"
 
-#: apps/parts/models.py:333
+#: apps/parts/models.py:312
 msgid "being picked"
 msgstr "wordt verzameld"
 
-#: apps/parts/models.py:334
+#: apps/parts/models.py:313
 msgid "Marks that someone is getting this order ready."
 msgstr "Geeft aan dat iemand deze bestelling klaarmaakt."
 
-#: apps/parts/models.py:337
+#: apps/parts/models.py:316
 msgid "urgent delivery costs"
 msgstr "spoedkosten"
 
-#: apps/parts/models.py:338
+#: apps/parts/models.py:317
 msgid "small order surcharge"
 msgstr "toeslag kleine bestelling"
 
-#: apps/parts/models.py:340
+#: apps/parts/models.py:319
 msgid "handling costs"
 msgstr "handelingskosten"
 
-#: apps/parts/models.py:341
+#: apps/parts/models.py:320
 msgid "payment costs"
 msgstr "betaalkosten"
 
-#: apps/parts/models.py:342
+#: apps/parts/models.py:321
 msgid "delivery costs"
 msgstr "verzendkosten"
 
-#: apps/parts/models.py:344
+#: apps/parts/models.py:323
 msgid "parts"
 msgstr "onderdelen"
 
-#: apps/parts/models.py:353
+#: apps/parts/models.py:332
 msgid "cancelled at"
 msgstr "geannuleerd op"
 
-#: apps/parts/models.py:354
+#: apps/parts/models.py:333
 msgid "reason for cancelling"
 msgstr "reden van annuleren"
 
-#: apps/parts/models.py:359
+#: apps/parts/models.py:338
 msgid "spare parts orders"
 msgstr "onderdelenbestellingen"
 
-#: apps/parts/models.py:361
+#: apps/parts/models.py:340
 msgid "Can deliver and correct spare parts orders"
 msgstr "Mag onderdelenbestellingen uitleveren en corrigeren"
 
-#: apps/parts/models.py:369
+#: apps/parts/models.py:348
 msgid "Small order surcharge"
 msgstr "Toeslag kleine bestelling"
 
-#: apps/parts/models.py:370
+#: apps/parts/models.py:349
 msgid "Handling costs"
 msgstr "Handelingskosten"
 
-#: apps/parts/models.py:370
+#: apps/parts/models.py:349
 msgid "Payment costs"
 msgstr "Betaalkosten"
 
-#: apps/parts/models.py:371
+#: apps/parts/models.py:350
 msgid "Delivery costs"
 msgstr "Verzendkosten"
 
-#: apps/parts/models.py:392
+#: apps/parts/models.py:371
 msgid "packing"
 msgstr "verpakking"
 
-#: apps/parts/models.py:394 apps/telephony/models.py:123
+#: apps/parts/models.py:373 apps/telephony/models.py:123
 msgid "purchase price"
 msgstr "inkoopprijs"
 
-#: apps/parts/models.py:400
+#: apps/parts/models.py:379
 msgid "ordered part"
 msgstr "besteld onderdeel"
 
-#: apps/parts/models.py:401
+#: apps/parts/models.py:380
 msgid "ordered parts"
 msgstr "bestelde onderdelen"
 
-#: apps/parts/models.py:424
+#: apps/parts/models.py:403
 msgid "Negative: parts taken back."
 msgstr "Negatief: onderdelen teruggenomen."
 
-#: apps/parts/models.py:427
+#: apps/parts/models.py:406
 msgid "delivered at"
 msgstr "geleverd op"
 
-#: apps/parts/models.py:431
+#: apps/parts/models.py:410
 msgid "delivery"
 msgstr "levering"
 
-#: apps/parts/models.py:432
+#: apps/parts/models.py:411
 msgid "deliveries"
 msgstr "leveringen"
 
-#: apps/parts/models.py:441
+#: apps/parts/models.py:420
 msgid "Negative: fewer parts than ordered."
 msgstr "Negatief: minder onderdelen dan besteld."
 
-#: apps/parts/models.py:445
+#: apps/parts/models.py:424
 msgid "corrected at"
 msgstr "gecorrigeerd op"
 
-#: apps/parts/models.py:449
+#: apps/parts/models.py:428
 msgid "correction"
 msgstr "correctie"
 
-#: apps/parts/models.py:450
+#: apps/parts/models.py:429
 msgid "corrections"
 msgstr "correcties"
 

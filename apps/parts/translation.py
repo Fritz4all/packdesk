@@ -1,6 +1,6 @@
 from modeltranslation.translator import TranslationOptions, register
 
-from .models import DeliveryTime, PartsSettings, PaymentMethod
+from .models import DeliveryTime, PartsSettings
 
 
 @register(PartsSettings)
@@ -12,7 +12,3 @@ class PartsSettingsTranslationOptions(TranslationOptions):
 class DeliveryTimeTranslationOptions(TranslationOptions):
     fields = ("name",)
 
-
-@register(PaymentMethod)
-class PaymentMethodTranslationOptions(TranslationOptions):
-    fields = ("name",)

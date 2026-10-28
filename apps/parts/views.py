@@ -114,7 +114,7 @@ def request_detail(request, pk):
     urgent_costs = part_request.urgent_costs if part_request.urgent and part_request.urgent_possible else None
     initial = {**_default_delivery(customer), "reference": part_request.reference,
                **{k: getattr(part_request, k) for k in DELIVERY_FIELDS if getattr(part_request, k)},
-               "payment_method": PaymentMethod.objects.filter(is_active=True).first(), "urgent": urgent_costs is not None}
+               "payment_method": PaymentMethod.objects.filter(is_active=True, for_parts=True).first(), "urgent": urgent_costs is not None}
     form = OrderForm(request.POST if action == "check" else None, initial=initial, urgent_costs=urgent_costs)
     if action == "check" and form.is_valid():
         chosen = _choices_from_post(part_request, request.POST)
@@ -156,7 +156,7 @@ def _confirm(request, customer, part_request):
             messages.error(request, _("The prices have changed in the meantime. Please check your order again."))
             return redirect("part_request", pk=part_request.pk)
         chosen.append((lines[line_pk], packing, quantity))
-    payment = get_object_or_404(PaymentMethod, pk=payload["payment"], is_active=True)
+    payment = get_object_or_404(PaymentMethod, pk=payload["payment"], is_active=True, for_parts=True)
     order = place_order(customer, request.user, part_request, chosen, payment, payload["reference"],
                         payload["delivery"], payload["urgent"])
     emails.order_placed(order)

@@ -174,6 +174,12 @@ SECTIONS = [
                 "permission": lambda request: request.user.has_perm("invoices.view_invoicesettings"),
             },
             {
+                "title": _("Payment methods"),
+                "icon": "payments",
+                "link": reverse_lazy("admin:orders_paymentmethod_changelist"),
+                "permission": lambda request: request.user.has_perm("orders.view_paymentmethod"),
+            },
+            {
                 "title": _("Order settings"),
                 "icon": "tune",
                 "link": reverse_lazy("admin:orders_ordersettings_changelist"),
@@ -197,12 +203,6 @@ SECTIONS = [
                 "icon": "local_shipping",
                 "link": reverse_lazy("admin:parts_partorder_changelist"),
                 "permission": lambda request: request.user.has_perm("parts.view_partorder"),
-            },
-            {
-                "title": _("Payment methods"),
-                "icon": "payments",
-                "link": reverse_lazy("admin:parts_paymentmethod_changelist"),
-                "permission": lambda request: request.user.has_perm("parts.view_paymentmethod"),
             },
             {
                 "title": _("Delivery times"),

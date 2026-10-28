@@ -10,7 +10,7 @@ from unfold.decorators import display
 
 from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
-from .models import Order, OrderLine, OrderSettings
+from .models import Order, OrderLine, OrderSettings, PaymentMethod
 
 
 class LineInline(TabularInline):
@@ -95,3 +95,9 @@ class OrderSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(PaymentMethod)
+class PaymentMethodAdmin(ModelAdmin, TabbedTranslationAdmin):
+    list_display = ["name", "code", "on_account", "extra_costs", "for_parts", "for_hardware", "is_active", "position"]
+    list_editable = ["for_parts", "for_hardware", "position"]

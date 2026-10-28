@@ -54,6 +54,32 @@ class OrderSettings(models.Model):
         return obj
 
 
+class PaymentMethod(models.Model):
+    """How a customer pays: on account, cash on delivery, pro forma, ... Shared by spare parts and hardware; per
+    method you choose where it is offered."""
+
+    code = models.SlugField(_("code"), max_length=32, unique=True)
+    name = models.CharField(_("name"), max_length=100)
+    on_account = models.BooleanField(
+        _("on account"), default=False,
+        help_text=_("Delivered before payment. Large orders wait for approval (see the settings). Without this, "
+                    "an order waits until it is paid."),
+    )
+    extra_costs = models.DecimalField(_("extra costs (€)"), max_digits=8, decimal_places=2, null=True, blank=True)
+    for_parts = models.BooleanField(_("for spare parts"), default=True)
+    for_hardware = models.BooleanField(_("for hardware"), default=True)
+    is_active = models.BooleanField(_("active"), default=True)
+    position = models.PositiveSmallIntegerField(_("order"), default=0)
+
+    class Meta:
+        verbose_name = _("payment method")
+        verbose_name_plural = _("payment methods")
+        ordering = ["position", "name"]
+
+    def __str__(self):
+        return self.name
+
+
 class Order(models.Model):
     number = models.CharField(_("order number"), max_length=32, db_index=True)
     customer = models.ForeignKey("customers.Customer", on_delete=models.PROTECT, related_name="orders", verbose_name=_("customer"))

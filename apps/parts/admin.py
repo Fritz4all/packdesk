@@ -16,7 +16,7 @@ from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 from apps.dashboard.templatetags.humanize_nl import money
 
 from . import services
-from .models import (DeliveryTime, MarkupTier, PartOrder, PartOrderLine, PartRequest, PartsSettings, PaymentMethod,
+from .models import (DeliveryTime, MarkupTier, PartOrder, PartOrderLine, PartRequest, PartsSettings,
                      Remark, RequestLine, selling_price)
 
 REQUEST_COLOURS = {"to_handle": "warning", "answered": "success"}
@@ -402,8 +402,3 @@ class DeliveryTimeAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = ["name", "code", "position"]
     list_editable = ["position"]
 
-
-@admin.register(PaymentMethod)
-class PaymentMethodAdmin(ModelAdmin, TabbedTranslationAdmin):
-    list_display = ["name", "code", "on_account", "extra_costs", "is_active", "position"]
-    list_editable = ["position"]
