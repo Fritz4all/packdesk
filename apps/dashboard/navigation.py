@@ -1,6 +1,6 @@
 """Admin sidebar. Every section can be collapsed. The menu for everyone can be changed under Configuration → Menu
 (order and names of the main menus, which items each one holds, extra main menus); on top of that each user can
-reorder the main menus for themselves (dashboard → Customise). Configuration is last by default."""
+reorder the main menus for themselves (dashboard → Customise). The standard menu is DEFAULT_LAYOUT."""
 
 import re
 
@@ -55,11 +55,30 @@ SECTIONS = [
                 "link": reverse_lazy("admin:trash_trashentry_changelist"),
                 "permission": lambda request: request.user.has_perm("trash.view_trashentry"),
             },
+        ],
+    },
+    {
+        "key": "webshop",
+        "collapsible": True,
+        "title": _("WebShop"),
+        "items": [],  # by default holds the main menus of the shop as fold-out groups (DEFAULT_LAYOUT)
+    },
+    {
+        "key": "databases",
+        "collapsible": True,
+        "title": _("Databases"),
+        "items": [
             {
                 "title": _("External databases"),
                 "icon": "database",
                 "link": reverse_lazy("admin:legacy_externaldatabase_changelist"),
                 "permission": lambda request: request.user.has_perm("legacy.view_externaldatabase"),
+            },
+            {
+                "title": _("Compare databases"),
+                "icon": "compare_arrows",
+                "link": reverse_lazy("legacy_choose"),
+                "permission": lambda request: request.user.has_perm("legacy.compare_databases"),
             },
             {
                 "title": _("Table mappings"),
@@ -73,13 +92,13 @@ SECTIONS = [
                 "link": reverse_lazy("admin:legacy_importrun_changelist"),
                 "permission": lambda request: request.user.has_perm("legacy.import_data"),
             },
-            {
-                "title": _("Compare databases"),
-                "icon": "compare_arrows",
-                "link": reverse_lazy("legacy_choose"),
-                "permission": lambda request: request.user.has_perm("legacy.compare_databases"),
-            },
         ],
+    },
+    {
+        "key": "archive",
+        "collapsible": True,
+        "title": _("Archived"),
+        "items": [],  # by default holds the parts kept only as an archive (DEFAULT_LAYOUT)
     },
     {
         "key": "customers",
@@ -92,12 +111,6 @@ SECTIONS = [
                 "link": reverse_lazy("admin:customers_customer_changelist"),
                 "badge": "apps.customers.admin_badge.pending",
                 "permission": lambda request: request.user.has_perm("customers.view_customer"),
-            },
-            {
-                "title": _("Users"),
-                "icon": "person",
-                "link": reverse_lazy("admin:accounts_customeruser_changelist"),
-                "permission": lambda request: request.user.has_perm("accounts.view_user"),
             },
             {
                 "title": _("Contacts"),
@@ -122,6 +135,12 @@ SECTIONS = [
                 "icon": "how_to_reg",
                 "link": reverse_lazy("admin:customers_signupsettings_changelist"),
                 "permission": lambda request: request.user.has_perm("customers.view_signupsettings"),
+            },
+            {
+                "title": _("Users"),
+                "icon": "person",
+                "link": reverse_lazy("admin:accounts_customeruser_changelist"),
+                "permission": lambda request: request.user.has_perm("accounts.view_user"),
             },
         ],
     },
@@ -393,8 +412,16 @@ SECTIONS = [
     },
 ]
 
-DEFAULT_ORDER = ["overview", "customers", "orders", "licences", "parts", "telephony", "printing", "faults", "users",
-                 "configuration"]
+# The standard menu: main menus in this order, some placed inside another one as a fold-out group. Items follow
+# the order in SECTIONS. Configuration → Menu → Standard goes back to this.
+DEFAULT_LAYOUT = [
+    ("overview", []),
+    ("webshop", ["parts", "licences", "orders", "customers"]),
+    ("faults", []),
+    ("configuration", ["users", "databases"]),
+    ("archive", ["printing", "telephony"]),
+]
+DEFAULT_ORDER = [key for top, groups in DEFAULT_LAYOUT for key in [top, *groups]]
 
 
 CUSTOM_KEY = re.compile(r"^custom-[a-z0-9]{1,20}$")
@@ -471,6 +498,9 @@ def menu(layout=None):
         layout = AdminMenu.load().layout
     home = {item_key(i): (s["key"], i) for s in SECTIONS for i in s["items"]}
     names = (layout or {}).get("items") or {}
+    if not (layout or {}).get("sections"):
+        layout = {"sections": [{"key": top, "items": [GROUP + g for g in groups]} for top, groups in DEFAULT_LAYOUT]
+                  + [{"key": g} for _top, groups in DEFAULT_LAYOUT for g in groups]}
     entries, parent_of = _structure(layout)
     for key in DEFAULT_ORDER:
         if not any(e[0] == key for e in entries):

@@ -120,19 +120,22 @@ def test_report_active_period_is_highlighted(client, site, beheerder):
     assert 'value="this_year" class="pd-btn pd-btn-primary"' in page
 
 
-def test_configuration_is_last_in_menu_by_default(rf, site, beheerder):
+def test_standard_menu_has_the_shop_and_the_archive_as_groups(rf, site, beheerder):
     from apps.dashboard.navigation import sidebar
 
     request = rf.get("/")
     request.user = beheerder
-    assert [s["key"] for s in sidebar(request)][-1] == "configuration"
+    sections = {s["key"]: s for s in sidebar(request)}
+    assert list(sections) == ["overview", "webshop", "faults", "configuration", "archive"]
+    assert [i["group"] for i in sections["webshop"]["items"]] == ["parts", "licences", "orders", "customers"]
+    assert [i.get("group") for i in sections["configuration"]["items"]][:2] == ["users", "databases"]
 
 
 def test_menu_sections_can_be_reordered_per_user(client, site, beheerder, rf):
     from apps.dashboard.navigation import sidebar
 
     client.force_login(beheerder)
-    new = ["configuration", "users", "faults", "licences", "parts", "telephony", "printing", "orders", "customers", "overview"]
+    new = ["configuration", "archive", "faults", "webshop", "overview"]
     client.post("/admin/dashboard/layout/", json.dumps({"sidebar": new + ["bogus"]}), content_type="application/json")
     request = rf.get("/")
     request.user = beheerder
