@@ -2,7 +2,7 @@ import getpass
 import os
 
 from django.contrib.auth.models import Group
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 from apps.accounts.models import User
 
@@ -12,12 +12,17 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--email", required=True)
-        parser.add_argument("--superuser", action="store_true", help="Full access, including roles.")
-        parser.add_argument("--role", help="Role (group) name, e.g. Beheerder.")
+        parser.add_argument("--superuser", action="store_true", help="Superadmin: every right, always.")
+        parser.add_argument("--role", help="Internal role name, e.g. Administrator, Finance, Service or Employee.")
         parser.add_argument("--first-name", default="")
         parser.add_argument("--last-name", default="")
 
     def handle(self, *args, **options):
+        if options["superuser"]:
+            from apps.accounts.admin import superadmins_left
+
+            if superadmins_left() <= 0:
+                raise CommandError("The maximum number of superadmins has been reached (Settings → Security).")
         password = os.environ.get("PACKDESK_PASSWORD") or getpass.getpass("Password: ")
         user = User(
             email=options["email"],

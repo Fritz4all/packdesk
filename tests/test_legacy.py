@@ -229,7 +229,7 @@ def test_compare_pages(client, site, mapped, packdesk):
 
 def test_compare_needs_permission(client, site, old_db):
     db = _saved(old_db)
-    client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("staff@example.test", staff=True, role="Employee"))
     assert client.get(f"/admin/compare/{db.pk}/").status_code == 403
     assert client.get("/admin/legacy/externaldatabase/").status_code == 403
 

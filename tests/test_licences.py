@@ -129,7 +129,7 @@ def test_admin_creates_several_licences(client, site, catalogue, reseller, behee
 
 def test_employee_role_can_only_view_licences(client, site, catalogue, reseller):
     lic = Licence.create_for(catalogue["pack"], reseller)[0]
-    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("mw@example.test", staff=True, role="Employee"))
     assert client.get(f"/admin/licences/licence/{lic.pk}/change/").status_code == 200
     assert client.get("/admin/licences/licence/add/").status_code == 403
 

@@ -201,7 +201,7 @@ def test_admin_export_downloads_zip(client, site, graph):
 
 
 def test_import_and_export_need_permission(client, site, graph):
-    client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("staff@example.test", staff=True, role="Employee"))
     assert client.get("/admin/customers/customer/import/").status_code == 403
     assert client.get("/admin/customers/customer/export/").status_code == 403
 

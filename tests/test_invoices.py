@@ -241,7 +241,7 @@ def test_design_page_saves_and_previews(client, site, beheerder):
 
 
 def test_design_page_is_read_only_without_change_permission(client, site):
-    user = make_user("kijker@example.test", staff=True, role="Medewerker")
+    user = make_user("kijker@example.test", staff=True, role="Employee")
     client.force_login(user)
     if not user.has_perm("invoices.view_invoicesettings"):
         assert client.get("/admin/invoices/invoicesettings/design/").status_code in (302, 403)

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.conf import settings
 from django.contrib.auth.models import Group
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Q
@@ -14,11 +15,11 @@ from django.utils.translation import gettext_lazy as _
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
-from unfold.widgets import UnfoldAdminSelectWidget
+from unfold.widgets import UnfoldAdminSelectWidget, UnfoldAdminTextInputWidget
 
 from apps.core.column_filters import ValueListFilter
 
-from .models import CustomerUser, Role, User
+from .models import SUPERADMIN, CustomerUser, Role, RoleInfo, User, role_title
 from .password_reset import force_reset
 from .permissions import grantable_permissions
 from .widgets import PermissionMatrixWidget
@@ -27,10 +28,12 @@ admin.site.unregister(Group)
 
 
 def assignable_roles(user):
-    """Roles `user` may give to others: all for a superuser, otherwise roles without extra rights."""
+    """Roles `user` may give to others: all for a superadmin, otherwise roles without extra rights (and never
+    Superadmin)."""
     roles = Role.objects.order_by("name")
     if user.is_superuser:
         return roles
+    roles = roles.exclude(name=SUPERADMIN)
     own = user.get_all_permissions()
     allowed = [
         role.pk
@@ -41,6 +44,14 @@ def assignable_roles(user):
 
 
 # --- Roles ------------------------------------------------------------------
+
+def superadmins_left(user=None):
+    """How many more superadmins may be made (setting under Configuration → Settings → Security)."""
+    from apps.siteconfig.models import SiteSettings
+
+    others = User.objects.filter(is_superuser=True).exclude(pk=getattr(user, "pk", None))
+    return SiteSettings.load().max_superadmins - others.count()
+
 
 class RoleForm(forms.ModelForm):
     permissions = forms.ModelMultipleChoiceField(
@@ -53,16 +64,45 @@ class RoleForm(forms.ModelForm):
 
     class Meta:
         model = Role
-        fields = ["name", "permissions"]
+        fields = ["permissions"]
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
-        self.fields["permissions"].queryset = grantable_permissions(user)
+        info = RoleInfo.objects.filter(role_id=self.instance.pk).first() if self.instance.pk else None
+        titles = {}
+        for i, (lang, name) in enumerate(settings.LANGUAGES):
+            titles[f"title_{lang}"] = forms.CharField(
+                label=f"{_('Name')} ({name})", max_length=150, required=i == 0,
+                widget=UnfoldAdminTextInputWidget,
+                initial=getattr(info, f"title_{lang}", "") if info else "",
+                help_text=_("Empty = the name in the first language.") if i else "",
+            )
+        self.fields = {**titles, **self.fields}
+        if self.instance.pk and self.instance.name == SUPERADMIN:
+            del self.fields["permissions"]
+            first = next(iter(titles))
+            self.fields[first].help_text = _("Superadmins always have every right, also to everything added later.")
+        else:
+            self.fields["permissions"].queryset = grantable_permissions(user)
+
+    def _titles(self):
+        return {f"title_{lang}": (self.cleaned_data.get(f"title_{lang}") or "").strip() or None
+                for lang, _name in settings.LANGUAGES}
 
     def save(self, commit=True):
         role = super().save(commit=False)
+        if not role.pk:  # internal name: the name in the first language, made unique
+            base = name = next(t for t in self._titles().values() if t)[:140]
+            n = 1
+            while Group.objects.filter(name=name).exists():
+                n += 1
+                name = f"{base} ({n})"
+            role.name = name
         role.save()
+        RoleInfo.objects.update_or_create(role=role, defaults=self._titles())
+        if "permissions" not in self.fields:
+            return role
         chosen = set(self.cleaned_data["permissions"])
         # Keep rights the editor cannot see or grant; they may only change what they control.
         hidden = set(role.permissions.exclude(pk__in=self.fields["permissions"].queryset))
@@ -73,11 +113,11 @@ class RoleForm(forms.ModelForm):
 @admin.register(Role)
 class RoleAdmin(ModelAdmin):
     form = RoleForm
-    list_display = ["name", "show_users", "show_permissions"]
-    search_fields = ["name"]
+    list_display = ["show_name", "show_users", "show_permissions"]
+    search_fields = ["name", *[f"info__title_{lang}" for lang, _name in settings.LANGUAGES]]
 
     def get_queryset(self, request):
-        return super().get_queryset(request).annotate(n_users=Count("user", distinct=True), n_perms=Count("permissions", distinct=True))
+        return super().get_queryset(request).select_related("info").annotate(n_users=Count("user", distinct=True), n_perms=Count("permissions", distinct=True))
 
     def get_form(self, request, obj=None, **kwargs):
         form_class = super().get_form(request, obj, **kwargs)
@@ -93,17 +133,26 @@ class RoleAdmin(ModelAdmin):
         for formset in formsets:
             self.save_formset(request, form, formset, change=change)
 
+    @display(description=_("Name"), ordering="name")
+    def show_name(self, obj):
+        return role_title(obj)
+
     @display(description=_("Users"))
     def show_users(self, obj):
         return obj.n_users
 
     @display(description=_("Permissions"))
     def show_permissions(self, obj):
-        return obj.n_perms
+        return gettext("All") if obj.is_superadmin else obj.n_perms
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and obj.is_superadmin and not request.user.is_superuser:
+            return False  # only superadmins rename the Superadmin role
+        return super().has_change_permission(request, obj)
 
     def has_delete_permission(self, request, obj=None):
-        if obj is not None and obj.user_set.exists():
-            return False  # still in use
+        if obj is not None and (obj.is_superadmin or obj.user_set.exists()):
+            return False  # always there / still in use
         return super().has_delete_permission(request, obj)
 
 
@@ -115,7 +164,8 @@ class RoleFieldMixin(forms.Form):
         queryset=Role.objects.none(),
         required=False,
         widget=UnfoldAdminSelectWidget,
-        help_text=_("Required for staff. The role decides what this user sees and may do in the admin."),
+        help_text=_("Required for staff. The role decides what this user sees and may do in the admin. "
+                    "Superadmin: every right, always."),
     )
 
     def setup_role(self, request_user):
@@ -128,9 +178,18 @@ class RoleFieldMixin(forms.Form):
 
     def clean(self):
         cleaned = super().clean()
-        is_super = cleaned.get("is_superuser", getattr(self.instance, "is_superuser", False))
-        if cleaned.get("kind") == User.Kind.STAFF and not is_super and not cleaned.get("role"):
+        role = cleaned.get("role")
+        staff = cleaned.get("kind", getattr(self.instance, "kind", "")) == User.Kind.STAFF
+        superadmin = staff and role is not None and role.is_superadmin
+        if staff and not role:
             self.add_error("role", _("Staff users need a role."))
+        if superadmin and not self.instance.is_superuser and superadmins_left(self.instance) <= 0:
+            self.add_error("role", _("The maximum number of superadmins has been reached (Configuration → Settings → "
+                                     "Security)."))
+        if self.instance.pk and self.instance.is_superuser and not superadmin and "role" in self.fields \
+                and not User.objects.filter(is_superuser=True).exclude(pk=self.instance.pk).exists():
+            self.add_error("role", _("This is the last superadmin; there must always be at least one."))
+        cleaned["is_superadmin"] = superadmin
         return cleaned
 
 
@@ -156,21 +215,20 @@ class PasswordFilter(ValueListFilter):
 
 
 class RoleFilter(SimpleListFilter):
-    """The roles, plus Superuser (no role needed) and No role. Superuser is only offered to superusers,
-    the only ones who can see superusers."""
+    """The roles and No role. Superadmin is only offered to superadmins, the only ones who can see them."""
 
     title = _("Role")
     parameter_name = "role"
 
     def lookups(self, request, model_admin):
-        options = [(str(role.pk), role.name) for role in Group.objects.order_by("name")]
-        if request.user.is_superuser:
-            options.append(("superuser", _("Superuser")))
-        return options + [("none", _("Staff without a role"))]
+        roles = Role.objects.select_related("info").order_by("name")
+        if not request.user.is_superuser:
+            roles = roles.exclude(name=SUPERADMIN)
+        return [(str(role.pk), str(role)) for role in roles] + [("none", _("Staff without a role"))]
 
     def queryset(self, request, queryset):
         value = self.value()
-        if value == "superuser":
+        if value and value.isdigit() and Role.objects.filter(pk=value, name=SUPERADMIN).exists():
             return queryset.filter(is_superuser=True)
         if value == "none":
             return queryset.filter(kind=User.Kind.STAFF, groups__isnull=True, is_superuser=False)
@@ -267,7 +325,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
     superuser_fieldsets = [
         (None, {"fields": ["email", "password_status"]}),
         (_("Personal info"), {"fields": ["first_name", "last_name", "admin_language"]}),
-        (_("Access"), {"fields": ["kind", "role", "is_active", "is_superuser"]}),
+        (_("Access"), {"fields": ["kind", "role", "is_active"]}),
         (_("Dates"), {"fields": ["last_login", "date_joined"]}),
     ]
     add_fieldsets = [
@@ -299,12 +357,14 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
 
     @display(description=_("Role"))
     def show_role(self, obj):
-        role = obj.groups.first()
-        return role.name if role else ("—" if not obj.is_superuser else _("Superuser"))
+        role = obj.groups.select_related("info").first()
+        return role_title(role) or "—"
 
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser or obj.kind == User.Kind.CUSTOMER:
-            obj.is_superuser = False  # only superusers make superusers, and customers never are one
+        if "role" in form.fields:  # the Superadmin role makes a superuser; only superadmins can give it
+            obj.is_superuser = bool(form.cleaned_data.get("is_superadmin")) and request.user.is_superuser
+        if obj.kind == User.Kind.CUSTOMER:
+            obj.is_superuser = False  # customers never are one
         if obj.kind == User.Kind.CUSTOMER:
             obj.admin_language = ""
         # Staff (admin users) and customers are told apart by `kind`.

@@ -210,7 +210,7 @@ def test_import_keeps_every_link(old_db, archived):
     assert Contact.objects.get(legacy_id="e2").user is None  # same email address: no second login
     assert not Contact.objects.filter(legacy_id="e3").exists()  # deleted in the previous webshop
     staff = User.objects.get(email="beheer@shop.test")
-    assert staff.is_staff and staff.groups.get().name == "Beheerder"
+    assert staff.is_staff and staff.groups.get().name == "Administrator"
 
     order = Order.objects.get(legacy_id="7")
     assert order.customer == customer and order.gross == Decimal("250.00") and order.total == Decimal("272.25")
@@ -267,7 +267,7 @@ def test_import_pages(client, site, old_db, monkeypatch, archived):
 
 
 def test_import_needs_permission(client, site, old_db):
-    client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("staff@example.test", staff=True, role="Employee"))
     assert client.get(f"/admin/import/{old_db.pk}/").status_code == 403
 
 

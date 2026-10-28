@@ -141,7 +141,7 @@ def test_trash_page_search_restore_and_delete_for_good(client, site, customer):
 
 def test_trash_needs_permission(client, site, customer):
     delete_to_trash(customer)
-    client.force_login(make_user("staff@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("staff@example.test", staff=True, role="Employee"))
     assert client.get("/admin/trash/trashentry/").status_code == 403
 
 

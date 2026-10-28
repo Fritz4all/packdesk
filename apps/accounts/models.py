@@ -53,8 +53,12 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
 
 
+SUPERADMIN = "Superadmin"  # internal name of the role that always has every right (Django's superuser)
+
+
 class Role(Group):
-    """A role for staff users (a Django group). Its permissions decide what a user sees and may do in the admin."""
+    """A role for staff users (a Django group). Its permissions decide what a user sees and may do in the admin.
+    The group's own name is an internal key; people see the name per language from RoleInfo."""
 
     class Meta:
         proxy = True
@@ -62,7 +66,35 @@ class Role(Group):
         verbose_name_plural = _("roles")
 
     def __str__(self):
-        return self.name
+        return role_title(self)
+
+    @property
+    def is_superadmin(self):
+        return self.name == SUPERADMIN
+
+
+class RoleInfo(models.Model):
+    """The name of a role in each language (translated with modeltranslation: title_nl, title_en, ...)."""
+
+    role = models.OneToOneField(Group, on_delete=models.CASCADE, primary_key=True, related_name="info")
+    title = models.CharField(_("name"), max_length=150)
+
+    class Meta:
+        verbose_name = _("role name")
+        verbose_name_plural = _("role names")
+
+    def __str__(self):
+        return self.title
+
+
+def role_title(group):
+    """The name of a role (group) in the language of the page; its internal name when none was given."""
+    if group is None:
+        return ""
+    try:
+        return group.info.title or group.name
+    except RoleInfo.DoesNotExist:
+        return group.name
 
 
 class CustomerUser(User):

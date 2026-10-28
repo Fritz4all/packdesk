@@ -32,7 +32,7 @@ def site(db):
 
 @pytest.fixture
 def beheerder(db):
-    return make_user("beheer@example.test", staff=True, role="Beheerder")
+    return make_user("beheer@example.test", staff=True, role="Administrator")
 
 
 @pytest.fixture(autouse=True)

@@ -48,11 +48,11 @@ HUNDRED = Decimal("100")
 
 # Back-office roles of the previous webshop → PackDesk roles.
 STAFF_ROLES = {
-    "application_maintainer": "Beheerder",
-    "employee_finance": "Financieel",
+    "application_maintainer": "Administrator",
+    "employee_finance": "Finance",
     "employee_service_imd": "Service",
 }
-STAFF_ROLE_DEFAULT = "Medewerker"
+STAFF_ROLE_DEFAULT = "Employee"
 CUSTOMER_TYPES = {"reseller": "Reseller", "distributeur": "Distributeur"}
 
 

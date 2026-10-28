@@ -166,7 +166,7 @@ def test_staff_deliver_correct_and_cancel(client, site, parts, beheerder):
 def test_employee_cannot_deliver(client, site, parts):
     request = answered_request(parts)
     order = PartOrder.objects.create(number="WS17000AA-1", request=request, customer=parts["customer"])
-    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("mw@example.test", staff=True, role="Employee"))
     assert client.get(f"/admin/parts/partorder/{order.pk}/deliver/").status_code == 403
 
 

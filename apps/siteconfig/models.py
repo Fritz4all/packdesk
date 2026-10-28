@@ -73,6 +73,10 @@ class SiteSettings(models.Model):
         help_text=_("Number of characters, for customers on the website. Applies to new passwords; existing "
                     "ones keep working."),
     )
+    max_superadmins = models.PositiveSmallIntegerField(
+        _("maximum number of superadmins"), default=2, validators=[MinValueValidator(1), MaxValueValidator(20)],
+        help_text=_("Superadmins always have every right. Only superadmins see and change this setting."),
+    )
     trash_retention_days = models.PositiveIntegerField(
         _("empty the trash after (days)"), default=30,
         help_text=_("Deleted items older than this are removed for good. 0 = keep until removed by hand."),

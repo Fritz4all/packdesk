@@ -32,7 +32,7 @@ def test_dashboard_shows_totals(client, site, beheerder):
 
 
 def test_dashboard_blocks_follow_permissions(client, site):
-    client.force_login(make_user("leeg@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("leeg@example.test", staff=True, role="Employee"))
     page = client.get("/admin/").content.decode()
     assert 'data-key="pending_signups"' in page  # Medewerker may view customers
     assert "Nummerreeksen met problemen" not in page
@@ -72,7 +72,7 @@ def test_report_numbers(client, site, beheerder):
 
 
 def test_report_needs_permission(client, site):
-    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("mw@example.test", staff=True, role="Employee"))
     assert client.get("/admin/reports/").status_code == 403
 
 
@@ -92,7 +92,7 @@ def test_global_search_finds_part_of_licence_number_and_customer_data(rf, site, 
 
 def test_global_search_respects_permissions(rf, site, catalogue_free_user=None):
     make_licences(1)
-    user = make_user("geen@example.test", staff=True, role="Medewerker")
+    user = make_user("geen@example.test", staff=True, role="Employee")
     request = rf.get("/")
     request.user = user
     assert not [r for r in search_everything(request, "koper") if "Gebruiker" in r.description]
@@ -140,7 +140,7 @@ def test_menu_sections_can_be_reordered_per_user(client, site, beheerder, rf):
     request = rf.get("/")
     request.user = beheerder
     assert [s["key"] for s in sidebar(request)] == new
-    other = make_user("ander@example.test", staff=True, role="Beheerder")
+    other = make_user("ander@example.test", staff=True, role="Administrator")
     request.user = other
     assert [s["key"] for s in sidebar(request)][0] == "overview"
 
@@ -220,7 +220,7 @@ def test_main_menu_can_be_a_fold_out_group_in_another_one(client, site, beheerde
 
 
 def test_menu_page_needs_the_settings_rights(client, site):
-    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("mw@example.test", staff=True, role="Employee"))
     assert client.get("/admin/menu/").status_code == 403
     assert client.post("/admin/menu/", {"reset": "1"}).status_code == 403
 

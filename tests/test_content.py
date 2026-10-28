@@ -137,7 +137,7 @@ def test_friendly_error_pages(client, site, settings):
     settings.DEBUG = False
     page = client.get("/does-not-exist/")
     assert page.status_code == 404 and "404" in page.content.decode() and 'class="maintenance"' in page.content.decode()
-    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("mw@example.test", staff=True, role="Employee"))
     denied = client.get("/admin/trash/trashentry/")
     assert denied.status_code == 403 and "403" in denied.content.decode()
     from django.template import loader

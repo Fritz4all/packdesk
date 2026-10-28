@@ -51,9 +51,9 @@ def test_logout(client, site):
 
 
 def test_roles_are_created(db):
-    codes = set(Group.objects.get(name="Beheerder").permissions.values_list("codename", flat=True))
+    codes = set(Group.objects.get(name="Administrator").permissions.values_list("codename", flat=True))
     assert {"change_sitesettings", "add_user", "change_user"} <= codes
-    assert set(Group.objects.values_list("name", flat=True)) >= {"Beheerder", "Financieel", "Service", "Medewerker"}
+    assert set(Group.objects.values_list("name", flat=True)) >= {"Administrator", "Finance", "Service", "Employee", "Superadmin"}
 
 
 def test_username_is_generated(db):
@@ -94,7 +94,7 @@ def test_customer_user_never_becomes_superuser_or_gets_admin_fields(client, site
 
 
 def test_staff_without_superuser_rights_never_sees_the_superuser_switch(client, site):
-    beheer = make_user("beheer@example.test", staff=True, role="Beheerder")
+    beheer = make_user("beheer@example.test", staff=True, role="Administrator")
     other = make_user("ander@example.test", staff=True, role="Service")
     client.force_login(beheer)
     assert 'name="is_superuser"' not in client.get(f"/admin/accounts/user/{other.pk}/change/").content.decode()
@@ -111,19 +111,19 @@ def test_disable_and_enable_users_in_bulk_but_not_yourself(client, site):
     assert a.is_active
 
 
-def test_role_filter_has_superuser_for_superusers_only(client, site):
+def test_role_filter_has_superadmin_for_superadmins_only(client, site):
     from django.contrib.auth.models import Group
 
     root = make_user("root@example.test", superuser=True)
     make_user("service@example.test", staff=True, role="Service")
+    superadmin = Group.objects.get(name="Superadmin")
     client.force_login(root)
-    assert list(client.get("/admin/accounts/user/?role=superuser").context["cl"].result_list) == [root]
+    assert list(client.get(f"/admin/accounts/user/?role={superadmin.pk}").context["cl"].result_list) == [root]
     service = Group.objects.get(name="Service")
     assert client.get(f"/admin/accounts/user/?role={service.pk}").context["cl"].result_count == 1
-    client.force_login(make_user("beheer@example.test", staff=True, role="Beheerder"))
+    client.force_login(make_user("beheer@example.test", staff=True, role="Administrator"))
     page = client.get("/admin/accounts/user/").content.decode()
-    assert "?role=superuser" not in page
-    assert "Superuser" not in client.get("/admin/accounts/role/").content.decode()  # not a role
+    assert f"?role={superadmin.pk}" not in page
 
 
 def test_minimum_password_length_per_kind_of_user(site):
@@ -153,7 +153,7 @@ def test_wizard_says_how_long_the_admin_password_must_be(site):
 
 def test_customers_menu_lists_only_customer_users(client, site, beheerder):
     customer = make_user("klant@example.test")
-    staff = make_user("medewerker@example.test", staff=True, role="Medewerker")
+    staff = make_user("medewerker@example.test", staff=True, role="Employee")
     client.force_login(beheerder)
     page = client.get("/admin/accounts/customeruser/").content.decode()
     assert customer.email in page and staff.email not in page

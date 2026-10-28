@@ -132,6 +132,7 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
         (_("Security"), {"classes": ["tab"], "fields": [
             ("session_timeout_staff", "session_timeout_customers"),
             ("password_min_length_staff", "password_min_length_customers"), "trash_retention_days",
+            "max_superadmins",
         ]}),
         (_("Mail server"), {"classes": ["tab"], "fields": [
             "mail_host", ("mail_port", "mail_security"), ("mail_user", "mail_password"), "show_mail_source",
@@ -171,6 +172,16 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
             },
         ),
     ]
+
+    superadmin_fields = {"max_superadmins"}
+
+    def get_fieldsets(self, request, obj=None):
+        """Fields only superadmins may see and change are left out for everyone else (also from the form)."""
+        fieldsets = super().get_fieldsets(request, obj)
+        if request.user.is_superuser:
+            return fieldsets
+        return [(name, {**opts, "fields": [f for f in opts["fields"] if f not in self.superadmin_fields]})
+                for name, opts in fieldsets]
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name in self.color_fields:

@@ -135,7 +135,7 @@ def test_without_archive_nothing_is_compared(invoices, settings):
 
 def test_correct_logs_change(invoices, archive):
     archive(1, 2, 3)
-    user = make_user("fin@example.test", staff=True, role="Financieel")
+    user = make_user("fin@example.test", staff=True, role="Finance")
     invoices.correct(4, user, "Gelijkgezet met archief", highest_issued=3)
     change = CounterChange.objects.get(sequence=invoices)
     assert (change.old_value, change.new_value, change.user, change.reason) == (1, 4, user, "Gelijkgezet met archief")
@@ -158,7 +158,7 @@ def admin_form(**extra):
 
 def test_admin_correction_requires_reason_and_valid_number(client, site, invoices, archive):
     archive(10, 11)
-    client.force_login(make_user("fin@example.test", staff=True, role="Financieel"))
+    client.force_login(make_user("fin@example.test", staff=True, role="Finance"))
     response = client.post(f"{URL}{invoices.pk}/change/", admin_form(new_next_number="12"))
     assert response.status_code == 200  # reason missing
     response = client.post(f"{URL}{invoices.pk}/change/", admin_form(new_next_number="5", correction_reason="x"))
@@ -171,7 +171,7 @@ def test_admin_correction_requires_reason_and_valid_number(client, site, invoice
 
 def test_set_to_highest_action(client, site, invoices, archive):
     archive(1017494, 1030953)
-    client.force_login(make_user("fin@example.test", staff=True, role="Financieel"))
+    client.force_login(make_user("fin@example.test", staff=True, role="Finance"))
     client.post(f"{URL}{invoices.pk}/action/set-to-highest/")
     invoices.refresh_from_db()
     assert invoices.next_number == 1030954
@@ -182,7 +182,7 @@ def test_gap_note_records_user(client, site, invoices, archive):
     archive(1, 3)
     invoices.next_number = 4
     invoices.save()
-    user = make_user("fin@example.test", staff=True, role="Financieel")
+    user = make_user("fin@example.test", staff=True, role="Finance")
     client.force_login(user)
     data = admin_form(**{"gap_notes-TOTAL_FORMS": "1", "gap_notes-0-first": "2", "gap_notes-0-last": "2",
                          "gap_notes-0-reason": "Nooit verstuurd"})
@@ -191,14 +191,14 @@ def test_gap_note_records_user(client, site, invoices, archive):
 
 
 def test_employee_cannot_correct(client, site, invoices):
-    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("mw@example.test", staff=True, role="Employee"))
     assert client.get(f"{URL}{invoices.pk}/change/").status_code == 403
     assert client.post(f"{URL}{invoices.pk}/action/set-to-highest/").status_code == 403
 
 
 def test_status_shown_in_admin_and_badge(client, site, invoices, archive, rf):
     archive(1, 2, 4)
-    user = make_user("fin@example.test", staff=True, role="Financieel")
+    user = make_user("fin@example.test", staff=True, role="Finance")
     client.force_login(user)
     page = client.get(f"{URL}{invoices.pk}/change/").content.decode()
     assert "1 / 4" in page and ">3<" in page.replace(" ", "")
@@ -220,7 +220,7 @@ def test_counter_change_reason_can_be_fixed_or_removed(client, site, invoices):
 
     invoices.correct(5, None, "Typfout")
     change = CounterChange.objects.get()
-    client.force_login(make_user("fin@example.test", staff=True, role="Financieel"))
+    client.force_login(make_user("fin@example.test", staff=True, role="Finance"))
     data = admin_form(**{"changes-TOTAL_FORMS": "1", "changes-INITIAL_FORMS": "1", "changes-0-id": str(change.pk),
                          "changes-0-sequence": str(invoices.pk), "changes-0-reason": "Gelijkgezet"})
     assert client.post(f"{URL}{invoices.pk}/change/", data).status_code == 302

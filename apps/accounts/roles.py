@@ -1,13 +1,27 @@
 """Default roles, created on the first migrate.
 
 Based on the previous webshop's back-office roles. After that, roles are managed
-in the admin (Users → Roles); this file only seeds new installations.
+in the admin (Users → Roles); this file only seeds new installations. The keys are the
+roles' internal names; TITLES holds the names people see, per language.
+
+Superadmin has no permissions of its own: its users are Django superusers, who always have
+every right, also to anything added later. Membership of the role follows the superuser flag.
 """
 
 from django.contrib.auth.models import Group, Permission
 
+from .models import SUPERADMIN, RoleInfo, User
+
+TITLES = {
+    SUPERADMIN: {"nl": "Superadmin", "en": "Superadmin", "de": "Superadmin"},
+    "Administrator": {"nl": "Beheerder", "en": "Administrator", "de": "Administrator"},
+    "Finance": {"nl": "Financieel", "en": "Finance", "de": "Finanzen"},
+    "Service": {"nl": "Service", "en": "Service", "de": "Service"},
+    "Employee": {"nl": "Medewerker", "en": "Employee", "de": "Mitarbeiter"},
+}
+
 ROLES = {
-    "Beheerder": [
+    "Administrator": [
         "telephony.view_category",
         "telephony.add_category",
         "telephony.change_category",
@@ -210,7 +224,7 @@ ROLES = {
         "accounts.change_role",
         "accounts.delete_role",
     ],
-    "Financieel": [
+    "Finance": [
         "telephony.view_quote",
         "telephony.view_quoteline",
         "printing.view_printer",
@@ -312,7 +326,7 @@ ROLES = {
         "faults.view_faultattachment",
         "faults.view_repairoption",
     ],
-    "Medewerker": [
+    "Employee": [
         "telephony.view_quote",
         "printing.view_printcontract",
         "parts.view_partrequest",
@@ -329,13 +343,33 @@ ROLES = {
 
 
 def ensure_roles(**kwargs):
-    """Create the default roles once. Existing roles are never changed, so edits in the admin are kept."""
-    for name, codes in ROLES.items():
+    """Create the default roles once, each with its names per language. Existing roles are never changed, so
+    edits in the admin are kept. Superusers made before the Superadmin role existed get that role."""
+    for name in TITLES:
         group, created = Group.objects.get_or_create(name=name)
-        if not created:
-            continue
-        perms = []
-        for code in codes:
-            app_label, codename = code.split(".")
-            perms.append(Permission.objects.get(content_type__app_label=app_label, codename=codename))
-        group.permissions.set(perms)
+        if created and name in ROLES:
+            perms = []
+            for code in ROLES[name]:
+                app_label, codename = code.split(".")
+                perms.append(Permission.objects.get(content_type__app_label=app_label, codename=codename))
+            group.permissions.set(perms)
+        if not RoleInfo.objects.filter(role=group).exists():
+            RoleInfo.objects.create(role=group, **{f"title_{lang}": title for lang, title in TITLES[name].items()})
+    for user in User.objects.filter(is_superuser=True):
+        sync_superadmin(User, user)
+
+
+def superadmin_role():
+    return Group.objects.filter(name=SUPERADMIN).first()
+
+
+def sync_superadmin(sender, instance, raw=False, **kwargs):
+    """post_save of a user: superusers have exactly the Superadmin role, everyone else never has it."""
+    group = None if raw else superadmin_role()
+    if group is None:
+        return
+    if instance.is_superuser:
+        if list(instance.groups.values_list("pk", flat=True)) != [group.pk]:
+            instance.groups.set([group])
+    elif instance.groups.filter(pk=group.pk).exists():
+        instance.groups.remove(group)

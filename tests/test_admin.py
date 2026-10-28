@@ -63,7 +63,7 @@ def test_settings_cannot_be_added_or_deleted(client, site, beheerder):
 
 
 def test_user_without_role_cannot_open_settings(client, site):
-    client.force_login(make_user("medewerker@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("medewerker@example.test", staff=True, role="Employee"))
     assert client.get(SETTINGS_URL + "1/change/").status_code == 403
 
 

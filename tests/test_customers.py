@@ -183,7 +183,7 @@ def test_pending_badge(rf, site, beheerder):
 
 def test_employee_role_can_view_but_not_change(client, site):
     customer = Customer.objects.create(name="Klant")
-    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    client.force_login(make_user("mw@example.test", staff=True, role="Employee"))
     assert client.get(f"{CUSTOMERS}{customer.pk}/change/").status_code == 200
     assert client.post(f"{CUSTOMERS}{customer.pk}/action/approve/").status_code == 403
 
