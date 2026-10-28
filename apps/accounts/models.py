@@ -63,3 +63,12 @@ class Role(Group):
 
     def __str__(self):
         return self.name
+
+
+class CustomerUser(User):
+    """The logins of customers only (kind = customer), for the list under Customers. Rights follow those of users."""
+
+    class Meta:
+        proxy = True
+        verbose_name = _("customer user")
+        verbose_name_plural = _("customer users")

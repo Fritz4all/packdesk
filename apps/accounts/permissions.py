@@ -17,7 +17,7 @@ ACTIONS = [
 
 
 # Technical models whose standard permissions make no sense in a role (their special rights still show).
-HIDDEN_MODELS = {("dashboard", "dashboardlayout")}
+HIDDEN_MODELS = {("dashboard", "dashboardlayout"), ("accounts", "customeruser")}  # customer users: rights of users
 
 
 def managed_permissions():

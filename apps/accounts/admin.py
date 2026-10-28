@@ -18,7 +18,7 @@ from unfold.widgets import UnfoldAdminSelectWidget
 
 from apps.core.column_filters import ValueListFilter
 
-from .models import Role, User
+from .models import CustomerUser, Role, User
 from .password_reset import force_reset
 from .permissions import grantable_permissions
 from .widgets import PermissionMatrixWidget
@@ -235,17 +235,19 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
             '<button type="submit" class="pd-btn" formaction="{}" formnovalidate '
             'onclick="return confirm(\'{}\')"><span class="material-symbols-outlined text-[18px]">mail</span>{}</button>'
             '</div><div class="text-sm text-base-500 mt-1">{}</div>',
-            colour, status, reverse("admin:auth_user_password_change", args=[obj.pk]), gettext("Set password"),
-            reverse("admin:accounts_user_send_reset", args=[obj.pk]),
+            colour, status, reverse(f"admin:{self.password_url_name}", args=[obj.pk]), gettext("Set password"),
+            reverse(f"admin:accounts_{self.opts.model_name}_send_reset", args=[obj.pk]),
             escapejs(gettext("The current password stops working and the user gets an email to choose a new one. "
                              "Continue?")),
             gettext("Send reset email"),
             gettext("Passwords are stored encrypted and can never be shown."),
         )
 
+    password_url_name = "auth_user_password_change"  # Django's fixed name for the password page
+
     def get_urls(self):
         return [path("<int:pk>/send-reset/", self.admin_site.admin_view(self.send_reset_view),
-                     name="accounts_user_send_reset")] + super().get_urls()
+                     name=f"accounts_{self.opts.model_name}_send_reset")] + super().get_urls()
 
     def send_reset_view(self, request, pk):
         if request.method != "POST":
@@ -254,7 +256,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
         if not self.has_change_permission(request, user):
             raise PermissionDenied
         report_reset(request, *force_reset(User.objects.filter(pk=user.pk), request))
-        return redirect("admin:accounts_user_change", user.pk)
+        return redirect(f"admin:accounts_{self.opts.model_name}_change", user.pk)
 
     staff_fieldsets = [
         (None, {"fields": ["email", "password_status"]}),
@@ -317,6 +319,63 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
             user.groups.set([role])
         elif user.kind != User.Kind.STAFF:
             user.groups.clear()
+
+
+@admin.register(CustomerUser)
+class CustomerUserAdmin(UserAdmin):
+    """Customers → Users: the same user pages, but only logins of customers, and new ones are customers too.
+    Uses the rights of users, so roles need nothing extra."""
+
+    list_display = ["email", "first_name", "last_name", "show_customer", "is_active", "show_password", "last_login"]
+    list_filter = ["is_active"]
+    password_url_name = "accounts_customeruser_password_change"
+    customer_fieldsets = [
+        (None, {"fields": ["email", "password_status"]}),
+        (_("Personal info"), {"fields": ["first_name", "last_name"]}),
+        (_("Access"), {"fields": ["is_active"]}),
+        (_("Dates"), {"fields": ["last_login", "date_joined"]}),
+    ]
+    add_fieldsets = [(None, {"fields": ["email", "first_name", "last_name", "password1", "password2"]})]
+
+    def get_urls(self):
+        urls = super().get_urls()
+        for url in urls:  # Django names the password page the same for every user admin; this one gets its own
+            if getattr(url, "name", None) == "auth_user_password_change":
+                url.name = self.password_url_name
+        return urls
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(kind=User.Kind.CUSTOMER).select_related("contact__customer")
+
+    def get_fieldsets(self, request, obj=None):
+        return self.add_fieldsets if obj is None else self.customer_fieldsets
+
+    def save_model(self, request, obj, form, change):
+        obj.kind = User.Kind.CUSTOMER
+        super().save_model(request, obj, form, change)
+
+    @display(description=_("Customer"))
+    def show_customer(self, obj):
+        contact = getattr(obj, "contact", None)
+        return contact.customer if contact else "—"
+
+    def _user_perm(self, request, action):
+        return request.user.has_perm(f"accounts.{action}_user")
+
+    def has_module_permission(self, request):
+        return self._user_perm(request, "view") or self._user_perm(request, "change")
+
+    def has_view_permission(self, request, obj=None):
+        return self._user_perm(request, "view") or self._user_perm(request, "change")
+
+    def has_add_permission(self, request):
+        return self._user_perm(request, "add")
+
+    def has_change_permission(self, request, obj=None):
+        return self._user_perm(request, "change")
+
+    def has_delete_permission(self, request, obj=None):
+        return self._user_perm(request, "delete")
 
 
 def report_reset(request, sent, skipped):

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 18:41+0100\n"
+"POT-Creation-Date: 2026-10-28 18:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,12 +29,12 @@ msgstr ""
 "können nur Rechte vergeben, die Sie selbst haben."
 
 #: apps/accounts/admin.py:96 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:375
+#: apps/dashboard/navigation.py:97 apps/dashboard/navigation.py:381
 msgid "Users"
 msgstr "Benutzer"
 
 #: apps/accounts/admin.py:114 apps/accounts/admin.py:162
-#: apps/accounts/admin.py:298
+#: apps/accounts/admin.py:300
 msgid "Role"
 msgstr "Rolle"
 
@@ -64,7 +64,7 @@ msgstr "Gesetzt"
 msgid "Must choose a new one"
 msgstr "Muss ein neues wählen"
 
-#: apps/accounts/admin.py:168 apps/accounts/admin.py:301
+#: apps/accounts/admin.py:168 apps/accounts/admin.py:303
 msgid "Superuser"
 msgstr "Superuser"
 
@@ -132,20 +132,28 @@ msgid "Passwords are stored encrypted and can never be shown."
 msgstr ""
 "Passwörter werden verschlüsselt gespeichert und können nie angezeigt werden."
 
-#: apps/accounts/admin.py:261 apps/accounts/admin.py:267
+#: apps/accounts/admin.py:263 apps/accounts/admin.py:269
+#: apps/accounts/admin.py:334
 msgid "Personal info"
 msgstr "Persönliche Daten"
 
-#: apps/accounts/admin.py:262 apps/accounts/admin.py:268
-#: apps/accounts/admin.py:273
+#: apps/accounts/admin.py:264 apps/accounts/admin.py:270
+#: apps/accounts/admin.py:275 apps/accounts/admin.py:335
 msgid "Access"
 msgstr "Zugang"
 
-#: apps/accounts/admin.py:263 apps/accounts/admin.py:269
+#: apps/accounts/admin.py:265 apps/accounts/admin.py:271
+#: apps/accounts/admin.py:336
 msgid "Dates"
 msgstr "Daten"
 
-#: apps/accounts/admin.py:323
+#: apps/accounts/admin.py:357 apps/accounts/models.py:26
+#: templates/dashboard/report.html:72 templates/dashboard/report.html:82
+#: templates/orders/email_confirmation.txt:6 templates/parts/email.txt:5
+msgid "Customer"
+msgstr "Kunde"
+
+#: apps/accounts/admin.py:382
 #, python-format
 msgid ""
 "%(n)s email(s) sent with a link to choose a new password; the old passwords "
@@ -154,7 +162,7 @@ msgstr ""
 "%(n)s E-Mail(s) mit einem Link zum Wählen eines neuen Passworts gesendet; "
 "die alten Passwörter funktionieren nicht mehr."
 
-#: apps/accounts/admin.py:326
+#: apps/accounts/admin.py:385
 #, python-format
 msgid "Not sent (no email address or not active): %(list)s"
 msgstr "Nicht gesendet (keine E-Mail-Adresse oder nicht aktiv): %(list)s"
@@ -179,12 +187,6 @@ msgstr "Ihr Passwort"
 #: apps/accounts/models.py:25
 msgid "Staff"
 msgstr "Mitarbeiter"
-
-#: apps/accounts/models.py:26 templates/dashboard/report.html:72
-#: templates/dashboard/report.html:82 templates/orders/email_confirmation.txt:6
-#: templates/parts/email.txt:5
-msgid "Customer"
-msgstr "Kunde"
 
 #: apps/accounts/models.py:28 apps/customers/models.py:157
 #: apps/trash/models.py:12 apps/trash/models.py:13
@@ -222,6 +224,14 @@ msgstr "Rolle"
 #: apps/accounts/models.py:62
 msgid "roles"
 msgstr "Rollen"
+
+#: apps/accounts/models.py:73
+msgid "customer user"
+msgstr "Kundenbenutzer"
+
+#: apps/accounts/models.py:74
+msgid "customer users"
+msgstr "Kundenbenutzer"
 
 #: apps/accounts/password_reset.py:23
 #, python-format
@@ -638,7 +648,7 @@ msgid "Status"
 msgstr "Status"
 
 #: apps/customers/admin.py:122 apps/customers/overview.py:111
-#: apps/dashboard/navigation.py:97 apps/legacy/old_shop/importer.py:113
+#: apps/dashboard/navigation.py:103 apps/legacy/old_shop/importer.py:113
 #: apps/legacy/parts.py:122
 msgid "Contacts"
 msgstr "Ansprechpartner"
@@ -1327,7 +1337,7 @@ msgstr "Nachricht"
 msgid "customer settings"
 msgstr "Kundeneinstellungen"
 
-#: apps/customers/models.py:287 apps/dashboard/navigation.py:115
+#: apps/customers/models.py:287 apps/dashboard/navigation.py:121
 msgid "Customer settings"
 msgstr "Kundeneinstellungen"
 
@@ -1335,7 +1345,7 @@ msgstr "Kundeneinstellungen"
 msgid "Not paid"
 msgstr "Nicht bezahlt"
 
-#: apps/customers/overview.py:113 apps/dashboard/navigation.py:208
+#: apps/customers/overview.py:113 apps/dashboard/navigation.py:214
 #: apps/dashboard/widgets.py:51 apps/legacy/old_shop/importer.py:114
 #: apps/legacy/parts.py:146 apps/orders/admin.py:27
 #: templates/orders/order_detail.html:7
@@ -1373,7 +1383,7 @@ msgstr "Beginn"
 msgid "End"
 msgstr "Ende"
 
-#: apps/customers/overview.py:116 apps/dashboard/navigation.py:128
+#: apps/customers/overview.py:116 apps/dashboard/navigation.py:134
 #: apps/legacy/old_shop/importer.py:114 apps/legacy/parts.py:137
 #: apps/orders/apps.py:7 apps/parts/admin.py:110
 msgid "Orders"
@@ -1406,7 +1416,7 @@ msgstr "Referenz"
 msgid "Total"
 msgstr "Gesamt"
 
-#: apps/customers/overview.py:118 apps/dashboard/navigation.py:134
+#: apps/customers/overview.py:118 apps/dashboard/navigation.py:140
 #: apps/invoices/admin.py:106 apps/invoices/apps.py:7
 #: apps/legacy/old_shop/importer.py:116 apps/legacy/parts.py:170
 msgid "Invoices"
@@ -1416,12 +1426,12 @@ msgstr "Rechnungen"
 msgid "Paid"
 msgstr "Bezahlt"
 
-#: apps/customers/overview.py:120 apps/dashboard/navigation.py:346
-#: apps/dashboard/navigation.py:349 apps/faults/apps.py:7
+#: apps/customers/overview.py:120 apps/dashboard/navigation.py:352
+#: apps/dashboard/navigation.py:355 apps/faults/apps.py:7
 msgid "Fault reports"
 msgstr "Störungsmeldungen"
 
-#: apps/customers/overview.py:140 apps/dashboard/navigation.py:165
+#: apps/customers/overview.py:140 apps/dashboard/navigation.py:171
 #: apps/legacy/old_shop/importer.py:118
 msgid "Spare parts requests"
 msgstr "Ersatzteilanfragen"
@@ -1432,22 +1442,22 @@ msgstr "Ersatzteilanfragen"
 msgid "Parts"
 msgstr "Teile"
 
-#: apps/customers/overview.py:142 apps/dashboard/navigation.py:171
+#: apps/customers/overview.py:142 apps/dashboard/navigation.py:177
 #: apps/legacy/old_shop/importer.py:120
 msgid "Spare parts orders"
 msgstr "Ersatzteilbestellungen"
 
-#: apps/customers/overview.py:158 apps/dashboard/navigation.py:275
+#: apps/customers/overview.py:158 apps/dashboard/navigation.py:281
 #: apps/legacy/old_shop/importer.py:125
 msgid "Telephony quotes"
 msgstr "Telefonie-Angebote"
 
-#: apps/customers/overview.py:161 apps/dashboard/navigation.py:306
+#: apps/customers/overview.py:161 apps/dashboard/navigation.py:312
 #: apps/legacy/old_shop/importer.py:123
 msgid "Printing quotes"
 msgstr "Druck-Angebote"
 
-#: apps/customers/overview.py:163 apps/dashboard/navigation.py:312
+#: apps/customers/overview.py:163 apps/dashboard/navigation.py:318
 #: apps/legacy/old_shop/importer.py:124
 msgid "Printing contracts"
 msgstr "Druck-Verträge"
@@ -1681,150 +1691,150 @@ msgstr "Importe"
 msgid "Compare databases"
 msgstr "Datenbanken vergleichen"
 
-#: apps/dashboard/navigation.py:103
+#: apps/dashboard/navigation.py:109
 msgid "Customer types"
 msgstr "Kundentypen"
 
-#: apps/dashboard/navigation.py:109
+#: apps/dashboard/navigation.py:115
 msgid "Countries"
 msgstr "Länder"
 
-#: apps/dashboard/navigation.py:125
+#: apps/dashboard/navigation.py:131
 msgid "Orders and invoices"
 msgstr "Bestellungen und Rechnungen"
 
-#: apps/dashboard/navigation.py:140 apps/invoices/models.py:47
+#: apps/dashboard/navigation.py:146 apps/invoices/models.py:47
 #: templates/admin/invoices/invoicesettings/design.html:13
 msgid "Invoice settings"
 msgstr "Rechnungseinstellungen"
 
-#: apps/dashboard/navigation.py:146 apps/invoices/admin.py:144
+#: apps/dashboard/navigation.py:152 apps/invoices/admin.py:144
 msgid "Invoice design"
 msgstr "Rechnungsdesign"
 
-#: apps/dashboard/navigation.py:152 apps/orders/models.py:45
+#: apps/dashboard/navigation.py:158 apps/orders/models.py:45
 msgid "Order settings"
 msgstr "Bestelleinstellungen"
 
-#: apps/dashboard/navigation.py:162 apps/dashboard/reports.py:120
+#: apps/dashboard/navigation.py:168 apps/dashboard/reports.py:120
 #: apps/dashboard/reports.py:213 apps/parts/apps.py:7
 #: templates/core/dashboard.html:18 templates/parts/overview.html:3
 #: templates/parts/overview.html:5
 msgid "Spare parts"
 msgstr "Ersatzteile"
 
-#: apps/dashboard/navigation.py:177
+#: apps/dashboard/navigation.py:183
 msgid "Payment methods"
 msgstr "Zahlungsarten"
 
-#: apps/dashboard/navigation.py:183
+#: apps/dashboard/navigation.py:189
 msgid "Delivery times"
 msgstr "Lieferzeiten"
 
-#: apps/dashboard/navigation.py:189
+#: apps/dashboard/navigation.py:195
 msgid "Markup tiers"
 msgstr "Aufschlagstaffeln"
 
-#: apps/dashboard/navigation.py:195 apps/legacy/old_shop/importer.py:117
+#: apps/dashboard/navigation.py:201 apps/legacy/old_shop/importer.py:117
 #: apps/parts/models.py:73
 msgid "Spare parts settings"
 msgstr "Einstellungen Ersatzteile"
 
-#: apps/dashboard/navigation.py:205 apps/licences/apps.py:7
+#: apps/dashboard/navigation.py:211 apps/licences/apps.py:7
 msgid "Service packs and licences"
 msgstr "Servicepakete und Lizenzen"
 
-#: apps/dashboard/navigation.py:214 apps/dashboard/reports.py:213
+#: apps/dashboard/navigation.py:220 apps/dashboard/reports.py:213
 #: templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepakete"
 
-#: apps/dashboard/navigation.py:220
+#: apps/dashboard/navigation.py:226
 msgid "Pack categories"
 msgstr "Paketkategorien"
 
-#: apps/dashboard/navigation.py:226
+#: apps/dashboard/navigation.py:232
 msgid "Hardware classes"
 msgstr "Hardwareklassen"
 
-#: apps/dashboard/navigation.py:232
+#: apps/dashboard/navigation.py:238
 msgid "Brands"
 msgstr "Marken"
 
-#: apps/dashboard/navigation.py:238
+#: apps/dashboard/navigation.py:244
 msgid "Device types"
 msgstr "Gerätetypen"
 
-#: apps/dashboard/navigation.py:244
+#: apps/dashboard/navigation.py:250
 msgid "Option types"
 msgstr "Optionstypen"
 
-#: apps/dashboard/navigation.py:250
+#: apps/dashboard/navigation.py:256
 msgid "Support periods"
 msgstr "Laufzeiten"
 
-#: apps/dashboard/navigation.py:256
+#: apps/dashboard/navigation.py:262
 msgid "Service levels"
 msgstr "Servicelevel"
 
-#: apps/dashboard/navigation.py:262 apps/licences/models.py:217
+#: apps/dashboard/navigation.py:268 apps/licences/models.py:217
 msgid "Licence settings"
 msgstr "Lizenzeinstellungen"
 
-#: apps/dashboard/navigation.py:272 apps/telephony/apps.py:7
+#: apps/dashboard/navigation.py:278 apps/telephony/apps.py:7
 #: templates/core/dashboard.html:19 templates/telephony/calculator.html:3
 msgid "Telephony"
 msgstr "Telefonie"
 
-#: apps/dashboard/navigation.py:281
+#: apps/dashboard/navigation.py:287
 msgid "Telephony items"
 msgstr "Telefonie-Artikel"
 
-#: apps/dashboard/navigation.py:287
+#: apps/dashboard/navigation.py:293
 msgid "Telephony categories"
 msgstr "Telefonie-Kategorien"
 
-#: apps/dashboard/navigation.py:293 apps/telephony/models.py:29
+#: apps/dashboard/navigation.py:299 apps/telephony/models.py:29
 msgid "Telephony settings"
 msgstr "Einstellungen Telefonie"
 
-#: apps/dashboard/navigation.py:303 apps/printing/apps.py:7
+#: apps/dashboard/navigation.py:309 apps/printing/apps.py:7
 msgid "Printing services"
 msgstr "Druckdienste"
 
-#: apps/dashboard/navigation.py:318 apps/legacy/old_shop/importer.py:124
+#: apps/dashboard/navigation.py:324 apps/legacy/old_shop/importer.py:124
 msgid "Supplies orders"
 msgstr "Verbrauchsmaterialbestellungen"
 
-#: apps/dashboard/navigation.py:324
+#: apps/dashboard/navigation.py:330
 msgid "Printers"
 msgstr "Drucker"
 
-#: apps/dashboard/navigation.py:330
+#: apps/dashboard/navigation.py:336
 msgid "Supplies"
 msgstr "Verbrauchsmaterial"
 
-#: apps/dashboard/navigation.py:336
+#: apps/dashboard/navigation.py:342
 msgid "Support plans"
 msgstr "Supportpakete"
 
-#: apps/dashboard/navigation.py:356
+#: apps/dashboard/navigation.py:362
 msgid "Handling options"
 msgstr "Bearbeitungsoptionen"
 
-#: apps/dashboard/navigation.py:362 apps/faults/models.py:53
+#: apps/dashboard/navigation.py:368 apps/faults/models.py:53
 msgid "Fault report settings"
 msgstr "Störungseinstellungen"
 
-#: apps/dashboard/navigation.py:372
+#: apps/dashboard/navigation.py:378
 msgid "Users and roles"
 msgstr "Benutzer und Rollen"
 
-#: apps/dashboard/navigation.py:381
+#: apps/dashboard/navigation.py:387
 msgid "Roles"
 msgstr "Rollen"
 
-#: apps/dashboard/navigation.py:422
+#: apps/dashboard/navigation.py:428
 #: templates/admin/packdesk/menu_editor.html:62
 msgid "New menu"
 msgstr "Neues Menü"

@@ -94,6 +94,12 @@ SECTIONS = [
                 "permission": lambda request: request.user.has_perm("customers.view_customer"),
             },
             {
+                "title": _("Users"),
+                "icon": "person",
+                "link": reverse_lazy("admin:accounts_customeruser_changelist"),
+                "permission": lambda request: request.user.has_perm("accounts.view_user"),
+            },
+            {
                 "title": _("Contacts"),
                 "icon": "contacts",
                 "link": reverse_lazy("admin:customers_contact_changelist"),

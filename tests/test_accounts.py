@@ -149,3 +149,21 @@ def test_wizard_says_how_long_the_admin_password_must_be(site):
     form = AdminForm({"email": "beheer@example.test", "password1": "Kort-1234", "password2": "Kort-1234"})
     assert "12" in str(form.fields["password1"].help_text)
     assert not form.is_valid() and "12" in str(form.errors["password1"])
+
+
+def test_customers_menu_lists_only_customer_users(client, site, beheerder):
+    customer = make_user("klant@example.test")
+    staff = make_user("medewerker@example.test", staff=True, role="Medewerker")
+    client.force_login(beheerder)
+    page = client.get("/admin/accounts/customeruser/").content.decode()
+    assert customer.email in page and staff.email not in page
+    everyone = client.get("/admin/accounts/user/").content.decode()
+    assert customer.email in everyone and staff.email in everyone
+    assert client.get(f"/admin/accounts/customeruser/{staff.pk}/change/").status_code == 302  # not in this list
+    client.post("/admin/accounts/customeruser/add/", {"email": "nieuw@example.test", "first_name": "Nieuw",
+                                                      "last_name": "Klant", "password1": "Zeer-geheim-2026!",
+                                                      "password2": "Zeer-geheim-2026!"})
+    new = User.objects.get(email="nieuw@example.test")
+    assert new.kind == User.Kind.CUSTOMER and not new.is_staff
+    page = client.get(f"/admin/accounts/customeruser/{new.pk}/change/").content.decode()
+    assert f"/admin/accounts/customeruser/{new.pk}/password/" in page
