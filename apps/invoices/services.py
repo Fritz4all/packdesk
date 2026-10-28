@@ -73,13 +73,23 @@ def _create(customer, source, lines, gross=None, **links):
 def create_for_order(order):
     """Make the invoice of an order, with a new number, and store its PDF."""
     lines = []
-    for line in order.lines.select_related("pack", "extends"):
+    for line in order.lines.select_related("pack", "extends", "device"):
         description = line.description
         if line.extends:
             description = _("Extension of licence %(number)s: %(pack)s") % {"number": line.extends.full_number,
                                                                            "pack": line.description}
-        lines.append((line.pack.code, description, line.quantity, line.unit_price, line.line_total))
-    return _create(order.customer, order, lines, order=order)
+        code = line.pack.code if line.pack_id else (line.device.number if line.device_id else "")
+        lines.append((code, description, line.quantity, line.unit_price, line.line_total))
+    for label, amount in order.costs():
+        lines.append(("", str(label), 1, amount, amount))
+    # The subtotal includes the extra costs, so that subtotal − discount = total excl. VAT.
+    gross = order.gross + sum((amount for _label, amount in order.costs()), 0)
+    invoice = _create(order.customer, order, lines, gross=gross, order=order)
+    if order.kind == order.Kind.HARDWARE:
+        from apps.hardware.services import mark_sold
+
+        mark_sold(order)
+    return invoice
 
 
 def create_for_part_order(order):
@@ -223,7 +233,7 @@ def invoice_order(order):
     Returns (invoice or None, error message or None); the order itself always stays placed.
     """
     rules = InvoiceSettings.load()
-    if not rules.auto_on_order or order.customer.no_pack_invoice:
+    if not rules.auto_on_order or (order.customer.no_pack_invoice and order.kind == order.Kind.PACKS):
         return None, None
     try:
         invoice = create_for_order(order)

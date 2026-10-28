@@ -69,7 +69,7 @@ def parse_range(request, today):
     return (choice, *_period(choice, today))
 
 
-KINDS = ("all", "packs", "parts")
+KINDS = ("all", "packs", "parts", "hardware")
 
 
 def sale_items(start, end, kind="all"):
@@ -80,6 +80,8 @@ def sale_items(start, end, kind="all"):
         items += pack_items(start, end)
     if kind in ("all", "parts"):
         items += part_items(start, end)
+    if kind in ("all", "hardware"):
+        items += hardware_items(start, end)
     return items
 
 
@@ -89,8 +91,8 @@ def pack_items(start, end):
     from apps.orders.models import OrderLine
 
     items = []
-    lines = (OrderLine.objects.filter(order__created_at__date__gte=start, order__created_at__date__lte=end)
-             .select_related("order__customer", "pack__category"))
+    lines = (OrderLine.objects.filter(order__created_at__date__gte=start, order__created_at__date__lte=end,
+                                      pack__isnull=False).select_related("order__customer", "pack__category"))
     for line in lines:
         revenue = (line.line_total * (HUNDRED - line.order.discount_pct) / HUNDRED).quantize(Decimal("0.01"))
         items.append({"when": line.order.created_at, "customer": line.order.customer, "category": str(line.pack.category),
@@ -104,6 +106,33 @@ def pack_items(start, end):
         items.append({"when": lic.created_at, "customer": lic.customer, "category": str(lic.pack.category),
                       "product": str(lic.pack), "count": 1, "revenue": revenue, "cost": cost, "label": lic.full_number,
                       "url": ("admin:licences_licence_change", lic.pk), "exact": False})
+    return items
+
+
+def hardware_items(start, end):
+    """Each device sold on an order (not cancelled), at its order price minus the order discount, with its purchase
+    price as cost; delivery and payment costs count as revenue without cost."""
+    from apps.orders.models import Order, OrderLine
+
+    orders = (Order.objects.filter(kind=Order.Kind.HARDWARE, created_at__date__gte=start, created_at__date__lte=end,
+                                   cancelled_at__isnull=True).select_related("customer"))
+    orders = {o.pk: o for o in orders}
+    items = []
+    for line in OrderLine.objects.filter(order__in=orders.keys(), device__isnull=False).select_related("device__device_type"):
+        order = orders[line.order_id]
+        revenue = (line.line_total * (HUNDRED - order.discount_pct) / HUNDRED).quantize(Decimal("0.01"))
+        items.append({"when": order.created_at, "customer": order.customer,
+                      "category": f"{_('Hardware')}: {line.device.device_type}", "product": line.description,
+                      "count": line.quantity, "revenue": revenue, "cost": line.device.purchase_price or Decimal("0"),
+                      "label": order.number, "url": ("admin:orders_order_change", order.pk), "exact": True})
+    for order in orders.values():
+        costs = order.costs()
+        if costs:
+            items.append({"when": order.created_at, "customer": order.customer,
+                          "category": _("Hardware: delivery and payment costs"),
+                          "product": ", ".join(str(label) for label, _amount in costs), "count": 0,
+                          "revenue": sum((amount for _label, amount in costs), Decimal("0")), "cost": Decimal("0"),
+                          "label": order.number, "url": ("admin:orders_order_change", order.pk), "exact": True})
     return items
 
 
@@ -210,7 +239,8 @@ def report_view(request):
         "title": _("Sales and margin"),
         "report": report, "chart": bar_chart(report["months"]), "price_list": price_list,
         "period": choice, "start": start, "end": end, "kind": kind,
-        "kinds": [("all", _("Everything")), ("packs", _("Service packs")), ("parts", _("Spare parts"))],
+        "kinds": [("all", _("Everything")), ("packs", _("Service packs")), ("parts", _("Spare parts")),
+                  ("hardware", _("Hardware"))],
         "periods": [("12m", _("Last 12 months")), ("this_year", _("This year")), ("last_year", _("Last year"))],
     }
     return render(request, "dashboard/report.html", context)

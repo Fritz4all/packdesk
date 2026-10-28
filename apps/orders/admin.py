@@ -17,12 +17,19 @@ class LineInline(TabularInline):
     model = OrderLine
     extra = 0
     tab = True
-    fields = ["description", "quantity", "unit_price", "line_total", "reference", "extends", "show_licences"]
+    fields = ["description", "show_device", "quantity", "unit_price", "line_total", "reference", "extends", "show_licences"]
     readonly_fields = fields
     can_delete = False
 
     def has_add_permission(self, request, obj=None):
         return False
+
+    @display(description=_("Device"))
+    def show_device(self, obj):
+        if not obj.device_id:
+            return "—"
+        return format_html('<a class="underline" href="{}">{}</a> · {}', reverse("admin:hardware_device_change",
+                           args=[obj.device_id]), obj.device.number, obj.device.get_status_display())
 
     @display(description=_("Licences"))
     def show_licences(self, obj):
@@ -34,20 +41,27 @@ class LineInline(TabularInline):
 @admin.register(Order)
 class OrderAdmin(ObjectActionsMixin, ModelAdmin):
     inlines = [LineInline]
-    list_display = ["number", "created_at", "customer", "reference", "total", "send_boxes", "boxes_sent"]
+    list_display = ["number", "created_at", "kind", "customer", "reference", "total", "show_cancelled", "send_boxes",
+                    "boxes_sent"]
     list_display_links = ["number", "customer"]
-    list_filter = ["created_at", "send_boxes", "boxes_sent"]
+    list_filter = ["kind", "created_at", "send_boxes", "boxes_sent"]
     search_fields = ["number", "reference", "customer__name", "customer__number", "lines__licences__full_number"]
     date_hierarchy = "created_at"
     readonly_fields = ["number", "customer", "created_by", "created_at", "gross", "discount_pct", "discount", "net",
-                       "vat_rate", "vat", "total", "show_invoice"]
+                       "vat_rate", "vat", "total", "show_invoice", "kind", "delivery_method", "shipping", "delivery_costs",
+                       "payment_method", "payment_costs", "cancelled_at"]
     object_actions = [
         ObjectAction("invoice", _("Make invoice"), "receipt_long", handler="make_invoice", show_if="has_no_invoice"),
+        ObjectAction("cancel", _("Cancel order"), "cancel", handler="cancel_order", show_if="can_cancel",
+                     confirm=_("The order is cancelled and its devices are for sale again. Continue?")),
     ]
     fieldsets = [
         (_("Order"), {"classes": ["tab"], "fields": [
-            ("number", "created_at"), ("customer", "created_by"), "reference", "show_invoice",
+            ("number", "kind", "created_at"), ("customer", "created_by"), "reference", "show_invoice", "cancelled_at",
             ("gross", "discount_pct", "discount"), ("net", "vat_rate", "vat"), "total",
+        ]}),
+        (_("Delivery and payment"), {"classes": ["tab"], "fields": [
+            ("delivery_method", "shipping", "delivery_costs"), ("payment_method", "payment_costs"),
         ]}),
         (_("Physical packs"), {"classes": ["tab"], "fields": [
             "send_boxes", "boxes_sent", "delivery_name", "delivery_contact", "delivery_address",
@@ -67,7 +81,24 @@ class OrderAdmin(ObjectActionsMixin, ModelAdmin):
                            invoice.number)
 
     def has_no_invoice(self, obj):
-        return getattr(obj, "invoice", None) is None
+        return getattr(obj, "invoice", None) is None and obj.cancelled_at is None
+
+    def can_cancel(self, obj):
+        return obj.kind == Order.Kind.HARDWARE and getattr(obj, "invoice", None) is None and obj.cancelled_at is None
+
+    @display(description=_("Cancelled"), boolean=True)
+    def show_cancelled(self, obj):
+        return obj.cancelled_at is not None
+
+    def cancel_order(self, request, order):
+        from apps.hardware.services import cancel
+
+        if not self.can_cancel(order):
+            messages.error(request, gettext("Only a hardware order without an invoice can be cancelled."))
+        else:
+            cancel(order)
+            messages.success(request, gettext("Order %(number)s is cancelled; its devices are for sale again.")
+                             % {"number": order.number})
 
     def make_invoice(self, request, order):
         from apps.invoices.services import InvoiceNumberError, create_for_order

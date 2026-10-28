@@ -12,10 +12,15 @@
 {% endfor %}{% endfor %}
 {% translate "Subtotal" %}: € {{ order.gross|money }}
 {% if order.discount %}{% translate "Discount" %} ({{ order.discount_pct|floatformat:"-2" }} %): − € {{ order.discount|money }}
-{% endif %}{% translate "Total excl. VAT" %}: € {{ order.net|money }}
+{% endif %}{% for label, amount in order.costs %}{{ label }}: € {{ amount|money }}
+{% endfor %}{% translate "Total excl. VAT" %}: € {{ order.net|money }}
 {% translate "VAT" %} {{ order.vat_rate|floatformat:"-2" }} %: € {{ order.vat|money }}
 {% translate "Total incl. VAT" %}: € {{ order.total|money }}
-{% if order.send_boxes %}
+{% if order.kind == "hardware" %}
+{% translate "Delivery" %}: {{ order.delivery_method }}{% if order.shipping %} – {{ order.delivery_name }}, {{ order.delivery_address }}, {{ order.delivery_postal_code }} {{ order.delivery_city }}{% endif %}
+{% translate "Payment method" %}: {{ order.payment_method|default:"–" }}
+{% translate "The devices are reserved for you." %}
+{% endif %}{% if order.send_boxes %}
 {% translate "Physical packs are sent to" %}: {{ order.delivery_name }}, {{ order.delivery_address }}, {{ order.delivery_postal_code }} {{ order.delivery_city }}
 {% endif %}
 {{ rules.terms_text }}

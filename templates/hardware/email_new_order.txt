@@ -1,0 +1,11 @@
+{% load i18n humanize_nl %}{% autoescape off %}{% translate "New hardware order" %} {{ order.number }}
+
+{% translate "Customer" %}: {{ order.customer.name }}{% if order.customer.number %} ({{ order.customer.number }}){% endif %}
+{% translate "Ordered by" %}: {{ order.created_by.email|default:"–" }}
+{% translate "Delivery" %}: {{ order.delivery_method }}{% if order.shipping %} – {{ order.delivery_name }}, {{ order.delivery_address }}, {{ order.delivery_postal_code }} {{ order.delivery_city }}{% endif %}
+{% translate "Payment method" %}: {{ order.payment_method|default:"–" }}
+
+{% for line in lines %}- {{ line.device.number }}: {{ line.description }} – € {{ line.line_total|money }}
+{% endfor %}
+{% translate "Total incl. VAT" %}: € {{ order.total|money }}
+{% endautoescape %}

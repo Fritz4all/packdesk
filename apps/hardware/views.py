@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 
 from apps.licences.models import Vendor
 
-from . import pricing
+from . import pricing, services
 from .models import Condition, Device, DeviceType, HardwareSettings, Specification
 
 def _settings():
@@ -67,7 +67,7 @@ def shop(request):
         "types": DeviceType.objects.filter(is_active=True, devices__in=on_sale).distinct(),
         "brands": Vendor.objects.filter(devices__in=on_sale).distinct().order_by("name"),
         "conditions": Condition.objects.filter(device__in=on_sale).distinct(),
-        "total": len(devices),
+        "total": len(devices), "cart_count": len(services.cart_numbers(request)),
     })
 
 
@@ -84,5 +84,5 @@ def device_detail(request, number):
         "settings": settings, "device": device, "available": available, "customer": customer,
         "price": pricing.price(device, customer, settings) if available else None,
         "incl_vat": pricing.show_incl_vat(request, settings), "spec_rows": _spec_rows(device, specs),
-        "photos": list(device.photos.all()),
+        "photos": list(device.photos.all()), "in_cart": device.number in services.cart_numbers(request),
     })

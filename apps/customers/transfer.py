@@ -168,6 +168,8 @@ def _show(value):
 
 
 def _pack_key(pack):
+    if pack is None:  # a hardware line: devices are not moved between installations
+        return None
     return {"code": pack.code, "legacy_id": pack.legacy_id, "description": _names(pack, "description")}
 
 
@@ -540,8 +542,8 @@ class Importer:
             for line_item in item.get("lines", []):
                 pack = self.pack(line_item.get("pack"))
                 if pack is None:
-                    outcome.skip("order_lines", f"{number}: {line_item['fields'].get('description', '')}",
-                                 _("service pack not found here"))
+                    reason = _("service pack not found here") if line_item.get("pack") else _("hardware is not imported")
+                    outcome.skip("order_lines", f"{number}: {line_item['fields'].get('description', '')}", reason)
                     continue
                 line = self._matching_line(current, pack, line_item["fields"]) or OrderLine(order=order, pack=pack)
                 is_new = line.pk is None

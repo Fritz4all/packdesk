@@ -81,7 +81,14 @@ class PaymentMethod(models.Model):
 
 
 class Order(models.Model):
+    """An order of service packs, or of hardware (devices, with delivery and payment). Both get an invoice."""
+
+    class Kind(models.TextChoices):
+        PACKS = "packs", _("Service packs")
+        HARDWARE = "hardware", _("Hardware")
+
     number = models.CharField(_("order number"), max_length=32, db_index=True)
+    kind = models.CharField(_("kind"), max_length=10, choices=Kind.choices, default=Kind.PACKS, db_index=True)
     customer = models.ForeignKey("customers.Customer", on_delete=models.PROTECT, related_name="orders", verbose_name=_("customer"))
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
                                    related_name="+", verbose_name=_("ordered by"))
@@ -104,6 +111,15 @@ class Order(models.Model):
     delivery_city = models.CharField(_("delivery city"), max_length=100, blank=True)
     boxes_sent = models.BooleanField(_("packs sent"), default=False)
 
+    # Hardware: how it gets to the customer and how it is paid; the costs are added to the total.
+    delivery_method = models.CharField(_("delivery"), max_length=100, blank=True)
+    shipping = models.BooleanField(_("shipped"), default=False)
+    delivery_costs = models.DecimalField(_("delivery costs"), max_digits=8, decimal_places=2, null=True, blank=True)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.PROTECT, null=True, blank=True,
+                                       related_name="orders", verbose_name=_("payment method"))
+    payment_costs = models.DecimalField(_("payment costs"), max_digits=8, decimal_places=2, null=True, blank=True)
+    cancelled_at = models.DateTimeField(_("cancelled at"), null=True, blank=True)
+
     legacy_id = models.CharField(max_length=36, blank=True, db_index=True, editable=False)
 
     class Meta:
@@ -114,17 +130,26 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.number} · {self.customer.name}"
 
+    def costs(self):
+        """The extra cost lines, as (label, amount)."""
+        return [(label, amount) for label, amount in (
+            (_("Delivery costs"), self.delivery_costs), (_("Payment costs"), self.payment_costs),
+        ) if amount]
+
     def recalculate(self):
         self.gross = money(sum((line.line_total for line in self.lines.all()), Decimal("0")))
         self.discount = money(self.gross * self.discount_pct / HUNDRED)
-        self.net = self.gross - self.discount
+        self.net = self.gross - self.discount + sum((amount for _label, amount in self.costs()), Decimal("0"))
         self.vat = money(self.net * self.vat_rate / HUNDRED)
         self.total = self.net + self.vat
 
 
 class OrderLine(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="lines")
-    pack = models.ForeignKey("licences.SupportPack", on_delete=models.PROTECT, verbose_name=_("service pack"))
+    pack = models.ForeignKey("licences.SupportPack", on_delete=models.PROTECT, null=True, blank=True,
+                             verbose_name=_("service pack"))
+    device = models.ForeignKey("hardware.Device", on_delete=models.PROTECT, null=True, blank=True,
+                               related_name="order_lines", verbose_name=_("device"))
     description = models.CharField(_("description"), max_length=250)
     quantity = models.PositiveIntegerField(_("quantity"), default=1)
     unit_price = models.DecimalField(_("price each"), max_digits=10, decimal_places=2)

@@ -87,7 +87,7 @@
     </div>
 </section>
 
-{% if kind != "parts" %}<section class="pd-widget">
+{% if kind == "all" or kind == "packs" %}<section class="pd-widget">
     <header class="pd-widget-head"><h2>{% translate "Prices and margin per pack" %}</h2></header>
     <div class="overflow-x-auto">
     <table class="pd-table"><thead><tr><th>{% translate "Service pack" %}</th><th>{% translate "Price" %}</th><th>{% translate "Cost price" %}</th><th>{% translate "Margin" %}</th><th>%</th></tr></thead>

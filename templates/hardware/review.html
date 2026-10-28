@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "Check your order" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Check your order" %}</h1></div>
+<div class="form-card">
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>{% translate "Device" %}</th><th>{% translate "Price excl. VAT" %}</th></tr></thead>
+    <tbody>{% for row in totals.rows %}<tr><td>{% if row.device.brand %}{{ row.device.brand.name }} {% endif %}{{ row.device.model }}<br><small class="muted">{{ row.device.device_type }} · {{ row.device.number }}</small></td><td>€ {{ row.price|money }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  <dl class="details totals">
+    <dt>{% translate "Subtotal" %}</dt><dd>€ {{ totals.gross|money }}</dd>
+    {% if totals.discount %}<dt>{% blocktranslate with pct=totals.discount_pct|floatformat:"-2" %}Your discount ({{ pct }} %){% endblocktranslate %}</dt><dd>− € {{ totals.discount|money }}</dd>{% endif %}
+    {% for label, amount in totals.costs %}<dt>{{ label }}</dt><dd>€ {{ amount|money }}</dd>{% endfor %}
+    <dt>{% translate "Total excl. VAT" %}</dt><dd>€ {{ totals.net|money }}</dd>
+    <dt>{% blocktranslate with rate=totals.vat_rate|floatformat:"-2" %}VAT {{ rate }} %{% endblocktranslate %}</dt><dd>€ {{ totals.vat|money }}</dd>
+    <dt><strong>{% translate "Total incl. VAT" %}</strong></dt><dd><strong>€ {{ totals.total|money }}</strong></dd>
+  </dl>
+  <dl class="details">
+    <dt>{% translate "Delivery" %}</dt><dd>{{ data.delivery.name }}{% if data.delivery.kind == "shipping" %}<br>{{ address.delivery_name }}{% if address.delivery_contact %}, {{ address.delivery_contact }}{% endif %}<br>{{ address.delivery_address }}, {{ address.delivery_postal_code }} {{ address.delivery_city }}{% endif %}</dd>
+    <dt>{% translate "Payment method" %}</dt><dd>{{ data.payment.name }}</dd>
+    {% if data.reference %}<dt>{% translate "Your reference" %}</dt><dd>{{ data.reference }}</dd>{% endif %}
+  </dl>
+  <form method="post" action="{% url 'hardware_cart' %}">
+    {% csrf_token %}
+    <input type="hidden" name="payload" value="{{ payload }}">
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" type="submit" name="action" value="confirm">{% translate "Place order" %}</button>
+      <a class="btn btn-ghost" href="{% url 'hardware_cart' %}">{% translate "Change" %}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 21:33+0100\n"
+"POT-Creation-Date: 2026-10-28 21:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,6 +176,7 @@ msgstr "Daten"
 
 #: apps/accounts/admin.py:438 apps/accounts/models.py:26
 #: templates/dashboard/report.html:72 templates/dashboard/report.html:82
+#: templates/hardware/email_new_order.txt:3
 #: templates/orders/email_confirmation.txt:6 templates/parts/email.txt:5
 msgid "Customer"
 msgstr "Kunde"
@@ -217,7 +218,7 @@ msgstr "Mitarbeiter"
 
 #: apps/accounts/models.py:28 apps/customers/models.py:158
 #: apps/hardware/models.py:90 apps/hardware/models.py:144
-#: apps/trash/models.py:12 apps/trash/models.py:13
+#: apps/orders/models.py:91 apps/trash/models.py:12 apps/trash/models.py:13
 msgid "kind"
 msgstr "Art"
 
@@ -355,7 +356,8 @@ msgstr "Hinzufügen"
 
 #: apps/accounts/permissions.py:18
 #: templates/admin/customers/customer/change_type.html:17
-#: templates/orders/review.html:29 templates/parts/review.html:19
+#: templates/hardware/review.html:29 templates/orders/review.html:29
+#: templates/parts/review.html:19
 msgid "Change"
 msgstr "Ändern"
 
@@ -700,8 +702,8 @@ msgid "Number"
 msgstr "Nummer"
 
 #: apps/customers/admin.py:114 apps/customers/forms.py:40
-#: apps/legacy/parts.py:118 apps/licences/forms.py:37 apps/orders/forms.py:59
-#: apps/parts/forms.py:69
+#: apps/hardware/forms.py:21 apps/legacy/parts.py:118 apps/licences/forms.py:37
+#: apps/orders/forms.py:59 apps/parts/forms.py:69
 msgid "City"
 msgstr "Ort"
 
@@ -713,8 +715,8 @@ msgstr "Ort"
 #: apps/numbering/admin.py:167 apps/numbering/admin.py:181
 #: apps/parts/admin.py:106 apps/parts/admin.py:221
 #: templates/faults/my_reports.html:9 templates/orders/my_licences.html:13
-#: templates/parts/overview.html:8 templates/parts/overview.html:15
-#: templates/parts/request_detail.html:13
+#: templates/orders/order_detail.html:23 templates/parts/overview.html:8
+#: templates/parts/overview.html:15 templates/parts/request_detail.html:13
 msgid "Status"
 msgstr "Status"
 
@@ -948,9 +950,9 @@ msgstr "Ihr Konto bei %(company)s"
 msgid "Company name"
 msgstr "Firmenname"
 
-#: apps/customers/forms.py:37 apps/legacy/parts.py:118
-#: apps/licences/forms.py:35 apps/orders/forms.py:57 apps/parts/forms.py:67
-#: templates/customers/signup.html:17
+#: apps/customers/forms.py:37 apps/hardware/forms.py:19
+#: apps/legacy/parts.py:118 apps/licences/forms.py:35 apps/orders/forms.py:57
+#: apps/parts/forms.py:67 templates/customers/signup.html:17
 msgid "Address"
 msgstr "Adresse"
 
@@ -958,8 +960,9 @@ msgstr "Adresse"
 msgid "Address line 2"
 msgstr "Adresszeile 2"
 
-#: apps/customers/forms.py:39 apps/legacy/parts.py:118
-#: apps/licences/forms.py:36 apps/orders/forms.py:58 apps/parts/forms.py:68
+#: apps/customers/forms.py:39 apps/hardware/forms.py:20
+#: apps/legacy/parts.py:118 apps/licences/forms.py:36 apps/orders/forms.py:58
+#: apps/parts/forms.py:68
 msgid "Postal code"
 msgstr "Postleitzahl"
 
@@ -1030,7 +1033,7 @@ msgstr "ist Reseller"
 #: apps/hardware/models.py:147 apps/hardware/models.py:244
 #: apps/invoices/models.py:68 apps/licences/models.py:43
 #: apps/licences/models.py:59 apps/orders/models.py:72
-#: apps/orders/models.py:110 apps/parts/models.py:106
+#: apps/orders/models.py:126 apps/parts/models.py:106
 #: apps/printing/models.py:63 apps/siteconfig/models.py:269
 #: apps/siteconfig/models.py:326 apps/siteconfig/models.py:357
 #: apps/telephony/models.py:43 apps/telephony/models.py:73
@@ -1084,7 +1087,7 @@ msgstr "Wartet auf Freigabe"
 msgid "Blocked"
 msgstr "Gesperrt"
 
-#: apps/customers/models.py:54 apps/customers/transfer.py:343
+#: apps/customers/models.py:54 apps/customers/transfer.py:345
 #: apps/invoices/models.py:77 templates/core/dashboard.html:7
 msgid "customer number"
 msgstr "Kundennummer"
@@ -1165,7 +1168,7 @@ msgid "approved by"
 msgstr "freigegeben von"
 
 #: apps/customers/models.py:93 apps/customers/models.py:206
-#: apps/customers/transfer.py:347
+#: apps/customers/transfer.py:349
 msgid "ID in old system"
 msgstr "ID im alten System"
 
@@ -1184,7 +1187,7 @@ msgstr "aktualisiert"
 
 #: apps/customers/models.py:98 apps/faults/models.py:76
 #: apps/invoices/models.py:66 apps/licences/models.py:249
-#: apps/orders/models.py:85 apps/parts/admin.py:64 apps/parts/models.py:149
+#: apps/orders/models.py:92 apps/parts/admin.py:64 apps/parts/models.py:149
 #: apps/parts/models.py:302 apps/printing/models.py:101
 #: apps/printing/models.py:142 apps/telephony/models.py:91
 msgid "customer"
@@ -1303,7 +1306,7 @@ msgstr "Bemerkung"
 msgid "contact"
 msgstr "Ansprechpartner"
 
-#: apps/customers/models.py:210 apps/customers/transfer.py:355
+#: apps/customers/models.py:210 apps/customers/transfer.py:357
 msgid "contacts"
 msgstr "Ansprechpartner"
 
@@ -1416,7 +1419,7 @@ msgstr "Nicht bezahlt"
 
 #: apps/customers/overview.py:113 apps/dashboard/navigation.py:276
 #: apps/dashboard/widgets.py:51 apps/legacy/old_shop/importer.py:114
-#: apps/legacy/parts.py:146 apps/orders/admin.py:27
+#: apps/legacy/parts.py:146 apps/orders/admin.py:34
 #: templates/orders/order_detail.html:7
 msgid "Licences"
 msgstr "Lizenzen"
@@ -1430,10 +1433,11 @@ msgstr "Servicepaket"
 
 #: apps/customers/overview.py:114 apps/customers/overview.py:121
 #: apps/hardware/admin.py:188 apps/licences/admin.py:150
-#: apps/licences/views.py:23 apps/licences/views.py:137
+#: apps/licences/views.py:23 apps/licences/views.py:137 apps/orders/admin.py:27
 #: templates/faults/email_report.txt:4 templates/faults/email_report.txt:6
-#: templates/faults/my_reports.html:9 templates/licences/check.html:15
-#: templates/orders/my_licences.html:13
+#: templates/faults/my_reports.html:9 templates/hardware/cart.html:10
+#: templates/hardware/review.html:8 templates/licences/check.html:15
+#: templates/orders/my_licences.html:13 templates/orders/order_detail.html:7
 msgid "Device"
 msgstr "Gerät"
 
@@ -1545,59 +1549,59 @@ msgstr "ja"
 msgid "no"
 msgstr "nein"
 
-#: apps/customers/transfer.py:297 apps/customers/transfer.py:303
-#: apps/customers/transfer.py:308
+#: apps/customers/transfer.py:299 apps/customers/transfer.py:305
+#: apps/customers/transfer.py:310
 msgid "The file is too large to import."
 msgstr "Die Datei ist zu groß für den Import."
 
-#: apps/customers/transfer.py:301
+#: apps/customers/transfer.py:303
 msgid "This ZIP file is not a PackDesk customer export."
 msgstr "Diese ZIP-Datei ist kein Kundenexport von PackDesk."
 
-#: apps/customers/transfer.py:315 apps/customers/transfer.py:317
-#: apps/customers/transfer.py:321
+#: apps/customers/transfer.py:317 apps/customers/transfer.py:319
+#: apps/customers/transfer.py:323
 msgid "This file is not a PackDesk customer export."
 msgstr "Diese Datei ist kein Kundenexport von PackDesk."
 
-#: apps/customers/transfer.py:319
+#: apps/customers/transfer.py:321
 msgid "This export was made by a newer PackDesk version."
 msgstr "Dieser Export wurde mit einer neueren PackDesk-Version erstellt."
 
-#: apps/customers/transfer.py:355 apps/siteconfig/models.py:273
+#: apps/customers/transfer.py:357 apps/siteconfig/models.py:273
 msgid "addresses"
 msgstr "Adressen"
 
-#: apps/customers/transfer.py:355 apps/orders/models.py:111
+#: apps/customers/transfer.py:357 apps/orders/models.py:127
 msgid "orders"
 msgstr "Bestellungen"
 
-#: apps/customers/transfer.py:356 apps/orders/models.py:138
+#: apps/customers/transfer.py:358 apps/orders/models.py:163
 msgid "order lines"
 msgstr "Bestellpositionen"
 
-#: apps/customers/transfer.py:356 apps/licences/models.py:281
+#: apps/customers/transfer.py:358 apps/licences/models.py:281
 msgid "licences"
 msgstr "Lizenzen"
 
-#: apps/customers/transfer.py:357 apps/faults/models.py:116
+#: apps/customers/transfer.py:359 apps/faults/models.py:116
 msgid "fault reports"
 msgstr "Störungsmeldungen"
 
-#: apps/customers/transfer.py:357 apps/invoices/models.py:103
+#: apps/customers/transfer.py:359 apps/invoices/models.py:103
 #: apps/siteconfig/models.py:263
 msgid "invoices"
 msgstr "Rechnungen"
 
-#: apps/customers/transfer.py:459
+#: apps/customers/transfer.py:461
 msgid "Customer type not found here; left empty."
 msgstr "Kundenart gibt es hier nicht; leer gelassen."
 
-#: apps/customers/transfer.py:486
+#: apps/customers/transfer.py:488
 #, python-format
 msgid "Country %(code)s not found here; left empty."
 msgstr "Land %(code)s gibt es hier nicht; leer gelassen."
 
-#: apps/customers/transfer.py:514
+#: apps/customers/transfer.py:516
 #, python-format
 msgid ""
 "Login %(email)s is already used by someone else here; the contact was "
@@ -1606,24 +1610,28 @@ msgstr ""
 "Login %(email)s wird hier bereits von jemand anderem verwendet; der "
 "Ansprechpartner wurde ohne Login importiert."
 
-#: apps/customers/transfer.py:544 apps/customers/transfer.py:583
+#: apps/customers/transfer.py:545 apps/customers/transfer.py:585
 msgid "service pack not found here"
 msgstr "Servicepaket gibt es hier nicht"
 
-#: apps/customers/transfer.py:566
+#: apps/customers/transfer.py:545
+msgid "hardware is not imported"
+msgstr "Hardware wird nicht importiert"
+
+#: apps/customers/transfer.py:568
 msgid "already exists here"
 msgstr "existiert hier bereits"
 
-#: apps/customers/transfer.py:568
+#: apps/customers/transfer.py:570
 msgid "no customer"
 msgstr "kein Kunde"
 
-#: apps/customers/transfer.py:569
+#: apps/customers/transfer.py:571
 #, python-format
 msgid "number already used here by %(owner)s"
 msgstr "Nummer hier bereits bei %(owner)s vergeben"
 
-#: apps/customers/transfer.py:603
+#: apps/customers/transfer.py:605
 #, python-format
 msgid "Option type not found here; option of %(n)s skipped."
 msgstr "Optionsart gibt es hier nicht; Option von %(n)s übersprungen."
@@ -1719,7 +1727,7 @@ msgstr "Übersicht"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: apps/dashboard/navigation.py:21 apps/dashboard/reports.py:210
+#: apps/dashboard/navigation.py:21 apps/dashboard/reports.py:239
 #: templates/dashboard/report.html:5
 msgid "Sales and margin"
 msgstr "Verkauf und Marge"
@@ -1804,8 +1812,8 @@ msgstr "Zahlungsarten"
 msgid "Order settings"
 msgstr "Bestelleinstellungen"
 
-#: apps/dashboard/navigation.py:193 apps/dashboard/reports.py:120
-#: apps/dashboard/reports.py:213 apps/parts/apps.py:7
+#: apps/dashboard/navigation.py:193 apps/dashboard/reports.py:149
+#: apps/dashboard/reports.py:242 apps/parts/apps.py:7
 #: templates/core/dashboard.html:18 templates/parts/overview.html:3
 #: templates/parts/overview.html:5
 msgid "Spare parts"
@@ -1824,8 +1832,10 @@ msgstr "Aufschlagstaffeln"
 msgid "Spare parts settings"
 msgstr "Einstellungen Ersatzteile"
 
-#: apps/dashboard/navigation.py:230 apps/hardware/apps.py:7
-#: templates/hardware/shop.html:3 templates/hardware/shop.html:7
+#: apps/dashboard/navigation.py:230 apps/dashboard/reports.py:125
+#: apps/dashboard/reports.py:243 apps/hardware/apps.py:7
+#: apps/orders/models.py:88 templates/hardware/shop.html:3
+#: templates/hardware/shop.html:7
 msgid "Hardware"
 msgstr "Hardware"
 
@@ -1840,7 +1850,7 @@ msgid "Device types"
 msgstr "Gerätetypen"
 
 #: apps/dashboard/navigation.py:245 apps/hardware/admin.py:191
-#: templates/hardware/device.html:46
+#: templates/hardware/device.html:51
 msgid "Specifications"
 msgstr "Merkmale"
 
@@ -1860,8 +1870,8 @@ msgstr "Hardware-Einstellungen"
 msgid "Service packs and licences"
 msgstr "Servicepakete und Lizenzen"
 
-#: apps/dashboard/navigation.py:282 apps/dashboard/reports.py:213
-#: templates/orders/order_form.html:11
+#: apps/dashboard/navigation.py:282 apps/dashboard/reports.py:242
+#: apps/orders/models.py:87 templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepakete"
 
@@ -1951,23 +1961,27 @@ msgstr "Rollen"
 msgid "New menu"
 msgstr "Neues Menü"
 
-#: apps/dashboard/reports.py:120
+#: apps/dashboard/reports.py:132
+msgid "Hardware: delivery and payment costs"
+msgstr "Hardware: Versand- und Zahlungskosten"
+
+#: apps/dashboard/reports.py:149
 msgid "Spare parts: surcharges and costs"
 msgstr "Ersatzteile: Zuschläge und Kosten"
 
-#: apps/dashboard/reports.py:213
+#: apps/dashboard/reports.py:242
 msgid "Everything"
 msgstr "Alles"
 
-#: apps/dashboard/reports.py:214
+#: apps/dashboard/reports.py:244
 msgid "Last 12 months"
 msgstr "Letzte 12 Monate"
 
-#: apps/dashboard/reports.py:214
+#: apps/dashboard/reports.py:244
 msgid "This year"
 msgstr "Dieses Jahr"
 
-#: apps/dashboard/reports.py:214
+#: apps/dashboard/reports.py:244
 msgid "Last year"
 msgstr "Letztes Jahr"
 
@@ -2241,12 +2255,14 @@ msgid "brand"
 msgstr "Marke"
 
 #: apps/faults/models.py:86 apps/hardware/models.py:201
+#: apps/orders/models.py:152
 msgid "device"
 msgstr "Gerät"
 
 #: apps/faults/models.py:87 apps/hardware/models.py:172
-#: apps/licences/models.py:265 apps/licences/models.py:360
-#: apps/printing/models.py:173 templates/licences/email_certificate.txt:24
+#: apps/hardware/services.py:65 apps/licences/models.py:265
+#: apps/licences/models.py:360 apps/printing/models.py:173
+#: templates/licences/email_certificate.txt:24
 msgid "serial number"
 msgstr "Seriennummer"
 
@@ -2262,7 +2278,7 @@ msgstr "Beschreibung der Störung"
 msgid "desired handling"
 msgstr "gewünschte Bearbeitung"
 
-#: apps/faults/models.py:92 apps/invoices/models.py:73 apps/orders/models.py:89
+#: apps/faults/models.py:92 apps/invoices/models.py:73 apps/orders/models.py:96
 #: apps/parts/models.py:152 apps/parts/models.py:306
 msgid "your reference"
 msgstr "Ihre Referenz"
@@ -2346,7 +2362,7 @@ msgid "Prices"
 msgstr "Preise"
 
 #: apps/hardware/admin.py:41 apps/invoices/admin.py:107
-#: apps/licences/admin.py:205 apps/orders/admin.py:87 apps/parts/admin.py:390
+#: apps/licences/admin.py:205 apps/orders/admin.py:118 apps/parts/admin.py:390
 msgid "Texts"
 msgstr "Texte"
 
@@ -2378,15 +2394,16 @@ msgstr ""
 "erscheinen hier. Eine Art ohne Merkmale hat hier nichts auszufüllen (siehe "
 "Hardware → Merkmale)."
 
-#: apps/hardware/admin.py:208 templates/hardware/shop.html:15
+#: apps/hardware/admin.py:208 templates/hardware/shop.html:18
 msgid "Device type"
 msgstr "Geräteart"
 
-#: apps/hardware/admin.py:216
+#: apps/hardware/admin.py:216 templates/hardware/cart.html:10
+#: templates/hardware/review.html:8
 msgid "Price excl. VAT"
 msgstr "Preis zzgl. MwSt."
 
-#: apps/hardware/admin.py:220
+#: apps/hardware/admin.py:220 templates/hardware/cart.html:10
 msgid "Price incl. VAT"
 msgstr "Preis inkl. MwSt."
 
@@ -2406,8 +2423,9 @@ msgstr "Verkaufspreis"
 msgid "purchase price plus standard markup"
 msgstr "Einkaufspreis plus Standardaufschlag"
 
-#: apps/hardware/admin.py:230 templates/hardware/_price.html:4
-#: templates/hardware/_price.html:5 templates/hardware/_vat_switch.html:3
+#: apps/hardware/admin.py:230 apps/hardware/forms.py:42
+#: templates/hardware/_price.html:4 templates/hardware/_price.html:5
+#: templates/hardware/_vat_switch.html:3
 msgid "excl. VAT"
 msgstr "zzgl. MwSt."
 
@@ -2418,9 +2436,9 @@ msgstr "inkl. MwSt."
 
 #: apps/hardware/admin.py:232 apps/invoices/design.py:62
 #: apps/invoices/design.py:75 apps/invoices/models.py:92
-#: apps/orders/models.py:96 apps/parts/models.py:326 templates/base.html:86
-#: templates/orders/email_confirmation.txt:16
-#: templates/orders/order_detail.html:15 templates/parts/email.txt:23
+#: apps/orders/models.py:103 apps/parts/models.py:326 templates/base.html:86
+#: templates/orders/email_confirmation.txt:17
+#: templates/orders/order_detail.html:16 templates/parts/email.txt:23
 msgid "VAT"
 msgstr "USt"
 
@@ -2450,6 +2468,59 @@ msgstr "Ausgewählte Geräte exportieren (Excel)"
 msgid "Export selected devices (CSV)"
 msgstr "Ausgewählte Geräte exportieren (CSV)"
 
+#: apps/hardware/forms.py:11 templates/hardware/cart.html:23
+#: templates/hardware/done.html:8 templates/hardware/email_new_order.txt:5
+#: templates/hardware/review.html:20 templates/orders/email_confirmation.txt:20
+#: templates/orders/order_detail.html:21
+msgid "Delivery"
+msgstr "Lieferung"
+
+#: apps/hardware/forms.py:13 apps/invoices/design.py:49 apps/parts/forms.py:104
+#: templates/hardware/cart.html:32 templates/hardware/email_new_order.txt:6
+#: templates/hardware/review.html:21 templates/orders/email_confirmation.txt:21
+#: templates/orders/order_detail.html:22 templates/parts/email.txt:17
+#: templates/parts/order_detail.html:14 templates/parts/review.html:12
+msgid "Payment method"
+msgstr "Zahlungsart"
+
+#: apps/hardware/forms.py:15 apps/orders/forms.py:52 apps/orders/forms.py:84
+#: apps/parts/forms.py:88 apps/parts/forms.py:102
+#: templates/hardware/cart.html:36 templates/hardware/review.html:22
+#: templates/invoices/my_invoices.html:7
+#: templates/licences/email_certificate.txt:14
+#: templates/orders/email_confirmation.txt:8 templates/orders/my_orders.html:7
+#: templates/orders/review.html:21 templates/parts/overview.html:8
+#: templates/parts/overview.html:15
+msgid "Your reference"
+msgstr "Ihre Referenz"
+
+#: apps/hardware/forms.py:16 apps/orders/forms.py:53 apps/orders/models.py:96
+#: apps/parts/forms.py:103
+msgid "Shown on the invoice."
+msgstr "Erscheint auf der Rechnung."
+
+#: apps/hardware/forms.py:17 apps/orders/forms.py:55 apps/parts/forms.py:65
+#: templates/customers/signup.html:14
+msgid "Company"
+msgstr "Unternehmen"
+
+#: apps/hardware/forms.py:18 apps/orders/forms.py:56 apps/parts/forms.py:66
+#: templates/customers/my_details.html:18
+msgid "Contact person"
+msgstr "Ansprechpartner"
+
+#: apps/hardware/forms.py:22
+msgid "I agree to the terms"
+msgstr "Ich stimme den Bedingungen zu"
+
+#: apps/hardware/forms.py:56
+msgid "Needed for shipping."
+msgstr "Für den Versand erforderlich."
+
+#: apps/hardware/forms.py:58
+msgid "Please agree to the terms to order."
+msgstr "Bitte stimmen Sie den Bedingungen zu, um zu bestellen."
+
 #: apps/hardware/models.py:21
 msgid "hardware shop active"
 msgstr "Hardware-Shop aktiv"
@@ -2459,7 +2530,7 @@ msgid "Visitors and customers see the hardware for sale on the website."
 msgstr "Besucher und Kunden sehen die angebotene Hardware auf der Website."
 
 #: apps/hardware/models.py:23 apps/invoices/models.py:91
-#: apps/orders/models.py:21 apps/orders/models.py:95 apps/parts/models.py:59
+#: apps/orders/models.py:21 apps/orders/models.py:102 apps/parts/models.py:59
 #: apps/parts/models.py:322
 msgid "VAT rate (%)"
 msgstr "MwSt.-Satz (%)"
@@ -2675,7 +2746,7 @@ msgstr "Leer = die Standardgarantie (Hardware-Einstellungen)."
 
 #: apps/hardware/models.py:190 apps/invoices/models.py:138
 #: apps/licences/models.py:163 apps/licences/models.py:263
-#: apps/licences/models.py:358 apps/orders/models.py:128
+#: apps/licences/models.py:358 apps/orders/models.py:153
 #: apps/parts/models.py:202 apps/printing/models.py:13
 #: apps/printing/models.py:59 apps/telephony/models.py:58
 msgid "description"
@@ -2709,6 +2780,49 @@ msgstr "Foto"
 #: apps/hardware/models.py:248
 msgid "photos"
 msgstr "Fotos"
+
+#: apps/hardware/order_views.py:43 templates/hardware/device.html:45
+msgid "This device is no longer for sale."
+msgstr "Dieses Gerät ist nicht mehr zu verkaufen."
+
+#: apps/hardware/order_views.py:46
+#, python-format
+msgid "%(device)s is in your cart."
+msgstr "%(device)s liegt in Ihrem Warenkorb."
+
+#: apps/hardware/order_views.py:73
+#, python-format
+msgid "%(device)s is no longer for sale and was taken out of your cart."
+msgstr "%(device)s ist nicht mehr zu verkaufen und wurde aus Ihrem Warenkorb entfernt."
+
+#: apps/hardware/order_views.py:97 apps/hardware/order_views.py:104
+#: apps/orders/views.py:62 apps/parts/views.py:148
+msgid "The order has expired or changed. Please check it again."
+msgstr ""
+"Die Bestellung ist abgelaufen oder wurde geändert. Bitte prüfen Sie sie "
+"erneut."
+
+#: apps/hardware/order_views.py:110
+#, python-format
+msgid ""
+"Sorry, not everything can be ordered any more: %(devices)s. Please check "
+"your order again."
+msgstr "Leider kann nicht mehr alles bestellt werden: %(devices)s. Bitte prüfen Sie Ihre Bestellung erneut."
+
+#: apps/hardware/services.py:77 apps/orders/models.py:136
+#: apps/parts/models.py:350
+msgid "Delivery costs"
+msgstr "Versandkosten"
+
+#: apps/hardware/services.py:79 apps/orders/models.py:136
+#: apps/parts/models.py:349
+msgid "Payment costs"
+msgstr "Zahlungskosten"
+
+#: apps/hardware/services.py:153
+#, python-format
+msgid "Hardware order %(number)s – %(company)s"
+msgstr "Hardware-Bestellung %(number)s – %(company)s"
 
 #: apps/hardware/transfer.py:32
 msgid "Stock number (filled in by PackDesk, not imported)"
@@ -2765,7 +2879,7 @@ msgstr "Garantie in Monaten (leer = die Standardgarantie)"
 #: apps/hardware/transfer.py:44 apps/legacy/parts.py:152
 #: apps/legacy/parts.py:166 apps/licences/forms.py:52
 #: apps/licences/forms.py:103 apps/licences/forms.py:120 apps/parts/forms.py:16
-#: templates/admin/parts/picklist.html:9 templates/hardware/device.html:48
+#: templates/admin/parts/picklist.html:9 templates/hardware/device.html:53
 #: templates/licences/email_certificate.txt:20
 #: templates/licences/options.html:16
 msgid "Description"
@@ -2897,7 +3011,7 @@ msgstr ""
 msgid "Send again to customer"
 msgstr "Erneut an Kunden senden"
 
-#: apps/invoices/admin.py:63 apps/orders/admin.py:61 apps/parts/admin.py:225
+#: apps/invoices/admin.py:63 apps/orders/admin.py:75 apps/parts/admin.py:225
 #: templates/invoices/invoice_pdf.html:5 templates/parts/email.txt:36
 #: templates/parts/order_detail.html:15
 msgid "Invoice"
@@ -3027,12 +3141,6 @@ msgstr "Rechnungsdatum"
 #: apps/invoices/design.py:48
 msgid "Due date"
 msgstr "Fälligkeitsdatum"
-
-#: apps/invoices/design.py:49 apps/parts/forms.py:104
-#: templates/parts/email.txt:17 templates/parts/order_detail.html:14
-#: templates/parts/review.html:12
-msgid "Payment method"
-msgstr "Zahlungsart"
 
 #: apps/invoices/design.py:49
 msgid "On account"
@@ -3271,23 +3379,26 @@ msgstr "USt-IdNr. des Kunden"
 msgid "invoice email"
 msgstr "E-Mail für Rechnungen"
 
-#: apps/invoices/models.py:87 apps/orders/models.py:91
+#: apps/invoices/models.py:87 apps/orders/models.py:98
 msgid "subtotal"
 msgstr "Zwischensumme"
 
-#: apps/invoices/models.py:88 apps/orders/models.py:92 apps/parts/models.py:315
+#: apps/invoices/models.py:88 apps/orders/models.py:99 apps/parts/models.py:315
 msgid "discount (%)"
 msgstr "Rabatt (%)"
 
-#: apps/invoices/models.py:89 apps/orders/models.py:93 apps/parts/models.py:324
+#: apps/invoices/models.py:89 apps/orders/models.py:100
+#: apps/parts/models.py:324
 msgid "discount"
 msgstr "Rabatt"
 
-#: apps/invoices/models.py:90 apps/orders/models.py:94 apps/parts/models.py:325
+#: apps/invoices/models.py:90 apps/orders/models.py:101
+#: apps/parts/models.py:325
 msgid "total excl. VAT"
 msgstr "Summe netto"
 
-#: apps/invoices/models.py:93 apps/orders/models.py:97 apps/parts/models.py:327
+#: apps/invoices/models.py:93 apps/orders/models.py:104
+#: apps/parts/models.py:327
 msgid "total incl. VAT"
 msgstr "Summe brutto"
 
@@ -3307,20 +3418,20 @@ msgstr "bezahlt am"
 msgid "invoice"
 msgstr "Rechnung"
 
-#: apps/invoices/models.py:139 apps/orders/models.py:129
+#: apps/invoices/models.py:139 apps/orders/models.py:154
 #: apps/parts/models.py:201 apps/parts/models.py:372 apps/parts/models.py:403
 #: apps/parts/models.py:420 apps/printing/models.py:212
 #: apps/telephony/models.py:121 templates/dashboard/report.html:50
 msgid "quantity"
 msgstr "Anzahl"
 
-#: apps/invoices/models.py:140 apps/orders/models.py:130
+#: apps/invoices/models.py:140 apps/orders/models.py:155
 #: apps/parts/models.py:374
 msgid "price each"
 msgstr "Stückpreis"
 
 #: apps/invoices/models.py:141 apps/invoices/models.py:156
-#: apps/orders/models.py:131
+#: apps/orders/models.py:156
 msgid "amount"
 msgstr "Betrag"
 
@@ -3383,18 +3494,18 @@ msgstr ""
 msgid "Extension of licence %(number)s: %(pack)s"
 msgstr "Verlängerung Lizenz %(number)s: %(pack)s"
 
-#: apps/invoices/services.py:95
+#: apps/invoices/services.py:105
 msgid "VAT reverse-charged: intra-community delivery"
 msgstr ""
 "Steuerschuldnerschaft des Leistungsempfängers: innergemeinschaftliche "
 "Lieferung"
 
-#: apps/invoices/services.py:211
+#: apps/invoices/services.py:221
 #, python-brace-format
 msgid "Invoice {number}"
 msgstr "Rechnung {number}"
 
-#: apps/invoices/services.py:212
+#: apps/invoices/services.py:222
 #, python-brace-format
 msgid "Attached is invoice {number}."
 msgstr "Anbei die Rechnung {number}."
@@ -4205,7 +4316,7 @@ msgstr "Marke und Typ"
 
 #: apps/licences/forms.py:50 apps/licences/forms.py:101
 #: apps/licences/forms.py:117 apps/parts/forms.py:13
-#: templates/faults/email_report.txt:5 templates/hardware/shop.html:19
+#: templates/faults/email_report.txt:5 templates/hardware/shop.html:22
 #: templates/licences/email_certificate.txt:17
 #: templates/licences/options.html:16
 msgid "Brand"
@@ -4447,7 +4558,7 @@ msgid "max. external options"
 msgstr "max. externe Optionen"
 
 #: apps/licences/models.py:178 apps/licences/models.py:248
-#: apps/orders/models.py:127
+#: apps/orders/models.py:150
 msgid "service pack"
 msgstr "Servicepaket"
 
@@ -4531,7 +4642,7 @@ msgstr "vollständige Lizenznummer"
 msgid "order reference"
 msgstr "Auftragsreferenz"
 
-#: apps/licences/models.py:252 apps/orders/models.py:137
+#: apps/licences/models.py:252 apps/orders/models.py:162
 msgid "order line"
 msgstr "Bestellposition"
 
@@ -4883,11 +4994,19 @@ msgstr "geklärte Lücken"
 msgid "Must be at least the first number."
 msgstr "Muss mindestens die erste Nummer sein."
 
-#: apps/orders/admin.py:45 apps/parts/admin.py:186
+#: apps/orders/admin.py:54 apps/parts/admin.py:186
 msgid "Make invoice"
 msgstr "Rechnung erstellen"
 
-#: apps/orders/admin.py:48 apps/parts/admin.py:191
+#: apps/orders/admin.py:55 templates/admin/parts/cancel.html:12
+msgid "Cancel order"
+msgstr "Bestellung stornieren"
+
+#: apps/orders/admin.py:56
+msgid "The order is cancelled and its devices are for sale again. Continue?"
+msgstr "Die Bestellung wird storniert und die Geräte sind wieder zu verkaufen. Fortfahren?"
+
+#: apps/orders/admin.py:59 apps/parts/admin.py:191
 #: templates/orders/order_detail.html:3 templates/orders/order_detail.html:5
 #: templates/parts/email.txt:16 templates/parts/email.txt:30
 #: templates/parts/email.txt:32 templates/parts/order_detail.html:3
@@ -4895,16 +5014,34 @@ msgstr "Rechnung erstellen"
 msgid "Order"
 msgstr "Bestellung"
 
-#: apps/orders/admin.py:52
+#: apps/orders/admin.py:63
+msgid "Delivery and payment"
+msgstr "Lieferung und Zahlung"
+
+#: apps/orders/admin.py:66
 msgid "Physical packs"
 msgstr "Physische Pakete"
 
-#: apps/orders/admin.py:80 apps/parts/admin.py:280
+#: apps/orders/admin.py:89 apps/parts/models.py:296
+#: templates/orders/order_detail.html:23
+msgid "Cancelled"
+msgstr "Storniert"
+
+#: apps/orders/admin.py:97
+msgid "Only a hardware order without an invoice can be cancelled."
+msgstr "Nur eine Hardware-Bestellung ohne Rechnung kann storniert werden."
+
+#: apps/orders/admin.py:100
+#, python-format
+msgid "Order %(number)s is cancelled; its devices are for sale again."
+msgstr "Bestellung %(number)s ist storniert; die Geräte sind wieder zu verkaufen."
+
+#: apps/orders/admin.py:111 apps/parts/admin.py:280
 #, python-format
 msgid "Invoice %(number)s made."
 msgstr "Rechnung %(number)s erstellt."
 
-#: apps/orders/admin.py:86
+#: apps/orders/admin.py:117
 msgid "Ordering"
 msgstr "Bestellen"
 
@@ -4940,32 +5077,9 @@ msgstr "Keine Rechnung für Bestellung %(number)s"
 msgid "Choose at least one service pack."
 msgstr "Wählen Sie mindestens ein Servicepaket."
 
-#: apps/orders/forms.py:52 apps/orders/forms.py:84 apps/parts/forms.py:88
-#: apps/parts/forms.py:102 templates/invoices/my_invoices.html:7
-#: templates/licences/email_certificate.txt:14
-#: templates/orders/email_confirmation.txt:8 templates/orders/my_orders.html:7
-#: templates/orders/review.html:21 templates/parts/overview.html:8
-#: templates/parts/overview.html:15
-msgid "Your reference"
-msgstr "Ihre Referenz"
-
-#: apps/orders/forms.py:53 apps/orders/models.py:89 apps/parts/forms.py:103
-msgid "Shown on the invoice."
-msgstr "Erscheint auf der Rechnung."
-
 #: apps/orders/forms.py:54
 msgid "Send physical packs with labels"
 msgstr "Physische Pakete mit Etiketten senden"
-
-#: apps/orders/forms.py:55 apps/parts/forms.py:65
-#: templates/customers/signup.html:14
-msgid "Company"
-msgstr "Unternehmen"
-
-#: apps/orders/forms.py:56 apps/parts/forms.py:66
-#: templates/customers/my_details.html:18
-msgid "Contact person"
-msgstr "Ansprechpartner"
 
 #: apps/orders/forms.py:72
 msgid "Required when packs are sent."
@@ -5040,7 +5154,7 @@ msgstr "für Ersatzteile"
 msgid "for hardware"
 msgstr "für Hardware"
 
-#: apps/orders/models.py:75 apps/parts/models.py:310
+#: apps/orders/models.py:75 apps/orders/models.py:119 apps/parts/models.py:310
 msgid "payment method"
 msgstr "Zahlungsart"
 
@@ -5048,61 +5162,75 @@ msgstr "Zahlungsart"
 msgid "payment methods"
 msgstr "Zahlungsarten"
 
-#: apps/orders/models.py:84 apps/parts/models.py:298
+#: apps/orders/models.py:90 apps/parts/models.py:298
 msgid "order number"
 msgstr "Bestellnummer"
 
-#: apps/orders/models.py:87 apps/parts/models.py:304
+#: apps/orders/models.py:94 apps/parts/models.py:304
 msgid "ordered by"
 msgstr "bestellt von"
 
-#: apps/orders/models.py:88 apps/parts/models.py:305
+#: apps/orders/models.py:95 apps/parts/models.py:305
 #: apps/printing/models.py:196
 msgid "ordered at"
 msgstr "bestellt am"
 
-#: apps/orders/models.py:99
+#: apps/orders/models.py:106
 msgid "send physical packs"
 msgstr "physische Pakete senden"
 
-#: apps/orders/models.py:100 apps/parts/models.py:124
+#: apps/orders/models.py:107 apps/parts/models.py:124
 msgid "delivery to (company)"
 msgstr "Lieferung an (Firma)"
 
-#: apps/orders/models.py:101 apps/parts/models.py:125
+#: apps/orders/models.py:108 apps/parts/models.py:125
 msgid "delivery contact"
 msgstr "Ansprechpartner Lieferung"
 
-#: apps/orders/models.py:102 apps/parts/models.py:126
+#: apps/orders/models.py:109 apps/parts/models.py:126
 msgid "delivery address"
 msgstr "Lieferadresse"
 
-#: apps/orders/models.py:103 apps/parts/models.py:127
+#: apps/orders/models.py:110 apps/parts/models.py:127
 msgid "delivery postal code"
 msgstr "PLZ Lieferung"
 
-#: apps/orders/models.py:104 apps/parts/models.py:128
+#: apps/orders/models.py:111 apps/parts/models.py:128
 msgid "delivery city"
 msgstr "Ort Lieferung"
 
-#: apps/orders/models.py:105
+#: apps/orders/models.py:112
 msgid "packs sent"
 msgstr "Pakete versendet"
 
-#: apps/orders/models.py:132 apps/printing/models.py:104
+#: apps/orders/models.py:115 apps/parts/models.py:410
+msgid "delivery"
+msgstr "Lieferung"
+
+#: apps/orders/models.py:116
+msgid "shipped"
+msgstr "versendet"
+
+#: apps/orders/models.py:117 apps/parts/models.py:321
+msgid "delivery costs"
+msgstr "Versandkosten"
+
+#: apps/orders/models.py:120 apps/parts/models.py:320
+msgid "payment costs"
+msgstr "Zahlungskosten"
+
+#: apps/orders/models.py:121 apps/parts/models.py:332
+msgid "cancelled at"
+msgstr "storniert am"
+
+#: apps/orders/models.py:157 apps/printing/models.py:104
 #: apps/telephony/models.py:94
 msgid "reference"
 msgstr "Referenz"
 
-#: apps/orders/models.py:134
+#: apps/orders/models.py:159
 msgid "extends licence"
 msgstr "verlängert Lizenz"
-
-#: apps/orders/views.py:62 apps/parts/views.py:148
-msgid "The order has expired or changed. Please check it again."
-msgstr ""
-"Die Bestellung ist abgelaufen oder wurde geändert. Bitte prüfen Sie sie "
-"erneut."
 
 #: apps/parts/admin.py:28
 msgid "New remark for the customer"
@@ -5602,10 +5730,6 @@ msgstr "Wartet auf Zahlung"
 msgid "To deliver"
 msgstr "Auszuliefern"
 
-#: apps/parts/models.py:296
-msgid "Cancelled"
-msgstr "Storniert"
-
 #: apps/parts/models.py:300
 msgid "request"
 msgstr "Anfrage"
@@ -5630,21 +5754,9 @@ msgstr "Kleinmengenzuschlag"
 msgid "handling costs"
 msgstr "Bearbeitungskosten"
 
-#: apps/parts/models.py:320
-msgid "payment costs"
-msgstr "Zahlungskosten"
-
-#: apps/parts/models.py:321
-msgid "delivery costs"
-msgstr "Versandkosten"
-
 #: apps/parts/models.py:323
 msgid "parts"
 msgstr "Teile"
-
-#: apps/parts/models.py:332
-msgid "cancelled at"
-msgstr "storniert am"
 
 #: apps/parts/models.py:333
 msgid "reason for cancelling"
@@ -5665,14 +5777,6 @@ msgstr "Kleinmengenzuschlag"
 #: apps/parts/models.py:349
 msgid "Handling costs"
 msgstr "Bearbeitungskosten"
-
-#: apps/parts/models.py:349
-msgid "Payment costs"
-msgstr "Zahlungskosten"
-
-#: apps/parts/models.py:350
-msgid "Delivery costs"
-msgstr "Versandkosten"
 
 #: apps/parts/models.py:371
 msgid "packing"
@@ -5697,10 +5801,6 @@ msgstr "Negativ: Teile zurückgenommen."
 #: apps/parts/models.py:406
 msgid "delivered at"
 msgstr "geliefert am"
-
-#: apps/parts/models.py:410
-msgid "delivery"
-msgstr "Lieferung"
 
 #: apps/parts/models.py:411
 msgid "deliveries"
@@ -7286,10 +7386,6 @@ msgstr ""
 msgid "Reason"
 msgstr "Grund"
 
-#: templates/admin/parts/cancel.html:12
-msgid "Cancel order"
-msgstr "Bestellung stornieren"
-
 #: templates/admin/parts/correct.html:8
 msgid ""
 "Lower the quantity of parts that cannot be delivered, with a negative number "
@@ -7362,7 +7458,7 @@ msgid "Log out"
 msgstr "Abmelden"
 
 #: templates/base.html:62 templates/core/home.html:11
-#: templates/hardware/device.html:35 templates/registration/login.html:3
+#: templates/hardware/device.html:40 templates/registration/login.html:3
 #: templates/registration/login.html:7 templates/registration/login.html:13
 #: templates/registration/password_reset_complete.html:6
 msgid "Log in"
@@ -7722,16 +7818,42 @@ msgstr "Preis auf Anfrage"
 msgid "Show prices"
 msgstr "Preise zeigen"
 
-#: templates/hardware/device.html:5
+#: templates/hardware/cart.html:3 templates/hardware/cart.html:6
+msgid "Your cart"
+msgstr "Ihr Warenkorb"
+
+#: templates/hardware/cart.html:5 templates/hardware/device.html:5
 msgid "All hardware"
 msgstr "Alle Hardware"
+
+#: templates/hardware/cart.html:14
+msgid "Remove"
+msgstr "Entfernen"
+
+#: templates/hardware/cart.html:17
+#, python-format
+msgid "Prices include your discount of %(pct)s %%."
+msgstr "Die Preise enthalten Ihren Rabatt von %(pct)s %%."
+
+#: templates/hardware/cart.html:42 templates/orders/extend.html:10
+#: templates/orders/order_form.html:20 templates/parts/request_detail.html:30
+msgid "Check order"
+msgstr "Bestellung prüfen"
+
+#: templates/hardware/cart.html:58
+msgid "Your cart is empty."
+msgstr "Ihr Warenkorb ist leer."
+
+#: templates/hardware/cart.html:58
+msgid "View the hardware for sale"
+msgstr "Angebotene Hardware ansehen"
 
 #: templates/hardware/device.html:12
 #, python-format
 msgid "Photo %(n)s"
 msgstr "Foto %(n)s"
 
-#: templates/hardware/device.html:24 templates/hardware/shop.html:23
+#: templates/hardware/device.html:24 templates/hardware/shop.html:26
 msgid "Condition"
 msgstr "Zustand"
 
@@ -7746,20 +7868,25 @@ msgid_plural "%(n)s months"
 msgstr[0] "%(n)s Monat"
 msgstr[1] "%(n)s Monate"
 
-#: templates/hardware/device.html:29
-msgid ""
-"Ordering online follows soon. Until then, contact us to order this device."
-msgstr ""
-"Online-Bestellung folgt bald. Bis dahin kontaktieren Sie uns, um dieses "
-"Gerät zu bestellen."
+#: templates/hardware/device.html:30
+msgid "This device is in your cart."
+msgstr "Dieses Gerät liegt in Ihrem Warenkorb."
 
-#: templates/hardware/device.html:32
+#: templates/hardware/device.html:31
+msgid "View cart and order"
+msgstr "Warenkorb ansehen und bestellen"
+
+#: templates/hardware/device.html:34
+msgid "Add to cart"
+msgstr "In den Warenkorb"
+
+#: templates/hardware/device.html:37
 msgid "Your account cannot order yet. Contact us if you would like to order."
 msgstr ""
 "Ihr Konto kann noch nicht bestellen. Kontaktieren Sie uns, wenn Sie "
 "bestellen möchten."
 
-#: templates/hardware/device.html:34
+#: templates/hardware/device.html:39
 msgid ""
 "Log in to order. New here? Sign up as a customer; after approval you can "
 "order."
@@ -7767,81 +7894,154 @@ msgstr ""
 "Melden Sie sich an, um zu bestellen. Neu hier? Registrieren Sie sich als "
 "Kunde; nach der Freigabe können Sie bestellen."
 
-#: templates/hardware/device.html:36 templates/registration/login.html:17
+#: templates/hardware/device.html:41 templates/registration/login.html:17
 msgid "Sign up"
 msgstr "Registrieren"
 
-#: templates/hardware/device.html:40
-msgid "This device is no longer for sale."
-msgstr "Dieses Gerät ist nicht mehr zu verkaufen."
+#: templates/hardware/done.html:5 templates/orders/done.html:5
+msgid "Thank you for your order"
+msgstr "Vielen Dank für Ihre Bestellung"
 
-#: templates/hardware/shop.html:14
+#: templates/hardware/done.html:6
+#, python-format
+msgid ""
+"Your order %(number)s has been placed. The devices are reserved for you. You "
+"will receive a confirmation by email."
+msgstr "Ihre Bestellung %(number)s wurde aufgegeben. Die Geräte sind für Sie reserviert. Sie erhalten eine Bestätigung per E-Mail."
+
+#: templates/hardware/done.html:7 templates/hardware/email_new_order.txt:10
+#: templates/hardware/review.html:17 templates/invoices/my_invoices.html:7
+#: templates/orders/done.html:7 templates/orders/email_confirmation.txt:18
+#: templates/orders/my_orders.html:7 templates/orders/order_detail.html:17
+#: templates/orders/review.html:19 templates/parts/email.txt:24
+#: templates/parts/overview.html:15 templates/parts/totals.html:7
+msgid "Total incl. VAT"
+msgstr "Summe brutto"
+
+#: templates/hardware/done.html:10 templates/orders/done.html:9
+msgid "View order"
+msgstr "Bestellung ansehen"
+
+#: templates/hardware/done.html:11
+msgid "Back to the hardware"
+msgstr "Zurück zur Hardware"
+
+#: templates/hardware/email_new_order.txt:1
+msgid "New hardware order"
+msgstr "Neue Hardware-Bestellung"
+
+#: templates/hardware/email_new_order.txt:4
+msgid "Ordered by"
+msgstr "Bestellt von"
+
+#: templates/hardware/review.html:3 templates/hardware/review.html:5
+#: templates/orders/review.html:3 templates/orders/review.html:5
+#: templates/parts/review.html:3 templates/parts/review.html:5
+msgid "Check your order"
+msgstr "Prüfen Sie Ihre Bestellung"
+
+#: templates/hardware/review.html:12 templates/orders/email_confirmation.txt:13
+#: templates/orders/order_detail.html:13 templates/orders/review.html:15
+msgid "Subtotal"
+msgstr "Zwischensumme"
+
+#: templates/hardware/review.html:13 templates/orders/review.html:16
+#: templates/parts/totals.html:3
+#, python-format
+msgid "Your discount (%(pct)s %%)"
+msgstr "Ihr Rabatt (%(pct)s %%)"
+
+#: templates/hardware/review.html:15 templates/orders/email_confirmation.txt:16
+#: templates/orders/review.html:17 templates/parts/email.txt:22
+#: templates/parts/totals.html:5
+msgid "Total excl. VAT"
+msgstr "Summe netto"
+
+#: templates/hardware/review.html:16 templates/orders/review.html:18
+#: templates/parts/totals.html:6
+#, python-format
+msgid "VAT %(rate)s %%"
+msgstr "MwSt. %(rate)s %%"
+
+#: templates/hardware/review.html:28 templates/orders/review.html:28
+#: templates/parts/review.html:18
+msgid "Place order"
+msgstr "Bestellung aufgeben"
+
+#: templates/hardware/shop.html:12
+#, python-format
+msgid "Cart (%(n)s)"
+msgid_plural "Cart (%(n)s)"
+msgstr[0] "Warenkorb (%(n)s)"
+msgstr[1] "Warenkorb (%(n)s)"
+
+#: templates/hardware/shop.html:17
 msgid "Search, e.g. ThinkPad or i5"
 msgstr "Suchen, z. B. ThinkPad oder i5"
 
-#: templates/hardware/shop.html:14 templates/hardware/shop.html:32
+#: templates/hardware/shop.html:17 templates/hardware/shop.html:35
 #: templates/legacy/_head.html:10
 msgid "Search"
 msgstr "Suchen"
 
-#: templates/hardware/shop.html:16
+#: templates/hardware/shop.html:19
 msgid "All types"
 msgstr "Alle Arten"
 
-#: templates/hardware/shop.html:20
+#: templates/hardware/shop.html:23
 msgid "All brands"
 msgstr "Alle Marken"
 
-#: templates/hardware/shop.html:24
+#: templates/hardware/shop.html:27
 msgid "Every condition"
 msgstr "Jeder Zustand"
 
-#: templates/hardware/shop.html:27
+#: templates/hardware/shop.html:30
 msgid "Sort"
 msgstr "Sortieren"
 
-#: templates/hardware/shop.html:28
+#: templates/hardware/shop.html:31
 msgid "Newest first"
 msgstr "Neueste zuerst"
 
-#: templates/hardware/shop.html:29
+#: templates/hardware/shop.html:32
 msgid "Price, low to high"
 msgstr "Preis, aufsteigend"
 
-#: templates/hardware/shop.html:30
+#: templates/hardware/shop.html:33
 msgid "Price, high to low"
 msgstr "Preis, absteigend"
 
-#: templates/hardware/shop.html:35
+#: templates/hardware/shop.html:38
 #, python-format
 msgid "%(n)s device"
 msgid_plural "%(n)s devices"
 msgstr[0] "%(n)s Gerät"
 msgstr[1] "%(n)s Geräte"
 
-#: templates/hardware/shop.html:36
+#: templates/hardware/shop.html:39
 msgid "Show everything"
 msgstr "Alles zeigen"
 
-#: templates/hardware/shop.html:53
+#: templates/hardware/shop.html:56
 msgid "Pages"
 msgstr "Seiten"
 
-#: templates/hardware/shop.html:54
+#: templates/hardware/shop.html:57
 msgid "Previous"
 msgstr "Zurück"
 
-#: templates/hardware/shop.html:55
+#: templates/hardware/shop.html:58
 #, python-format
 msgid "Page %(n)s of %(total)s"
 msgstr "Seite %(n)s von %(total)s"
 
-#: templates/hardware/shop.html:56 templates/licences/options.html:27
+#: templates/hardware/shop.html:59 templates/licences/options.html:27
 #: templates/licences/step.html:18 templates/setup/wizard.html:37
 msgid "Next"
 msgstr "Weiter"
 
-#: templates/hardware/shop.html:60
+#: templates/hardware/shop.html:63
 msgid "Nothing for sale matches your choice right now."
 msgstr "Derzeit ist nichts zu verkaufen, das Ihrer Auswahl entspricht."
 
@@ -7856,14 +8056,6 @@ msgstr "(leer: unter Einstellungen → Firmendaten ausfüllen)"
 #: templates/invoices/invoice_pdf.html:107
 msgid "Attn."
 msgstr "z. Hd."
-
-#: templates/invoices/my_invoices.html:7 templates/orders/done.html:7
-#: templates/orders/email_confirmation.txt:17 templates/orders/my_orders.html:7
-#: templates/orders/order_detail.html:16 templates/orders/review.html:19
-#: templates/parts/email.txt:24 templates/parts/overview.html:15
-#: templates/parts/totals.html:7
-msgid "Total incl. VAT"
-msgstr "Summe brutto"
 
 #: templates/invoices/my_invoices.html:16
 msgid "Email to me"
@@ -8082,7 +8274,7 @@ msgstr "Schritte"
 #: templates/licences/check.html:3 templates/licences/check.html:5
 #: templates/licences/options.html:3 templates/licences/options.html:5
 #: templates/licences/step.html:3 templates/licences/step.html:6
-#: templates/orders/order_detail.html:18
+#: templates/orders/order_detail.html:26
 msgid "Register a licence"
 msgstr "Lizenz registrieren"
 
@@ -8153,10 +8345,6 @@ msgid "Optional: fill in the monitor that is covered by this pack."
 msgstr ""
 "Optional: Geben Sie den Monitor an, der von diesem Paket abgedeckt ist."
 
-#: templates/orders/done.html:5
-msgid "Thank you for your order"
-msgstr "Vielen Dank für Ihre Bestellung"
-
 #: templates/orders/done.html:6
 #, python-format
 msgid ""
@@ -8166,10 +8354,6 @@ msgstr ""
 "Ihre Bestellung %(number)s wurde aufgegeben. Sie erhalten eine Bestätigung "
 "per E-Mail."
 
-#: templates/orders/done.html:9
-msgid "View order"
-msgstr "Bestellung ansehen"
-
 #: templates/orders/email_confirmation.txt:2
 msgid "Order confirmation"
 msgstr "Auftragsbestätigung"
@@ -8178,17 +8362,11 @@ msgstr "Auftragsbestätigung"
 msgid "registered"
 msgstr "registriert"
 
-#: templates/orders/email_confirmation.txt:13
-#: templates/orders/order_detail.html:13 templates/orders/review.html:15
-msgid "Subtotal"
-msgstr "Zwischensumme"
+#: templates/orders/email_confirmation.txt:22
+msgid "The devices are reserved for you."
+msgstr "Die Geräte sind für Sie reserviert."
 
-#: templates/orders/email_confirmation.txt:15 templates/orders/review.html:17
-#: templates/parts/email.txt:22 templates/parts/totals.html:5
-msgid "Total excl. VAT"
-msgstr "Summe netto"
-
-#: templates/orders/email_confirmation.txt:19 templates/orders/review.html:22
+#: templates/orders/email_confirmation.txt:24 templates/orders/review.html:22
 msgid "Physical packs are sent to"
 msgstr "Physische Pakete werden gesendet an"
 
@@ -8207,11 +8385,6 @@ msgid ""
 msgstr ""
 "Die neue Lizenz beginnt am Tag nach dem Ende der aktuellen, für dasselbe "
 "Gerät."
-
-#: templates/orders/extend.html:10 templates/orders/order_form.html:20
-#: templates/parts/request_detail.html:30
-msgid "Check order"
-msgstr "Bestellung prüfen"
 
 #: templates/orders/my_licences.html:8
 #, python-format
@@ -8246,7 +8419,7 @@ msgstr "Noch keine Bestellungen."
 msgid "Extension of"
 msgstr "Verlängerung von"
 
-#: templates/orders/order_detail.html:18
+#: templates/orders/order_detail.html:26
 msgid "Unregistered licences can be registered with the licence number."
 msgstr "Nicht registrierte Lizenzen registrieren Sie mit der Lizenznummer."
 
@@ -8254,29 +8427,10 @@ msgstr "Nicht registrierte Lizenzen registrieren Sie mit der Lizenznummer."
 msgid "Order details"
 msgstr "Bestelldaten"
 
-#: templates/orders/review.html:3 templates/orders/review.html:5
-#: templates/parts/review.html:3 templates/parts/review.html:5
-msgid "Check your order"
-msgstr "Prüfen Sie Ihre Bestellung"
-
 #: templates/orders/review.html:6
 #, python-format
 msgid "Extension of licence %(number)s"
 msgstr "Verlängerung der Lizenz %(number)s"
-
-#: templates/orders/review.html:16 templates/parts/totals.html:3
-#, python-format
-msgid "Your discount (%(pct)s %%)"
-msgstr "Ihr Rabatt (%(pct)s %%)"
-
-#: templates/orders/review.html:18 templates/parts/totals.html:6
-#, python-format
-msgid "VAT %(rate)s %%"
-msgstr "MwSt. %(rate)s %%"
-
-#: templates/orders/review.html:28 templates/parts/review.html:18
-msgid "Place order"
-msgstr "Bestellung aufgeben"
 
 #: templates/parts/email.txt:2
 msgid ""

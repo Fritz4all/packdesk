@@ -26,8 +26,13 @@
       </dl>
       <div class="hw-order">
         {% if customer %}
-          <p class="muted">{% translate "Ordering online follows soon. Until then, contact us to order this device." %}
-            {% if site_settings.email %}<a href="mailto:{{ site_settings.email }}?subject={{ device.number|urlencode }}">{{ site_settings.email }}</a>{% endif %}</p>
+          {% if in_cart %}
+            <p>{% translate "This device is in your cart." %}</p>
+            <a class="btn btn-primary" href="{% url 'hardware_cart' %}">{% translate "View cart and order" %}</a>
+          {% else %}
+            <form method="post" action="{% url 'hardware_add' device.number %}">{% csrf_token %}
+              <button class="btn btn-primary btn-lg" type="submit">{% translate "Add to cart" %}</button></form>
+          {% endif %}
         {% elif user.is_authenticated %}
           <p class="muted">{% translate "Your account cannot order yet. Contact us if you would like to order." %}</p>
         {% else %}

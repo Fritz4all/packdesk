@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n humanize_nl %}
+{% block title %}{% translate "Your cart" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<p><a href="{% url 'hardware_shop' %}">← {% translate "All hardware" %}</a></p>
+<div class="page-head"><h1>{% translate "Your cart" %}</h1></div>
+{% if devices %}
+<div class="card table-wrap">
+  <table class="table">
+    <thead><tr><th>{% translate "Device" %}</th><th>{% translate "Price excl. VAT" %}</th><th>{% translate "Price incl. VAT" %}</th><th></th></tr></thead>
+    <tbody>{% for device in devices %}<tr>
+      <td><a href="{% url 'hardware_device' device.number %}">{% if device.brand %}{{ device.brand.name }} {% endif %}{{ device.model }}</a><br><small class="muted">{{ device.device_type }} · {{ device.number }}</small></td>
+      <td>€ {{ device.shop_price.excl|money }}</td><td>€ {{ device.shop_price.incl|money }}</td>
+      <td><form method="post" action="{% url 'hardware_remove' device.number %}">{% csrf_token %}<button class="btn btn-ghost" type="submit">{% translate "Remove" %}</button></form></td>
+    </tr>{% endfor %}</tbody>
+  </table>
+  {% if totals.discount %}<p class="muted">{% blocktranslate with pct=totals.discount_pct|floatformat:"-2" %}Prices include your discount of {{ pct }} %.{% endblocktranslate %}</p>{% endif %}
+</div>
+
+<form method="post" class="form-card hw-checkout" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="message message-error">{{ form.non_field_errors }}</div>{% endif %}
+  <fieldset><legend>{% translate "Delivery" %}</legend>
+    {% for choice in form.delivery %}<label class="hw-choice">{{ choice.tag }} {{ choice.choice_label }}</label>{% endfor %}
+    {% for error in form.delivery.errors %}<p class="error">{{ error }}</p>{% endfor %}
+    <div class="form-grid hw-address" data-shipping-kinds="{% for option in form.fields.delivery.queryset %}{% if option.kind == 'shipping' %}{{ option.pk }},{% endif %}{% endfor %}">
+      {% for name in address_fields %}{% for field in form %}{% if field.name == name %}
+      <label class="field">{{ field.label }}{{ field }}{% for error in field.errors %}<span class="error">{{ error }}</span>{% endfor %}</label>
+      {% endif %}{% endfor %}{% endfor %}
+    </div>
+  </fieldset>
+  <fieldset><legend>{% translate "Payment method" %}</legend>
+    {% for choice in form.payment %}<label class="hw-choice">{{ choice.tag }} {{ choice.choice_label }}</label>{% endfor %}
+    {% for error in form.payment.errors %}<p class="error">{{ error }}</p>{% endfor %}
+  </fieldset>
+  <fieldset><legend>{% translate "Your reference" %}</legend>
+    <label class="field">{{ form.reference }}<small class="muted">{{ form.reference.help_text }}</small></label>
+  </fieldset>
+  {% if form.accept_terms %}<p class="muted">{{ settings.terms_text|linebreaksbr }}</p>
+    <label class="hw-choice">{{ form.accept_terms }} {{ form.accept_terms.label }}</label>
+    {% for error in form.accept_terms.errors %}<p class="error">{{ error }}</p>{% endfor %}{% endif %}
+  <div class="hero-actions"><button class="btn btn-primary btn-lg" type="submit">{% translate "Check order" %}</button></div>
+</form>
+<script>
+  // The address is only needed (and shown) when the order is shipped.
+  (function () {
+    var box = document.querySelector(".hw-address");
+    var shipping = box.dataset.shippingKinds.split(",").filter(Boolean);
+    function update() {
+      var chosen = document.querySelector('input[name="delivery"]:checked');
+      box.hidden = !chosen || shipping.indexOf(chosen.value) === -1;
+    }
+    document.querySelectorAll('input[name="delivery"]').forEach(function (input) { input.addEventListener("change", update); });
+    update();
+  })();
+</script>
+{% else %}
+<div class="card card-muted"><p>{% translate "Your cart is empty." %} <a href="{% url 'hardware_shop' %}">{% translate "View the hardware for sale" %}</a></p></div>
+{% endif %}
+{% endblock %}

@@ -1,4 +1,6 @@
 import io
+
+import pytest
 from decimal import Decimal
 
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -10,6 +12,16 @@ from apps.licences.models import Vendor
 from .conftest import make_user
 
 DEVICES = "/admin/hardware/device/"
+
+
+@pytest.fixture(autouse=True)
+def folders(tmp_path, settings):
+    """Invoices and photos in a temporary folder; no archive of old invoices."""
+    settings.DATA_ROOT = tmp_path / "data"
+    settings.MEDIA_ROOT = tmp_path / "media"
+    archive = tmp_path / "archive"
+    archive.mkdir()
+    settings.DOCUMENT_ARCHIVE_DIR = str(archive)
 
 
 def laptop():
@@ -207,3 +219,117 @@ def test_home_page_has_a_hardware_card_and_one_for_packs_and_parts(client, site)
     page = client.get("/").content.decode()
     assert 'href="/hardware/"' in page and "Servicepacks en onderdelen" in page
     assert ">Onderdelen<" not in page
+
+
+# --- ordering ------------------------------------------------------------------------------------------------
+
+def shop_customer(margin="10"):
+    from apps.customers.models import Contact, Customer, CustomerAddress
+
+    customer = Customer.objects.create(name="Koper BV", number="400200", status=Customer.Status.ACTIVE,
+                                       margin_hardware=Decimal(margin), email="info@koper.test")
+    CustomerAddress.objects.create(customer=customer, line1="Straat 1", postal_code="1000 AA", city="Amsterdam")
+    user = make_user("koper@example.test")
+    Contact.objects.create(customer=customer, user=user, last_name="Koper", email=user.email)
+    return customer, user
+
+
+def checkout(client, delivery, payment, **extra):
+    data = {"delivery": delivery.pk, "payment": payment.pk, "reference": "PO-HW", **extra}
+    review = client.post("/hardware/cart/", data)
+    assert "payload" in review.context, review.content.decode()[:3000]
+    return client.post("/hardware/cart/", {"action": "confirm", "payload": review.context["payload"]})
+
+
+def test_customer_orders_hardware_with_delivery_and_payment_costs(client, site):
+    from django.core import mail
+
+    from apps.hardware.models import DeliveryOption
+    from apps.invoices.models import Invoice
+    from apps.orders.models import Order, PaymentMethod
+
+    customer, user = shop_customer()
+    a = make_device("SN-A", status=Device.Status.FOR_SALE, sale_price=Decimal("500.00"))
+    b = make_device("SN-B", status=Device.Status.FOR_SALE, purchase_price=Decimal("200.00"))  # 250 with the markup
+    client.force_login(user)
+    for device in (a, b):
+        client.post(f"/hardware/{device.number}/add/")
+    page = client.get("/hardware/cart/").content.decode()
+    assert a.number in page and b.number in page
+    shipping = DeliveryOption.objects.get(kind="shipping")  # € 12.50
+    payment = PaymentMethod.objects.get(code="cash_on_delivery")
+    payment.extra_costs = Decimal("7.50")
+    payment.save()
+    review = client.post("/hardware/cart/", {"delivery": shipping.pk, "payment": payment.pk})
+    assert "delivery_address" in review.context["form"].errors or review.context["form"].is_valid()
+    response = checkout(client, shipping, payment, delivery_name="Koper BV", delivery_address="Straat 1",
+                        delivery_postal_code="1000 AA", delivery_city="Amsterdam")
+    assert response.status_code == 302
+    order = Order.objects.get(kind="hardware")
+    # 750 − 10% = 675 + 12.50 + 7.50 = 695 excl. VAT; + 21% = 840.95
+    assert order.gross == Decimal("750.00") and order.discount == Decimal("75.00")
+    assert order.net == Decimal("695.00") and order.total == Decimal("840.95")
+    assert order.shipping and order.delivery_city == "Amsterdam" and order.reference == "PO-HW"
+    invoice = Invoice.objects.get(order=order)
+    assert invoice.total == order.total and invoice.lines.count() == 4  # two devices, delivery, payment
+    a.refresh_from_db()
+    assert a.status == Device.Status.SOLD and a.customer == customer and a.sold_at
+    assert any(order.number in m.subject for m in mail.outbox)
+    assert client.get("/hardware/cart/").context["devices"] == []  # cart emptied
+    assert "Straat 1" in client.get(f"/my/orders/{order.pk}/").content.decode()
+
+
+def test_device_can_only_be_ordered_once(client, site):
+    from apps.hardware import services
+    from apps.hardware.models import DeliveryOption
+    from apps.orders.models import PaymentMethod
+
+    customer, user = shop_customer()
+    device = make_device("SN-A", status=Device.Status.FOR_SALE, sale_price=Decimal("500.00"))
+    pickup, payment = DeliveryOption.objects.get(kind="pickup"), PaymentMethod.objects.get(code="on_account")
+    client.force_login(user)
+    client.post(f"/hardware/{device.number}/add/")
+    review = client.post("/hardware/cart/", {"delivery": pickup.pk, "payment": payment.pk})
+    services.place_order(customer, user, [device.number], pickup, payment)  # someone else was faster
+    response = client.post("/hardware/cart/", {"action": "confirm", "payload": review.context["payload"]})
+    assert response.status_code == 302
+    from apps.orders.models import Order
+    assert Order.objects.filter(kind="hardware").count() == 1
+
+
+def test_cancelling_an_order_puts_the_devices_back_up_for_sale(client, site, beheerder):
+    from apps.hardware import services
+    from apps.hardware.models import DeliveryOption
+    from apps.invoices.models import InvoiceSettings
+    from apps.orders.models import PaymentMethod
+
+    InvoiceSettings.objects.filter(pk=1).update(auto_on_order=False)
+    customer, user = shop_customer()
+    device = make_device("SN-A", status=Device.Status.FOR_SALE, sale_price=Decimal("500.00"))
+    order = services.place_order(customer, user, [device.number], DeliveryOption.objects.get(kind="pickup"),
+                                 PaymentMethod.objects.get(code="on_account"))
+    device.refresh_from_db()
+    assert device.status == Device.Status.RESERVED and order.delivery_costs is None
+    client.force_login(beheerder)
+    client.post(f"/admin/orders/order/{order.pk}/action/cancel/")
+    device.refresh_from_db()
+    order.refresh_from_db()
+    assert device.status == Device.Status.FOR_SALE and device.customer is None and order.cancelled_at
+
+
+def test_only_payment_methods_for_hardware_are_offered(client, site):
+    from apps.orders.models import PaymentMethod
+
+    customer, user = shop_customer()
+    PaymentMethod.objects.filter(code="ideal").update(for_hardware=False)
+    device = make_device("SN-A", status=Device.Status.FOR_SALE, sale_price=Decimal("500.00"))
+    client.force_login(user)
+    client.post(f"/hardware/{device.number}/add/")
+    page = client.get("/hardware/cart/").content.decode()
+    assert "iDEAL" not in page and "Op rekening" in page
+
+
+def test_visitors_cannot_order(client, site):
+    device = make_device("SN-A", status=Device.Status.FOR_SALE, sale_price=Decimal("500.00"))
+    assert client.post(f"/hardware/{device.number}/add/").status_code == 302  # to the login page
+    assert client.get("/hardware/cart/").status_code == 302
