@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 17:18+0100\n"
+"POT-Creation-Date: 2026-10-28 18:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1783,9 +1783,9 @@ msgstr "Telefonie-categorieën"
 msgid "Telephony settings"
 msgstr "Instellingen telefonie"
 
-#: apps/dashboard/navigation.py:303
-msgid "Printing services (archive)"
-msgstr "Printing services (archief)"
+#: apps/dashboard/navigation.py:303 apps/printing/apps.py:7
+msgid "Printing services"
+msgstr "Printing services"
 
 #: apps/dashboard/navigation.py:318 apps/legacy/old_shop/importer.py:124
 msgid "Supplies orders"
@@ -5106,10 +5106,6 @@ msgstr "De prijzen zijn intussen gewijzigd. Controleer uw bestelling opnieuw."
 msgid "Order %(number)s has been placed."
 msgstr "Bestelling %(number)s is geplaatst."
 
-#: apps/printing/apps.py:7
-msgid "Printing services"
-msgstr "Printing services"
-
 #: apps/printing/models.py:17 apps/telephony/models.py:98
 msgid "installation costs"
 msgstr "installatiekosten"
@@ -6492,8 +6488,20 @@ msgid "Set the whole menu back to the standard?"
 msgstr "Het hele menu terugzetten naar de standaard?"
 
 #: templates/admin/packdesk/menu_editor.html:21
-msgid "Drag a main menu or an item by its handle to another place; items can also go to another main menu. Drop a whole main menu on the items of another one to place it there as a fold-out group with all its items (one level deep). Empty name = the standard name. Main menus without items are not shown. This menu applies to everyone; a user only sees the items they have rights to."
-msgstr "Sleep een hoofdmenu of een onderdeel aan het greepje naar een andere plek; onderdelen kunnen ook naar een ander hoofdmenu. Zet je een heel hoofdmenu neer tussen de onderdelen van een ander hoofdmenu, dan komt het daar als uitklapgroep met al zijn onderdelen (één niveau diep). Lege naam = de standaardnaam. Hoofdmenu's zonder onderdelen worden niet getoond. Dit menu geldt voor iedereen; een gebruiker ziet alleen de onderdelen waar hij rechten voor heeft."
+msgid ""
+"Drag a main menu or an item by its handle to another place; items can also "
+"go to another main menu. Drop a whole main menu on the items of another one "
+"to place it there as a fold-out group with all its items (one level deep). "
+"Empty name = the standard name. Main menus without items are not shown. This "
+"menu applies to everyone; a user only sees the items they have rights to."
+msgstr ""
+"Sleep een hoofdmenu of een onderdeel aan het greepje naar een andere plek; "
+"onderdelen kunnen ook naar een ander hoofdmenu. Zet je een heel hoofdmenu "
+"neer tussen de onderdelen van een ander hoofdmenu, dan komt het daar als "
+"uitklapgroep met al zijn onderdelen (één niveau diep). Lege naam = de "
+"standaardnaam. Hoofdmenu's zonder onderdelen worden niet getoond. Dit menu "
+"geldt voor iedereen; een gebruiker ziet alleen de onderdelen waar hij "
+"rechten voor heeft."
 
 #: templates/admin/packdesk/menu_editor.html:25
 msgid ""

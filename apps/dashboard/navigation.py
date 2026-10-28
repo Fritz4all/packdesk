@@ -300,7 +300,7 @@ SECTIONS = [
     {
         "key": "printing",
         "collapsible": True,
-        "title": _("Printing services (archive)"),
+        "title": _("Printing services"),
         "items": [
             {
                 "title": _("Printing quotes"),
