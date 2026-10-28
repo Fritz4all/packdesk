@@ -201,3 +201,9 @@ def test_shop_can_be_switched_off_and_is_in_the_website_menu(client, site):
     assert MenuItem.objects.filter(url="/hardware/").exists()
     HardwareSettings.objects.update(enabled=False)
     assert client.get("/hardware/").status_code == 404
+
+
+def test_home_page_has_a_hardware_card_and_one_for_packs_and_parts(client, site):
+    page = client.get("/").content.decode()
+    assert 'href="/hardware/"' in page and "Servicepacks en onderdelen" in page
+    assert ">Onderdelen<" not in page
