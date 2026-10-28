@@ -146,6 +146,13 @@ class RoleAdmin(ModelAdmin):
         for formset in formsets:
             self.save_formset(request, form, formset, change=change)
 
+    def action_checkbox(self, obj):
+        if obj.is_superadmin:
+            return ""  # never selectable: it cannot be deleted
+        return super().action_checkbox(obj)
+
+    action_checkbox.short_description = ModelAdmin.action_checkbox.short_description
+
     @display(description=_("Name"), ordering="name")
     def show_name(self, obj):
         return role_title(obj)

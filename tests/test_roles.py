@@ -210,3 +210,27 @@ def test_role_pages_show_the_names_per_language(client, site):
     response = client.post(f"{ROLES}{superadmin.pk}/change/", {"title_nl": "Hoofdbeheer", "title_en": "Head admin"})
     assert response.status_code == 302, response.content.decode()[:2000]
     assert superadmin.info.__class__.objects.get(pk=superadmin.pk).title_nl == "Hoofdbeheer"
+
+
+def test_superadmin_cannot_be_selected_or_bulk_deleted(client, site):
+    client.force_login(make_user("root@example.test", superuser=True))
+    superadmin = Role.objects.get(name="Superadmin")
+    empty = Role.objects.create(name="Leeg")
+    page = client.get(ROLES).content.decode()
+    assert f'value="{superadmin.pk}"' not in page and f'value="{empty.pk}"' in page
+    used = Role.objects.get(name="Administrator")
+    make_user("beheer@example.test", staff=True, role="Administrator")
+    for chosen in ([superadmin.pk, empty.pk], [used.pk, empty.pk]):  # refused as a whole when one is protected
+        client.post(ROLES, {"action": "delete_selected", "_selected_action": chosen, "post": "yes"})
+        assert Role.objects.filter(pk__in=chosen).count() == 2
+    client.post(ROLES, {"action": "delete_selected", "_selected_action": [empty.pk], "post": "yes"})
+    assert not Role.objects.filter(pk=empty.pk).exists()
+
+
+def test_role_editor_has_every_module_and_toggles(client, site):
+    client.force_login(make_user("root@example.test", superuser=True))
+    page = client.get(f"{ROLES}add/").content.decode()
+    for code in ("telephony.view_quote", "printing.view_printer", "parts.view_partorder"):
+        assert f'value="{perm(code).pk}"' in page, code  # modules are offered without being listed anywhere
+    assert f'value="{perm("accounts.view_roleinfo").pk}"' not in page  # role names belong to the role itself
+    assert 'class="pm-toggle" data-col="view"' in page and 'class="pm-toggle" data-app=' in page

@@ -7,25 +7,59 @@
         {% for code, label in widget.actions %}<th class="py-2 px-3 text-center">{{ label }}</th>{% endfor %}
         <th class="py-2 px-3">{% translate "Other" %}</th>
       </tr>
+      <tr class="text-left text-xs text-base-500">
+        <td class="pb-2 pr-4">{% translate "Everything on or off" %}</td>
+        {% for code, label in widget.actions %}
+        <td class="pb-2 px-3 text-center"><input type="checkbox" class="pm-toggle" data-col="{{ code }}"
+          title="{% blocktranslate %}{{ label }}: everything on or off{% endblocktranslate %}"></td>
+        {% endfor %}
+        <td class="pb-2 px-3"><input type="checkbox" class="pm-toggle" data-col="other"
+          title="{% translate 'Other: everything on or off' %}"></td>
+      </tr>
     </thead>
     <tbody>
       {% for row in widget.rows %}
-      {% ifchanged row.app %}<tr><td colspan="6" class="pt-4 pb-1 font-semibold text-important">{{ row.app }}</td></tr>{% endifchanged %}
+      {% ifchanged row.app %}<tr><td colspan="6" class="pt-4 pb-1 font-semibold text-important">
+        <label class="inline-flex items-center gap-2"><input type="checkbox" class="pm-toggle" data-app="{{ row.app }}"
+          title="{% translate 'This part: everything on or off' %}">{{ row.app }}</label></td></tr>{% endifchanged %}
       <tr class="border-t border-base-200 dark:border-base-700">
         <td class="py-2 pr-4">{{ row.model|capfirst }}</td>
         {% for code, perm in row.cells %}
         <td class="py-2 px-3 text-center">
           {% if perm %}<input type="checkbox" name="{{ widget.name }}" value="{{ perm.pk }}" title="{{ perm.name }}"
+            data-col="{{ code }}" data-app="{{ row.app }}"
             aria-label="{{ row.model|capfirst }}: {{ code }}"{% if perm.pk|stringformat:"s" in widget.selected %} checked{% endif %}>{% endif %}
         </td>
         {% endfor %}
         <td class="py-2 px-3">
           {% for perm in row.extras %}
-          <label class="block"><input type="checkbox" name="{{ widget.name }}" value="{{ perm.pk }}"{% if perm.pk|stringformat:"s" in widget.selected %} checked{% endif %}> {% translate perm.name %}</label>
+          <label class="block"><input type="checkbox" name="{{ widget.name }}" value="{{ perm.pk }}" data-col="other" data-app="{{ row.app }}"{% if perm.pk|stringformat:"s" in widget.selected %} checked{% endif %}> {% translate perm.name %}</label>
           {% endfor %}
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  <script>
+  // The toggles above a column and in front of a part switch all its rights on or off, and show whether all,
+  // some or none are on.
+  (function () {
+    const matrix = document.currentScript.closest(".permission-matrix");
+    const boxes = [...matrix.querySelectorAll('input[name="{{ widget.name|escapejs }}"]')];
+    const toggles = [...matrix.querySelectorAll(".pm-toggle")];
+    const members = t => boxes.filter(b => (!t.dataset.col || b.dataset.col === t.dataset.col)
+                                         && (!t.dataset.app || b.dataset.app === t.dataset.app));
+    function update() {
+      toggles.forEach(t => {
+        const on = members(t).filter(b => b.checked).length;
+        t.checked = on > 0 && on === members(t).length;
+        t.indeterminate = on > 0 && !t.checked;
+        t.disabled = !members(t).length;
+      });
+    }
+    toggles.forEach(t => t.addEventListener("change", () => { members(t).forEach(b => { b.checked = t.checked; }); update(); }));
+    boxes.forEach(b => b.addEventListener("change", update));
+    update();
+  })();
+  </script>
 </div>

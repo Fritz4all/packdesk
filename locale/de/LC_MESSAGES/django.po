@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 19:21+0100\n"
+"POT-Creation-Date: 2026-10-28 20:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/accounts/admin.py:58 apps/accounts/admin.py:144
+#: apps/accounts/admin.py:59 apps/accounts/admin.py:164
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: apps/accounts/admin.py:62
+#: apps/accounts/admin.py:63
 msgid ""
 "Tick what users with this role may see and do. You can only grant rights you "
 "have yourself."
@@ -28,116 +28,121 @@ msgstr ""
 "Kreuzen Sie an, was Benutzer mit dieser Rolle sehen und tun dürfen. Sie "
 "können nur Rechte vergeben, die Sie selbst haben."
 
-#: apps/accounts/admin.py:76 apps/accounts/admin.py:136
+#: apps/accounts/admin.py:79
+msgid "Superadmins always have every right, also to everything added later."
+msgstr ""
+"Superadmins haben immer alle Rechte, auch für alles, was später hinzukommt."
+
+#: apps/accounts/admin.py:111 apps/accounts/admin.py:156
 #: apps/customers/admin.py:393 apps/customers/overview.py:112
 #: apps/legacy/old_shop/importer.py:138 apps/legacy/parts.py:110
 msgid "Name"
 msgstr "Name"
 
-#: apps/accounts/admin.py:79
+#: apps/accounts/admin.py:112
 msgid "Empty = the name in the first language."
 msgstr "Leer = der Name in der ersten Sprache."
 
-#: apps/accounts/admin.py:85
-msgid "Superadmins always have every right, also to everything added later."
-msgstr "Superadmins haben immer alle Rechte, auch für alles, was später hinzukommt."
-
-#: apps/accounts/admin.py:140 apps/accounts/apps.py:8
+#: apps/accounts/admin.py:160 apps/accounts/apps.py:8
 #: apps/dashboard/navigation.py:140 apps/dashboard/navigation.py:400
 msgid "Users"
 msgstr "Benutzer"
 
-#: apps/accounts/admin.py:146 templates/orders/my_licences.html:7
+#: apps/accounts/admin.py:166 templates/orders/my_licences.html:7
 msgid "All"
 msgstr "Alle"
 
-#: apps/accounts/admin.py:163 apps/accounts/admin.py:220
-#: apps/accounts/admin.py:358
+#: apps/accounts/admin.py:183 apps/accounts/admin.py:240
+#: apps/accounts/admin.py:378
 msgid "Role"
 msgstr "Rolle"
 
-#: apps/accounts/admin.py:167
+#: apps/accounts/admin.py:187
 msgid ""
 "Required for staff. The role decides what this user sees and may do in the "
 "admin. Superadmin: every right, always."
-msgstr "Pflicht für Mitarbeiter. Die Rolle bestimmt, was dieser Benutzer in der Verwaltung sieht und darf. Superadmin: immer alle Rechte."
+msgstr ""
+"Pflicht für Mitarbeiter. Die Rolle bestimmt, was dieser Benutzer in der "
+"Verwaltung sieht und darf. Superadmin: immer alle Rechte."
 
-#: apps/accounts/admin.py:185
+#: apps/accounts/admin.py:205
 msgid "Staff users need a role."
 msgstr "Mitarbeiter benötigen eine Rolle."
 
-#: apps/accounts/admin.py:187
+#: apps/accounts/admin.py:207
 msgid ""
 "The maximum number of superadmins has been reached (Configuration → Settings "
 "→ Security)."
-msgstr "Die maximale Anzahl an Superadmins ist erreicht (Konfiguration → Einstellungen → Sicherheit)."
+msgstr ""
+"Die maximale Anzahl an Superadmins ist erreicht (Konfiguration → "
+"Einstellungen → Sicherheit)."
 
-#: apps/accounts/admin.py:191
+#: apps/accounts/admin.py:211
 msgid "This is the last superadmin; there must always be at least one."
 msgstr "Dies ist der letzte Superadmin; es muss immer mindestens einen geben."
 
-#: apps/accounts/admin.py:209 apps/accounts/admin.py:254
-#: apps/accounts/admin.py:280 apps/core/setup_views.py:51
+#: apps/accounts/admin.py:229 apps/accounts/admin.py:274
+#: apps/accounts/admin.py:300 apps/core/setup_views.py:51
 #: apps/core/setup_views.py:105 apps/customers/forms.py:51
 msgid "Password"
 msgstr "Passwort"
 
-#: apps/accounts/admin.py:212 apps/accounts/admin.py:257
+#: apps/accounts/admin.py:232 apps/accounts/admin.py:277
 msgid "Set"
 msgstr "Gesetzt"
 
-#: apps/accounts/admin.py:213 apps/accounts/admin.py:258
+#: apps/accounts/admin.py:233 apps/accounts/admin.py:278
 msgid "Must choose a new one"
 msgstr "Muss ein neues wählen"
 
-#: apps/accounts/admin.py:227
+#: apps/accounts/admin.py:247
 msgid "Staff without a role"
 msgstr "Mitarbeiter ohne Rolle"
 
-#: apps/accounts/admin.py:260
+#: apps/accounts/admin.py:280
 msgid "Disable selected users (they can no longer log in)"
 msgstr ""
 "Ausgewählte Benutzer deaktivieren (sie können sich nicht mehr anmelden)"
 
-#: apps/accounts/admin.py:264
+#: apps/accounts/admin.py:284
 #, python-format
 msgid "%(n)s user(s) disabled."
 msgstr "%(n)s Benutzer deaktiviert."
 
-#: apps/accounts/admin.py:266
+#: apps/accounts/admin.py:286
 msgid "You cannot disable yourself; your own account was skipped."
 msgstr ""
 "Sie können sich nicht selbst deaktivieren; Ihr eigenes Konto wurde "
 "übersprungen."
 
-#: apps/accounts/admin.py:268
+#: apps/accounts/admin.py:288
 msgid "Enable selected users"
 msgstr "Ausgewählte Benutzer aktivieren"
 
-#: apps/accounts/admin.py:271
+#: apps/accounts/admin.py:291
 #, python-format
 msgid "%(n)s user(s) enabled."
 msgstr "%(n)s Benutzer aktiviert."
 
-#: apps/accounts/admin.py:273
+#: apps/accounts/admin.py:293
 msgid "Make selected users choose a new password (email with link)"
 msgstr ""
 "Ausgewählte Benutzer ein neues Passwort wählen lassen (E-Mail mit Link)"
 
-#: apps/accounts/admin.py:287
+#: apps/accounts/admin.py:307
 msgid "Password set"
 msgstr "Passwort festgelegt"
 
-#: apps/accounts/admin.py:289 apps/customers/admin.py:373
+#: apps/accounts/admin.py:309 apps/customers/admin.py:373
 #: apps/customers/admin.py:404 apps/customers/overview.py:71
 msgid "Must choose a new password"
 msgstr "Muss ein neues Passwort wählen"
 
-#: apps/accounts/admin.py:296
+#: apps/accounts/admin.py:316
 msgid "Set password"
 msgstr "Passwort festlegen"
 
-#: apps/accounts/admin.py:298
+#: apps/accounts/admin.py:318
 msgid ""
 "The current password stops working and the user gets an email to choose a "
 "new one. Continue?"
@@ -145,37 +150,37 @@ msgstr ""
 "Das aktuelle Passwort funktioniert dann nicht mehr und der Benutzer erhält "
 "eine E-Mail, um ein neues zu wählen. Fortfahren?"
 
-#: apps/accounts/admin.py:300
+#: apps/accounts/admin.py:320
 msgid "Send reset email"
 msgstr "Zurücksetzungs-E-Mail senden"
 
-#: apps/accounts/admin.py:301
+#: apps/accounts/admin.py:321
 msgid "Passwords are stored encrypted and can never be shown."
 msgstr ""
 "Passwörter werden verschlüsselt gespeichert und können nie angezeigt werden."
 
-#: apps/accounts/admin.py:321 apps/accounts/admin.py:327
-#: apps/accounts/admin.py:394
+#: apps/accounts/admin.py:341 apps/accounts/admin.py:347
+#: apps/accounts/admin.py:414
 msgid "Personal info"
 msgstr "Persönliche Daten"
 
-#: apps/accounts/admin.py:322 apps/accounts/admin.py:328
-#: apps/accounts/admin.py:333 apps/accounts/admin.py:395
+#: apps/accounts/admin.py:342 apps/accounts/admin.py:348
+#: apps/accounts/admin.py:353 apps/accounts/admin.py:415
 msgid "Access"
 msgstr "Zugang"
 
-#: apps/accounts/admin.py:323 apps/accounts/admin.py:329
-#: apps/accounts/admin.py:396
+#: apps/accounts/admin.py:343 apps/accounts/admin.py:349
+#: apps/accounts/admin.py:416
 msgid "Dates"
 msgstr "Daten"
 
-#: apps/accounts/admin.py:417 apps/accounts/models.py:26
+#: apps/accounts/admin.py:437 apps/accounts/models.py:26
 #: templates/dashboard/report.html:72 templates/dashboard/report.html:82
 #: templates/orders/email_confirmation.txt:6 templates/parts/email.txt:5
 msgid "Customer"
 msgstr "Kunde"
 
-#: apps/accounts/admin.py:442
+#: apps/accounts/admin.py:462
 #, python-format
 msgid ""
 "%(n)s email(s) sent with a link to choose a new password; the old passwords "
@@ -184,7 +189,7 @@ msgstr ""
 "%(n)s E-Mail(s) mit einem Link zum Wählen eines neuen Passworts gesendet; "
 "die alten Passwörter funktionieren nicht mehr."
 
-#: apps/accounts/admin.py:445
+#: apps/accounts/admin.py:465
 #, python-format
 msgid "Not sent (no email address or not active): %(list)s"
 msgstr "Nicht gesendet (keine E-Mail-Adresse oder nicht aktiv): %(list)s"
@@ -335,23 +340,23 @@ msgstr ""
 "Ihr Passwort muss für Mitarbeiter mindestens %(staff)d und für Kunden "
 "mindestens %(customers)d Zeichen enthalten."
 
-#: apps/accounts/permissions.py:12 apps/customers/overview.py:159
+#: apps/accounts/permissions.py:16 apps/customers/overview.py:159
 #: apps/invoices/admin.py:92 templates/invoices/my_invoices.html:14
 #: templates/telephony/my_quotes.html:7
 msgid "View"
 msgstr "Anzeigen"
 
-#: apps/accounts/permissions.py:13
+#: apps/accounts/permissions.py:17
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: apps/accounts/permissions.py:14
+#: apps/accounts/permissions.py:18
 #: templates/admin/customers/customer/change_type.html:17
 #: templates/orders/review.html:29 templates/parts/review.html:19
 msgid "Change"
 msgstr "Ändern"
 
-#: apps/accounts/permissions.py:15
+#: apps/accounts/permissions.py:19
 msgid "Delete"
 msgstr "Löschen"
 
@@ -363,6 +368,23 @@ msgstr "Bereich"
 #: apps/accounts/templates/accounts/permission_matrix.html:8
 msgid "Other"
 msgstr "Sonstiges"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:11
+msgid "Everything on or off"
+msgstr "Alles an oder aus"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:14
+#, python-format
+msgid "%(label)s: everything on or off"
+msgstr "%(label)s: alles an oder aus"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:17
+msgid "Other: everything on or off"
+msgstr "Sonstiges: alles an oder aus"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:24
+msgid "This part: everything on or off"
+msgstr "Dieser Bereich: alles an oder aus"
 
 #: apps/core/middleware.py:76 apps/core/middleware.py:149
 #: apps/core/setup_views.py:43
@@ -5575,7 +5597,9 @@ msgstr "maximale Anzahl Superadmins"
 msgid ""
 "Superadmins always have every right. Only superadmins see and change this "
 "setting."
-msgstr "Superadmins haben immer alle Rechte. Nur Superadmins sehen und ändern diese Einstellung."
+msgstr ""
+"Superadmins haben immer alle Rechte. Nur Superadmins sehen und ändern diese "
+"Einstellung."
 
 #: apps/siteconfig/models.py:81
 msgid "empty the trash after (days)"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 19:21+0100\n"
+"POT-Creation-Date: 2026-10-28 20:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/accounts/admin.py:58 apps/accounts/admin.py:144
+#: apps/accounts/admin.py:59 apps/accounts/admin.py:164
 msgid "Permissions"
 msgstr "Rechten"
 
-#: apps/accounts/admin.py:62
+#: apps/accounts/admin.py:63
 msgid ""
 "Tick what users with this role may see and do. You can only grant rights you "
 "have yourself."
@@ -28,113 +28,119 @@ msgstr ""
 "Vink aan wat gebruikers met deze rol mogen zien en doen. U kunt alleen "
 "rechten toekennen die u zelf hebt."
 
-#: apps/accounts/admin.py:76 apps/accounts/admin.py:136
+#: apps/accounts/admin.py:79
+msgid "Superadmins always have every right, also to everything added later."
+msgstr ""
+"Superadmins hebben altijd alle rechten, ook op alles wat later wordt "
+"toegevoegd."
+
+#: apps/accounts/admin.py:111 apps/accounts/admin.py:156
 #: apps/customers/admin.py:393 apps/customers/overview.py:112
 #: apps/legacy/old_shop/importer.py:138 apps/legacy/parts.py:110
 msgid "Name"
 msgstr "Naam"
 
-#: apps/accounts/admin.py:79
+#: apps/accounts/admin.py:112
 msgid "Empty = the name in the first language."
 msgstr "Leeg = de naam in de eerste taal."
 
-#: apps/accounts/admin.py:85
-msgid "Superadmins always have every right, also to everything added later."
-msgstr "Superadmins hebben altijd alle rechten, ook op alles wat later wordt toegevoegd."
-
-#: apps/accounts/admin.py:140 apps/accounts/apps.py:8
+#: apps/accounts/admin.py:160 apps/accounts/apps.py:8
 #: apps/dashboard/navigation.py:140 apps/dashboard/navigation.py:400
 msgid "Users"
 msgstr "Gebruikers"
 
-#: apps/accounts/admin.py:146 templates/orders/my_licences.html:7
+#: apps/accounts/admin.py:166 templates/orders/my_licences.html:7
 msgid "All"
 msgstr "Alle"
 
-#: apps/accounts/admin.py:163 apps/accounts/admin.py:220
-#: apps/accounts/admin.py:358
+#: apps/accounts/admin.py:183 apps/accounts/admin.py:240
+#: apps/accounts/admin.py:378
 msgid "Role"
 msgstr "Rol"
 
-#: apps/accounts/admin.py:167
+#: apps/accounts/admin.py:187
 msgid ""
 "Required for staff. The role decides what this user sees and may do in the "
 "admin. Superadmin: every right, always."
-msgstr "Verplicht voor medewerkers. De rol bepaalt wat deze gebruiker in het beheer ziet en mag. Superadmin: altijd alle rechten."
+msgstr ""
+"Verplicht voor medewerkers. De rol bepaalt wat deze gebruiker in het beheer "
+"ziet en mag. Superadmin: altijd alle rechten."
 
-#: apps/accounts/admin.py:185
+#: apps/accounts/admin.py:205
 msgid "Staff users need a role."
 msgstr "Medewerkers moeten een rol hebben."
 
-#: apps/accounts/admin.py:187
+#: apps/accounts/admin.py:207
 msgid ""
 "The maximum number of superadmins has been reached (Configuration → Settings "
 "→ Security)."
-msgstr "Het maximale aantal superadmins is bereikt (Configuratie → Instellingen → Beveiliging)."
+msgstr ""
+"Het maximale aantal superadmins is bereikt (Configuratie → Instellingen → "
+"Beveiliging)."
 
-#: apps/accounts/admin.py:191
+#: apps/accounts/admin.py:211
 msgid "This is the last superadmin; there must always be at least one."
 msgstr "Dit is de laatste superadmin; er moet er altijd minstens één zijn."
 
-#: apps/accounts/admin.py:209 apps/accounts/admin.py:254
-#: apps/accounts/admin.py:280 apps/core/setup_views.py:51
+#: apps/accounts/admin.py:229 apps/accounts/admin.py:274
+#: apps/accounts/admin.py:300 apps/core/setup_views.py:51
 #: apps/core/setup_views.py:105 apps/customers/forms.py:51
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: apps/accounts/admin.py:212 apps/accounts/admin.py:257
+#: apps/accounts/admin.py:232 apps/accounts/admin.py:277
 msgid "Set"
 msgstr "Ingesteld"
 
-#: apps/accounts/admin.py:213 apps/accounts/admin.py:258
+#: apps/accounts/admin.py:233 apps/accounts/admin.py:278
 msgid "Must choose a new one"
 msgstr "Moet een nieuw kiezen"
 
-#: apps/accounts/admin.py:227
+#: apps/accounts/admin.py:247
 msgid "Staff without a role"
 msgstr "Medewerker zonder rol"
 
-#: apps/accounts/admin.py:260
+#: apps/accounts/admin.py:280
 msgid "Disable selected users (they can no longer log in)"
 msgstr "Geselecteerde gebruikers uitschakelen (ze kunnen niet meer inloggen)"
 
-#: apps/accounts/admin.py:264
+#: apps/accounts/admin.py:284
 #, python-format
 msgid "%(n)s user(s) disabled."
 msgstr "%(n)s gebruiker(s) uitgeschakeld."
 
-#: apps/accounts/admin.py:266
+#: apps/accounts/admin.py:286
 msgid "You cannot disable yourself; your own account was skipped."
 msgstr "Je kunt jezelf niet uitschakelen; je eigen account is overgeslagen."
 
-#: apps/accounts/admin.py:268
+#: apps/accounts/admin.py:288
 msgid "Enable selected users"
 msgstr "Geselecteerde gebruikers inschakelen"
 
-#: apps/accounts/admin.py:271
+#: apps/accounts/admin.py:291
 #, python-format
 msgid "%(n)s user(s) enabled."
 msgstr "%(n)s gebruiker(s) ingeschakeld."
 
-#: apps/accounts/admin.py:273
+#: apps/accounts/admin.py:293
 msgid "Make selected users choose a new password (email with link)"
 msgstr ""
 "Geselecteerde gebruikers een nieuw wachtwoord laten kiezen (e-mail met link)"
 
-#: apps/accounts/admin.py:287
+#: apps/accounts/admin.py:307
 msgid "Password set"
 msgstr "Wachtwoord ingesteld"
 
-#: apps/accounts/admin.py:289 apps/customers/admin.py:373
+#: apps/accounts/admin.py:309 apps/customers/admin.py:373
 #: apps/customers/admin.py:404 apps/customers/overview.py:71
 msgid "Must choose a new password"
 msgstr "Moet een nieuw wachtwoord kiezen"
 
-#: apps/accounts/admin.py:296
+#: apps/accounts/admin.py:316
 msgid "Set password"
 msgstr "Wachtwoord instellen"
 
-#: apps/accounts/admin.py:298
+#: apps/accounts/admin.py:318
 msgid ""
 "The current password stops working and the user gets an email to choose a "
 "new one. Continue?"
@@ -142,37 +148,37 @@ msgstr ""
 "Het huidige wachtwoord werkt dan niet meer en de gebruiker krijgt een e-mail "
 "om een nieuw wachtwoord te kiezen. Doorgaan?"
 
-#: apps/accounts/admin.py:300
+#: apps/accounts/admin.py:320
 msgid "Send reset email"
 msgstr "Resetmail sturen"
 
-#: apps/accounts/admin.py:301
+#: apps/accounts/admin.py:321
 msgid "Passwords are stored encrypted and can never be shown."
 msgstr ""
 "Wachtwoorden worden versleuteld opgeslagen en kunnen nooit worden getoond."
 
-#: apps/accounts/admin.py:321 apps/accounts/admin.py:327
-#: apps/accounts/admin.py:394
+#: apps/accounts/admin.py:341 apps/accounts/admin.py:347
+#: apps/accounts/admin.py:414
 msgid "Personal info"
 msgstr "Persoonlijke gegevens"
 
-#: apps/accounts/admin.py:322 apps/accounts/admin.py:328
-#: apps/accounts/admin.py:333 apps/accounts/admin.py:395
+#: apps/accounts/admin.py:342 apps/accounts/admin.py:348
+#: apps/accounts/admin.py:353 apps/accounts/admin.py:415
 msgid "Access"
 msgstr "Toegang"
 
-#: apps/accounts/admin.py:323 apps/accounts/admin.py:329
-#: apps/accounts/admin.py:396
+#: apps/accounts/admin.py:343 apps/accounts/admin.py:349
+#: apps/accounts/admin.py:416
 msgid "Dates"
 msgstr "Datums"
 
-#: apps/accounts/admin.py:417 apps/accounts/models.py:26
+#: apps/accounts/admin.py:437 apps/accounts/models.py:26
 #: templates/dashboard/report.html:72 templates/dashboard/report.html:82
 #: templates/orders/email_confirmation.txt:6 templates/parts/email.txt:5
 msgid "Customer"
 msgstr "Klant"
 
-#: apps/accounts/admin.py:442
+#: apps/accounts/admin.py:462
 #, python-format
 msgid ""
 "%(n)s email(s) sent with a link to choose a new password; the old passwords "
@@ -181,7 +187,7 @@ msgstr ""
 "%(n)s e-mail(s) verstuurd met een link om een nieuw wachtwoord te kiezen; de "
 "oude wachtwoorden werken niet meer."
 
-#: apps/accounts/admin.py:445
+#: apps/accounts/admin.py:465
 #, python-format
 msgid "Not sent (no email address or not active): %(list)s"
 msgstr "Niet verstuurd (geen e-mailadres of niet actief): %(list)s"
@@ -330,23 +336,23 @@ msgstr ""
 "Je wachtwoord moet minstens %(staff)d tekens bevatten voor medewerkers en "
 "%(customers)d voor klanten."
 
-#: apps/accounts/permissions.py:12 apps/customers/overview.py:159
+#: apps/accounts/permissions.py:16 apps/customers/overview.py:159
 #: apps/invoices/admin.py:92 templates/invoices/my_invoices.html:14
 #: templates/telephony/my_quotes.html:7
 msgid "View"
 msgstr "Bekijken"
 
-#: apps/accounts/permissions.py:13
+#: apps/accounts/permissions.py:17
 msgid "Add"
 msgstr "Toevoegen"
 
-#: apps/accounts/permissions.py:14
+#: apps/accounts/permissions.py:18
 #: templates/admin/customers/customer/change_type.html:17
 #: templates/orders/review.html:29 templates/parts/review.html:19
 msgid "Change"
 msgstr "Wijzigen"
 
-#: apps/accounts/permissions.py:15
+#: apps/accounts/permissions.py:19
 msgid "Delete"
 msgstr "Verwijderen"
 
@@ -358,6 +364,23 @@ msgstr "Onderdeel"
 #: apps/accounts/templates/accounts/permission_matrix.html:8
 msgid "Other"
 msgstr "Overig"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:11
+msgid "Everything on or off"
+msgstr "Alles aan of uit"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:14
+#, python-format
+msgid "%(label)s: everything on or off"
+msgstr "%(label)s: alles aan of uit"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:17
+msgid "Other: everything on or off"
+msgstr "Overig: alles aan of uit"
+
+#: apps/accounts/templates/accounts/permission_matrix.html:24
+msgid "This part: everything on or off"
+msgstr "Dit onderdeel: alles aan of uit"
 
 #: apps/core/middleware.py:76 apps/core/middleware.py:149
 #: apps/core/setup_views.py:43
@@ -5553,7 +5576,9 @@ msgstr "maximaal aantal superadmins"
 msgid ""
 "Superadmins always have every right. Only superadmins see and change this "
 "setting."
-msgstr "Superadmins hebben altijd alle rechten. Alleen superadmins zien en wijzigen deze instelling."
+msgstr ""
+"Superadmins hebben altijd alle rechten. Alleen superadmins zien en wijzigen "
+"deze instelling."
 
 #: apps/siteconfig/models.py:81
 msgid "empty the trash after (days)"

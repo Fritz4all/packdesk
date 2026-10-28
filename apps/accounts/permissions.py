@@ -5,8 +5,12 @@ from django.contrib.auth.models import Permission
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
-# Apps whose functions can be granted to roles. New modules add their app label here.
-MANAGED_APPS = ["siteconfig", "numbering", "customers", "licences", "orders", "invoices", "faults", "dashboard", "legacy", "trash", "accounts"]
+
+def managed_apps():
+    """Apps whose functions can be granted to roles: every PackDesk module (apps.*), so a new module or function
+    appears in the role editor by itself once its migration has run."""
+    return [config.label for config in apps.get_app_configs() if config.name.startswith("apps.")]
+
 
 ACTIONS = [
     ("view", _("View")),
@@ -17,7 +21,8 @@ ACTIONS = [
 
 
 # Technical models whose standard permissions make no sense in a role (their special rights still show).
-HIDDEN_MODELS = {("dashboard", "dashboardlayout"), ("accounts", "customeruser")}  # customer users: rights of users
+HIDDEN_MODELS = {("dashboard", "dashboardlayout"), ("accounts", "customeruser"),  # customer users: rights of users
+                 ("accounts", "roleinfo")}  # role names: part of the role
 
 
 def managed_permissions():
@@ -26,7 +31,7 @@ def managed_permissions():
         hidden |= Q(content_type__app_label=app_label, content_type__model=model,
                     codename__in=[f"{a}_{model}" for a in ("view", "add", "change", "delete")])
     return (
-        Permission.objects.filter(content_type__app_label__in=MANAGED_APPS).exclude(hidden)
+        Permission.objects.filter(content_type__app_label__in=managed_apps()).exclude(hidden)
         .select_related("content_type")
         .order_by("content_type__app_label", "content_type__model", "codename")
     )
