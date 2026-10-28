@@ -121,6 +121,7 @@ RoleForm.base_fields = RoleForm.declared_fields = {
 class RoleAdmin(ModelAdmin):
     form = RoleForm
     list_display = ["show_name", "show_users", "show_permissions"]
+    ordering = ["name"]  # by internal name: Administrator, Employee, Finance, Service, Superadmin in every language
     search_fields = ["name", *[f"info__title_{lang}" for lang, _name in settings.LANGUAGES]]
 
     def get_queryset(self, request):

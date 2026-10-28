@@ -234,3 +234,9 @@ def test_role_editor_has_every_module_and_toggles(client, site):
         assert f'value="{perm(code).pk}"' in page, code  # modules are offered without being listed anywhere
     assert f'value="{perm("accounts.view_roleinfo").pk}"' not in page  # role names belong to the role itself
     assert 'class="pm-toggle" data-col="view"' in page and 'class="pm-toggle" data-app=' in page
+
+
+def test_role_list_has_a_fixed_order(client, site):
+    client.force_login(make_user("root@example.test", superuser=True))
+    names = [role.name for role in client.get(ROLES).context["cl"].result_list]
+    assert names == ["Administrator", "Employee", "Finance", "Service", "Superadmin"]
