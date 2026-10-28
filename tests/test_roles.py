@@ -309,3 +309,33 @@ def test_rights_structure_is_complete(db):
         label, name = model._meta.app_label, model._meta.model_name
         assert reverse(f"admin:{label}_{name}_changelist") in reachable, model._meta.label
         assert (label, name) in HIDDEN_MODELS or f"{label}.view_{name}" in managed, model._meta.label
+
+
+def test_standard_role_gets_its_missing_standard_rights_back(client, site):
+    from apps.accounts.roles import ROLES as DEFAULTS
+
+    finance = Role.objects.get(name="Finance")
+    finance.permissions.remove(perm("orders.view_order"))
+    extra = perm("hardware.view_device")
+    finance.permissions.add(extra)  # an own addition is kept
+    root = make_user("root@example.test", superuser=True)
+    client.force_login(root)
+    page = client.get(f"{ROLES}{finance.pk}/change/").content.decode()
+    assert "/action/defaults/" in page
+    client.post(f"{ROLES}{finance.pk}/action/defaults/")
+    have = {f"{p.content_type.app_label}.{p.codename}" for p in finance.permissions.select_related("content_type")}
+    assert set(DEFAULTS["Finance"]) <= have and "hardware.view_device" in have
+    assert "/action/defaults/" not in client.get(f"{ROLES}{finance.pk}/change/").content.decode()  # nothing missing
+    own = Role.objects.create(name="Eigen")
+    assert "/action/defaults/" not in client.get(f"{ROLES}{own.pk}/change/").content.decode()  # not a standard role
+
+
+def test_standard_rights_button_only_gives_rights_you_have(client, site):
+    finance = Role.objects.get(name="Finance")
+    finance.permissions.remove(perm("orders.view_order"), perm("dashboard.view_reports"))
+    limited = Role.objects.create(name="Rollenbeheer")
+    limited.permissions.set([perm("accounts.view_role"), perm("accounts.change_role"), perm("orders.view_order")])
+    client.force_login(make_user("rollen@example.test", staff=True, role="Rollenbeheer"))
+    client.post(f"{ROLES}{finance.pk}/action/defaults/")
+    codes = set(finance.permissions.values_list("codename", flat=True))
+    assert "view_order" in codes and "view_reports" not in codes

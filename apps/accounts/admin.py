@@ -19,6 +19,7 @@ from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationFo
 from unfold.widgets import UnfoldAdminSelectWidget, UnfoldAdminTextInputWidget
 
 from apps.core.column_filters import ValueListFilter
+from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 
 from .models import SUPERADMIN, CustomerUser, Role, RoleInfo, User, role_title
 from .password_reset import force_reset
@@ -118,8 +119,14 @@ RoleForm.base_fields = RoleForm.declared_fields = {
 
 
 @admin.register(Role)
-class RoleAdmin(ModelAdmin):
+class RoleAdmin(ObjectActionsMixin, ModelAdmin):
     form = RoleForm
+    object_actions = [
+        ObjectAction("defaults", _("Add missing standard rights"), "playlist_add", handler="add_default_rights",
+                     show_if="misses_default_rights",
+                     confirm=_("The standard rights of this role that it does not have yet are added. Rights it has "
+                               "now are kept. Continue?")),
+    ]
     list_display = ["show_name", "show_users", "show_permissions"]
     ordering = ["name"]  # by internal name: Administrator, Employee, Finance, Service, Superadmin in every language
     search_fields = ["name", *[f"info__title_{lang}" for lang, _name in settings.LANGUAGES]]
@@ -128,7 +135,8 @@ class RoleAdmin(ModelAdmin):
         return super().get_queryset(request).select_related("info").annotate(n_users=Count("user", distinct=True), n_perms=Count("permissions", distinct=True))
 
     def get_fields(self, request, obj=None):
-        fields = super().get_fields(request, obj)
+        titles = [f"title_{lang}" for lang, _name in settings.LANGUAGES]
+        fields = titles + [f for f in super().get_fields(request, obj) if f not in titles]  # names above the rights
         if obj is not None and obj.is_superadmin:  # every right, always: nothing to tick
             fields = [f for f in fields if f != "permissions"]
         return fields
@@ -165,6 +173,36 @@ class RoleAdmin(ModelAdmin):
     @display(description=_("Permissions"))
     def show_permissions(self, obj):
         return gettext("All") if obj.is_superadmin else obj.n_perms
+
+    @staticmethod
+    def _missing_default_rights(role):
+        """Rights a standard role (roles.py) is meant to have but does not have (anymore)."""
+        from django.contrib.auth.models import Permission
+
+        from .roles import ROLES
+
+        codes = ROLES.get(role.name, [])
+        if not codes:
+            return Permission.objects.none()
+        query = Q(pk__in=[])
+        for code in codes:
+            app_label, codename = code.split(".")
+            query |= Q(content_type__app_label=app_label, codename=codename)
+        return Permission.objects.filter(query).exclude(pk__in=role.permissions.values("pk"))
+
+    def misses_default_rights(self, role):
+        return self._missing_default_rights(role).exists()
+
+    def add_default_rights(self, request, role):
+        missing = list(self._missing_default_rights(role))
+        grantable = set(grantable_permissions(request.user).values_list("pk", flat=True))
+        allowed = [perm for perm in missing if perm.pk in grantable]  # only rights you have yourself
+        role.permissions.add(*allowed)
+        messages.success(request, gettext("%(n)s standard right(s) added to %(role)s.") % {"n": len(allowed), "role": role})
+        skipped = len(missing) - len(allowed)
+        if skipped:
+            messages.warning(request, gettext("%(n)s standard right(s) were not added because you do not have them "
+                                              "yourself.") % {"n": skipped})
 
     def has_change_permission(self, request, obj=None):
         if obj is not None and obj.is_superadmin and not request.user.is_superuser:
