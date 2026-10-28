@@ -88,7 +88,7 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
             ("number", "status"), "name", "customer_type", ("phone", "email"), "website", ("vat_number", "coc_number"), "logo",
         ]}),
         (_("Email addresses"), {"classes": ["tab"], "fields": ["email_orders", "email_parts", "email_invoices"]}),
-        (_("Prices and invoices"), {"classes": ["tab"], "fields": [("margin_packs", "margin_parts"), "no_pack_invoice"]}),
+        (_("Prices and invoices"), {"classes": ["tab"], "fields": [("margin_packs", "margin_parts", "margin_hardware"), "no_pack_invoice"]}),
         (_("Notes"), {"classes": ["tab"], "fields": [
             "remark", "signup_message", ("approved_at", "approved_by"), ("created_at", "updated_at"),
         ]}),
@@ -104,7 +104,8 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
 
     def get_changeform_initial_data(self, request):
         signup = SignupSettings.load()
-        return {"margin_packs": signup.default_margin_packs, "margin_parts": signup.default_margin_parts}
+        return {"margin_packs": signup.default_margin_packs, "margin_parts": signup.default_margin_parts,
+                "margin_hardware": signup.default_margin_hardware}
 
     @display(description=_("Number"), ordering="number")
     def show_number(self, obj):
@@ -244,6 +245,7 @@ class CustomerAdmin(ObjectActionsMixin, ModelAdmin):
                 (gettext("email for invoices"), customer.email_invoices),
                 (gettext("margin service packs (%)"), customer.margin_packs),
                 (gettext("margin spare parts (%)"), customer.margin_parts),
+                (gettext("margin hardware (%)"), customer.margin_hardware),
             ],
             "sections": overview.sections(request, customer),
         }
@@ -341,7 +343,7 @@ class CountryAdmin(ModelAdmin, TabbedTranslationAdmin):
 @admin.register(SignupSettings)
 class SignupSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
     fieldsets = [
-        (_("New customers"), {"classes": ["tab"], "fields": [("default_margin_packs", "default_margin_parts")]}),
+        (_("New customers"), {"classes": ["tab"], "fields": [("default_margin_packs", "default_margin_parts", "default_margin_hardware")]}),
         (_("Sign-up form"), {"classes": ["tab"], "fields": [
             "enabled", "menu_label", "title", "intro", "thanks", "customer_type", "require_approval", "notify_email",
         ]}),

@@ -111,6 +111,7 @@ class SignupForm(forms.Form):
             website=data.get("website", ""),
             margin_packs=settings.default_margin_packs,
             margin_parts=settings.default_margin_parts,
+            margin_hardware=settings.default_margin_hardware,
             signup_message=data.get("message", ""),
         )
         CustomerAddress.objects.create(

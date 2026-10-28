@@ -74,6 +74,7 @@ class Customer(models.Model):
 
     margin_packs = models.DecimalField(_("margin service packs (%)"), max_digits=5, decimal_places=2, default=Decimal("0"))
     margin_parts = models.DecimalField(_("margin spare parts (%)"), max_digits=5, decimal_places=2, default=Decimal("0"))
+    margin_hardware = models.DecimalField(_("margin hardware (%)"), max_digits=5, decimal_places=2, default=Decimal("0"))
     no_pack_invoice = models.BooleanField(
         _("no invoice for service packs"), default=False, help_text=_("Service pack orders of this customer are not invoiced."),
     )
@@ -242,6 +243,8 @@ class SignupSettings(models.Model):
     # Defaults for new customers
     default_margin_packs = models.DecimalField(_("default margin service packs (%)"), max_digits=5, decimal_places=2, default=Decimal("0"))
     default_margin_parts = models.DecimalField(_("default margin spare parts (%)"), max_digits=5, decimal_places=2, default=Decimal("15"))
+    default_margin_hardware = models.DecimalField(_("default margin hardware (%)"), max_digits=5, decimal_places=2,
+                                                  default=Decimal("0"))
 
     # Sign-up form
     enabled = models.BooleanField(_("sign-up form active"), default=True)

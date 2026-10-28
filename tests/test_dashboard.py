@@ -127,7 +127,7 @@ def test_standard_menu_has_the_shop_and_the_archive_as_groups(rf, site, beheerde
     request.user = beheerder
     sections = {s["key"]: s for s in sidebar(request)}
     assert list(sections) == ["overview", "webshop", "faults", "configuration", "archive"]
-    assert [i["group"] for i in sections["webshop"]["items"]] == ["parts", "licences", "orders", "customers"]
+    assert [i["group"] for i in sections["webshop"]["items"]] == ["parts", "hardware", "licences", "orders", "customers"]
     assert [i.get("group") for i in sections["configuration"]["items"]][:2] == ["users", "databases"]
 
 

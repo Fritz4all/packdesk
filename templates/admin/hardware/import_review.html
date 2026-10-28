@@ -1,0 +1,44 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h1 class="font-semibold text-lg mb-2 text-font-important-light dark:text-font-important-dark">{% translate "Check the import" %}</h1>
+<p class="mb-1 text-sm">
+    <span class="pd-badge pd-badge-success">{% blocktranslate count n=counts.new %}{{ n }} new{% plural %}{{ n }} new{% endblocktranslate %}</span>
+    <span class="pd-badge pd-badge-info">{% blocktranslate count n=counts.update %}{{ n }} changed{% plural %}{{ n }} changed{% endblocktranslate %}</span>
+    <span class="pd-badge">{% blocktranslate count n=counts.same %}{{ n }} unchanged{% plural %}{{ n }} unchanged{% endblocktranslate %}</span>
+    <span class="pd-badge pd-badge-danger">{% blocktranslate count n=counts.error %}{{ n }} with errors{% plural %}{{ n }} with errors{% endblocktranslate %}</span>
+</p>
+<p class="mb-4 text-sm text-base-500">{% translate "Nothing has been changed yet. Rows with errors are skipped; fix them in the file and import it again." %}
+    {% if not update_existing %}{% translate "Existing devices are left alone (you chose not to update them)." %}{% endif %}</p>
+
+<div class="overflow-x-auto pd-widget">
+<table class="pd-table text-sm w-full">
+    <thead><tr><th>{% translate "Row" %}</th><th>{% translate "Serial number" %}</th><th>{% translate "Model" %}</th><th>{% translate "What happens" %}</th><th>{% translate "Details" %}</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row.line }}</td>
+            <td>{% if row.device %}<a class="underline" target="_blank" rel="noopener" href="{% url 'admin:hardware_device_change' row.device.pk %}">{{ row.serial_nr }}</a>{% else %}{{ row.serial_nr }}{% endif %}</td>
+            <td>{{ row.model|default:"–" }}</td>
+            <td>
+                {% if row.action == "new" %}<span class="pd-badge pd-badge-success">{% translate "New" %}</span>
+                {% elif row.action == "update" %}<span class="pd-badge pd-badge-info">{% if update_existing %}{% translate "Changed" %}{% else %}{% translate "Skipped" %}{% endif %}</span>
+                {% elif row.action == "same" %}<span class="pd-badge">{% translate "Unchanged" %}</span>
+                {% else %}<span class="pd-badge pd-badge-danger">{% translate "Error" %}</span>{% endif %}
+            </td>
+            <td>
+                {% for error in row.errors %}<div class="text-red-600">{{ error }}</div>{% endfor %}
+                {% if row.action == "update" %}{% for field, old, new in row.changes %}<div>{{ field }}: <span class="pd-dim">{{ old }}</span> → <strong>{{ new }}</strong></div>{% endfor %}{% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+<form method="post" class="flex gap-2 mt-4 sticky bottom-0 py-3 bg-white dark:bg-base-900">
+    {% csrf_token %}
+    <input type="hidden" name="token" value="{{ token }}">
+    <button name="step" value="run" class="pd-btn pd-btn-primary"{% if not counts.new and not counts.update %} disabled{% endif %}><span class="material-symbols-outlined">upload</span>{% translate "Import" %}</button>
+    <button name="step" value="cancel" class="pd-btn">{% translate "Cancel" %}</button>
+</form>
+{% endblock %}

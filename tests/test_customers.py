@@ -163,7 +163,7 @@ def test_invite_creates_login_and_sends_link(client, site, beheerder):
 
 def test_saving_active_customer_assigns_number(client, site, beheerder):
     client.force_login(beheerder)
-    data = {"name": "Handmatig BV", "status": "active", "margin_packs": "0", "margin_parts": "15"}
+    data = {"name": "Handmatig BV", "status": "active", "margin_packs": "0", "margin_parts": "15", "margin_hardware": "0"}
     for prefix in ("addresses", "contacts"):
         data.update({f"{prefix}-TOTAL_FORMS": "0", f"{prefix}-INITIAL_FORMS": "0",
                      f"{prefix}-MIN_NUM_FORMS": "0", f"{prefix}-MAX_NUM_FORMS": "1000"})
@@ -239,7 +239,7 @@ def test_customer_opens_as_overview_with_edit_button(client, site, beheerder):
     assert "?edit=1" in page.content.decode() and 'name="_save"' not in page.content.decode()
     assert 'name="_save"' in client.get(f"{url}?edit=1").content.decode()
 
-    data = {"number": "77", "status": "active", "name": "Overzicht BV", "margin_packs": "0", "margin_parts": "0",
+    data = {"number": "77", "status": "active", "name": "Overzicht BV", "margin_packs": "0", "margin_parts": "0", "margin_hardware": "0",
             "_continue": "1"}
     for prefix in ("addresses", "contacts"):
         data.update({f"{prefix}-TOTAL_FORMS": "0", f"{prefix}-INITIAL_FORMS": "0", f"{prefix}-MIN_NUM_FORMS": "0",

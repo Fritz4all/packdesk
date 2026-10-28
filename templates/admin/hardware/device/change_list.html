@@ -1,0 +1,6 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+{% block search_extra %}
+    {% if can_import %}<a href="{% url 'admin:hardware_device_import' %}" class="pd-btn"><span class="material-symbols-outlined">upload</span>{% translate "Import" %}</a>{% endif %}
+    <a href="{% url 'admin:hardware_device_export' %}?{{ request.GET.urlencode }}" class="pd-btn" title="{% translate 'The devices in the list as filtered now' %}"><span class="material-symbols-outlined">download</span>{% translate "Export" %}</a>
+{% endblock %}

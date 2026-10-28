@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div class="max-w-2xl">
+    <h1 class="font-semibold text-lg mb-2 text-font-important-light dark:text-font-important-dark">{% translate "Import devices" %}</h1>
+    <p class="mb-2 text-sm">{% translate "Choose an Excel (.xlsx) or CSV file with one device per row. Nothing is changed yet: you first see per row what will happen. Devices are recognised by their serial number." %}</p>
+    <p class="mb-4 text-sm">{% translate "Example file with all columns and an explanation:" %}
+        <a class="underline" href="{% url 'admin:hardware_device_example' %}">Excel</a> ·
+        <a class="underline" href="{% url 'admin:hardware_device_example' %}?format=csv">CSV</a></p>
+    <form method="post" enctype="multipart/form-data" class="pd-widget">
+        {% csrf_token %}
+        <input type="hidden" name="step" value="upload">
+        <p class="block font-medium mb-2">{{ form.file.label }}</p>
+        <label class="pd-dropzone" for="{{ form.file.id_for_label }}" data-dropzone>
+            <span class="material-symbols-outlined pd-dropzone-icon">upload_file</span>
+            <span><span class="pd-dropzone-button">{% translate "Choose file" %}</span> {% translate "or drag it here" %}</span>
+            <span class="pd-dropzone-name" data-dropzone-name>{% translate "No file chosen yet" %}</span>
+            <input type="file" name="{{ form.file.html_name }}" id="{{ form.file.id_for_label }}" accept=".xlsx,.csv" required class="pd-dropzone-input">
+        </label>
+        {% for error in form.file.errors %}<p class="mt-2 text-sm text-red-600">{{ error }}</p>{% endfor %}
+        <label class="mt-4 flex gap-2 items-center text-sm"><input type="checkbox" name="{{ form.update_existing.html_name }}"{% if form.update_existing.value %} checked{% endif %}> {{ form.update_existing.label }}</label>
+        <div class="mt-4 flex gap-2">
+            <button class="pd-btn pd-btn-primary"><span class="material-symbols-outlined">fact_check</span>{% translate "Check file" %}</button>
+            <a class="pd-btn" href="{% url 'admin:hardware_device_changelist' %}">{% translate "Back" %}</a>
+        </div>
+    </form>
+</div>
+<script>
+  // Shows the chosen file and accepts a file dropped on the area.
+  document.querySelectorAll("[data-dropzone]").forEach(function (zone) {
+    var input = zone.querySelector("input[type=file]");
+    var name = zone.querySelector("[data-dropzone-name]");
+    function show() {
+      var file = input.files[0];
+      if (!file) return;
+      var size = file.size > 1048576 ? (file.size / 1048576).toFixed(1) + " MB" : Math.ceil(file.size / 1024) + " kB";
+      name.textContent = file.name + " (" + size + ")";
+      zone.classList.add("has-file");
+    }
+    input.addEventListener("change", show);
+    ["dragenter", "dragover"].forEach(function (type) {
+      zone.addEventListener(type, function (event) { event.preventDefault(); zone.classList.add("is-dragging"); });
+    });
+    ["dragleave", "drop"].forEach(function (type) {
+      zone.addEventListener(type, function () { zone.classList.remove("is-dragging"); });
+    });
+    zone.addEventListener("drop", function (event) {
+      event.preventDefault();
+      if (event.dataTransfer.files.length) { input.files = event.dataTransfer.files; show(); }
+    });
+  });
+</script>
+{% endblock %}

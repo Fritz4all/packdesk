@@ -225,6 +225,49 @@ SECTIONS = [
         ],
     },
     {
+        "key": "hardware",
+        "collapsible": True,
+        "title": _("Hardware"),
+        "items": [
+            {
+                "title": _("Devices"),
+                "icon": "computer",
+                "link": reverse_lazy("admin:hardware_device_changelist"),
+                "permission": lambda request: request.user.has_perm("hardware.view_device"),
+            },
+            {
+                "title": _("Device types"),
+                "icon": "category",
+                "link": reverse_lazy("admin:hardware_devicetype_changelist"),
+                "permission": lambda request: request.user.has_perm("hardware.view_devicetype"),
+            },
+            {
+                "title": _("Specifications"),
+                "icon": "tune",
+                "link": reverse_lazy("admin:hardware_specification_changelist"),
+                "permission": lambda request: request.user.has_perm("hardware.view_specification"),
+            },
+            {
+                "title": _("Conditions"),
+                "icon": "grade",
+                "link": reverse_lazy("admin:hardware_condition_changelist"),
+                "permission": lambda request: request.user.has_perm("hardware.view_condition"),
+            },
+            {
+                "title": _("Delivery options"),
+                "icon": "local_shipping",
+                "link": reverse_lazy("admin:hardware_deliveryoption_changelist"),
+                "permission": lambda request: request.user.has_perm("hardware.view_deliveryoption"),
+            },
+            {
+                "title": _("Hardware settings"),
+                "icon": "settings",
+                "link": reverse_lazy("admin:hardware_hardwaresettings_changelist"),
+                "permission": lambda request: request.user.has_perm("hardware.view_hardwaresettings"),
+            },
+        ],
+    },
+    {
         "key": "licences",
         "collapsible": True,
         "title": _("Service packs and licences"),
@@ -416,7 +459,7 @@ SECTIONS = [
 # the order in SECTIONS. Configuration → Menu → Standard goes back to this.
 DEFAULT_LAYOUT = [
     ("overview", []),
-    ("webshop", ["parts", "licences", "orders", "customers"]),
+    ("webshop", ["parts", "hardware", "licences", "orders", "customers"]),
     ("faults", []),
     ("configuration", ["users", "databases"]),
     ("archive", ["printing", "telephony"]),
