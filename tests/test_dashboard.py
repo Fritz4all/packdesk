@@ -1,6 +1,8 @@
 import json
 from decimal import Decimal
 
+from django.urls import reverse
+
 from apps.customers.models import Customer
 from apps.dashboard.models import DashboardLayout
 from apps.dashboard.search import search_everything
@@ -156,7 +158,7 @@ def test_menu_page_moves_renames_and_adds_main_menus(client, site, beheerder, rf
     layout = {
         "sections": [
             {"key": "configuration", "title": {"nl": "Beheer"},
-             "items": ["/admin/invoices/invoicesettings/", "/admin/siteconfig/sitesettings/"]},
+             "items": ["/admin/orders/ordersettings/", "/admin/siteconfig/sitesettings/"]},
             {"key": "custom-finance", "title": {"nl": "Financieel"}, "items": ["/admin/invoices/invoice/"]},
             {"key": "bogus", "items": ["/admin/customers/customer/"]},  # unknown main menus are dropped
             {"key": "orders", "title": {"nl": "Bestellingen en facturen"}, "items": ["/nope/"]},  # = standard name
@@ -176,10 +178,10 @@ def test_menu_page_moves_renames_and_adds_main_menus(client, site, beheerder, rf
         assert keys[:2] == ["configuration", "custom-finance"]
         assert str(menu["configuration"]["title"]) == "Beheer"
         links = [str(i["link"]) for i in menu["configuration"]["items"]]
-        assert links[:2] == ["/admin/invoices/invoicesettings/", "/admin/siteconfig/sitesettings/"]
+        assert links[:2] == ["/admin/orders/ordersettings/", "/admin/siteconfig/sitesettings/"]  # settings group
         assert "/admin/numbering/numbersequence/" in links  # not placed: stays in its standard main menu
         assert [str(i["title"]) for i in menu["custom-finance"]["items"]] == ["Alle facturen"]
-        assert "/admin/invoices/invoicesettings/" not in [str(i["link"]) for i in menu["orders"]["items"]]
+        assert "/admin/orders/ordersettings/" not in [str(i["link"]) for i in menu["orders"]["items"]]
     with translation.override("de"):
         assert str(menu["configuration"]["title"]) == "Konfiguration"  # no name of its own in German
 
@@ -233,3 +235,23 @@ def test_single_tiles_can_be_hidden(client, site, beheerder):
     page = client.get("/admin/").content.decode()
     assert 'data-item="stats:active_customers"' in page  # offered again in the hidden panel
     assert 'pd-stat-wrap" data-item="stats:active_customers"' not in page
+
+
+def test_settings_are_tabs_under_one_menu_item(client, rf, site, beheerder):
+    from apps.dashboard.navigation import SETTINGS_TABS, flat_items, sidebar
+
+    request = rf.get("/")
+    request.user = make_user("root@example.test", superuser=True)
+    links = [str(i["link"]) for s in sidebar(request) for i in flat_items(s)]
+    for removed in ("/admin/parts/markuptier/", "/admin/licences/vendor/", "/admin/customers/country/",
+                    "/admin/orders/paymentmethod/", "/admin/invoices/invoicesettings/"):
+        assert removed not in links, removed  # now a tab, not a menu item
+    for kept in ("/admin/parts/partrequest/", "/admin/parts/partorder/", "/admin/licences/licence/",
+                 "/admin/licences/supportpack/", "/admin/customers/customer/", "/admin/orders/order/",
+                 "/admin/invoices/invoice/"):
+        assert kept in links, kept
+    client.force_login(request.user)
+    for key, (_title, tabs) in SETTINGS_TABS.items():
+        page = client.get(reverse(tabs[-1][1]), follow=True).content.decode()
+        for _t, url, _p, _m, _f in tabs:
+            assert f'href="{reverse(url)}"' in page, (key, url)

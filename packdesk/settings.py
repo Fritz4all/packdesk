@@ -7,10 +7,10 @@ from pathlib import Path
 import environ
 from django.core.exceptions import ImproperlyConfigured
 from django.templatetags.static import static
-from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from apps.core import server_config
+from apps.dashboard.navigation import unfold_tabs
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -256,25 +256,8 @@ UNFOLD = {
     "SCRIPTS": [lambda request: _versioned("admin/packdesk-admin.js")],
     "COMMAND": {"search_callback": "apps.dashboard.search.search_everything", "show_history": True},
     "DASHBOARD_CALLBACK": "apps.dashboard.views.dashboard_callback",
-    # Hardware → Device settings: the lists and settings around the devices as tabs on one page.
-    "TABS": [
-        {
-            "models": ["hardware.devicetype", "hardware.specification", "hardware.condition", "hardware.deliveryoption",
-                       {"name": "hardware.hardwaresettings", "detail": True}],
-            "items": [
-                {"title": _("Device types"), "link": reverse_lazy("admin:hardware_devicetype_changelist"),
-                 "permission": lambda request: request.user.has_perm("hardware.view_devicetype")},
-                {"title": _("Specifications"), "link": reverse_lazy("admin:hardware_specification_changelist"),
-                 "permission": lambda request: request.user.has_perm("hardware.view_specification")},
-                {"title": _("Conditions"), "link": reverse_lazy("admin:hardware_condition_changelist"),
-                 "permission": lambda request: request.user.has_perm("hardware.view_condition")},
-                {"title": _("Delivery options"), "link": reverse_lazy("admin:hardware_deliveryoption_changelist"),
-                 "permission": lambda request: request.user.has_perm("hardware.view_deliveryoption")},
-                {"title": _("Hardware settings"), "link": reverse_lazy("admin:hardware_hardwaresettings_changelist"),
-                 "permission": lambda request: request.user.has_perm("hardware.view_hardwaresettings")},
-            ],
-        },
-    ],
+    # Settings that belong together as tabs under one menu item (apps.dashboard.navigation.SETTINGS_TABS).
+    "TABS": unfold_tabs(),
     "SIDEBAR": {
         "show_search": True,
         "show_all_applications": False,

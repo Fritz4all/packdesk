@@ -10,8 +10,95 @@ from django.utils.functional import lazy
 from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 
-# The models on the tabs of Hardware → Device settings.
-HARDWARE_SETTINGS = ["devicetype", "specification", "condition", "deliveryoption", "hardwaresettings"]
+# Settings pages shown as tabs under one menu item per main menu, instead of one menu item each:
+# key → (menu title, [(tab title, URL name, permission, model, model opens as a form)]). The last is true for
+# settings with one row (their list jumps to the form), so the tabs also show on that form.
+SETTINGS_TABS = {
+    "hardware": (_("Device settings"), [
+        (_("Device types"), "admin:hardware_devicetype_changelist", "hardware.view_devicetype", "hardware.devicetype", False),
+        (_("Specifications"), "admin:hardware_specification_changelist", "hardware.view_specification",
+         "hardware.specification", False),
+        (_("Conditions"), "admin:hardware_condition_changelist", "hardware.view_condition", "hardware.condition", False),
+        (_("Delivery options"), "admin:hardware_deliveryoption_changelist", "hardware.view_deliveryoption",
+         "hardware.deliveryoption", False),
+        (_("Hardware settings"), "admin:hardware_hardwaresettings_changelist", "hardware.view_hardwaresettings",
+         "hardware.hardwaresettings", True),
+    ]),
+    "parts": (_("Spare parts settings"), [
+        (_("Settings"), "admin:parts_partssettings_changelist", "parts.view_partssettings", "parts.partssettings", True),
+        (_("Delivery times"), "admin:parts_deliverytime_changelist", "parts.view_deliverytime", "parts.deliverytime", False),
+        (_("Markup tiers"), "admin:parts_markuptier_changelist", "parts.view_markuptier", "parts.markuptier", False),
+    ]),
+    "licences": (_("Service pack and licence settings"), [
+        (_("Licence settings"), "admin:licences_licencesettings_changelist", "licences.view_licencesettings",
+         "licences.licencesettings", True),
+        (_("Pack categories"), "admin:licences_category_changelist", "licences.view_category", "licences.category", False),
+        (_("Hardware classes"), "admin:licences_hardwareclass_changelist", "licences.view_hardwareclass",
+         "licences.hardwareclass", False),
+        (_("Brands"), "admin:licences_vendor_changelist", "licences.view_vendor", "licences.vendor", False),
+        (_("Device types"), "admin:licences_hardwaresystem_changelist", "licences.view_hardwaresystem",
+         "licences.hardwaresystem", False),
+        (_("Option types"), "admin:licences_optiontype_changelist", "licences.view_optiontype", "licences.optiontype", False),
+        (_("Support periods"), "admin:licences_supportperiod_changelist", "licences.view_supportperiod",
+         "licences.supportperiod", False),
+        (_("Service levels"), "admin:licences_supportservice_changelist", "licences.view_supportservice",
+         "licences.supportservice", False),
+    ]),
+    "customers": (_("Customer settings"), [
+        (_("Customer settings"), "admin:customers_signupsettings_changelist", "customers.view_signupsettings",
+         "customers.signupsettings", True),
+        (_("Customer types"), "admin:customers_customertype_changelist", "customers.view_customertype",
+         "customers.customertype", False),
+        (_("Countries"), "admin:customers_country_changelist", "customers.view_country", "customers.country", False),
+    ]),
+    "orders": (_("Order and invoice settings"), [
+        (_("Order settings"), "admin:orders_ordersettings_changelist", "orders.view_ordersettings", "orders.ordersettings",
+         True),
+        (_("Payment methods"), "admin:orders_paymentmethod_changelist", "orders.view_paymentmethod",
+         "orders.paymentmethod", False),
+        (_("Invoice settings"), "admin:invoices_invoicesettings_changelist", "invoices.view_invoicesettings",
+         "invoices.invoicesettings", True),
+        (_("Invoice design"), "admin:invoices_invoicesettings_design", "invoices.view_invoicesettings", None, False),
+    ]),
+}
+
+
+def _tab_paths(key):
+    return [str(reverse_lazy(url)) for _title, url, _perm, _model, _form in SETTINGS_TABS[key][1]]
+
+
+def _on_tab(request, key, path):
+    """Whether the page is this tab's: its address, and not the (longer) address of another tab in it."""
+    return request.path.startswith(path) and not any(
+        other != path and other.startswith(path) and request.path.startswith(other) for other in _tab_paths(key))
+
+
+def settings_item(key):
+    """The menu item of a group of settings tabs: opens the first tab, lights up on every tab."""
+    title, tabs = SETTINGS_TABS[key]
+    return {
+        "title": title,
+        "icon": "settings",
+        "settings": key,
+        "link": reverse_lazy(tabs[0][1]),
+        "active": lambda request: any(request.path.startswith(path) for path in _tab_paths(key)),
+        "permission": lambda request: any(request.user.has_perm(perm) for _t, _u, perm, _m, _f in tabs),
+    }
+
+
+def unfold_tabs():
+    """UNFOLD["TABS"]: the tab bar on each page of a settings group."""
+    result = []
+    for key, (_title, tabs) in SETTINGS_TABS.items():
+        models = [{"name": model, "detail": True} if form else model for _t, _u, _p, model, form in tabs if model]
+        result.append({"models": models, "items": [
+            {"title": title, "link": reverse_lazy(url),
+             "active": lambda request, key=key, url=url: _on_tab(request, key, str(reverse_lazy(url))),
+             "permission": lambda request, perm=perm: request.user.has_perm(perm)}
+            for title, url, perm, _model, _form in tabs
+        ]})
+    return result
+
 
 SECTIONS = [
     {
@@ -122,29 +209,12 @@ SECTIONS = [
                 "permission": lambda request: request.user.has_perm("customers.view_contact"),
             },
             {
-                "title": _("Customer types"),
-                "icon": "category",
-                "link": reverse_lazy("admin:customers_customertype_changelist"),
-                "permission": lambda request: request.user.has_perm("customers.view_customertype"),
-            },
-            {
-                "title": _("Countries"),
-                "icon": "public",
-                "link": reverse_lazy("admin:customers_country_changelist"),
-                "permission": lambda request: request.user.has_perm("customers.view_country"),
-            },
-            {
-                "title": _("Customer settings"),
-                "icon": "how_to_reg",
-                "link": reverse_lazy("admin:customers_signupsettings_changelist"),
-                "permission": lambda request: request.user.has_perm("customers.view_signupsettings"),
-            },
-            {
                 "title": _("Users"),
                 "icon": "person",
                 "link": reverse_lazy("admin:accounts_customeruser_changelist"),
                 "permission": lambda request: request.user.has_perm("accounts.view_user"),
             },
+            settings_item("customers"),
         ],
     },
     {
@@ -164,30 +234,7 @@ SECTIONS = [
                 "link": reverse_lazy("admin:invoices_invoice_changelist"),
                 "permission": lambda request: request.user.has_perm("invoices.view_invoice"),
             },
-            {
-                "title": _("Invoice settings"),
-                "icon": "description",
-                "link": reverse_lazy("admin:invoices_invoicesettings_changelist"),
-                "permission": lambda request: request.user.has_perm("invoices.view_invoicesettings"),
-            },
-            {
-                "title": _("Invoice design"),
-                "icon": "design_services",
-                "link": reverse_lazy("admin:invoices_invoicesettings_design"),
-                "permission": lambda request: request.user.has_perm("invoices.view_invoicesettings"),
-            },
-            {
-                "title": _("Payment methods"),
-                "icon": "payments",
-                "link": reverse_lazy("admin:orders_paymentmethod_changelist"),
-                "permission": lambda request: request.user.has_perm("orders.view_paymentmethod"),
-            },
-            {
-                "title": _("Order settings"),
-                "icon": "tune",
-                "link": reverse_lazy("admin:orders_ordersettings_changelist"),
-                "permission": lambda request: request.user.has_perm("orders.view_ordersettings"),
-            },
+            settings_item("orders"),
         ],
     },
     {
@@ -207,24 +254,7 @@ SECTIONS = [
                 "link": reverse_lazy("admin:parts_partorder_changelist"),
                 "permission": lambda request: request.user.has_perm("parts.view_partorder"),
             },
-            {
-                "title": _("Delivery times"),
-                "icon": "schedule",
-                "link": reverse_lazy("admin:parts_deliverytime_changelist"),
-                "permission": lambda request: request.user.has_perm("parts.view_deliverytime"),
-            },
-            {
-                "title": _("Markup tiers"),
-                "icon": "percent",
-                "link": reverse_lazy("admin:parts_markuptier_changelist"),
-                "permission": lambda request: request.user.has_perm("parts.view_markuptier"),
-            },
-            {
-                "title": _("Spare parts settings"),
-                "icon": "tune",
-                "link": reverse_lazy("admin:parts_partssettings_changelist"),
-                "permission": lambda request: request.user.has_perm("parts.view_partssettings"),
-            },
+            settings_item("parts"),
         ],
     },
     {
@@ -238,14 +268,7 @@ SECTIONS = [
                 "link": reverse_lazy("admin:hardware_device_changelist"),
                 "permission": lambda request: request.user.has_perm("hardware.view_device"),
             },
-            {
-                # One page with tabs for everything around the devices (UNFOLD["TABS"] in the settings).
-                "title": _("Device settings"),
-                "icon": "settings",
-                "link": reverse_lazy("admin:hardware_devicetype_changelist"),
-                "active": lambda request: any(request.path.startswith(f"/admin/hardware/{m}/") for m in HARDWARE_SETTINGS),
-                "permission": lambda request: any(request.user.has_perm(f"hardware.view_{m}") for m in HARDWARE_SETTINGS),
-            },
+            settings_item("hardware"),
         ],
     },
     {
@@ -265,54 +288,7 @@ SECTIONS = [
                 "link": reverse_lazy("admin:licences_supportpack_changelist"),
                 "permission": lambda request: request.user.has_perm("licences.view_supportpack"),
             },
-            {
-                "title": _("Pack categories"),
-                "icon": "folder",
-                "link": reverse_lazy("admin:licences_category_changelist"),
-                "permission": lambda request: request.user.has_perm("licences.view_category"),
-            },
-            {
-                "title": _("Hardware classes"),
-                "icon": "dns",
-                "link": reverse_lazy("admin:licences_hardwareclass_changelist"),
-                "permission": lambda request: request.user.has_perm("licences.view_hardwareclass"),
-            },
-            {
-                "title": _("Brands"),
-                "icon": "sell",
-                "link": reverse_lazy("admin:licences_vendor_changelist"),
-                "permission": lambda request: request.user.has_perm("licences.view_vendor"),
-            },
-            {
-                "title": _("Device types"),
-                "icon": "devices",
-                "link": reverse_lazy("admin:licences_hardwaresystem_changelist"),
-                "permission": lambda request: request.user.has_perm("licences.view_hardwaresystem"),
-            },
-            {
-                "title": _("Option types"),
-                "icon": "memory",
-                "link": reverse_lazy("admin:licences_optiontype_changelist"),
-                "permission": lambda request: request.user.has_perm("licences.view_optiontype"),
-            },
-            {
-                "title": _("Support periods"),
-                "icon": "schedule",
-                "link": reverse_lazy("admin:licences_supportperiod_changelist"),
-                "permission": lambda request: request.user.has_perm("licences.view_supportperiod"),
-            },
-            {
-                "title": _("Service levels"),
-                "icon": "support_agent",
-                "link": reverse_lazy("admin:licences_supportservice_changelist"),
-                "permission": lambda request: request.user.has_perm("licences.view_supportservice"),
-            },
-            {
-                "title": _("Licence settings"),
-                "icon": "tune",
-                "link": reverse_lazy("admin:licences_licencesettings_changelist"),
-                "permission": lambda request: request.user.has_perm("licences.view_licencesettings"),
-            },
+            settings_item("licences"),
         ],
     },
     {
@@ -619,6 +595,12 @@ def sidebar(request):
     return [by_key[k] for k in ordered_keys(request.user, sections) if _visible(request, by_key[k])]
 
 
+def _settings_entries(item):
+    return [{"title": title, "icon": "settings", "link": reverse_lazy(url),
+             "permission": lambda request, perm=perm: request.user.has_perm(perm)}
+            for title, url, perm, _model, _form in SETTINGS_TABS[item["settings"]][1]]
+
+
 def section_index(request, app_label, extra_context=None):
     """The page behind a section in the breadcrumbs (e.g. /admin/licences/): the menu section(s) with items in
     that part of the admin, with the same names, icons and rights as the sidebar, instead of Django's list of
@@ -629,7 +611,12 @@ def section_index(request, app_label, extra_context=None):
     prefix = f"/admin/{app_label}/"
     sections = []
     for section in sidebar(request):
-        items = [i for i in flat_items(section) if not i.get("permission") or i["permission"](request)]
+        items = []
+        for item in flat_items(section):
+            # A settings group shows its tabs here, so every page stays reachable from this overview.
+            for entry in _settings_entries(item) if "settings" in item else [item]:
+                if not entry.get("permission") or entry["permission"](request):
+                    items.append(entry)
         if any(str(i["link"]).startswith(prefix) for i in items):
             sections.append({"title": section["title"], "items": [{**i, "link": str(i["link"])} for i in items]})
     if not sections:
