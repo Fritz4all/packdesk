@@ -240,3 +240,72 @@ def test_role_list_has_a_fixed_order(client, site):
     client.force_login(make_user("root@example.test", superuser=True))
     names = [role.name for role in client.get(ROLES).context["cl"].result_list]
     assert names == ["Administrator", "Employee", "Finance", "Service", "Superadmin"]
+
+
+def _menu_pages():
+    from django.urls import reverse
+
+    from apps.dashboard import navigation as nav
+
+    pages = []
+    for section in nav.SECTIONS:
+        for item in section["items"]:
+            if "settings" in item:
+                pages += [(reverse(url), perm) for _t, url, perm, _m, _f in nav.SETTINGS_TABS[item["settings"]][1]]
+            elif item.get("permission"):
+                pages.append((str(item["link"]), None))
+    return pages
+
+
+def test_staff_without_rights_cannot_open_any_menu_page(client, site):
+    nobody = Role.objects.create(name="Niets")
+    client.force_login(make_user("leeg@example.test", staff=True, role="Niets"))
+    assert nobody.permissions.count() == 0
+    open_pages = []
+    for url, _perm in _menu_pages():
+        response = client.get(url)
+        if response.status_code == 200:
+            open_pages.append(url)
+    assert open_pages == [], open_pages
+
+
+def test_one_right_opens_exactly_its_own_page(client, site):
+    from django.contrib.auth.models import Permission
+
+    users = {}
+    for url, perm in _menu_pages():
+        if perm is None:
+            continue
+        if perm not in users:
+            app_label, codename = perm.split(".")
+            role = Role.objects.create(name=f"Alleen {codename}")
+            role.permissions.set([Permission.objects.get(content_type__app_label=app_label, codename=codename)])
+            users[perm] = make_user(f"{codename}@example.test", staff=True, role=role.name)
+        client.force_login(users[perm])
+        assert client.get(url, follow=True).status_code == 200, url
+        assert client.get("/admin/accounts/role/").status_code == 403, url  # and nothing else
+
+
+def test_rights_structure_is_complete(db):
+    """Every right named in the menu, the settings tabs and the default roles exists; every admin page can be
+    reached from the menu; and the rights of every admin page can be put in a role."""
+    import re
+
+    from django.contrib import admin
+    from django.urls import reverse
+
+    from apps.accounts.permissions import HIDDEN_MODELS, managed_permissions
+    from apps.accounts.roles import ROLES
+    from apps.dashboard import navigation as nav
+
+    existing = {f"{a}.{c}" for a, c in Permission.objects.values_list("content_type__app_label", "codename")}
+    named = set(re.findall(r'has_perm\("([a-z_]+\.[a-z_]+)"\)', open(nav.__file__).read()))
+    named |= {perm for _title, tabs in nav.SETTINGS_TABS.values() for _t, _u, perm, _m, _f in tabs}
+    named |= {perm for perms in ROLES.values() for perm in perms}
+    assert named - existing == set()
+    reachable = {url for url, _perm in _menu_pages()}
+    managed = {f"{p.content_type.app_label}.{p.codename}" for p in managed_permissions()}
+    for model in admin.site._registry:
+        label, name = model._meta.app_label, model._meta.model_name
+        assert reverse(f"admin:{label}_{name}_changelist") in reachable, model._meta.label
+        assert (label, name) in HIDDEN_MODELS or f"{label}.view_{name}" in managed, model._meta.label

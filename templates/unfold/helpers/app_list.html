@@ -1,6 +1,6 @@
 {% load i18n unfold %}
-{% comment %}PackDesk: collapsed/expanded sections are remembered in the browser (only when the user clicks),
-and two buttons expand or collapse every section. Without a remembered choice, the section of the
+{% comment %}PackDesk: collapsed/expanded sections and fold-out groups are remembered in the browser (only when
+the user clicks), and two buttons expand or collapse every section and group. Without a remembered choice, the section of the
 current page is open.{% endcomment %}
 
 {% if sidebar_navigation %}
@@ -20,6 +20,11 @@ current page is open.{% endcomment %}
             document.querySelectorAll("[data-pd-nav]").forEach(function (section) {
                 if (window.Alpine) window.Alpine.$data(section).navigationOpen = open;
                 window.pdNavSave(section.dataset.pdNav, open);
+            });
+            // The fold-out groups inside a main menu go along.
+            document.querySelectorAll("[data-pd-subnav]").forEach(function (group) {
+                if (window.Alpine) window.Alpine.$data(group).subnavigationOpen = open;
+                window.pdNavSave(group.dataset.pdSubnav, open);
             });
         };
     </script>
@@ -54,8 +59,8 @@ current page is open.{% endcomment %}
                     <ol class="flex flex-col px-6" {% if group.collapsible %}x-show="navigationOpen"{% endif %}>
                         {% for item in group.items %}
                             {% if item.has_permission %}
-                                <li {% if item.items|is_list %}x-data="{'subnavigationOpen': {% if item.items|has_active_item %}true{% else %}false{% endif %} }"{% endif %}>
-                                    <a {% if item.items|is_list and item.items|length > 0 %}x-on:click="subnavigationOpen = !subnavigationOpen"{% else %}href="{% if item.link_callback %}{{ item.link_callback }}{% else %}{{ item.link }}{% endif %}"{% endif %} class="cursor-pointer flex h-[38px] items-center -mx-3 px-3 rounded-default hover:text-primary-600 dark:hover:text-primary-500 {% if item.active %}bg-base-100 font-semibold text-primary-600 dark:bg-white/[.06] dark:text-primary-500 active{% endif %}" {% if item.link_attrs %}{% include "unfold/helpers/attrs.html" with attrs=item.link_attrs %}{% endif %}>
+                                <li {% if item.items|is_list %}data-pd-subnav="group-{{ item.group|default:item.title|slugify }}" x-data="{'subnavigationOpen': pdNavInitial('group-{{ item.group|default:item.title|slugify }}', {% if item.items|has_active_item %}true{% else %}false{% endif %}) }"{% endif %}>
+                                    <a {% if item.items|is_list and item.items|length > 0 %}x-on:click="subnavigationOpen = !subnavigationOpen; pdNavSave('group-{{ item.group|default:item.title|slugify }}', subnavigationOpen)"{% else %}href="{% if item.link_callback %}{{ item.link_callback }}{% else %}{{ item.link }}{% endif %}"{% endif %} class="cursor-pointer flex h-[38px] items-center -mx-3 px-3 rounded-default hover:text-primary-600 dark:hover:text-primary-500 {% if item.active %}bg-base-100 font-semibold text-primary-600 dark:bg-white/[.06] dark:text-primary-500 active{% endif %}" {% if item.link_attrs %}{% include "unfold/helpers/attrs.html" with attrs=item.link_attrs %}{% endif %}>
                                         {% if item.icon_template %}
                                             {% include item.icon_template with item=item %}
                                         {% elif item.icon %}

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 22:11+0100\n"
+"POT-Creation-Date: 2026-10-28 22:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1765,8 +1765,8 @@ msgid "Markup tiers"
 msgstr "Aufschlagstaffeln"
 
 #: apps/dashboard/navigation.py:32
-msgid "Service pack and licence settings"
-msgstr "Servicepaket- und Lizenzeinstellungen"
+msgid "SP and licence settings"
+msgstr "SP- und Lizenzeinstellungen"
 
 #: apps/dashboard/navigation.py:33 apps/licences/models.py:217
 msgid "Licence settings"
@@ -9053,15 +9053,15 @@ msgstr "Alle Telefonie-Angebote"
 msgid "View site"
 msgstr "Website ansehen"
 
-#: templates/unfold/helpers/app_list.html:29
+#: templates/unfold/helpers/app_list.html:34
 msgid "Expand all"
 msgstr "Alle ausklappen"
 
-#: templates/unfold/helpers/app_list.html:30
+#: templates/unfold/helpers/app_list.html:35
 msgid "Collapse all"
 msgstr "Alle einklappen"
 
-#: templates/unfold/helpers/app_list.html:104
+#: templates/unfold/helpers/app_list.html:109
 msgid "You don’t have permission to view or edit anything."
 msgstr "Sie haben keine Berechtigung, etwas anzusehen oder zu bearbeiten."
 

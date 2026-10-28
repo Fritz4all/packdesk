@@ -29,7 +29,7 @@ SETTINGS_TABS = {
         (_("Delivery times"), "admin:parts_deliverytime_changelist", "parts.view_deliverytime", "parts.deliverytime", False),
         (_("Markup tiers"), "admin:parts_markuptier_changelist", "parts.view_markuptier", "parts.markuptier", False),
     ]),
-    "licences": (_("Service pack and licence settings"), [
+    "licences": (_("SP and licence settings"), [
         (_("Licence settings"), "admin:licences_licencesettings_changelist", "licences.view_licencesettings",
          "licences.licencesettings", True),
         (_("Pack categories"), "admin:licences_category_changelist", "licences.view_category", "licences.category", False),
