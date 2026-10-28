@@ -150,7 +150,21 @@ def test_hardware_is_in_the_shop_menu_and_follows_the_rights(rf, site, beheerder
     request.user = make_user("mw@example.test", staff=True, role="Employee")
     links = [str(i["link"]) for s in sidebar(request) for i in flat_items(s)
              if not i.get("permission") or i["permission"](request)]
-    assert "/admin/hardware/device/" in links and "/admin/hardware/hardwaresettings/" not in links
+    assert "/admin/hardware/device/" in links and "/admin/hardware/devicetype/" not in links
+
+
+def test_device_settings_is_one_menu_item_with_tabs(client, rf, site, beheerder):
+    from apps.dashboard.navigation import sidebar
+
+    request = rf.get("/")
+    request.user = beheerder
+    shop = {s["key"]: s for s in sidebar(request)}["webshop"]
+    group = next(i for i in shop["items"] if i.get("group") == "hardware")
+    assert [str(i["title"]) for i in group["items"]] == ["Apparaten", "Apparaatinstellingen"]
+    client.force_login(beheerder)
+    page = client.get("/admin/hardware/condition/").content.decode()
+    for url in ("devicetype", "specification", "condition", "deliveryoption", "hardwaresettings"):
+        assert f'href="/admin/hardware/{url}/"' in page, url
 
 
 def test_new_customer_gets_the_default_hardware_margin(site):

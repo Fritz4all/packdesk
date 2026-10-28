@@ -10,6 +10,9 @@ from django.utils.functional import lazy
 from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 
+# The models on the tabs of Hardware → Device settings.
+HARDWARE_SETTINGS = ["devicetype", "specification", "condition", "deliveryoption", "hardwaresettings"]
+
 SECTIONS = [
     {
         "key": "overview",
@@ -236,34 +239,12 @@ SECTIONS = [
                 "permission": lambda request: request.user.has_perm("hardware.view_device"),
             },
             {
-                "title": _("Device types"),
-                "icon": "category",
-                "link": reverse_lazy("admin:hardware_devicetype_changelist"),
-                "permission": lambda request: request.user.has_perm("hardware.view_devicetype"),
-            },
-            {
-                "title": _("Specifications"),
-                "icon": "tune",
-                "link": reverse_lazy("admin:hardware_specification_changelist"),
-                "permission": lambda request: request.user.has_perm("hardware.view_specification"),
-            },
-            {
-                "title": _("Conditions"),
-                "icon": "grade",
-                "link": reverse_lazy("admin:hardware_condition_changelist"),
-                "permission": lambda request: request.user.has_perm("hardware.view_condition"),
-            },
-            {
-                "title": _("Delivery options"),
-                "icon": "local_shipping",
-                "link": reverse_lazy("admin:hardware_deliveryoption_changelist"),
-                "permission": lambda request: request.user.has_perm("hardware.view_deliveryoption"),
-            },
-            {
-                "title": _("Hardware settings"),
+                # One page with tabs for everything around the devices (UNFOLD["TABS"] in the settings).
+                "title": _("Device settings"),
                 "icon": "settings",
-                "link": reverse_lazy("admin:hardware_hardwaresettings_changelist"),
-                "permission": lambda request: request.user.has_perm("hardware.view_hardwaresettings"),
+                "link": reverse_lazy("admin:hardware_devicetype_changelist"),
+                "active": lambda request: any(request.path.startswith(f"/admin/hardware/{m}/") for m in HARDWARE_SETTINGS),
+                "permission": lambda request: any(request.user.has_perm(f"hardware.view_{m}") for m in HARDWARE_SETTINGS),
             },
         ],
     },

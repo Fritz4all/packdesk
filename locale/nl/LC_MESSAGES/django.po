@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 21:44+0100\n"
+"POT-Creation-Date: 2026-10-28 21:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,7 +45,7 @@ msgid "Empty = the name in the first language."
 msgstr "Leeg = de naam in de eerste taal."
 
 #: apps/accounts/admin.py:161 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:140 apps/dashboard/navigation.py:443
+#: apps/dashboard/navigation.py:143 apps/dashboard/navigation.py:424
 msgid "Users"
 msgstr "Gebruikers"
 
@@ -716,7 +716,7 @@ msgid "Status"
 msgstr "Status"
 
 #: apps/customers/admin.py:123 apps/customers/overview.py:111
-#: apps/dashboard/navigation.py:116 apps/legacy/old_shop/importer.py:113
+#: apps/dashboard/navigation.py:119 apps/legacy/old_shop/importer.py:113
 #: apps/legacy/parts.py:122
 msgid "Contacts"
 msgstr "Contactpersonen"
@@ -884,8 +884,8 @@ msgstr ""
 "Geselecteerde contactpersonen een nieuw wachtwoord laten kiezen (e-mail met "
 "link)"
 
-#: apps/customers/apps.py:7 apps/dashboard/navigation.py:106
-#: apps/dashboard/navigation.py:109 apps/legacy/old_shop/importer.py:112
+#: apps/customers/apps.py:7 apps/dashboard/navigation.py:109
+#: apps/dashboard/navigation.py:112 apps/legacy/old_shop/importer.py:112
 #: apps/legacy/parts.py:107
 msgid "Customers"
 msgstr "Klanten"
@@ -1405,7 +1405,7 @@ msgstr "bericht"
 msgid "customer settings"
 msgstr "klantinstellingen"
 
-#: apps/customers/models.py:290 apps/dashboard/navigation.py:134
+#: apps/customers/models.py:290 apps/dashboard/navigation.py:137
 msgid "Customer settings"
 msgstr "Klantinstellingen"
 
@@ -1413,7 +1413,7 @@ msgstr "Klantinstellingen"
 msgid "Not paid"
 msgstr "Niet betaald"
 
-#: apps/customers/overview.py:113 apps/dashboard/navigation.py:276
+#: apps/customers/overview.py:113 apps/dashboard/navigation.py:257
 #: apps/dashboard/widgets.py:51 apps/legacy/old_shop/importer.py:114
 #: apps/legacy/parts.py:146 apps/orders/admin.py:34
 #: templates/orders/order_detail.html:7
@@ -1453,7 +1453,7 @@ msgstr "Begin"
 msgid "End"
 msgstr "Einde"
 
-#: apps/customers/overview.py:116 apps/dashboard/navigation.py:153
+#: apps/customers/overview.py:116 apps/dashboard/navigation.py:156
 #: apps/legacy/old_shop/importer.py:114 apps/legacy/parts.py:137
 #: apps/orders/apps.py:7 apps/parts/admin.py:110
 msgid "Orders"
@@ -1486,7 +1486,7 @@ msgstr "Referentie"
 msgid "Total"
 msgstr "Totaal"
 
-#: apps/customers/overview.py:118 apps/dashboard/navigation.py:159
+#: apps/customers/overview.py:118 apps/dashboard/navigation.py:162
 #: apps/invoices/admin.py:106 apps/invoices/apps.py:7
 #: apps/legacy/old_shop/importer.py:116 apps/legacy/parts.py:170
 msgid "Invoices"
@@ -1496,12 +1496,12 @@ msgstr "Facturen"
 msgid "Paid"
 msgstr "Betaald"
 
-#: apps/customers/overview.py:120 apps/dashboard/navigation.py:414
-#: apps/dashboard/navigation.py:417 apps/faults/apps.py:7
+#: apps/customers/overview.py:120 apps/dashboard/navigation.py:395
+#: apps/dashboard/navigation.py:398 apps/faults/apps.py:7
 msgid "Fault reports"
 msgstr "Storingsmeldingen"
 
-#: apps/customers/overview.py:140 apps/dashboard/navigation.py:196
+#: apps/customers/overview.py:140 apps/dashboard/navigation.py:199
 #: apps/legacy/old_shop/importer.py:118
 msgid "Spare parts requests"
 msgstr "Onderdelenaanvragen"
@@ -1512,22 +1512,22 @@ msgstr "Onderdelenaanvragen"
 msgid "Parts"
 msgstr "Onderdelen"
 
-#: apps/customers/overview.py:142 apps/dashboard/navigation.py:202
+#: apps/customers/overview.py:142 apps/dashboard/navigation.py:205
 #: apps/legacy/old_shop/importer.py:120
 msgid "Spare parts orders"
 msgstr "Onderdelenbestellingen"
 
-#: apps/customers/overview.py:158 apps/dashboard/navigation.py:343
+#: apps/customers/overview.py:158 apps/dashboard/navigation.py:324
 #: apps/legacy/old_shop/importer.py:125
 msgid "Telephony quotes"
 msgstr "Telefonie-offertes"
 
-#: apps/customers/overview.py:161 apps/dashboard/navigation.py:374
+#: apps/customers/overview.py:161 apps/dashboard/navigation.py:355
 #: apps/legacy/old_shop/importer.py:123
 msgid "Printing quotes"
 msgstr "Printing-offertes"
 
-#: apps/customers/overview.py:163 apps/dashboard/navigation.py:380
+#: apps/customers/overview.py:163 apps/dashboard/navigation.py:361
 #: apps/legacy/old_shop/importer.py:124
 msgid "Printing contracts"
 msgstr "Printing-contracten"
@@ -1715,244 +1715,231 @@ msgstr "beheermenu"
 msgid "Admin menu"
 msgstr "Beheermenu"
 
-#: apps/dashboard/navigation.py:17 templates/legacy/_head.html:12
+#: apps/dashboard/navigation.py:20 templates/legacy/_head.html:12
 msgid "Overview"
 msgstr "Overzicht"
 
-#: apps/dashboard/navigation.py:19 templates/admin/index.html:6
+#: apps/dashboard/navigation.py:22 templates/admin/index.html:6
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: apps/dashboard/navigation.py:21 apps/dashboard/reports.py:239
+#: apps/dashboard/navigation.py:24 apps/dashboard/reports.py:239
 #: templates/dashboard/report.html:5
 msgid "Sales and margin"
 msgstr "Verkoop en marge"
 
-#: apps/dashboard/navigation.py:31
+#: apps/dashboard/navigation.py:34
 msgid "Configuration"
 msgstr "Configuratie"
 
-#: apps/dashboard/navigation.py:34 apps/siteconfig/apps.py:7
+#: apps/dashboard/navigation.py:37 apps/siteconfig/apps.py:7
 #: apps/siteconfig/models.py:178
 msgid "Settings"
 msgstr "Instellingen"
 
-#: apps/dashboard/navigation.py:40 apps/dashboard/views.py:159
+#: apps/dashboard/navigation.py:43 apps/dashboard/views.py:159
 msgid "Menu"
 msgstr "Menu"
 
-#: apps/dashboard/navigation.py:46 apps/numbering/apps.py:7
+#: apps/dashboard/navigation.py:49 apps/numbering/apps.py:7
 msgid "Number sequences"
 msgstr "Nummerreeksen"
 
-#: apps/dashboard/navigation.py:53 apps/trash/apps.py:7
+#: apps/dashboard/navigation.py:56 apps/trash/apps.py:7
 msgid "Trash"
 msgstr "Prullenbak"
 
-#: apps/dashboard/navigation.py:63
+#: apps/dashboard/navigation.py:66
 msgid "WebShop"
 msgstr "Webshop"
 
-#: apps/dashboard/navigation.py:69
+#: apps/dashboard/navigation.py:72
 msgid "Databases"
 msgstr "Databases"
 
-#: apps/dashboard/navigation.py:72 apps/legacy/apps.py:7
+#: apps/dashboard/navigation.py:75 apps/legacy/apps.py:7
 msgid "External databases"
 msgstr "Externe databases"
 
-#: apps/dashboard/navigation.py:78 apps/legacy/views.py:68
+#: apps/dashboard/navigation.py:81 apps/legacy/views.py:68
 #: apps/legacy/views.py:80 templates/legacy/choose.html:4
 msgid "Compare databases"
 msgstr "Databases vergelijken"
 
-#: apps/dashboard/navigation.py:84 apps/legacy/admin.py:60
+#: apps/dashboard/navigation.py:87 apps/legacy/admin.py:60
 #: templates/legacy/overview.html:49
 msgid "Table mappings"
 msgstr "Koppelingen"
 
-#: apps/dashboard/navigation.py:90
+#: apps/dashboard/navigation.py:93
 msgid "Imports"
 msgstr "Importeren"
 
-#: apps/dashboard/navigation.py:100
+#: apps/dashboard/navigation.py:103
 msgid "Archived"
 msgstr "Archief"
 
-#: apps/dashboard/navigation.py:122
+#: apps/dashboard/navigation.py:125
 msgid "Customer types"
 msgstr "Klanttypes"
 
-#: apps/dashboard/navigation.py:128
+#: apps/dashboard/navigation.py:131
 msgid "Countries"
 msgstr "Landen"
 
-#: apps/dashboard/navigation.py:150
+#: apps/dashboard/navigation.py:153
 msgid "Orders and invoices"
 msgstr "Bestellingen en facturen"
 
-#: apps/dashboard/navigation.py:165 apps/invoices/models.py:47
+#: apps/dashboard/navigation.py:168 apps/invoices/models.py:47
 #: templates/admin/invoices/invoicesettings/design.html:13
 msgid "Invoice settings"
 msgstr "Factuurinstellingen"
 
-#: apps/dashboard/navigation.py:171 apps/invoices/admin.py:144
+#: apps/dashboard/navigation.py:174 apps/invoices/admin.py:144
 msgid "Invoice design"
 msgstr "Factuurontwerp"
 
-#: apps/dashboard/navigation.py:177
+#: apps/dashboard/navigation.py:180
 msgid "Payment methods"
 msgstr "Betaalwijzen"
 
-#: apps/dashboard/navigation.py:183 apps/orders/models.py:45
+#: apps/dashboard/navigation.py:186 apps/orders/models.py:45
 msgid "Order settings"
 msgstr "Bestelinstellingen"
 
-#: apps/dashboard/navigation.py:193 apps/dashboard/reports.py:149
+#: apps/dashboard/navigation.py:196 apps/dashboard/reports.py:149
 #: apps/dashboard/reports.py:242 apps/parts/apps.py:7
 #: templates/core/dashboard.html:18 templates/parts/overview.html:3
 #: templates/parts/overview.html:5
 msgid "Spare parts"
 msgstr "Onderdelen"
 
-#: apps/dashboard/navigation.py:208
+#: apps/dashboard/navigation.py:211
 msgid "Delivery times"
 msgstr "Levertijden"
 
-#: apps/dashboard/navigation.py:214
+#: apps/dashboard/navigation.py:217
 msgid "Markup tiers"
 msgstr "Opslagstaffels"
 
-#: apps/dashboard/navigation.py:220 apps/legacy/old_shop/importer.py:117
+#: apps/dashboard/navigation.py:223 apps/legacy/old_shop/importer.py:117
 #: apps/parts/models.py:73
 msgid "Spare parts settings"
 msgstr "Instellingen onderdelen"
 
-#: apps/dashboard/navigation.py:230 apps/dashboard/reports.py:125
+#: apps/dashboard/navigation.py:233 apps/dashboard/reports.py:125
 #: apps/dashboard/reports.py:243 apps/hardware/apps.py:7
 #: apps/orders/models.py:88 templates/hardware/shop.html:3
 #: templates/hardware/shop.html:7
 msgid "Hardware"
 msgstr "Hardware"
 
-#: apps/dashboard/navigation.py:233 apps/hardware/admin.py:50
+#: apps/dashboard/navigation.py:236 apps/hardware/admin.py:50
 #: apps/hardware/transfer.py:468
 msgid "Devices"
 msgstr "Apparaten"
 
-#: apps/dashboard/navigation.py:239 apps/dashboard/navigation.py:306
-#: apps/hardware/admin.py:62 apps/hardware/transfer.py:446
-msgid "Device types"
-msgstr "Apparaattypes"
+#: apps/dashboard/navigation.py:243
+msgid "Device settings"
+msgstr "Apparaatinstellingen"
 
-#: apps/dashboard/navigation.py:245 apps/hardware/admin.py:191
-#: templates/hardware/device.html:51
-msgid "Specifications"
-msgstr "Kenmerken"
-
-#: apps/dashboard/navigation.py:251 apps/hardware/transfer.py:447
-msgid "Conditions"
-msgstr "Staat"
-
-#: apps/dashboard/navigation.py:257
-msgid "Delivery options"
-msgstr "Leveringsopties"
-
-#: apps/dashboard/navigation.py:263 apps/hardware/models.py:47
-msgid "Hardware settings"
-msgstr "Hardware-instellingen"
-
-#: apps/dashboard/navigation.py:273 apps/licences/apps.py:7
+#: apps/dashboard/navigation.py:254 apps/licences/apps.py:7
 msgid "Service packs and licences"
 msgstr "Servicepacks en licenties"
 
-#: apps/dashboard/navigation.py:282 apps/dashboard/reports.py:242
+#: apps/dashboard/navigation.py:263 apps/dashboard/reports.py:242
 #: apps/orders/models.py:87 templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepacks"
 
-#: apps/dashboard/navigation.py:288
+#: apps/dashboard/navigation.py:269
 msgid "Pack categories"
 msgstr "Packcategorieën"
 
-#: apps/dashboard/navigation.py:294
+#: apps/dashboard/navigation.py:275
 msgid "Hardware classes"
 msgstr "Hardwareklassen"
 
-#: apps/dashboard/navigation.py:300
+#: apps/dashboard/navigation.py:281
 msgid "Brands"
 msgstr "Merken"
 
-#: apps/dashboard/navigation.py:312
+#: apps/dashboard/navigation.py:287 apps/hardware/admin.py:62
+#: apps/hardware/transfer.py:446 packdesk/settings.py:265
+msgid "Device types"
+msgstr "Apparaattypes"
+
+#: apps/dashboard/navigation.py:293
 msgid "Option types"
 msgstr "Optietypes"
 
-#: apps/dashboard/navigation.py:318
+#: apps/dashboard/navigation.py:299
 msgid "Support periods"
 msgstr "Looptijden"
 
-#: apps/dashboard/navigation.py:324
+#: apps/dashboard/navigation.py:305
 msgid "Service levels"
 msgstr "Serviceniveaus"
 
-#: apps/dashboard/navigation.py:330 apps/licences/models.py:217
+#: apps/dashboard/navigation.py:311 apps/licences/models.py:217
 msgid "Licence settings"
 msgstr "Licentie-instellingen"
 
-#: apps/dashboard/navigation.py:340 apps/telephony/apps.py:7
+#: apps/dashboard/navigation.py:321 apps/telephony/apps.py:7
 #: templates/core/dashboard.html:19 templates/telephony/calculator.html:3
 msgid "Telephony"
 msgstr "Telefonie"
 
-#: apps/dashboard/navigation.py:349
+#: apps/dashboard/navigation.py:330
 msgid "Telephony items"
 msgstr "Telefonie-artikelen"
 
-#: apps/dashboard/navigation.py:355
+#: apps/dashboard/navigation.py:336
 msgid "Telephony categories"
 msgstr "Telefonie-categorieën"
 
-#: apps/dashboard/navigation.py:361 apps/telephony/models.py:29
+#: apps/dashboard/navigation.py:342 apps/telephony/models.py:29
 msgid "Telephony settings"
 msgstr "Instellingen telefonie"
 
-#: apps/dashboard/navigation.py:371 apps/printing/apps.py:7
+#: apps/dashboard/navigation.py:352 apps/printing/apps.py:7
 msgid "Printing services"
 msgstr "Printing services"
 
-#: apps/dashboard/navigation.py:386 apps/legacy/old_shop/importer.py:124
+#: apps/dashboard/navigation.py:367 apps/legacy/old_shop/importer.py:124
 msgid "Supplies orders"
 msgstr "Verbruiksbestellingen"
 
-#: apps/dashboard/navigation.py:392
+#: apps/dashboard/navigation.py:373
 msgid "Printers"
 msgstr "Printers"
 
-#: apps/dashboard/navigation.py:398
+#: apps/dashboard/navigation.py:379
 msgid "Supplies"
 msgstr "Verbruiksartikelen"
 
-#: apps/dashboard/navigation.py:404
+#: apps/dashboard/navigation.py:385
 msgid "Support plans"
 msgstr "Supportpakketten"
 
-#: apps/dashboard/navigation.py:424
+#: apps/dashboard/navigation.py:405
 msgid "Handling options"
 msgstr "Afhandelopties"
 
-#: apps/dashboard/navigation.py:430 apps/faults/models.py:53
+#: apps/dashboard/navigation.py:411 apps/faults/models.py:53
 msgid "Fault report settings"
 msgstr "Storingsinstellingen"
 
-#: apps/dashboard/navigation.py:440
+#: apps/dashboard/navigation.py:421
 msgid "Users and roles"
 msgstr "Gebruikers en rollen"
 
-#: apps/dashboard/navigation.py:449
+#: apps/dashboard/navigation.py:430
 msgid "Roles"
 msgstr "Rollen"
 
-#: apps/dashboard/navigation.py:498
+#: apps/dashboard/navigation.py:479
 #: templates/admin/packdesk/menu_editor.html:62
 msgid "New menu"
 msgstr "Nieuw menu"
@@ -2376,6 +2363,11 @@ msgstr "Nee"
 msgid "Required for this device type."
 msgstr "Verplicht voor deze apparaatsoort."
 
+#: apps/hardware/admin.py:191 packdesk/settings.py:267
+#: templates/hardware/device.html:51
+msgid "Specifications"
+msgstr "Kenmerken"
+
 #: apps/hardware/admin.py:195
 msgid "Sale"
 msgstr "Verkoop"
@@ -2582,6 +2574,10 @@ msgstr ""
 #: apps/hardware/models.py:43 apps/hardware/models.py:44
 msgid "hardware settings"
 msgstr "hardware-instellingen"
+
+#: apps/hardware/models.py:47 packdesk/settings.py:273
+msgid "Hardware settings"
+msgstr "Hardware-instellingen"
 
 #: apps/hardware/models.py:67 apps/hardware/models.py:168
 #: apps/licences/models.py:101 apps/licences/models.py:262
@@ -2801,7 +2797,9 @@ msgstr "De bestelling is verlopen of gewijzigd. Controleer haar opnieuw."
 msgid ""
 "Sorry, not everything can be ordered any more: %(devices)s. Please check "
 "your order again."
-msgstr "Helaas kan niet alles meer besteld worden: %(devices)s. Controleer je bestelling opnieuw."
+msgstr ""
+"Helaas kan niet alles meer besteld worden: %(devices)s. Controleer je "
+"bestelling opnieuw."
 
 #: apps/hardware/services.py:77 apps/orders/models.py:136
 #: apps/parts/models.py:350
@@ -2970,6 +2968,10 @@ msgstr "Kolom"
 #: apps/hardware/transfer.py:437
 msgid "Meaning"
 msgstr "Betekenis"
+
+#: apps/hardware/transfer.py:447 packdesk/settings.py:269
+msgid "Conditions"
+msgstr "Staat"
 
 #: apps/hardware/transfer.py:448
 msgid "Statuses"
@@ -4988,7 +4990,8 @@ msgstr "Bestelling annuleren"
 
 #: apps/orders/admin.py:56
 msgid "The order is cancelled and its devices are for sale again. Continue?"
-msgstr "De bestelling wordt geannuleerd en de apparaten komen weer te koop. Doorgaan?"
+msgstr ""
+"De bestelling wordt geannuleerd en de apparaten komen weer te koop. Doorgaan?"
 
 #: apps/orders/admin.py:59 apps/parts/admin.py:191
 #: templates/orders/order_detail.html:3 templates/orders/order_detail.html:5
@@ -6737,17 +6740,21 @@ msgstr ""
 msgid "Restoring is not possible: %(error)s"
 msgstr "Terugzetten is niet mogelijk: %(error)s"
 
-#: packdesk/settings.py:173
+#: packdesk/settings.py:174
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: packdesk/settings.py:173
+#: packdesk/settings.py:174
 msgid "English"
 msgstr "Engels"
 
-#: packdesk/settings.py:173
+#: packdesk/settings.py:174
 msgid "German"
 msgstr "Duits"
+
+#: packdesk/settings.py:271
+msgid "Delivery options"
+msgstr "Leveringsopties"
 
 #: templates/400.html:3 templates/400.html:6
 msgid "Request not understood"
@@ -7885,7 +7892,9 @@ msgstr "Bedankt voor uw bestelling"
 msgid ""
 "Your order %(number)s has been placed. The devices are reserved for you. You "
 "will receive a confirmation by email."
-msgstr "Je bestelling %(number)s is geplaatst. De apparaten zijn voor je gereserveerd. Je ontvangt een bevestiging per e-mail."
+msgstr ""
+"Je bestelling %(number)s is geplaatst. De apparaten zijn voor je "
+"gereserveerd. Je ontvangt een bevestiging per e-mail."
 
 #: templates/hardware/done.html:7 templates/hardware/email_new_order.txt:10
 #: templates/hardware/review.html:17 templates/invoices/my_invoices.html:7
