@@ -80,9 +80,14 @@ class DeliveryOptionAdmin(ModelAdmin, TabbedTranslationAdmin):
 
 
 class PhotoInline(TabularInline):
+    """Photos on their own tab; dragged into order, the first one is the main photo in the shop."""
+
     model = DevicePhoto
     extra = 0
     fields = ["image", "position"]
+    tab = True
+    ordering_field = "position"
+    hide_ordering_field = True
 
 
 # --- devices -----------------------------------------------------------------------------------------------
@@ -164,7 +169,7 @@ class DeviceAdmin(ModelAdmin):
     list_filter = ["status", "device_type", "condition", "brand"]
     search_fields = ["number", "serial_nr", "model", "brand__name", "supplier"]
     list_select_related = ["device_type", "brand", "condition"]
-    readonly_fields = ["number", "sold_at", "created_at", "updated_at", "show_price_summary"]
+    readonly_fields = ["number", "sold_at", "created_at", "updated_at", "show_price_summary", "show_spec_hint"]
     autocomplete_fields = ["customer"]
     actions = ["set_for_sale", "set_written_off", "export_xlsx", "export_csv"]
 
@@ -183,7 +188,7 @@ class DeviceAdmin(ModelAdmin):
             (_("Device"), {"classes": ["tab"], "fields": [
                 "number", "device_type", ("brand", "model"), "serial_nr", ("condition", "status"), "description",
             ]}),
-            (_("Specifications"), {"classes": ["tab"], "fields": spec_names or ["device_type"]}),
+            (_("Specifications"), {"classes": ["tab"], "fields": ["show_spec_hint", *spec_names]}),
             (_("Prices"), {"classes": ["tab"], "fields": [
                 ("purchase_date", "supplier"), ("purchase_price", "sale_price"), "show_price_summary", "warranty_months",
             ]}),
@@ -192,6 +197,13 @@ class DeviceAdmin(ModelAdmin):
         if not spec_names:
             fieldsets.pop(1)
         return fieldsets
+
+    @display(description="")
+    def show_spec_hint(self, obj):
+        # Hidden by static/admin/hardware-specs.js as soon as the chosen type has specifications.
+        return format_html('<span data-spec-hint>{}</span>', gettext(
+            "Choose a device type on the Device tab first; its specifications appear here. A type without "
+            "specifications has nothing to fill in here (see Hardware → Specifications)."))
 
     @display(description=_("Device type"), ordering="device_type__name")
     def show_type(self, obj):

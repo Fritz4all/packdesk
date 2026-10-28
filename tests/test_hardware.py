@@ -48,6 +48,7 @@ def test_device_page_keeps_only_the_specifications_of_its_type(client, site, beh
     assert device.specs == {"screen_inch": 14}  # processor and memory are no properties of a monitor
     page = client.get(f"{DEVICES}{device.pk}/change/").content.decode()
     assert 'data-spec-types=' in page and "admin/hardware-specs.js" in page
+    assert "data-spec-hint" in page and 'data-ordering-field="position"' in page  # photos can be dragged in order
 
 
 def test_required_specification_is_checked(client, site, beheerder):
