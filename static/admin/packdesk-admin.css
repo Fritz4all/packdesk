@@ -152,3 +152,22 @@ html.dark .pd-design-preview { border-color: rgb(55 65 81); }
 .pd-design-text { flex: 1.4; min-width: 12rem; height: 34px; }
 .pd-design-row input[type="color"] { width: 3.5rem; height: 34px; cursor: pointer; }
 .pd-design-row input[type="number"] { width: 6rem; height: 34px; }
+
+/* Menu page: main menus as cards, items dragged by their handle. */
+.pd-menu { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 1rem; align-items: start; }
+.pd-menu-head { display: flex; align-items: center; gap: .4rem; margin-bottom: .5rem; }
+.pd-menu-head .pd-menu-name { font-weight: 600; }
+.pd-menu-texts { flex: 1; display: flex; }
+.pd-menu-name { width: 100%; height: 34px; }
+.pd-menu-handle { cursor: grab; color: rgb(156 163 175); user-select: none; }
+.pd-menu-readonly .pd-menu-handle { display: none; }
+.pd-menu-delete { color: rgb(156 163 175); }
+.pd-menu-delete:hover { color: rgb(220 38 38); }
+.pd-menu-items { min-height: 2.5rem; border-radius: 6px; }
+.pd-menu-items:empty { border: 1px dashed rgb(156 163 175); }
+.pd-menu-items:empty::before { content: attr(data-empty); display: block; padding: .6rem; font-size: .8rem; color: rgb(156 163 175); text-align: center; }
+.pd-menu-item { display: flex; align-items: center; gap: .4rem; padding: .2rem .25rem; border-radius: 6px; }
+.pd-menu-item:hover { background: rgb(147 51 234 / .06); }
+.pd-menu-icon { font-size: 18px; color: rgb(107 114 128); }
+.pd-dragging { opacity: .4; outline: 2px dashed rgb(147 51 234); }
+.pd-menu-note { padding: .5rem .75rem; border-radius: 8px; background: rgb(251 191 36 / .12); }

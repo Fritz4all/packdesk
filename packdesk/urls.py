@@ -32,6 +32,8 @@ def preview_error_page(request, code):
 urlpatterns = [
     path("admin/dashboard/layout/", dashboard_views.save_layout, name="dashboard_save_layout"),
     path("admin/dashboard/reset/", dashboard_views.reset_layout, name="dashboard_reset_layout"),
+    path("admin/menu/", dashboard_views.menu_editor, name="admin_menu"),
+    path("admin/menu/own-order/", dashboard_views.reset_own_menu_order, name="admin_menu_own_order"),
     path("admin/compare/", legacy_views.choose, name="legacy_choose"),
     path("admin/import/<int:pk>/", legacy_import_views.start, name="legacy_import"),
     path("admin/import/report/<int:pk>/", legacy_import_views.report, name="legacy_import_report"),

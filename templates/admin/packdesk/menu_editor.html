@@ -1,0 +1,177 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<form method="post" id="pd-menu-form">
+  {% csrf_token %}
+  <input type="hidden" name="layout" id="pd-menu-layout">
+  <div class="pd-design-bar">
+    <h1 class="font-semibold text-lg text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
+    <label class="text-sm">{% translate "Language" %}
+      <select id="pd-menu-lang" class="pd-input">
+        {% for code, name in languages %}<option value="{{ code }}"{% if code == language %} selected{% endif %}>{{ name }}</option>{% endfor %}
+      </select>
+    </label>
+    {% if can_change %}
+    <button type="button" class="pd-btn" id="pd-menu-add"><span class="material-symbols-outlined text-[18px]">add</span>{% translate "New main menu" %}</button>
+    <button type="submit" class="pd-btn" name="reset" value="1" onclick="return confirm('{% translate "Set the whole menu back to the standard?"|escapejs %}')"><span class="material-symbols-outlined text-[18px]">restart_alt</span>{% translate "Standard" %}</button>
+    <button type="submit" class="pd-btn pd-btn-primary" id="pd-menu-save"><span class="material-symbols-outlined text-[18px]">check</span>{% translate "Save" %}</button>
+    {% endif %}
+  </div>
+  <p class="text-sm mb-2 text-base-500">
+    {% translate "Drag a main menu or an item by its handle to another place; items can also go to another main menu. Empty name = the standard name. Main menus without items are not shown. This menu applies to everyone; a user only sees the items they have rights to." %}
+  </p>
+  {% if own_order %}
+  <p class="text-sm mb-4 pd-menu-note">
+    {% translate "You have your own order of the main menus (dashboard → Customise); it comes before the order here." %}
+    <button type="submit" class="underline" form="pd-menu-own">{% translate "Remove my own order" %}</button>
+  </p>
+  {% endif %}
+
+  <div id="pd-menu" class="pd-menu{% if not can_change %} pd-menu-readonly{% endif %}"></div>
+</form>
+<form method="post" id="pd-menu-own" action="{% url 'admin_menu_own_order' %}">{% csrf_token %}</form>
+
+{{ menu_data|json_script:"pd-menu-data" }}
+<template id="pd-menu-section">
+  <section class="pd-widget pd-menu-section">
+    <div class="pd-menu-head">
+      <span class="material-symbols-outlined pd-menu-handle" title="{% translate 'Drag' %}">drag_indicator</span>
+      <span class="pd-menu-texts"></span>
+      <button type="button" class="pd-menu-delete" title="{% translate 'Remove this main menu' %}"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+    </div>
+    <ul class="pd-menu-items"></ul>
+  </section>
+</template>
+<template id="pd-menu-item">
+  <li class="pd-menu-item">
+    <span class="material-symbols-outlined pd-menu-handle" title="{% translate 'Drag' %}">drag_indicator</span>
+    <span class="material-symbols-outlined pd-menu-icon"></span>
+    <span class="pd-menu-texts"></span>
+  </li>
+</template>
+
+<script>
+(function () {
+  const data = JSON.parse(document.getElementById("pd-menu-data").textContent);
+  const root = document.getElementById("pd-menu");
+  const form = document.getElementById("pd-menu-form");
+  const langSelect = document.getElementById("pd-menu-lang");
+  const languages = [...langSelect.options].map(o => o.value);
+  const readOnly = root.classList.contains("pd-menu-readonly");
+  const NEW_MENU = "{{ _('New menu')|escapejs }}";
+  const EMPTY_HINT = "{{ _('Drop items here')|escapejs }}";
+  const NOT_EMPTY = "{{ _('Move the items to another main menu first.')|escapejs }}";
+  let dragged = null;
+
+  function texts(holder, standard, saved) {
+    languages.forEach(lang => {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "pd-input pd-menu-name";
+      input.dataset.lang = lang;
+      input.maxLength = 60;
+      input.placeholder = standard[lang] || "";
+      input.value = saved[lang] || "";
+      input.hidden = lang !== langSelect.value;
+      input.readOnly = readOnly;
+      holder.appendChild(input);
+    });
+  }
+
+  function makeItem(item) {
+    const li = document.getElementById("pd-menu-item").content.firstElementChild.cloneNode(true);
+    li.dataset.key = item.key;
+    li.querySelector(".pd-menu-icon").textContent = item.icon;
+    texts(li.querySelector(".pd-menu-texts"), item.standard, item.title);
+    return li;
+  }
+
+  function makeSection(section) {
+    const el = document.getElementById("pd-menu-section").content.firstElementChild.cloneNode(true);
+    el.dataset.key = section.key;
+    if (section.custom) el.dataset.custom = "1";
+    texts(el.querySelector(".pd-menu-texts"), section.standard, section.title);
+    const list = el.querySelector(".pd-menu-items");
+    list.dataset.empty = EMPTY_HINT;
+    section.items.forEach(item => list.appendChild(makeItem(item)));
+    el.querySelector(".pd-menu-delete").hidden = !section.custom || readOnly;
+    el.querySelector(".pd-menu-delete").addEventListener("click", () => {
+      if (list.children.length) { alert(NOT_EMPTY); return; }
+      el.remove();
+    });
+    return el;
+  }
+
+  data.forEach(section => root.appendChild(makeSection(section)));
+
+  // --- dragging: only by the handle, so the name fields stay normal text fields ---
+  if (!readOnly) {
+    root.addEventListener("mousedown", event => {
+      const handle = event.target.closest(".pd-menu-handle");
+      if (handle) handle.closest(".pd-menu-item, .pd-menu-section").draggable = true;
+    });
+    root.addEventListener("dragstart", event => {
+      dragged = event.target.closest(".pd-menu-item, .pd-menu-section");
+      if (!dragged) return;
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", dragged.dataset.key);
+      requestAnimationFrame(() => dragged && dragged.classList.add("pd-dragging"));
+    });
+    root.addEventListener("dragend", () => {
+      if (!dragged) return;
+      dragged.classList.remove("pd-dragging");
+      dragged.draggable = false;
+      dragged = null;
+    });
+    root.addEventListener("dragover", event => {
+      if (!dragged) return;
+      if (dragged.classList.contains("pd-menu-item")) {
+        const list = event.target.closest(".pd-menu-section")?.querySelector(".pd-menu-items");
+        if (!list) return;
+        event.preventDefault();
+        const after = [...list.children].find(li => li !== dragged && event.clientY < li.getBoundingClientRect().top + li.offsetHeight / 2);
+        list.insertBefore(dragged, after || null);
+      } else {
+        const target = event.target.closest(".pd-menu-section");
+        event.preventDefault();
+        if (!target || target === dragged) return;
+        const box = target.getBoundingClientRect();
+        const columns = box.width < root.clientWidth * 0.9;  // cards side by side: left/right half decides
+        const before = columns ? event.clientX < box.left + box.width / 2 : event.clientY < box.top + box.height / 2;
+        root.insertBefore(dragged, before ? target : target.nextSibling);
+      }
+    });
+    root.addEventListener("drop", event => { if (dragged) event.preventDefault(); });
+
+    document.getElementById("pd-menu-add").addEventListener("click", () => {
+      const key = "custom-" + Math.random().toString(36).slice(2, 10);
+      const standard = Object.fromEntries(languages.map(l => [l, NEW_MENU]));
+      const el = makeSection({key, custom: true, standard, title: {}, items: []});
+      root.prepend(el);
+      el.scrollIntoView({behavior: "smooth", block: "center"});
+      el.querySelector("input:not([hidden])").focus({preventScroll: true});
+    });
+
+    form.addEventListener("submit", event => {
+      if (event.submitter && event.submitter.name === "reset") return;
+      const names = el => Object.fromEntries([...el.querySelectorAll(":scope > .pd-menu-texts > input, :scope > .pd-menu-head > .pd-menu-texts > input")]
+        .filter(i => i.value.trim()).map(i => [i.dataset.lang, i.value.trim()]));
+      const items = {};
+      const sections = [...root.querySelectorAll(".pd-menu-section")].map(section => ({
+        key: section.dataset.key,
+        title: names(section),
+        items: [...section.querySelectorAll(".pd-menu-item")].map(li => {
+          items[li.dataset.key] = names(li);
+          return li.dataset.key;
+        }),
+      }));
+      document.getElementById("pd-menu-layout").value = JSON.stringify({sections, items});
+    });
+  }
+
+  langSelect.addEventListener("change", () => {
+    root.querySelectorAll("input.pd-menu-name").forEach(i => { i.hidden = i.dataset.lang !== langSelect.value; });
+  });
+})();
+</script>
+{% endblock %}

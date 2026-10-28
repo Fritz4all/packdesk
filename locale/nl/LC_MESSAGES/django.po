@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 23:19+0100\n"
+"POT-Creation-Date: 2026-10-28 06:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "rechten toekennen die u zelf hebt."
 
 #: apps/accounts/admin.py:96 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:363
+#: apps/dashboard/navigation.py:375
 msgid "Users"
 msgstr "Gebruikers"
 
@@ -632,7 +632,7 @@ msgid "Status"
 msgstr "Status"
 
 #: apps/customers/admin.py:122 apps/customers/overview.py:111
-#: apps/dashboard/navigation.py:85 apps/legacy/old_shop/importer.py:113
+#: apps/dashboard/navigation.py:97 apps/legacy/old_shop/importer.py:113
 #: apps/legacy/parts.py:122
 msgid "Contacts"
 msgstr "Contactpersonen"
@@ -800,8 +800,8 @@ msgstr ""
 "Geselecteerde contactpersonen een nieuw wachtwoord laten kiezen (e-mail met "
 "link)"
 
-#: apps/customers/apps.py:7 apps/dashboard/navigation.py:75
-#: apps/dashboard/navigation.py:78 apps/legacy/old_shop/importer.py:112
+#: apps/customers/apps.py:7 apps/dashboard/navigation.py:87
+#: apps/dashboard/navigation.py:90 apps/legacy/old_shop/importer.py:112
 #: apps/legacy/parts.py:107
 msgid "Customers"
 msgstr "Klanten"
@@ -1322,7 +1322,7 @@ msgstr "bericht"
 msgid "customer settings"
 msgstr "klantinstellingen"
 
-#: apps/customers/models.py:287 apps/dashboard/navigation.py:103
+#: apps/customers/models.py:287 apps/dashboard/navigation.py:115
 msgid "Customer settings"
 msgstr "Klantinstellingen"
 
@@ -1330,7 +1330,7 @@ msgstr "Klantinstellingen"
 msgid "Not paid"
 msgstr "Niet betaald"
 
-#: apps/customers/overview.py:113 apps/dashboard/navigation.py:196
+#: apps/customers/overview.py:113 apps/dashboard/navigation.py:208
 #: apps/dashboard/widgets.py:51 apps/legacy/old_shop/importer.py:114
 #: apps/legacy/parts.py:146 apps/orders/admin.py:27
 #: templates/orders/order_detail.html:7
@@ -1368,7 +1368,7 @@ msgstr "Begin"
 msgid "End"
 msgstr "Einde"
 
-#: apps/customers/overview.py:116 apps/dashboard/navigation.py:116
+#: apps/customers/overview.py:116 apps/dashboard/navigation.py:128
 #: apps/legacy/old_shop/importer.py:114 apps/legacy/parts.py:137
 #: apps/orders/apps.py:7 apps/parts/admin.py:110
 msgid "Orders"
@@ -1401,7 +1401,7 @@ msgstr "Referentie"
 msgid "Total"
 msgstr "Totaal"
 
-#: apps/customers/overview.py:118 apps/dashboard/navigation.py:122
+#: apps/customers/overview.py:118 apps/dashboard/navigation.py:134
 #: apps/invoices/admin.py:106 apps/invoices/apps.py:7
 #: apps/legacy/old_shop/importer.py:116 apps/legacy/parts.py:170
 msgid "Invoices"
@@ -1411,12 +1411,12 @@ msgstr "Facturen"
 msgid "Paid"
 msgstr "Betaald"
 
-#: apps/customers/overview.py:120 apps/dashboard/navigation.py:334
-#: apps/dashboard/navigation.py:337 apps/faults/apps.py:7
+#: apps/customers/overview.py:120 apps/dashboard/navigation.py:346
+#: apps/dashboard/navigation.py:349 apps/faults/apps.py:7
 msgid "Fault reports"
 msgstr "Storingsmeldingen"
 
-#: apps/customers/overview.py:140 apps/dashboard/navigation.py:153
+#: apps/customers/overview.py:140 apps/dashboard/navigation.py:165
 #: apps/legacy/old_shop/importer.py:118
 msgid "Spare parts requests"
 msgstr "Onderdelenaanvragen"
@@ -1427,22 +1427,22 @@ msgstr "Onderdelenaanvragen"
 msgid "Parts"
 msgstr "Onderdelen"
 
-#: apps/customers/overview.py:142 apps/dashboard/navigation.py:159
+#: apps/customers/overview.py:142 apps/dashboard/navigation.py:171
 #: apps/legacy/old_shop/importer.py:120
 msgid "Spare parts orders"
 msgstr "Onderdelenbestellingen"
 
-#: apps/customers/overview.py:158 apps/dashboard/navigation.py:263
+#: apps/customers/overview.py:158 apps/dashboard/navigation.py:275
 #: apps/legacy/old_shop/importer.py:125
 msgid "Telephony quotes"
 msgstr "Telefonie-offertes"
 
-#: apps/customers/overview.py:161 apps/dashboard/navigation.py:294
+#: apps/customers/overview.py:161 apps/dashboard/navigation.py:306
 #: apps/legacy/old_shop/importer.py:123
 msgid "Printing quotes"
 msgstr "Printing-offertes"
 
-#: apps/customers/overview.py:163 apps/dashboard/navigation.py:300
+#: apps/customers/overview.py:163 apps/dashboard/navigation.py:312
 #: apps/legacy/old_shop/importer.py:124
 msgid "Printing contracts"
 msgstr "Printing-contracten"
@@ -1612,196 +1612,217 @@ msgstr "dashboardindelingen"
 msgid "Can view sales reports"
 msgstr "Mag verkooprapportage bekijken"
 
-#: apps/dashboard/navigation.py:11 templates/legacy/_head.html:12
+#: apps/dashboard/models.py:29
+msgid "layout"
+msgstr "indeling"
+
+#: apps/dashboard/models.py:33 apps/dashboard/models.py:34
+msgid "admin menu"
+msgstr "beheermenu"
+
+#: apps/dashboard/models.py:37
+msgid "Admin menu"
+msgstr "Beheermenu"
+
+#: apps/dashboard/navigation.py:17 templates/legacy/_head.html:12
 msgid "Overview"
 msgstr "Overzicht"
 
-#: apps/dashboard/navigation.py:13 templates/admin/index.html:6
+#: apps/dashboard/navigation.py:19 templates/admin/index.html:6
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: apps/dashboard/navigation.py:15 apps/dashboard/reports.py:210
+#: apps/dashboard/navigation.py:21 apps/dashboard/reports.py:210
 #: templates/dashboard/report.html:5
 msgid "Sales and margin"
 msgstr "Verkoop en marge"
 
-#: apps/dashboard/navigation.py:25
+#: apps/dashboard/navigation.py:31
 msgid "Configuration"
 msgstr "Configuratie"
 
-#: apps/dashboard/navigation.py:28 apps/siteconfig/apps.py:7
+#: apps/dashboard/navigation.py:34 apps/siteconfig/apps.py:7
 #: apps/siteconfig/models.py:174
 msgid "Settings"
 msgstr "Instellingen"
 
-#: apps/dashboard/navigation.py:34 apps/numbering/apps.py:7
+#: apps/dashboard/navigation.py:40 apps/dashboard/views.py:150
+msgid "Menu"
+msgstr "Menu"
+
+#: apps/dashboard/navigation.py:46 apps/numbering/apps.py:7
 msgid "Number sequences"
 msgstr "Nummerreeksen"
 
-#: apps/dashboard/navigation.py:41 apps/trash/apps.py:7
+#: apps/dashboard/navigation.py:53 apps/trash/apps.py:7
 msgid "Trash"
 msgstr "Prullenbak"
 
-#: apps/dashboard/navigation.py:47 apps/legacy/apps.py:7
+#: apps/dashboard/navigation.py:59 apps/legacy/apps.py:7
 msgid "External databases"
 msgstr "Externe databases"
 
-#: apps/dashboard/navigation.py:53 apps/legacy/admin.py:60
+#: apps/dashboard/navigation.py:65 apps/legacy/admin.py:60
 #: templates/legacy/overview.html:49
 msgid "Table mappings"
 msgstr "Koppelingen"
 
-#: apps/dashboard/navigation.py:59
+#: apps/dashboard/navigation.py:71
 msgid "Imports"
 msgstr "Importeren"
 
-#: apps/dashboard/navigation.py:65 apps/legacy/views.py:68
+#: apps/dashboard/navigation.py:77 apps/legacy/views.py:68
 #: apps/legacy/views.py:80 templates/legacy/choose.html:4
 msgid "Compare databases"
 msgstr "Databases vergelijken"
 
-#: apps/dashboard/navigation.py:91
+#: apps/dashboard/navigation.py:103
 msgid "Customer types"
 msgstr "Klanttypes"
 
-#: apps/dashboard/navigation.py:97
+#: apps/dashboard/navigation.py:109
 msgid "Countries"
 msgstr "Landen"
 
-#: apps/dashboard/navigation.py:113
+#: apps/dashboard/navigation.py:125
 msgid "Orders and invoices"
 msgstr "Bestellingen en facturen"
 
-#: apps/dashboard/navigation.py:128 apps/invoices/models.py:47
+#: apps/dashboard/navigation.py:140 apps/invoices/models.py:47
 #: templates/admin/invoices/invoicesettings/design.html:13
 msgid "Invoice settings"
 msgstr "Factuurinstellingen"
 
-#: apps/dashboard/navigation.py:134 apps/invoices/admin.py:144
+#: apps/dashboard/navigation.py:146 apps/invoices/admin.py:144
 msgid "Invoice design"
 msgstr "Factuurontwerp"
 
-#: apps/dashboard/navigation.py:140 apps/orders/models.py:45
+#: apps/dashboard/navigation.py:152 apps/orders/models.py:45
 msgid "Order settings"
 msgstr "Bestelinstellingen"
 
-#: apps/dashboard/navigation.py:150 apps/dashboard/reports.py:120
+#: apps/dashboard/navigation.py:162 apps/dashboard/reports.py:120
 #: apps/dashboard/reports.py:213 apps/parts/apps.py:7
 #: templates/core/dashboard.html:18 templates/parts/overview.html:3
 #: templates/parts/overview.html:5
 msgid "Spare parts"
 msgstr "Onderdelen"
 
-#: apps/dashboard/navigation.py:165
+#: apps/dashboard/navigation.py:177
 msgid "Payment methods"
 msgstr "Betaalwijzen"
 
-#: apps/dashboard/navigation.py:171
+#: apps/dashboard/navigation.py:183
 msgid "Delivery times"
 msgstr "Levertijden"
 
-#: apps/dashboard/navigation.py:177
+#: apps/dashboard/navigation.py:189
 msgid "Markup tiers"
 msgstr "Opslagstaffels"
 
-#: apps/dashboard/navigation.py:183 apps/legacy/old_shop/importer.py:117
+#: apps/dashboard/navigation.py:195 apps/legacy/old_shop/importer.py:117
 #: apps/parts/models.py:73
 msgid "Spare parts settings"
 msgstr "Instellingen onderdelen"
 
-#: apps/dashboard/navigation.py:193 apps/licences/apps.py:7
+#: apps/dashboard/navigation.py:205 apps/licences/apps.py:7
 msgid "Service packs and licences"
 msgstr "Servicepacks en licenties"
 
-#: apps/dashboard/navigation.py:202 apps/dashboard/reports.py:213
+#: apps/dashboard/navigation.py:214 apps/dashboard/reports.py:213
 #: templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepacks"
 
-#: apps/dashboard/navigation.py:208
+#: apps/dashboard/navigation.py:220
 msgid "Pack categories"
 msgstr "Packcategorieën"
 
-#: apps/dashboard/navigation.py:214
+#: apps/dashboard/navigation.py:226
 msgid "Hardware classes"
 msgstr "Hardwareklassen"
 
-#: apps/dashboard/navigation.py:220
+#: apps/dashboard/navigation.py:232
 msgid "Brands"
 msgstr "Merken"
 
-#: apps/dashboard/navigation.py:226
+#: apps/dashboard/navigation.py:238
 msgid "Device types"
 msgstr "Apparaattypes"
 
-#: apps/dashboard/navigation.py:232
+#: apps/dashboard/navigation.py:244
 msgid "Option types"
 msgstr "Optietypes"
 
-#: apps/dashboard/navigation.py:238
+#: apps/dashboard/navigation.py:250
 msgid "Support periods"
 msgstr "Looptijden"
 
-#: apps/dashboard/navigation.py:244
+#: apps/dashboard/navigation.py:256
 msgid "Service levels"
 msgstr "Serviceniveaus"
 
-#: apps/dashboard/navigation.py:250 apps/licences/models.py:217
+#: apps/dashboard/navigation.py:262 apps/licences/models.py:217
 msgid "Licence settings"
 msgstr "Licentie-instellingen"
 
-#: apps/dashboard/navigation.py:260 apps/telephony/apps.py:7
+#: apps/dashboard/navigation.py:272 apps/telephony/apps.py:7
 #: templates/core/dashboard.html:19 templates/telephony/calculator.html:3
 msgid "Telephony"
 msgstr "Telefonie"
 
-#: apps/dashboard/navigation.py:269
+#: apps/dashboard/navigation.py:281
 msgid "Telephony items"
 msgstr "Telefonie-artikelen"
 
-#: apps/dashboard/navigation.py:275
+#: apps/dashboard/navigation.py:287
 msgid "Telephony categories"
 msgstr "Telefonie-categorieën"
 
-#: apps/dashboard/navigation.py:281 apps/telephony/models.py:29
+#: apps/dashboard/navigation.py:293 apps/telephony/models.py:29
 msgid "Telephony settings"
 msgstr "Instellingen telefonie"
 
-#: apps/dashboard/navigation.py:291
+#: apps/dashboard/navigation.py:303
 msgid "Printing services (archive)"
 msgstr "Printing services (archief)"
 
-#: apps/dashboard/navigation.py:306 apps/legacy/old_shop/importer.py:124
+#: apps/dashboard/navigation.py:318 apps/legacy/old_shop/importer.py:124
 msgid "Supplies orders"
 msgstr "Verbruiksbestellingen"
 
-#: apps/dashboard/navigation.py:312
+#: apps/dashboard/navigation.py:324
 msgid "Printers"
 msgstr "Printers"
 
-#: apps/dashboard/navigation.py:318
+#: apps/dashboard/navigation.py:330
 msgid "Supplies"
 msgstr "Verbruiksartikelen"
 
-#: apps/dashboard/navigation.py:324
+#: apps/dashboard/navigation.py:336
 msgid "Support plans"
 msgstr "Supportpakketten"
 
-#: apps/dashboard/navigation.py:344
+#: apps/dashboard/navigation.py:356
 msgid "Handling options"
 msgstr "Afhandelopties"
 
-#: apps/dashboard/navigation.py:350 apps/faults/models.py:53
+#: apps/dashboard/navigation.py:362 apps/faults/models.py:53
 msgid "Fault report settings"
 msgstr "Storingsinstellingen"
 
-#: apps/dashboard/navigation.py:360
+#: apps/dashboard/navigation.py:372
 msgid "Users and roles"
 msgstr "Gebruikers en rollen"
 
-#: apps/dashboard/navigation.py:369
+#: apps/dashboard/navigation.py:381
 msgid "Roles"
 msgstr "Rollen"
+
+#: apps/dashboard/navigation.py:439 apps/dashboard/navigation.py:472
+#: apps/dashboard/views.py:112 templates/admin/packdesk/menu_editor.html:61
+msgid "New menu"
+msgstr "Nieuw menu"
 
 #: apps/dashboard/reports.py:120
 msgid "Spare parts: surcharges and costs"
@@ -1822,6 +1843,14 @@ msgstr "Dit jaar"
 #: apps/dashboard/reports.py:214
 msgid "Last year"
 msgstr "Vorig jaar"
+
+#: apps/dashboard/views.py:139
+msgid "The menu has been set back to the standard."
+msgstr "Het menu is teruggezet naar de standaard."
+
+#: apps/dashboard/views.py:145
+msgid "The menu has been saved."
+msgstr "Het menu is opgeslagen."
 
 #: apps/dashboard/widgets.py:36
 msgid "Active customers"
@@ -2483,8 +2512,10 @@ msgid "design"
 msgstr "ontwerp"
 
 #: apps/invoices/models.py:26
-msgid "Which parts of the invoice are shown and their wording (Invoice design page)."
-msgstr "Welke onderdelen op de factuur staan en hun teksten (pagina Factuurontwerp)."
+msgid ""
+"Which parts of the invoice are shown and their wording (Invoice design page)."
+msgstr ""
+"Welke onderdelen op de factuur staan en hun teksten (pagina Factuurontwerp)."
 
 #: apps/invoices/models.py:28
 msgid "payment text"
@@ -6362,7 +6393,7 @@ msgid "Design"
 msgstr "Ontwerp"
 
 #: templates/admin/invoices/invoicesettings/design.html:8
-#: templates/base.html:49
+#: templates/admin/packdesk/menu_editor.html:9 templates/base.html:49
 msgid "Language"
 msgstr "Taal"
 
@@ -6375,18 +6406,30 @@ msgid "Set every part back to the standard wording and colours?"
 msgstr "Alle onderdelen terugzetten naar de standaardteksten en -kleuren?"
 
 #: templates/admin/invoices/invoicesettings/design.html:16
+#: templates/admin/packdesk/menu_editor.html:16
 msgid "Standard"
 msgstr "Standaard"
 
 #: templates/admin/invoices/invoicesettings/design.html:17
+#: templates/admin/packdesk/menu_editor.html:17
 #: templates/customers/my_details.html:24
 msgid "Save"
 msgstr "Opslaan"
 
 #: templates/admin/invoices/invoicesettings/design.html:21
 #, python-format
-msgid "Switch parts on or off and change their wording; the example invoice shows the result straight away. Click a part in the example to find it in the list. Empty text = the standard wording. Invoices are made in the default language of the website (%(lang)s); the other languages are kept for when that changes."
-msgstr "Zet onderdelen aan of uit en pas hun tekst aan; de voorbeeldfactuur laat het resultaat meteen zien. Klik op een onderdeel in het voorbeeld om het in de lijst te vinden. Lege tekst = de standaardtekst. Facturen worden gemaakt in de standaardtaal van de website (%(lang)s); de andere talen worden bewaard voor als dat verandert."
+msgid ""
+"Switch parts on or off and change their wording; the example invoice shows "
+"the result straight away. Click a part in the example to find it in the "
+"list. Empty text = the standard wording. Invoices are made in the default "
+"language of the website (%(lang)s); the other languages are kept for when "
+"that changes."
+msgstr ""
+"Zet onderdelen aan of uit en pas hun tekst aan; de voorbeeldfactuur laat het "
+"resultaat meteen zien. Klik op een onderdeel in het voorbeeld om het in de "
+"lijst te vinden. Lege tekst = de standaardtekst. Facturen worden gemaakt in "
+"de standaardtaal van de website (%(lang)s); de andere talen worden bewaard "
+"voor als dat verandert."
 
 #: templates/admin/invoices/invoicesettings/design.html:26
 msgid "Example invoice"
@@ -6417,8 +6460,12 @@ msgid "Height of the logo (mm)"
 msgstr "Hoogte van het logo (mm)"
 
 #: templates/admin/invoices/invoicesettings/design.html:65
-msgid "The logo itself is set under Invoice settings → Layout; empty = the logo of the website."
-msgstr "Het logo zelf stel je in onder Factuurinstellingen → Opmaak; leeg = het logo van de website."
+msgid ""
+"The logo itself is set under Invoice settings → Layout; empty = the logo of "
+"the website."
+msgstr ""
+"Het logo zelf stel je in onder Factuurinstellingen → Opmaak; leeg = het logo "
+"van de website."
 
 #: templates/admin/login.html:7
 msgid "Admin for staff. Customers log in on the website."
@@ -6435,6 +6482,43 @@ msgstr "Wachtwoord vergeten?"
 #: templates/admin/packdesk/admin_language.html:3
 msgid "Admin language"
 msgstr "Beheertaal"
+
+#: templates/admin/packdesk/menu_editor.html:15
+msgid "New main menu"
+msgstr "Nieuw hoofdmenu"
+
+#: templates/admin/packdesk/menu_editor.html:16
+msgid "Set the whole menu back to the standard?"
+msgstr "Het hele menu terugzetten naar de standaard?"
+
+#: templates/admin/packdesk/menu_editor.html:21
+msgid "Drag a main menu or an item by its handle to another place; items can also go to another main menu. Empty name = the standard name. Main menus without items are not shown. This menu applies to everyone; a user only sees the items they have rights to."
+msgstr "Sleep een hoofdmenu of een onderdeel aan het greepje naar een andere plek; onderdelen kunnen ook naar een ander hoofdmenu. Lege naam = de standaardnaam. Hoofdmenu's zonder onderdelen worden niet getoond. Dit menu geldt voor iedereen; een gebruiker ziet alleen de onderdelen waar hij rechten voor heeft."
+
+#: templates/admin/packdesk/menu_editor.html:25
+msgid "You have your own order of the main menus (dashboard → Customise); it comes before the order here."
+msgstr "Je hebt een eigen volgorde van de hoofdmenu's (dashboard → Aanpassen); die gaat voor de volgorde hier."
+
+#: templates/admin/packdesk/menu_editor.html:26
+msgid "Remove my own order"
+msgstr "Mijn eigen volgorde wissen"
+
+#: templates/admin/packdesk/menu_editor.html:38
+#: templates/admin/packdesk/menu_editor.html:47
+msgid "Drag"
+msgstr "Slepen"
+
+#: templates/admin/packdesk/menu_editor.html:40
+msgid "Remove this main menu"
+msgstr "Dit hoofdmenu verwijderen"
+
+#: templates/admin/packdesk/menu_editor.html:62
+msgid "Drop items here"
+msgstr "Sleep onderdelen hierheen"
+
+#: templates/admin/packdesk/menu_editor.html:63
+msgid "Move the items to another main menu first."
+msgstr "Verplaats eerst de onderdelen naar een ander hoofdmenu."
 
 #: templates/admin/parts/cancel.html:8
 #, python-format

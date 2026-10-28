@@ -1,7 +1,13 @@
-"""Admin sidebar. Every section can be collapsed; sections can be reordered per user (dashboard → Customise);
-Configuration is last by default."""
+"""Admin sidebar. Every section can be collapsed. The menu for everyone can be changed under Configuration → Menu
+(order and names of the main menus, which items each one holds, extra main menus); on top of that each user can
+reorder the main menus for themselves (dashboard → Customise). Configuration is last by default."""
 
+import re
+
+from django.conf import settings
 from django.urls import reverse_lazy
+from django.utils.functional import lazy
+from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 
 SECTIONS = [
@@ -28,6 +34,12 @@ SECTIONS = [
                 "title": _("Settings"),
                 "icon": "tune",
                 "link": reverse_lazy("admin:siteconfig_sitesettings_changelist"),
+                "permission": lambda request: request.user.has_perm("siteconfig.view_sitesettings"),
+            },
+            {
+                "title": _("Menu"),
+                "icon": "menu_open",
+                "link": reverse_lazy("admin_menu"),
                 "permission": lambda request: request.user.has_perm("siteconfig.view_sitesettings"),
             },
             {
@@ -379,21 +391,115 @@ DEFAULT_ORDER = ["overview", "customers", "orders", "licences", "parts", "teleph
                  "configuration"]
 
 
-def ordered_keys(user):
+CUSTOM_KEY = re.compile(r"^custom-[a-z0-9]{1,20}$")
+TITLE_LENGTH = 60
+
+
+def item_key(item):
+    """An item is known by its address, e.g. /admin/invoices/invoicesettings/."""
+    return str(item["link"])
+
+
+def _title(texts, standard):
+    """The saved name in the language of the page, otherwise the standard name (translated)."""
+    def resolve():
+        return (texts or {}).get((get_language() or "")[:2]) or str(standard)
+
+    return lazy(resolve, str)()
+
+
+def menu(layout=None):
+    """All main menus with their items, after the changes saved under Configuration → Menu.
+
+    Main menus and items that are new in PackDesk (not in the saved layout) appear in their standard place."""
+    if layout is None:
+        from .models import AdminMenu
+
+        layout = AdminMenu.load().layout
+    builtin = {s["key"]: s for s in SECTIONS}
+    home = {item_key(i): (s["key"], i) for s in SECTIONS for i in s["items"]}
+    names = layout.get("items") or {}
+    entries, placed = [], set()
+    for saved in layout.get("sections") or []:
+        key = saved.get("key")
+        if not (key in builtin or CUSTOM_KEY.match(str(key))) or any(e["key"] == key for e in entries):
+            continue
+        items = [k for k in saved.get("items") or [] if k in home and k not in placed]
+        placed.update(items)
+        entries.append({"key": key, "title": saved.get("title") or {}, "items": items})
+    for key in DEFAULT_ORDER:
+        if not any(e["key"] == key for e in entries):
+            entries.append({"key": key, "title": {}, "items": []})
+    for key, (section, _item) in home.items():
+        if key not in placed:
+            next(e for e in entries if e["key"] == section)["items"].append(key)
+    return [
+        {
+            "key": e["key"], "collapsible": True, "custom": e["key"] not in builtin,
+            "title": _title(e["title"], builtin[e["key"]]["title"] if e["key"] in builtin else _("New menu")),
+            "items": [{**home[k][1], "title": _title(names.get(k), home[k][1]["title"])} for k in e["items"]],
+        }
+        for e in entries
+    ]
+
+
+def clean_layout(data):
+    """The layout as posted by the menu page, with only known menus and items, and without names equal to the
+    standard name (so improved standard names and translations still reach those)."""
+    from django.utils import translation
+
+    languages = [code for code, _name in settings.LANGUAGES]
+    builtin = {s["key"]: s for s in SECTIONS}
+    home = {item_key(i): i for s in SECTIONS for i in s["items"]}
+
+    def texts(posted, standard):
+        result = {}
+        for lang in languages:
+            text = str((posted or {}).get(lang) or "").strip()[:TITLE_LENGTH]
+            with translation.override(lang):
+                if text and text != str(standard):
+                    result[lang] = text
+        return result
+
+    sections, seen_sections, seen_items = [], set(), set()
+    for saved in (data or {}).get("sections") or []:
+        key = str(saved.get("key"))
+        if key in seen_sections or not (key in builtin or CUSTOM_KEY.match(key)):
+            continue
+        seen_sections.add(key)
+        items = [k for k in saved.get("items") or [] if k in home and k not in seen_items]
+        seen_items.update(items)
+        standard = builtin[key]["title"] if key in builtin else _("New menu")
+        sections.append({"key": key, "title": texts(saved.get("title"), standard), "items": items})
+    names = {}
+    for key, posted in ((data or {}).get("items") or {}).items():
+        if key in home and (found := texts(posted, home[key]["title"])):
+            names[key] = found
+    return {"sections": sections, "items": names}
+
+
+def ordered_keys(user, sections=None):
+    """The main menus in the order of this user: their own order (dashboard → Customise) first, then the rest
+    in the order of the menu for everyone."""
     from .models import DashboardLayout
 
+    keys = [s["key"] for s in (sections if sections is not None else menu())]
     saved = DashboardLayout.objects.filter(user=user).values_list("sidebar_order", flat=True).first() or []
-    known = [s["key"] for s in SECTIONS]
-    order = [k for k in saved if k in known] + [k for k in DEFAULT_ORDER if k not in saved]
-    return order + [k for k in known if k not in order]
+    return [k for k in saved if k in keys] + [k for k in keys if k not in saved]
+
+
+def _visible(request, section):
+    return any(not i.get("permission") or i["permission"](request) for i in section["items"])
 
 
 def sidebar(request):
-    """Called by unfold (UNFOLD["SIDEBAR"]["navigation"]) on every admin page."""
-    by_key = {s["key"]: s for s in SECTIONS}
+    """Called by unfold (UNFOLD["SIDEBAR"]["navigation"]) on every admin page. Main menus without anything
+    this user may open are left out."""
+    sections = menu()
     if not request.user.is_authenticated:
-        return [by_key[k] for k in DEFAULT_ORDER]
-    return [by_key[k] for k in ordered_keys(request.user)]
+        return sections
+    by_key = {s["key"]: s for s in sections}
+    return [by_key[k] for k in ordered_keys(request.user, sections) if _visible(request, by_key[k])]
 
 
 def section_index(request, app_label, extra_context=None):

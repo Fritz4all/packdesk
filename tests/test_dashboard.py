@@ -142,6 +142,54 @@ def test_menu_sections_can_be_reordered_per_user(client, site, beheerder, rf):
     assert [s["key"] for s in sidebar(request)][0] == "overview"
 
 
+def test_menu_page_moves_renames_and_adds_main_menus(client, site, beheerder, rf):
+    from django.utils import translation
+
+    from apps.dashboard.models import AdminMenu
+    from apps.dashboard.navigation import sidebar
+
+    client.force_login(beheerder)
+    assert client.get("/admin/menu/").status_code == 200
+    layout = {
+        "sections": [
+            {"key": "configuration", "title": {"nl": "Beheer"},
+             "items": ["/admin/invoices/invoicesettings/", "/admin/siteconfig/sitesettings/"]},
+            {"key": "custom-finance", "title": {"nl": "Financieel"}, "items": ["/admin/invoices/invoice/"]},
+            {"key": "bogus", "items": ["/admin/customers/customer/"]},  # unknown main menus are dropped
+            {"key": "orders", "title": {"nl": "Bestellingen en facturen"}, "items": ["/nope/"]},  # = standard name
+        ],
+        "items": {"/admin/invoices/invoice/": {"nl": "Alle facturen", "xx": "?"}, "/nope/": {"nl": "x"}},
+    }
+    client.post("/admin/menu/", {"layout": json.dumps(layout)})
+    saved = AdminMenu.load().layout
+    assert [s["key"] for s in saved["sections"]] == ["configuration", "custom-finance", "orders"]
+    assert saved["sections"][2]["title"] == {} and saved["items"] == {"/admin/invoices/invoice/": {"nl": "Alle facturen"}}
+
+    request = rf.get("/")
+    request.user = beheerder
+    with translation.override("nl"):
+        menu = {s["key"]: s for s in sidebar(request)}
+        keys = list(menu)
+        assert keys[:2] == ["configuration", "custom-finance"]
+        assert str(menu["configuration"]["title"]) == "Beheer"
+        links = [str(i["link"]) for i in menu["configuration"]["items"]]
+        assert links[:2] == ["/admin/invoices/invoicesettings/", "/admin/siteconfig/sitesettings/"]
+        assert "/admin/numbering/numbersequence/" in links  # not placed: stays in its standard main menu
+        assert [str(i["title"]) for i in menu["custom-finance"]["items"]] == ["Alle facturen"]
+        assert "/admin/invoices/invoicesettings/" not in [str(i["link"]) for i in menu["orders"]["items"]]
+    with translation.override("de"):
+        assert str(menu["configuration"]["title"]) == "Konfiguration"  # no name of its own in German
+
+    client.post("/admin/menu/", {"reset": "1"})
+    assert AdminMenu.load().layout == {}
+
+
+def test_menu_page_needs_the_settings_rights(client, site):
+    client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
+    assert client.get("/admin/menu/").status_code == 403
+    assert client.post("/admin/menu/", {"reset": "1"}).status_code == 403
+
+
 def test_single_tiles_can_be_hidden(client, site, beheerder):
     client.force_login(beheerder)
     client.post("/admin/dashboard/layout/", json.dumps({"hidden_items": ["stats:active_customers", "nope:x"]}),
