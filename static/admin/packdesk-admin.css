@@ -170,4 +170,12 @@ html.dark .pd-design-preview { border-color: rgb(55 65 81); }
 .pd-menu-item:hover { background: rgb(147 51 234 / .06); }
 .pd-menu-icon { font-size: 18px; color: rgb(107 114 128); }
 .pd-dragging { opacity: .4; outline: 2px dashed rgb(147 51 234); }
+.pd-menu-folder { display: none; }
+.pd-menu-items > .pd-menu-section { padding: .4rem .5rem; margin: .25rem 0; box-shadow: none; }
+.pd-menu-items > .pd-menu-section .pd-menu-folder { display: inline; }
+.pd-menu-items > .pd-menu-section > .pd-menu-items { margin-left: 1.4rem; }
+.pd-drop-into { outline: 2px solid rgb(147 51 234); }
+.pd-drop-before { box-shadow: -4px 0 0 rgb(147 51 234), 0 -4px 0 rgb(147 51 234); }
+.pd-drop-after { box-shadow: 4px 0 0 rgb(147 51 234), 0 4px 0 rgb(147 51 234); }
+.pd-drop-line { height: 3px; margin: 2px 0; border-radius: 2px; background: rgb(147 51 234); }
 .pd-menu-note { padding: .5rem .75rem; border-radius: 8px; background: rgb(251 191 36 / .12); }

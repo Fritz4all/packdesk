@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 06:19+0100\n"
+"POT-Creation-Date: 2026-10-28 17:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1646,7 +1646,7 @@ msgstr "Configuratie"
 msgid "Settings"
 msgstr "Instellingen"
 
-#: apps/dashboard/navigation.py:40 apps/dashboard/views.py:150
+#: apps/dashboard/navigation.py:40 apps/dashboard/views.py:159
 msgid "Menu"
 msgstr "Menu"
 
@@ -1819,8 +1819,8 @@ msgstr "Gebruikers en rollen"
 msgid "Roles"
 msgstr "Rollen"
 
-#: apps/dashboard/navigation.py:439 apps/dashboard/navigation.py:472
-#: apps/dashboard/views.py:112 templates/admin/packdesk/menu_editor.html:61
+#: apps/dashboard/navigation.py:422
+#: templates/admin/packdesk/menu_editor.html:62
 msgid "New menu"
 msgstr "Nieuw menu"
 
@@ -1844,11 +1844,11 @@ msgstr "Dit jaar"
 msgid "Last year"
 msgstr "Vorig jaar"
 
-#: apps/dashboard/views.py:139
+#: apps/dashboard/views.py:148
 msgid "The menu has been set back to the standard."
 msgstr "Het menu is teruggezet naar de standaard."
 
-#: apps/dashboard/views.py:145
+#: apps/dashboard/views.py:154
 msgid "The menu has been saved."
 msgstr "Het menu is opgeslagen."
 
@@ -6492,31 +6492,35 @@ msgid "Set the whole menu back to the standard?"
 msgstr "Het hele menu terugzetten naar de standaard?"
 
 #: templates/admin/packdesk/menu_editor.html:21
-msgid "Drag a main menu or an item by its handle to another place; items can also go to another main menu. Empty name = the standard name. Main menus without items are not shown. This menu applies to everyone; a user only sees the items they have rights to."
-msgstr "Sleep een hoofdmenu of een onderdeel aan het greepje naar een andere plek; onderdelen kunnen ook naar een ander hoofdmenu. Lege naam = de standaardnaam. Hoofdmenu's zonder onderdelen worden niet getoond. Dit menu geldt voor iedereen; een gebruiker ziet alleen de onderdelen waar hij rechten voor heeft."
+msgid "Drag a main menu or an item by its handle to another place; items can also go to another main menu. Drop a whole main menu on the items of another one to place it there as a fold-out group with all its items (one level deep). Empty name = the standard name. Main menus without items are not shown. This menu applies to everyone; a user only sees the items they have rights to."
+msgstr "Sleep een hoofdmenu of een onderdeel aan het greepje naar een andere plek; onderdelen kunnen ook naar een ander hoofdmenu. Zet je een heel hoofdmenu neer tussen de onderdelen van een ander hoofdmenu, dan komt het daar als uitklapgroep met al zijn onderdelen (één niveau diep). Lege naam = de standaardnaam. Hoofdmenu's zonder onderdelen worden niet getoond. Dit menu geldt voor iedereen; een gebruiker ziet alleen de onderdelen waar hij rechten voor heeft."
 
 #: templates/admin/packdesk/menu_editor.html:25
-msgid "You have your own order of the main menus (dashboard → Customise); it comes before the order here."
-msgstr "Je hebt een eigen volgorde van de hoofdmenu's (dashboard → Aanpassen); die gaat voor de volgorde hier."
+msgid ""
+"You have your own order of the main menus (dashboard → Customise); it comes "
+"before the order here."
+msgstr ""
+"Je hebt een eigen volgorde van de hoofdmenu's (dashboard → Aanpassen); die "
+"gaat voor de volgorde hier."
 
 #: templates/admin/packdesk/menu_editor.html:26
 msgid "Remove my own order"
 msgstr "Mijn eigen volgorde wissen"
 
 #: templates/admin/packdesk/menu_editor.html:38
-#: templates/admin/packdesk/menu_editor.html:47
+#: templates/admin/packdesk/menu_editor.html:48
 msgid "Drag"
 msgstr "Slepen"
 
-#: templates/admin/packdesk/menu_editor.html:40
+#: templates/admin/packdesk/menu_editor.html:41
 msgid "Remove this main menu"
 msgstr "Dit hoofdmenu verwijderen"
 
-#: templates/admin/packdesk/menu_editor.html:62
+#: templates/admin/packdesk/menu_editor.html:63
 msgid "Drop items here"
 msgstr "Sleep onderdelen hierheen"
 
-#: templates/admin/packdesk/menu_editor.html:63
+#: templates/admin/packdesk/menu_editor.html:64
 msgid "Move the items to another main menu first."
 msgstr "Verplaats eerst de onderdelen naar een ander hoofdmenu."
 

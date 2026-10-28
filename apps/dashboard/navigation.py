@@ -392,6 +392,7 @@ DEFAULT_ORDER = ["overview", "customers", "orders", "licences", "parts", "teleph
 
 
 CUSTOM_KEY = re.compile(r"^custom-[a-z0-9]{1,20}$")
+GROUP = "group:"  # in a main menu's items: another main menu, shown there as a fold-out group with its items
 TITLE_LENGTH = 60
 
 
@@ -400,46 +401,105 @@ def item_key(item):
     return str(item["link"])
 
 
-def _title(texts, standard):
-    """The saved name in the language of the page, otherwise the standard name (translated)."""
+def _title(texts, standard, any_language=False):
+    """The saved name in the language of the page, otherwise the standard name (translated). An own main menu
+    has no translated standard name, so there a name saved in another language comes first."""
     def resolve():
-        return (texts or {}).get((get_language() or "")[:2]) or str(standard)
+        texts_ = texts or {}
+        own = texts_.get((get_language() or "")[:2])
+        if not own and any_language:
+            own = next((t for t in texts_.values() if t), "")
+        return own or str(standard)
 
     return lazy(resolve, str)()
 
 
+def _is_custom(key):
+    return not any(s["key"] == key for s in SECTIONS)
+
+
+def _standard_title(key):
+    return next((s["title"] for s in SECTIONS if s["key"] == key), _("New menu"))
+
+
+def _structure(layout):
+    """The saved main menus [(key, titles, [item keys and "group:<key>"])] with only known menus and items, each
+    item once, and groups one level deep (the sidebar has no deeper level): a main menu inside another one
+    cannot hold groups itself."""
+    builtin = {s["key"] for s in SECTIONS}
+    home = {item_key(i) for s in SECTIONS for i in s["items"]}
+    entries, seen_items = [], set()
+    for saved in (layout or {}).get("sections") or []:
+        key = str(saved.get("key"))
+        if not (key in builtin or CUSTOM_KEY.match(key)) or any(e[0] == key for e in entries):
+            continue
+        refs = []
+        for ref in saved.get("items") or []:
+            ref = str(ref)
+            if ref.startswith(GROUP) or (ref in home and ref not in seen_items):
+                refs.append(ref)
+                seen_items.add(ref)
+        entries.append((key, saved.get("title") or {}, refs))
+    keys = {e[0] for e in entries}
+    parent_of = {}
+    for key, _titles, refs in entries:
+        for ref in refs:
+            child = ref[len(GROUP):]
+            if ref.startswith(GROUP) and child in keys and child != key and child not in parent_of:
+                parent_of[child] = key
+    parent_of = {child: parent for child, parent in parent_of.items() if parent not in parent_of}
+    return [
+        (key, titles, [r for r in refs if not r.startswith(GROUP) or parent_of.get(r[len(GROUP):]) == key])
+        for key, titles, refs in entries
+    ], parent_of
+
+
 def menu(layout=None):
-    """All main menus with their items, after the changes saved under Configuration → Menu.
+    """All main menus with their items, after the changes saved under Configuration → Menu. A main menu placed
+    inside another one is an item there with its own items (a fold-out group), marked with "group": key.
 
     Main menus and items that are new in PackDesk (not in the saved layout) appear in their standard place."""
     if layout is None:
         from .models import AdminMenu
 
         layout = AdminMenu.load().layout
-    builtin = {s["key"]: s for s in SECTIONS}
     home = {item_key(i): (s["key"], i) for s in SECTIONS for i in s["items"]}
-    names = layout.get("items") or {}
-    entries, placed = [], set()
-    for saved in layout.get("sections") or []:
-        key = saved.get("key")
-        if not (key in builtin or CUSTOM_KEY.match(str(key))) or any(e["key"] == key for e in entries):
-            continue
-        items = [k for k in saved.get("items") or [] if k in home and k not in placed]
-        placed.update(items)
-        entries.append({"key": key, "title": saved.get("title") or {}, "items": items})
+    names = (layout or {}).get("items") or {}
+    entries, parent_of = _structure(layout)
     for key in DEFAULT_ORDER:
-        if not any(e["key"] == key for e in entries):
-            entries.append({"key": key, "title": {}, "items": []})
+        if not any(e[0] == key for e in entries):
+            entries.append((key, {}, []))
+    placed = {ref for _key, _titles, refs in entries for ref in refs}
     for key, (section, _item) in home.items():
         if key not in placed:
-            next(e for e in entries if e["key"] == section)["items"].append(key)
+            next(e for e in entries if e[0] == section)[2].append(key)
+    by_key = {e[0]: e for e in entries}
+
+    def items(refs):
+        result = []
+        for ref in refs:
+            if ref.startswith(GROUP):
+                child_key, child_titles, child_refs = by_key[ref[len(GROUP):]]
+                children = items(child_refs)
+                if children:
+                    result.append({
+                        "title": _title(child_titles, _standard_title(child_key), _is_custom(child_key)),
+                        "icon": "folder", "link": "#",
+                        "group": child_key, "items": children,
+                        "permission": lambda request, kids=children: any(
+                            not k.get("permission") or k["permission"](request) for k in kids),
+                    })
+            else:
+                result.append({**home[ref][1], "title": _title(names.get(ref), home[ref][1]["title"])})
+        return result
+
     return [
         {
-            "key": e["key"], "collapsible": True, "custom": e["key"] not in builtin,
-            "title": _title(e["title"], builtin[e["key"]]["title"] if e["key"] in builtin else _("New menu")),
-            "items": [{**home[k][1], "title": _title(names.get(k), home[k][1]["title"])} for k in e["items"]],
+            "key": key, "collapsible": True, "custom": _is_custom(key),
+            "title": _title(titles, _standard_title(key), _is_custom(key)), "items": items(refs),
         }
-        for e in entries
+        for key, titles, refs in entries
+        if key not in parent_of
     ]
 
 
@@ -449,7 +509,6 @@ def clean_layout(data):
     from django.utils import translation
 
     languages = [code for code, _name in settings.LANGUAGES]
-    builtin = {s["key"]: s for s in SECTIONS}
     home = {item_key(i): i for s in SECTIONS for i in s["items"]}
 
     def texts(posted, standard):
@@ -461,21 +520,19 @@ def clean_layout(data):
                     result[lang] = text
         return result
 
-    sections, seen_sections, seen_items = [], set(), set()
-    for saved in (data or {}).get("sections") or []:
-        key = str(saved.get("key"))
-        if key in seen_sections or not (key in builtin or CUSTOM_KEY.match(key)):
-            continue
-        seen_sections.add(key)
-        items = [k for k in saved.get("items") or [] if k in home and k not in seen_items]
-        seen_items.update(items)
-        standard = builtin[key]["title"] if key in builtin else _("New menu")
-        sections.append({"key": key, "title": texts(saved.get("title"), standard), "items": items})
+    entries, _parent_of = _structure(data if isinstance(data, dict) else {})
+    sections = [{"key": key, "title": texts(titles, _standard_title(key)), "items": refs} for key, titles, refs in entries]
     names = {}
     for key, posted in ((data or {}).get("items") or {}).items():
         if key in home and (found := texts(posted, home[key]["title"])):
             names[key] = found
     return {"sections": sections, "items": names}
+
+
+def flat_items(section):
+    """The items of a main menu, with those of its fold-out groups."""
+    for item in section["items"]:
+        yield from item["items"] if "group" in item else [item]
 
 
 def ordered_keys(user, sections=None):
@@ -512,7 +569,7 @@ def section_index(request, app_label, extra_context=None):
     prefix = f"/admin/{app_label}/"
     sections = []
     for section in sidebar(request):
-        items = [i for i in section["items"] if not i.get("permission") or i["permission"](request)]
+        items = [i for i in flat_items(section) if not i.get("permission") or i["permission"](request)]
         if any(str(i["link"]).startswith(prefix) for i in items):
             sections.append({"title": section["title"], "items": [{**i, "link": str(i["link"])} for i in items]})
     if not sections:

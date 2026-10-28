@@ -184,6 +184,38 @@ def test_menu_page_moves_renames_and_adds_main_menus(client, site, beheerder, rf
     assert AdminMenu.load().layout == {}
 
 
+def test_main_menu_can_be_a_fold_out_group_in_another_one(client, site, beheerder):
+    from django.utils import translation
+
+    from apps.dashboard.navigation import clean_layout, menu
+
+    layout = clean_layout({"sections": [
+        {"key": "configuration", "items": ["group:orders", "/admin/siteconfig/sitesettings/", "group:configuration"]},
+        {"key": "orders", "items": ["/admin/orders/order/", "group:parts"]},  # a group holds no groups
+        {"key": "custom-shop", "title": {"en": "Shop"}, "items": ["/admin/customers/customer/"]},
+    ]})
+    assert layout["sections"][0]["items"] == ["group:orders", "/admin/siteconfig/sitesettings/"]
+    assert layout["sections"][1]["items"] == ["/admin/orders/order/"]
+    with translation.override("nl"):
+        sections = {s["key"]: s for s in menu(layout)}
+        assert "orders" not in sections and "parts" in sections
+        group = sections["configuration"]["items"][0]
+        assert str(group["title"]) == "Bestellingen en facturen"
+        assert [str(i["link"]) for i in group["items"]][:2] == ["/admin/orders/order/", "/admin/invoices/invoice/"]
+        assert str(sections["custom-shop"]["title"]) == "Shop"  # own menu: name from another language
+
+    from apps.dashboard.models import AdminMenu
+
+    AdminMenu.objects.update_or_create(pk=1, defaults={"layout": layout})
+    client.force_login(beheerder)
+    page = client.get("/admin/").content.decode()
+    assert "subnavigationOpen" in page and "/admin/orders/order/" in page
+    editor = client.get("/admin/menu/").context["menu_data"]
+    configuration = next(s for s in editor if s["key"] == "configuration")
+    assert configuration["items"][0]["key"] == "orders" and configuration["items"][0]["items"]
+    assert client.get("/admin/orders/").status_code == 200  # section page finds items inside groups
+
+
 def test_menu_page_needs_the_settings_rights(client, site):
     client.force_login(make_user("mw@example.test", staff=True, role="Medewerker"))
     assert client.get("/admin/menu/").status_code == 403

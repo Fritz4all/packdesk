@@ -18,7 +18,7 @@
     {% endif %}
   </div>
   <p class="text-sm mb-2 text-base-500">
-    {% translate "Drag a main menu or an item by its handle to another place; items can also go to another main menu. Empty name = the standard name. Main menus without items are not shown. This menu applies to everyone; a user only sees the items they have rights to." %}
+    {% translate "Drag a main menu or an item by its handle to another place; items can also go to another main menu. Drop a whole main menu on the items of another one to place it there as a fold-out group with all its items (one level deep). Empty name = the standard name. Main menus without items are not shown. This menu applies to everyone; a user only sees the items they have rights to." %}
   </p>
   {% if own_order %}
   <p class="text-sm mb-4 pd-menu-note">
@@ -33,21 +33,22 @@
 
 {{ menu_data|json_script:"pd-menu-data" }}
 <template id="pd-menu-section">
-  <section class="pd-widget pd-menu-section">
+  <div class="pd-widget pd-menu-section">
     <div class="pd-menu-head">
       <span class="material-symbols-outlined pd-menu-handle" title="{% translate 'Drag' %}">drag_indicator</span>
+      <span class="material-symbols-outlined pd-menu-icon pd-menu-folder">folder</span>
       <span class="pd-menu-texts"></span>
       <button type="button" class="pd-menu-delete" title="{% translate 'Remove this main menu' %}"><span class="material-symbols-outlined text-[18px]">delete</span></button>
     </div>
-    <ul class="pd-menu-items"></ul>
-  </section>
+    <div class="pd-menu-items"></div>
+  </div>
 </template>
 <template id="pd-menu-item">
-  <li class="pd-menu-item">
+  <div class="pd-menu-item">
     <span class="material-symbols-outlined pd-menu-handle" title="{% translate 'Drag' %}">drag_indicator</span>
     <span class="material-symbols-outlined pd-menu-icon"></span>
     <span class="pd-menu-texts"></span>
-  </li>
+  </div>
 </template>
 
 <script>
@@ -61,7 +62,7 @@
   const NEW_MENU = "{{ _('New menu')|escapejs }}";
   const EMPTY_HINT = "{{ _('Drop items here')|escapejs }}";
   const NOT_EMPTY = "{{ _('Move the items to another main menu first.')|escapejs }}";
-  let dragged = null;
+  let dragged = null, drop = null;
 
   function texts(holder, standard, saved) {
     languages.forEach(lang => {
@@ -79,23 +80,23 @@
   }
 
   function makeItem(item) {
-    const li = document.getElementById("pd-menu-item").content.firstElementChild.cloneNode(true);
-    li.dataset.key = item.key;
-    li.querySelector(".pd-menu-icon").textContent = item.icon;
-    texts(li.querySelector(".pd-menu-texts"), item.standard, item.title);
-    return li;
+    const el = document.getElementById("pd-menu-item").content.firstElementChild.cloneNode(true);
+    el.dataset.key = item.key;
+    el.querySelector(".pd-menu-icon").textContent = item.icon;
+    texts(el.querySelector(".pd-menu-texts"), item.standard, item.title);
+    return el;
   }
 
   function makeSection(section) {
     const el = document.getElementById("pd-menu-section").content.firstElementChild.cloneNode(true);
     el.dataset.key = section.key;
-    if (section.custom) el.dataset.custom = "1";
     texts(el.querySelector(".pd-menu-texts"), section.standard, section.title);
     const list = el.querySelector(".pd-menu-items");
     list.dataset.empty = EMPTY_HINT;
-    section.items.forEach(item => list.appendChild(makeItem(item)));
-    el.querySelector(".pd-menu-delete").hidden = !section.custom || readOnly;
-    el.querySelector(".pd-menu-delete").addEventListener("click", () => {
+    section.items.forEach(entry => list.appendChild(entry.items ? makeSection(entry) : makeItem(entry)));
+    const remove = el.querySelector(".pd-menu-delete");
+    remove.hidden = !section.custom || readOnly;
+    remove.addEventListener("click", () => {
       if (list.children.length) { alert(NOT_EMPTY); return; }
       el.remove();
     });
@@ -104,7 +105,23 @@
 
   data.forEach(section => root.appendChild(makeSection(section)));
 
-  // --- dragging: only by the handle, so the name fields stay normal text fields ---
+  // --- dragging: only by the handle, so the name fields stay normal text fields ---------------------------
+  // Items move along while dragging. A main menu shows where it will land and moves on drop: on the head of
+  // another card = before/after that card; on the items of a card = into that card as a fold-out group.
+  const topCard = el => { while (el && el.parentElement !== root) el = el.parentElement; return el; };
+  const hasGroups = section => !!section.querySelector(".pd-menu-items .pd-menu-section");
+
+  function clearMarks() {
+    root.querySelectorAll(".pd-drop-before, .pd-drop-after, .pd-drop-into").forEach(el =>
+      el.classList.remove("pd-drop-before", "pd-drop-after", "pd-drop-into"));
+    root.querySelectorAll(".pd-drop-line").forEach(el => el.remove());
+  }
+
+  function positionIn(list, y) {
+    return [...list.children].find(el => el !== dragged && !el.classList.contains("pd-drop-line")
+      && y < el.getBoundingClientRect().top + el.offsetHeight / 2) || null;
+  }
+
   if (!readOnly) {
     root.addEventListener("mousedown", event => {
       const handle = event.target.closest(".pd-menu-handle");
@@ -113,6 +130,7 @@
     root.addEventListener("dragstart", event => {
       dragged = event.target.closest(".pd-menu-item, .pd-menu-section");
       if (!dragged) return;
+      event.stopPropagation();
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.setData("text/plain", dragged.dataset.key);
       requestAnimationFrame(() => dragged && dragged.classList.add("pd-dragging"));
@@ -121,27 +139,45 @@
       if (!dragged) return;
       dragged.classList.remove("pd-dragging");
       dragged.draggable = false;
-      dragged = null;
+      dragged = drop = null;
+      clearMarks();
     });
     root.addEventListener("dragover", event => {
       if (!dragged) return;
+      event.preventDefault();
       if (dragged.classList.contains("pd-menu-item")) {
-        const list = event.target.closest(".pd-menu-section")?.querySelector(".pd-menu-items");
-        if (!list) return;
-        event.preventDefault();
-        const after = [...list.children].find(li => li !== dragged && event.clientY < li.getBoundingClientRect().top + li.offsetHeight / 2);
-        list.insertBefore(dragged, after || null);
-      } else {
-        const target = event.target.closest(".pd-menu-section");
-        event.preventDefault();
-        if (!target || target === dragged) return;
-        const box = target.getBoundingClientRect();
+        const list = event.target.closest(".pd-menu-items") || topCard(event.target)?.querySelector(".pd-menu-items");
+        if (list) list.insertBefore(dragged, positionIn(list, event.clientY));
+        return;
+      }
+      const card = topCard(event.target);
+      if (!card) return;  // in a gap between cards: keep the last place
+      clearMarks();
+      drop = null;
+      let list = event.target.closest(".pd-menu-items");
+      if (list && list !== card.querySelector(":scope > .pd-menu-items")) list = card.querySelector(":scope > .pd-menu-items");
+      const intoOwn = card === dragged || dragged.contains(card);
+      if (list && !intoOwn && !hasGroups(dragged)) {
+        const before = positionIn(list, event.clientY);
+        const line = document.createElement("div");
+        line.className = "pd-drop-line";
+        list.insertBefore(line, before);
+        card.classList.add("pd-drop-into");
+        drop = {parent: list, before};
+      } else if (!intoOwn) {
+        const box = card.getBoundingClientRect();
         const columns = box.width < root.clientWidth * 0.9;  // cards side by side: left/right half decides
-        const before = columns ? event.clientX < box.left + box.width / 2 : event.clientY < box.top + box.height / 2;
-        root.insertBefore(dragged, before ? target : target.nextSibling);
+        const first = columns ? event.clientX < box.left + box.width / 2 : event.clientY < box.top + box.height / 2;
+        card.classList.add(first ? "pd-drop-before" : "pd-drop-after");
+        drop = {parent: root, before: first ? card : card.nextSibling};
       }
     });
-    root.addEventListener("drop", event => { if (dragged) event.preventDefault(); });
+    root.addEventListener("drop", event => {
+      if (!dragged) return;
+      event.preventDefault();
+      if (drop && dragged.classList.contains("pd-menu-section")) drop.parent.insertBefore(dragged, drop.before);
+      clearMarks();
+    });
 
     document.getElementById("pd-menu-add").addEventListener("click", () => {
       const key = "custom-" + Math.random().toString(36).slice(2, 10);
@@ -154,15 +190,16 @@
 
     form.addEventListener("submit", event => {
       if (event.submitter && event.submitter.name === "reset") return;
-      const names = el => Object.fromEntries([...el.querySelectorAll(":scope > .pd-menu-texts > input, :scope > .pd-menu-head > .pd-menu-texts > input")]
+      const names = holder => Object.fromEntries([...holder.querySelectorAll(":scope > input")]
         .filter(i => i.value.trim()).map(i => [i.dataset.lang, i.value.trim()]));
       const items = {};
       const sections = [...root.querySelectorAll(".pd-menu-section")].map(section => ({
         key: section.dataset.key,
-        title: names(section),
-        items: [...section.querySelectorAll(".pd-menu-item")].map(li => {
-          items[li.dataset.key] = names(li);
-          return li.dataset.key;
+        title: names(section.querySelector(":scope > .pd-menu-head > .pd-menu-texts")),
+        items: [...section.querySelector(":scope > .pd-menu-items").children].map(el => {
+          if (el.classList.contains("pd-menu-section")) return "group:" + el.dataset.key;
+          items[el.dataset.key] = names(el.querySelector(":scope > .pd-menu-texts"));
+          return el.dataset.key;
         }),
       }));
       document.getElementById("pd-menu-layout").value = JSON.stringify({sections, items});

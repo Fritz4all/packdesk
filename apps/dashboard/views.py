@@ -89,13 +89,14 @@ def dashboard_callback(request, context):
 
 def _menu_editor_data(layout):
     """The menu as the menu page shows it: per main menu and item the standard name per language and the saved
-    names."""
-
-    from .navigation import SECTIONS, item_key, menu
+    names; a main menu inside another one appears among that one's items with "items" of its own."""
+    from .navigation import SECTIONS, _standard_title, item_key, menu
 
     languages = [code for code, _name in settings.LANGUAGES]
-    standard_sections = {s["key"]: s["title"] for s in SECTIONS}
     standard_items = {item_key(i): i["title"] for s in SECTIONS for i in s["items"]}
+    saved_sections = {s["key"]: s.get("title") or {} for s in layout.get("sections") or []}
+    saved_items = layout.get("items") or {}
+    builtin = {s["key"] for s in SECTIONS}
 
     def per_language(text):
         result = {}
@@ -104,21 +105,29 @@ def _menu_editor_data(layout):
                 result[lang] = str(text)
         return result
 
-    saved_sections = {s["key"]: s.get("title") or {} for s in layout.get("sections") or []}
-    saved_items = layout.get("items") or {}
-    return [
-        {
-            "key": section["key"], "custom": section["custom"],
-            "standard": per_language(standard_sections.get(section["key"], gettext_lazy("New menu"))),
-            "title": saved_sections.get(section["key"], {}),
-            "items": [
-                {"key": item_key(item), "icon": item.get("icon", ""), "standard": per_language(standard_items[item_key(item)]),
-                 "title": saved_items.get(item_key(item), {})}
-                for item in section["items"]
-            ],
-        }
-        for section in menu(layout)
-    ]
+    def section(key, items):
+        saved = saved_sections.get(key, {})
+        standard = per_language(_standard_title(key))
+        if key not in builtin and saved:  # own menu: the name given in another language as example
+            standard = {lang: next(iter(saved.values())) for lang in languages}
+        return {"key": key, "custom": key not in builtin, "standard": standard, "title": saved,
+                "items": [entry(i) for i in items]}
+
+    def entry(item):
+        if "group" in item:
+            return section(item["group"], item["items"])
+        key = item_key(item)
+        return {"key": key, "icon": item.get("icon", ""), "standard": per_language(standard_items[key]),
+                "title": saved_items.get(key, {})}
+
+    sections = [section(s["key"], s["items"]) for s in menu(layout)]
+    # Main menus emptied out completely (not shown in the sidebar) stay on the page, so items can go back there.
+    shown = {s["key"] for s in sections} | {i["key"] for s in sections for i in s["items"] if "items" in i}
+    for key in [s["key"] for s in layout.get("sections") or []] + [s["key"] for s in SECTIONS]:
+        if key not in shown and (key in builtin or key in saved_sections):
+            sections.append(section(key, []))
+            shown.add(key)
+    return sections
 
 
 @staff_member_required
