@@ -156,7 +156,7 @@ jobs:
         with:
           package: packdesk
           keep-n-tagged: 30
-          exclude-tags: '^(latest|[1-9][0-9]*\.[0-9]+(\.[0-9]+)?)$'
+          exclude-tags: '^latest$|^[1-9][0-9]*[.]'
           use-regex: true
           delete-untagged: true
           dry-run: true
