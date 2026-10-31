@@ -107,3 +107,38 @@ jobs:
           build-args: PACKDESK_BUILD=${{ steps.version.outputs.value }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  release:
+    # Fills the Releases page: one release per published image, listing the commits since the previous one.
+    # A tag made with this token starts no new workflow run.
+    needs: docker
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create the release
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            tag="$GITHUB_REF_NAME"
+          else
+            tag="v0.1.${GITHUB_RUN_NUMBER}"
+          fi
+          version="${tag#v}"
+          previous=$(gh release view --json tagName --jq .tagName 2>/dev/null || true)
+          if [ -n "$previous" ]; then range=("$previous..$GITHUB_SHA"); else range=(-n 30 "$GITHUB_SHA"); fi
+          {
+            echo "## Docker image"
+            echo
+            echo "\`ghcr.io/fritz4all/packdesk:$version\`"
+            echo
+            echo "## Changes"
+            echo
+            git log --no-merges --format='- %s (%h)' "${range[@]}"
+          } > notes.md
+          gh release create "$tag" --target "$GITHUB_SHA" --title "PackDesk $version" --notes-file notes.md

@@ -131,7 +131,8 @@ Na elke push naar `main` draaien de tests; slagen ze, dan bouwt GitHub het image
 
 Elke geslaagde build op `main` krijgt automatisch een versienummer, `0.1.<nummer van de CI-run>`: als tag van
 het image, als label (`org.opencontainers.image.version`, ook bij `latest` te zien in bijvoorbeeld Portainer) en
-onderaan de zijbalk in het beheer. Een hoofdversie maak je met een tag:
+onderaan de zijbalk in het beheer. Daarnaast maakt de CI een [release](https://github.com/Fritz4all/packdesk/releases)
+aan met de wijzigingen sinds de vorige. Een hoofdversie maak je met een tag:
 
 ```bash
 # Markeer de huidige versie als 1.2.0 en zet de tag op GitHub; het image krijgt dan ook de tags 1.2.0 en 1.2.
