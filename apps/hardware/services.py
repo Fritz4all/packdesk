@@ -90,7 +90,8 @@ def place_order(customer, user, numbers, delivery_option, payment_method, refere
 
     settings = HardwareSettings.load()
     with transaction.atomic():
-        devices = list(Device.objects.select_for_update().filter(number__in=numbers).select_related("device_type", "brand"))
+        # No select_related here: PostgreSQL cannot lock rows through the optional brand (an outer join).
+        devices = list(Device.objects.select_for_update().filter(number__in=numbers))
         found = {d.number for d in devices}
         gone = [d for d in devices if d.status != Device.Status.FOR_SALE or d.price is None]
         gone += [n for n in numbers if n not in found]
