@@ -108,6 +108,7 @@ html.dark .pd-obj-btn-danger { border-color: rgb(239 68 68); color: rgb(239 68 6
 .pd-table th.text-right, .pd-table td.text-right { text-align: right; }
 
 /* Sidebar: expand/collapse all */
+.pd-version { font-size: .75rem; opacity: .6; }
 .pd-nav-all { display: flex; gap: .25rem; }
 .pd-nav-all button { display: inline-flex; align-items: center; gap: .2rem; padding: .15rem .4rem; border-radius: 6px;
   font-size: .72rem; opacity: .65; cursor: pointer; background: transparent; }

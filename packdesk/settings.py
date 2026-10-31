@@ -238,6 +238,10 @@ LOGGING = {
 }
 
 
+# The version of this build (set in the image by CI); "dev" when running from the source code.
+APP_VERSION = os.environ.get("PACKDESK_BUILD") or "dev"
+
+
 def _brand_icon(size=None):
     from apps.siteconfig.brand_views import icon_url
 

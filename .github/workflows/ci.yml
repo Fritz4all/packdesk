@@ -65,7 +65,8 @@ jobs:
 
   docker:
     # Builds the image; after the tests pass on main or a version tag it is published as
-    # ghcr.io/fritz4all/packdesk (latest, the commit, and the version for tags like v1.2.0).
+    # ghcr.io/fritz4all/packdesk (latest, the commit, and a version: 0.1.<run number> for every build on
+    # main, or the version of a tag like v1.2.0).
     needs: test
     runs-on: ubuntu-24.04
     permissions:
@@ -74,6 +75,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
+      - id: version
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then echo "value=${GITHUB_REF_NAME#v}"; else echo "value=0.1.${GITHUB_RUN_NUMBER}"; fi >> "$GITHUB_OUTPUT"
       - uses: docker/login-action@v3
         if: github.event_name == 'push'
         with:
@@ -86,11 +90,13 @@ jobs:
           images: ghcr.io/fritz4all/packdesk
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ steps.version.outputs.value }},enable={{is_default_branch}}
             type=sha,prefix=
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
           labels: |
             org.opencontainers.image.title=PackDesk
+            org.opencontainers.image.version=${{ steps.version.outputs.value }}
             org.opencontainers.image.description=Webshop and admin for service packs, licences, spare parts and invoices
       - uses: docker/build-push-action@v6
         with:
@@ -98,5 +104,6 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: PACKDESK_BUILD=${{ steps.version.outputs.value }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

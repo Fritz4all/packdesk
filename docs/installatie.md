@@ -55,7 +55,7 @@ in: wat daar staat, gaat altijd vóór wat de wizard vraagt.
 
 Standaard luistert PackDesk op poort 8000 en staan de bestanden in `../packdesk-data` (naast de map
 van PackDesk). Anders? Zet `PORT=` of `DATA_DIR=` in `.env`. Een vaste versie in plaats van de nieuwste:
-`PACKDESK_VERSION=` (bijv. `1.2`).
+`PACKDESK_VERSION=` (bijv. `0.1.57`). Het versienummer dat draait, staat onderaan de zijbalk in het beheer.
 
 ## 3. De installatiewizard
 

@@ -53,3 +53,10 @@ def test_website_and_admin_use_the_icon(client, site, beheerder):
     assert "/brand/icon.svg?c=2563eb" in client.get("/admin/").content.decode()
     SiteSettings.objects.update(icon_color="teal")
     assert "/brand/icon.svg?c=0f766e" in client.get("/admin/").content.decode()  # new colour = new address
+
+
+def test_admin_sidebar_shows_the_version(client, site, beheerder, settings):
+    settings.APP_VERSION = "0.1.99"
+    client.force_login(beheerder)
+    assert "PackDesk 0.1.99" in client.get("/admin/").content.decode()
+    assert "0.1.99" not in client.get("/").content.decode()  # not on the public website

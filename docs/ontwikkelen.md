@@ -129,7 +129,9 @@ Na elke push naar `main` draaien de tests; slagen ze, dan bouwt GitHub het image
 `ghcr.io/fritz4all/packdesk` met de tags `latest` en de korte commit-ID. Installaties halen het op met
 `docker compose pull && docker compose up -d`.
 
-Een vaste versie maak je met een tag:
+Elke geslaagde build op `main` krijgt automatisch een versienummer, `0.1.<nummer van de CI-run>`: als tag van
+het image, als label (`org.opencontainers.image.version`, ook bij `latest` te zien in bijvoorbeeld Portainer) en
+onderaan de zijbalk in het beheer. Een hoofdversie maak je met een tag:
 
 ```bash
 # Markeer de huidige versie als 1.2.0 en zet de tag op GitHub; het image krijgt dan ook de tags 1.2.0 en 1.2.
@@ -137,7 +139,7 @@ git tag v1.2.0
 git push origin v1.2.0
 ```
 
-Wie een vaste versie wil draaien, zet `PACKDESK_VERSION=1.2` in `.env`.
+Wie een vaste versie wil draaien, zet `PACKDESK_VERSION=0.1.57` of `PACKDESK_VERSION=1.2` in `.env`.
 
 ## Foutpagina's
 

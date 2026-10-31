@@ -45,6 +45,9 @@ COPY --from=build /venv /venv
 COPY --from=build --chown=app:app /app /app
 
 WORKDIR /app
+# The version of this build, set by CI; shown in the admin. Last, so a new number reuses the layers above.
+ARG PACKDESK_BUILD=dev
+ENV PACKDESK_BUILD=${PACKDESK_BUILD}
 # Starts as root only to give the data folder to "app"; the entrypoint then runs everything as "app".
 EXPOSE 8000
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
