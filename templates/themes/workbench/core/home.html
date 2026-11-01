@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="wb-home">
+  <section class="wb-panel wb-intro">
+    <h1>{% firstof site_settings.tagline _("What would you like to arrange?") %}</h1>
+    {% if site_settings.intro_text %}<p class="lead">{{ site_settings.intro_text|linebreaksbr }}</p>{% endif %}
+    <form class="wb-lookup" method="get" action="{% url 'register_licence' %}">
+      <label>{% translate "Register a licence" %}
+        <input class="wb-input" type="search" name="number" placeholder="{% translate 'Licence number' %}">
+      </label>
+      <button class="btn btn-primary" type="submit">{% translate "Next" %}</button>
+    </form>
+  </section>
+
+  {% if blocks %}
+  <section class="wb-tasks" aria-label="{% translate 'What you can do here' %}">
+    {% for block in blocks %}
+    <article class="wb-panel wb-task">
+      {% if block.icon %}<div class="wb-task-icon" aria-hidden="true">{{ block.icon }}</div>{% endif %}
+      <h2>{{ block.title }}</h2>
+      {% if block.text %}<p>{{ block.text|linebreaksbr }}</p>{% endif %}
+      {% with href=block.href %}{% if href %}<p class="wb-task-link"><a href="{{ href }}">{% firstof block.link_text _("Read more") %} →</a></p>{% endif %}{% endwith %}
+    </article>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if latest_devices %}
+  <section class="wb-panel wb-table-box">
+    <h2>{% translate "New in the hardware" %}</h2>
+    <table class="wb-table">
+      <thead><tr><th>{% translate "Device" %}</th><th>{% translate "Device type" %}</th><th>{% translate "Condition" %}</th><th>{% if incl_vat %}{% translate "Price incl. VAT" %}{% else %}{% translate "Price excl. VAT" %}{% endif %}</th></tr></thead>
+      <tbody>
+        {% load humanize_nl %}
+        {% for device in latest_devices %}
+        <tr>
+          <td><a href="{% url 'hardware_device' device.number %}">{% if device.brand %}{{ device.brand.name }} {% endif %}{{ device.model }}</a></td>
+          <td>{{ device.device_type }}</td>
+          <td>{{ device.condition|default:"–" }}</td>
+          <td><strong>{% if device.shop_price %}€ {% if incl_vat %}{{ device.shop_price.incl|money }}{% else %}{{ device.shop_price.excl|money }}{% endif %}{% else %}{% translate "Price on request" %}{% endif %}</strong></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

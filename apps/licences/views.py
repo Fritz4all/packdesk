@@ -83,7 +83,8 @@ def _guard(request, step):
 
 
 def licence_step(request):
-    form = forms.LicenceNumberForm(request.POST or None)
+    # A number can come along from the box on the home page of some website themes.
+    form = forms.LicenceNumberForm(request.POST or None, initial={"number": request.GET.get("number", "")})
     if request.method == "POST" and form.is_valid():
         licence = form.licence
         if licence.pack.category.contact_to_register:

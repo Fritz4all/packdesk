@@ -60,3 +60,48 @@ def test_admin_sidebar_shows_the_version(client, site, beheerder, settings):
     client.force_login(beheerder)
     assert "PackDesk 0.1.99" in client.get("/admin/").content.decode()
     assert "0.1.99" not in client.get("/").content.decode()  # not on the public website
+
+
+THEMES = ["classic", "workbench", "night_shift", "open_house"]
+
+
+@pytest.mark.parametrize("theme", THEMES)
+def test_every_page_works_in_every_theme(client, site, theme):
+    from decimal import Decimal
+
+    from apps.hardware.models import Device, DeviceType
+
+    SiteSettings.objects.update(site_theme=theme)
+    device = Device.objects.create(device_type=DeviceType.objects.first(), model="Testmodel", serial_nr="TH-1",
+                                   status=Device.Status.FOR_SALE, sale_price=Decimal("100.00"), specs={"cpu": "i5"})
+    home = client.get("/").content.decode()
+    assert f'data-site-theme="{theme}"' in home
+    assert (f"css/themes/{theme}.css" in home) == (theme != "classic")
+    shop = client.get("/hardware/").content.decode()
+    assert "Testmodel" in shop and "121,00" in shop and "/hardware/" + device.number in shop
+    assert client.get(f"/hardware/{device.number}/").status_code == 200
+    assert client.get("/hardware/?type=1&q=test&sort=price").status_code == 200
+    assert client.get("/login/").status_code == 200
+    assert client.get("/signup/").status_code == 200
+
+
+def test_classic_theme_keeps_the_original_templates(client, site):
+    assert "core/home.html" in [t.name for t in client.get("/").templates]
+    assert "themes/workbench/core/home.html" not in [t.name for t in client.get("/").templates]
+    SiteSettings.objects.update(site_theme="workbench")
+    assert "themes/workbench/core/home.html" in [t.name for t in client.get("/").templates]
+
+
+def test_theme_fonts_are_served_from_this_site(client, site):
+    from pathlib import Path
+
+    from django.conf import settings as django_settings
+
+    for theme in THEMES[1:]:
+        css = (Path(django_settings.BASE_DIR) / f"static/css/themes/{theme}.css").read_text()
+        assert "googleapis" not in css and "fonts/" in css
+    assert "fonts.googleapis" not in client.get("/").content.decode()
+
+
+def test_licence_number_from_the_home_page_is_filled_in(client, site):
+    assert 'value="26A0001"' in client.get("/register/?number=26A0001").content.decode()

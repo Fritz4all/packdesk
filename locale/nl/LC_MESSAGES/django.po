@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 23:10+0100\n"
+"POT-Creation-Date: 2026-11-01 12:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -247,7 +247,7 @@ msgstr "soort"
 msgid "email address"
 msgstr "e-mailadres"
 
-#: apps/accounts/models.py:33 apps/siteconfig/models.py:92
+#: apps/accounts/models.py:33 apps/siteconfig/models.py:101
 msgid "admin language"
 msgstr "beheertaal"
 
@@ -284,8 +284,8 @@ msgstr "rollen"
 #: apps/licences/models.py:71 apps/licences/models.py:112
 #: apps/numbering/models.py:18 apps/orders/models.py:62
 #: apps/parts/models.py:105 apps/printing/models.py:11
-#: apps/printing/models.py:37 apps/siteconfig/models.py:28
-#: apps/siteconfig/models.py:264 apps/telephony/models.py:42
+#: apps/printing/models.py:37 apps/siteconfig/models.py:37
+#: apps/siteconfig/models.py:277 apps/telephony/models.py:42
 #: apps/telephony/models.py:57 apps/trash/models.py:14
 msgid "name"
 msgstr "naam"
@@ -366,6 +366,7 @@ msgstr ""
 #: apps/accounts/permissions.py:16 apps/customers/overview.py:159
 #: apps/invoices/admin.py:92 templates/invoices/my_invoices.html:14
 #: templates/telephony/my_quotes.html:7
+#: templates/themes/open_house/hardware/shop.html:37
 msgid "View"
 msgstr "Bekijken"
 
@@ -808,13 +809,13 @@ msgstr "Website"
 #: apps/customers/admin.py:239 apps/customers/forms.py:33
 #: apps/customers/models.py:65 apps/customers/models.py:274
 #: apps/invoices/design.py:75 apps/legacy/parts.py:111
-#: apps/siteconfig/models.py:174 templates/customers/my_details.html:11
+#: apps/siteconfig/models.py:187 templates/customers/my_details.html:11
 msgid "VAT number"
 msgstr "btw-nummer"
 
 #: apps/customers/admin.py:240 apps/customers/forms.py:34
 #: apps/customers/models.py:66 apps/customers/models.py:276
-#: apps/legacy/parts.py:111 apps/siteconfig/models.py:173
+#: apps/legacy/parts.py:111 apps/siteconfig/models.py:186
 msgid "Chamber of Commerce number"
 msgstr "KvK-nummer"
 
@@ -1052,8 +1053,8 @@ msgstr "is reseller"
 #: apps/invoices/models.py:68 apps/licences/models.py:43
 #: apps/licences/models.py:59 apps/orders/models.py:72
 #: apps/orders/models.py:126 apps/parts/models.py:106
-#: apps/printing/models.py:63 apps/siteconfig/models.py:280
-#: apps/siteconfig/models.py:337 apps/siteconfig/models.py:368
+#: apps/printing/models.py:63 apps/siteconfig/models.py:293
+#: apps/siteconfig/models.py:350 apps/siteconfig/models.py:381
 #: apps/telephony/models.py:43 apps/telephony/models.py:73
 msgid "order"
 msgstr "volgorde"
@@ -1083,13 +1084,13 @@ msgstr "Bijv. voor klanten buiten uw eigen land."
 
 #: apps/customers/models.py:35 apps/faults/models.py:16
 #: apps/hardware/models.py:64 apps/hardware/models.py:146
-#: apps/orders/models.py:71 apps/siteconfig/models.py:336
-#: apps/siteconfig/models.py:367 apps/telephony/models.py:72
+#: apps/orders/models.py:71 apps/siteconfig/models.py:349
+#: apps/siteconfig/models.py:380 apps/telephony/models.py:72
 msgid "active"
 msgstr "actief"
 
 #: apps/customers/models.py:39 apps/customers/models.py:164
-#: apps/invoices/models.py:84 apps/siteconfig/models.py:269
+#: apps/invoices/models.py:84 apps/siteconfig/models.py:282
 msgid "country"
 msgstr "land"
 
@@ -1130,8 +1131,8 @@ msgstr "status"
 
 #: apps/customers/models.py:67 apps/customers/models.py:202
 #: apps/customers/models.py:273 apps/faults/models.py:99
-#: apps/printing/models.py:147 apps/siteconfig/models.py:170
-#: apps/siteconfig/models.py:270
+#: apps/printing/models.py:147 apps/siteconfig/models.py:183
+#: apps/siteconfig/models.py:283
 msgid "phone"
 msgstr "telefoon"
 
@@ -1140,7 +1141,7 @@ msgid "general email"
 msgstr "algemeen e-mailadres"
 
 #: apps/customers/models.py:69 apps/customers/models.py:277
-#: apps/siteconfig/models.py:172 apps/siteconfig/models.py:273
+#: apps/siteconfig/models.py:185 apps/siteconfig/models.py:286
 msgid "website"
 msgstr "website"
 
@@ -1160,7 +1161,7 @@ msgstr "geen factuur voor servicepacks"
 msgid "Service pack orders of this customer are not invoiced."
 msgstr "Servicepackbestellingen van deze klant worden niet gefactureerd."
 
-#: apps/customers/models.py:81 apps/siteconfig/models.py:100
+#: apps/customers/models.py:81 apps/siteconfig/models.py:109
 msgid "logo"
 msgstr "logo"
 
@@ -1200,7 +1201,7 @@ msgstr "aangemaakt"
 
 #: apps/customers/models.py:95 apps/legacy/models.py:29
 #: apps/legacy/old_shop/importer.py:129 apps/parts/models.py:161
-#: apps/siteconfig/models.py:177
+#: apps/siteconfig/models.py:190
 msgid "updated"
 msgstr "bijgewerkt"
 
@@ -1244,22 +1245,22 @@ msgstr "ter attentie van"
 
 #: apps/customers/models.py:160 apps/faults/models.py:96
 #: apps/invoices/models.py:80 apps/printing/models.py:148
-#: apps/siteconfig/models.py:265 apps/siteconfig/models.py:283
+#: apps/siteconfig/models.py:278 apps/siteconfig/models.py:296
 msgid "address"
 msgstr "adres"
 
 #: apps/customers/models.py:161 apps/customers/models.py:282
-#: apps/invoices/models.py:81 apps/siteconfig/models.py:266
+#: apps/invoices/models.py:81 apps/siteconfig/models.py:279
 msgid "address line 2"
 msgstr "adresregel 2"
 
 #: apps/customers/models.py:162 apps/faults/models.py:97
-#: apps/invoices/models.py:82 apps/siteconfig/models.py:267
+#: apps/invoices/models.py:82 apps/siteconfig/models.py:280
 msgid "postal code"
 msgstr "postcode"
 
 #: apps/customers/models.py:163 apps/faults/models.py:98
-#: apps/invoices/models.py:83 apps/siteconfig/models.py:268
+#: apps/invoices/models.py:83 apps/siteconfig/models.py:281
 msgid "city"
 msgstr "plaats"
 
@@ -1308,7 +1309,7 @@ msgid "department"
 msgstr "afdeling"
 
 #: apps/customers/models.py:203 apps/faults/models.py:100
-#: apps/siteconfig/models.py:171 apps/siteconfig/models.py:271
+#: apps/siteconfig/models.py:184 apps/siteconfig/models.py:284
 msgid "email"
 msgstr "e-mail"
 
@@ -1357,7 +1358,7 @@ msgstr "standaardmarge hardware (%)"
 msgid "sign-up form active"
 msgstr "aanmeldformulier actief"
 
-#: apps/customers/models.py:253 apps/siteconfig/models.py:334
+#: apps/customers/models.py:253 apps/siteconfig/models.py:347
 msgid "link text"
 msgstr "linktekst"
 
@@ -1365,12 +1366,12 @@ msgstr "linktekst"
 msgid "Text of the link to the form on the login page."
 msgstr "Tekst van de link naar het formulier op de inlogpagina."
 
-#: apps/customers/models.py:255 apps/siteconfig/models.py:327
+#: apps/customers/models.py:255 apps/siteconfig/models.py:340
 msgid "title"
 msgstr "titel"
 
 #: apps/customers/models.py:256 apps/faults/models.py:31
-#: apps/siteconfig/models.py:122
+#: apps/siteconfig/models.py:135
 msgid "introduction"
 msgstr "introductie"
 
@@ -1453,11 +1454,13 @@ msgstr "Servicepack"
 
 #: apps/customers/overview.py:114 apps/customers/overview.py:121
 #: apps/hardware/admin.py:188 apps/licences/admin.py:150
-#: apps/licences/views.py:23 apps/licences/views.py:137 apps/orders/admin.py:27
+#: apps/licences/views.py:23 apps/licences/views.py:138 apps/orders/admin.py:27
 #: templates/faults/email_report.txt:4 templates/faults/email_report.txt:6
 #: templates/faults/my_reports.html:9 templates/hardware/cart.html:10
 #: templates/hardware/review.html:8 templates/licences/check.html:15
 #: templates/orders/my_licences.html:13 templates/orders/order_detail.html:7
+#: templates/themes/workbench/core/home.html:33
+#: templates/themes/workbench/hardware/shop.html:49
 msgid "Device"
 msgstr "Apparaat"
 
@@ -1557,7 +1560,7 @@ msgid "Printing contracts"
 msgstr "Printing-contracten"
 
 #: apps/customers/overview.py:164 apps/licences/views.py:21
-#: apps/licences/views.py:109 templates/licences/check.html:13
+#: apps/licences/views.py:110 templates/licences/check.html:13
 msgid "End customer"
 msgstr "Eindklant"
 
@@ -1587,7 +1590,7 @@ msgstr "Dit bestand is geen klantexport van PackDesk."
 msgid "This export was made by a newer PackDesk version."
 msgstr "Deze export is gemaakt met een nieuwere versie van PackDesk."
 
-#: apps/customers/transfer.py:357 apps/siteconfig/models.py:284
+#: apps/customers/transfer.py:357 apps/siteconfig/models.py:297
 msgid "addresses"
 msgstr "adressen"
 
@@ -1608,7 +1611,7 @@ msgid "fault reports"
 msgstr "storingsmeldingen"
 
 #: apps/customers/transfer.py:359 apps/invoices/models.py:103
-#: apps/siteconfig/models.py:274
+#: apps/siteconfig/models.py:287
 msgid "invoices"
 msgstr "facturen"
 
@@ -1750,6 +1753,7 @@ msgstr "Apparaattypes"
 
 #: apps/dashboard/navigation.py:19 apps/hardware/admin.py:191
 #: templates/hardware/device.html:51
+#: templates/themes/workbench/hardware/shop.html:49
 msgid "Specifications"
 msgstr "Kenmerken"
 
@@ -1771,7 +1775,7 @@ msgid "Spare parts settings"
 msgstr "Instellingen onderdelen"
 
 #: apps/dashboard/navigation.py:28 apps/dashboard/navigation.py:124
-#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:184
+#: apps/siteconfig/apps.py:7 apps/siteconfig/models.py:197
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -1918,6 +1922,11 @@ msgstr "Onderdelen"
 #: apps/dashboard/reports.py:243 apps/hardware/apps.py:7
 #: apps/orders/models.py:88 templates/hardware/shop.html:3
 #: templates/hardware/shop.html:7
+#: templates/themes/night_shift/hardware/shop.html:3
+#: templates/themes/night_shift/hardware/shop.html:6
+#: templates/themes/open_house/hardware/shop.html:3
+#: templates/themes/workbench/hardware/shop.html:3
+#: templates/themes/workbench/hardware/shop.html:6
 msgid "Hardware"
 msgstr "Hardware"
 
@@ -2002,6 +2011,7 @@ msgid "Spare parts: surcharges and costs"
 msgstr "Onderdelen: toeslagen en kosten"
 
 #: apps/dashboard/reports.py:242
+#: templates/themes/open_house/hardware/shop.html:14
 msgid "Everything"
 msgstr "Alles"
 
@@ -2106,7 +2116,7 @@ msgstr "Melding"
 msgid "Device and fault"
 msgstr "Apparaat en storing"
 
-#: apps/faults/admin.py:58 apps/licences/views.py:22 apps/licences/views.py:113
+#: apps/faults/admin.py:58 apps/licences/views.py:22 apps/licences/views.py:114
 #: templates/licences/check.html:14
 msgid "Reseller"
 msgstr "Reseller"
@@ -2427,15 +2437,21 @@ msgstr ""
 "(zie Hardware → Kenmerken)."
 
 #: apps/hardware/admin.py:208 templates/hardware/shop.html:18
+#: templates/themes/night_shift/hardware/shop.html:15
+#: templates/themes/open_house/hardware/shop.html:13
+#: templates/themes/workbench/core/home.html:33
+#: templates/themes/workbench/hardware/shop.html:18
 msgid "Device type"
 msgstr "Apparaatsoort"
 
 #: apps/hardware/admin.py:216 templates/hardware/cart.html:10
 #: templates/hardware/review.html:8
+#: templates/themes/workbench/core/home.html:33
 msgid "Price excl. VAT"
 msgstr "Prijs excl. btw"
 
 #: apps/hardware/admin.py:220 templates/hardware/cart.html:10
+#: templates/themes/workbench/core/home.html:33
 msgid "Price incl. VAT"
 msgstr "Prijs incl. btw"
 
@@ -2468,7 +2484,7 @@ msgstr "incl. btw"
 
 #: apps/hardware/admin.py:232 apps/invoices/design.py:62
 #: apps/invoices/design.py:75 apps/invoices/models.py:92
-#: apps/orders/models.py:103 apps/parts/models.py:326 templates/base.html:89
+#: apps/orders/models.py:103 apps/parts/models.py:326 templates/base.html:90
 #: templates/orders/email_confirmation.txt:17
 #: templates/orders/order_detail.html:16 templates/parts/email.txt:23
 msgid "VAT"
@@ -2851,7 +2867,7 @@ msgstr "Verzendkosten"
 msgid "Payment costs"
 msgstr "Betaalkosten"
 
-#: apps/hardware/services.py:153
+#: apps/hardware/services.py:154
 #, python-format
 msgid "Hardware order %(number)s – %(company)s"
 msgstr "Hardwarebestelling %(number)s – %(company)s"
@@ -3268,7 +3284,7 @@ msgstr "Bedrijfsnaam en adres"
 msgid "Web"
 msgstr "Web"
 
-#: apps/invoices/design.py:73 apps/siteconfig/models.py:175
+#: apps/invoices/design.py:73 apps/siteconfig/models.py:188
 msgid "IBAN"
 msgstr "IBAN"
 
@@ -3276,7 +3292,7 @@ msgstr "IBAN"
 msgid "CoC number"
 msgstr "KvK-nummer"
 
-#: apps/invoices/design.py:74 templates/base.html:88
+#: apps/invoices/design.py:74 templates/base.html:89
 msgid "CoC"
 msgstr "KvK"
 
@@ -3343,7 +3359,7 @@ msgstr "mededeling op factuur"
 msgid "Highlighted text, e.g. a changed bank account."
 msgstr "Opvallende tekst, bijv. een gewijzigd rekeningnummer."
 
-#: apps/invoices/models.py:33 apps/siteconfig/models.py:142
+#: apps/invoices/models.py:33 apps/siteconfig/models.py:155
 msgid "footer text"
 msgstr "voettekst"
 
@@ -3741,7 +3757,7 @@ msgstr "server"
 msgid "IP address or host name."
 msgstr "IP-adres of hostnaam."
 
-#: apps/legacy/models.py:19 apps/siteconfig/models.py:50
+#: apps/legacy/models.py:19 apps/siteconfig/models.py:59
 msgid "port"
 msgstr "poort"
 
@@ -3757,7 +3773,7 @@ msgstr "databasenaam"
 msgid "Use a user that may only read."
 msgstr "Gebruik een gebruiker die alleen mag lezen."
 
-#: apps/legacy/models.py:22 apps/siteconfig/models.py:56
+#: apps/legacy/models.py:22 apps/siteconfig/models.py:65
 msgid "password (encrypted)"
 msgstr "wachtwoord (versleuteld)"
 
@@ -4174,6 +4190,8 @@ msgstr "Korting (%)"
 
 #: apps/legacy/parts.py:149 apps/legacy/parts.py:164 apps/licences/forms.py:13
 #: templates/licences/email_certificate.txt:7
+#: templates/themes/night_shift/core/home.html:12
+#: templates/themes/workbench/core/home.html:10
 msgid "Licence number"
 msgstr "Licentienummer"
 
@@ -4317,7 +4335,7 @@ msgstr "Er is geen licentie met dit nummer gevonden."
 msgid "This licence does not need to be registered."
 msgstr "Deze licentie hoeft niet te worden geregistreerd."
 
-#: apps/licences/forms.py:22 apps/licences/views.py:179
+#: apps/licences/forms.py:22 apps/licences/views.py:180
 msgid "This licence has already been registered."
 msgstr "Deze licentie is al geregistreerd."
 
@@ -4342,6 +4360,9 @@ msgstr "Merk en type"
 #: templates/faults/email_report.txt:5 templates/hardware/shop.html:22
 #: templates/licences/email_certificate.txt:17
 #: templates/licences/options.html:16
+#: templates/themes/night_shift/hardware/shop.html:16
+#: templates/themes/open_house/hardware/shop.html:20
+#: templates/themes/workbench/hardware/shop.html:24
 msgid "Brand"
 msgstr "Merk"
 
@@ -4761,7 +4782,7 @@ msgstr "licentieopties"
 msgid "Registration licence %(number)s"
 msgstr "Registratie licentie %(number)s"
 
-#: apps/licences/views.py:24 apps/licences/views.py:154
+#: apps/licences/views.py:24 apps/licences/views.py:155
 #: templates/licences/check.html:19
 msgid "Monitor"
 msgstr "Beeldscherm"
@@ -6100,7 +6121,7 @@ msgstr "besteld verbruiksartikel"
 msgid "ordered supplies"
 msgstr "bestelde verbruiksartikelen"
 
-#: apps/siteconfig/admin.py:21 apps/siteconfig/models.py:40
+#: apps/siteconfig/admin.py:21 apps/siteconfig/models.py:49
 msgid "Languages visitors can choose from."
 msgstr "Talen waaruit bezoekers kunnen kiezen."
 
@@ -6203,31 +6224,47 @@ msgstr "Gebruik een kleur zoals #1f6feb."
 msgid "Auto (follow device)"
 msgstr "Auto (volgt apparaat)"
 
-#: apps/siteconfig/models.py:16 templates/base.html:44
+#: apps/siteconfig/models.py:16 templates/base.html:45
 msgid "Light"
 msgstr "Licht"
 
-#: apps/siteconfig/models.py:17 templates/base.html:45
+#: apps/siteconfig/models.py:17 templates/base.html:46
 msgid "Dark"
 msgstr "Donker"
 
-#: apps/siteconfig/models.py:30
+#: apps/siteconfig/models.py:23
+msgid "Classic"
+msgstr "Klassiek"
+
+#: apps/siteconfig/models.py:24
+msgid "Workbench"
+msgstr "Werkbank"
+
+#: apps/siteconfig/models.py:25
+msgid "Night shift"
+msgstr "Nachtdienst"
+
+#: apps/siteconfig/models.py:26
+msgid "Open house"
+msgstr "Open huis"
+
+#: apps/siteconfig/models.py:39
 msgid "default language"
 msgstr "standaardtaal"
 
-#: apps/siteconfig/models.py:34
+#: apps/siteconfig/models.py:43
 msgid "Language for visitors who have not chosen one."
 msgstr "Taal voor bezoekers die zelf nog geen taal hebben gekozen."
 
-#: apps/siteconfig/models.py:37
+#: apps/siteconfig/models.py:46
 msgid "available languages"
 msgstr "beschikbare talen"
 
-#: apps/siteconfig/models.py:43
+#: apps/siteconfig/models.py:52
 msgid "domain name"
 msgstr "domeinnaam"
 
-#: apps/siteconfig/models.py:44
+#: apps/siteconfig/models.py:53
 msgid ""
 "E.g. shop.company.com. When filled in, the website only answers on this name "
 "(and on localhost). Empty = any name or IP address."
@@ -6235,47 +6272,47 @@ msgstr ""
 "Bijv. shop.bedrijf.nl. Ingevuld, dan antwoordt de website alleen op deze "
 "naam (en op localhost). Leeg = elke naam of elk IP-adres."
 
-#: apps/siteconfig/models.py:49
+#: apps/siteconfig/models.py:58
 msgid "mail server"
 msgstr "mailserver"
 
-#: apps/siteconfig/models.py:49
+#: apps/siteconfig/models.py:58
 msgid "E.g. smtp.company.com"
 msgstr "Bijv. smtp.bedrijf.nl"
 
-#: apps/siteconfig/models.py:50
+#: apps/siteconfig/models.py:59
 msgid "Usually 587 (STARTTLS) or 465 (SSL)."
 msgstr "Meestal 587 (STARTTLS) of 465 (SSL)."
 
-#: apps/siteconfig/models.py:52
+#: apps/siteconfig/models.py:61
 msgid "encryption"
 msgstr "versleuteling"
 
-#: apps/siteconfig/models.py:53
+#: apps/siteconfig/models.py:62
 msgid "none"
 msgstr "geen"
 
-#: apps/siteconfig/models.py:55
+#: apps/siteconfig/models.py:64
 msgid "user name"
 msgstr "gebruikersnaam"
 
-#: apps/siteconfig/models.py:60
+#: apps/siteconfig/models.py:69
 msgid "log out staff after (minutes without activity)"
 msgstr "medewerkers uitloggen na (minuten zonder activiteit)"
 
-#: apps/siteconfig/models.py:61 apps/siteconfig/models.py:65
+#: apps/siteconfig/models.py:70 apps/siteconfig/models.py:74
 msgid "0 = stay logged in (at most two weeks)."
 msgstr "0 = ingelogd blijven (hooguit twee weken)."
 
-#: apps/siteconfig/models.py:64
+#: apps/siteconfig/models.py:73
 msgid "log out customers after (minutes without activity)"
 msgstr "klanten uitloggen na (minuten zonder activiteit)"
 
-#: apps/siteconfig/models.py:68
+#: apps/siteconfig/models.py:77
 msgid "minimum password length for staff"
 msgstr "minimale wachtwoordlengte voor medewerkers"
 
-#: apps/siteconfig/models.py:70
+#: apps/siteconfig/models.py:79
 msgid ""
 "Number of characters, for staff and administrators (the admin). 12 or more "
 "is recommended."
@@ -6283,11 +6320,11 @@ msgstr ""
 "Aantal tekens, voor medewerkers en beheerders (het beheer). 12 of meer wordt "
 "aangeraden."
 
-#: apps/siteconfig/models.py:73
+#: apps/siteconfig/models.py:82
 msgid "minimum password length for customers"
 msgstr "minimale wachtwoordlengte voor klanten"
 
-#: apps/siteconfig/models.py:75
+#: apps/siteconfig/models.py:84
 msgid ""
 "Number of characters, for customers on the website. Applies to new "
 "passwords; existing ones keep working."
@@ -6295,11 +6332,11 @@ msgstr ""
 "Aantal tekens, voor klanten op de website. Geldt voor nieuwe wachtwoorden; "
 "bestaande blijven werken."
 
-#: apps/siteconfig/models.py:79
+#: apps/siteconfig/models.py:88
 msgid "maximum number of superadmins"
 msgstr "maximaal aantal superadmins"
 
-#: apps/siteconfig/models.py:80
+#: apps/siteconfig/models.py:89
 msgid ""
 "Superadmins always have every right. Only superadmins see and change this "
 "setting."
@@ -6307,11 +6344,11 @@ msgstr ""
 "Superadmins hebben altijd alle rechten. Alleen superadmins zien en wijzigen "
 "deze instelling."
 
-#: apps/siteconfig/models.py:83
+#: apps/siteconfig/models.py:92
 msgid "empty the trash after (days)"
 msgstr "prullenbak legen na (dagen)"
 
-#: apps/siteconfig/models.py:84
+#: apps/siteconfig/models.py:93
 msgid ""
 "Deleted items older than this are removed for good. 0 = keep until removed "
 "by hand."
@@ -6319,15 +6356,15 @@ msgstr ""
 "Verwijderde items die ouder zijn, worden definitief verwijderd. 0 = bewaren "
 "tot je ze zelf verwijdert."
 
-#: apps/siteconfig/models.py:88
+#: apps/siteconfig/models.py:97
 msgid "installation finished"
 msgstr "installatie afgerond"
 
-#: apps/siteconfig/models.py:89
+#: apps/siteconfig/models.py:98
 msgid "Set by the installation wizard."
 msgstr "Wordt ingesteld door de installatiewizard."
 
-#: apps/siteconfig/models.py:96
+#: apps/siteconfig/models.py:105
 msgid ""
 "Language of the admin. Each staff user can choose another one under the "
 "account menu."
@@ -6335,73 +6372,84 @@ msgstr ""
 "Taal van het beheer. Elke medewerker kan onder het accountmenu een andere "
 "kiezen."
 
-#: apps/siteconfig/models.py:101
+#: apps/siteconfig/models.py:110
 msgid "favicon"
 msgstr "favicon"
 
-#: apps/siteconfig/models.py:103
+#: apps/siteconfig/models.py:112
 msgid "colour of the PackDesk icon"
 msgstr "kleur van het PackDesk-icoon"
 
-#: apps/siteconfig/models.py:104
+#: apps/siteconfig/models.py:113
 msgid ""
 "Favicon, app icon and admin icon, as long as no own favicon is uploaded."
-msgstr "Favicon, app-icoon en beheericoon, zolang er geen eigen favicon is geüpload."
+msgstr ""
+"Favicon, app-icoon en beheericoon, zolang er geen eigen favicon is geüpload."
 
-#: apps/siteconfig/models.py:106
+#: apps/siteconfig/models.py:115
 msgid "primary colour"
 msgstr "hoofdkleur"
 
-#: apps/siteconfig/models.py:107
+#: apps/siteconfig/models.py:116
 msgid "accent colour"
 msgstr "accentkleur"
 
-#: apps/siteconfig/models.py:109
+#: apps/siteconfig/models.py:118
+msgid "website theme"
+msgstr "thema van de website"
+
+#: apps/siteconfig/models.py:119
+msgid ""
+"The design of the website. Every theme has a light and a dark version: see "
+"default appearance."
+msgstr "Het ontwerp van de website. Elk thema heeft een lichte en een donkere versie: zie standaardweergave."
+
+#: apps/siteconfig/models.py:122
 msgid "default appearance"
 msgstr "standaardweergave"
 
-#: apps/siteconfig/models.py:113
+#: apps/siteconfig/models.py:126
 msgid "Light or dark appearance for visitors who have not chosen one."
 msgstr ""
 "Lichte of donkere weergave voor bezoekers die zelf nog niets hebben gekozen."
 
-#: apps/siteconfig/models.py:116
+#: apps/siteconfig/models.py:129
 msgid "visitors can choose appearance"
 msgstr "bezoekers kunnen weergave kiezen"
 
-#: apps/siteconfig/models.py:118
+#: apps/siteconfig/models.py:131
 msgid "Shows a light/dark switch in the header."
 msgstr "Toont een keuze voor licht/donker in de kopregel."
 
-#: apps/siteconfig/models.py:120
+#: apps/siteconfig/models.py:133
 msgid "tagline"
 msgstr "slogan"
 
-#: apps/siteconfig/models.py:124
+#: apps/siteconfig/models.py:137
 msgid "Short text on the home page under the tagline."
 msgstr "Korte tekst op de homepage onder de slogan."
 
-#: apps/siteconfig/models.py:128
+#: apps/siteconfig/models.py:141
 msgid "description for search engines"
 msgstr "omschrijving voor zoekmachines"
 
-#: apps/siteconfig/models.py:129
+#: apps/siteconfig/models.py:142
 msgid "Shown by Google and others under the page title."
 msgstr "Wordt door Google e.a. onder de paginatitel getoond."
 
-#: apps/siteconfig/models.py:132
+#: apps/siteconfig/models.py:145
 msgid "button text on home page"
 msgstr "knoptekst op homepage"
 
-#: apps/siteconfig/models.py:133
+#: apps/siteconfig/models.py:146
 msgid "Leave empty for the standard text (Log in / Go to my account)."
 msgstr "Leeg laten voor de standaardtekst (Inloggen / Naar mijn omgeving)."
 
-#: apps/siteconfig/models.py:138
+#: apps/siteconfig/models.py:151
 msgid "footer heading"
 msgstr "kop in de footer"
 
-#: apps/siteconfig/models.py:139
+#: apps/siteconfig/models.py:152
 msgid ""
 "Bold line at the top of the footer, above the address and the footer text, "
 "e.g. the company name. Empty = no heading."
@@ -6409,35 +6457,35 @@ msgstr ""
 "Vetgedrukte regel bovenaan de footer, boven het adres en de footertekst, "
 "bijv. de bedrijfsnaam. Leeg = geen kop."
 
-#: apps/siteconfig/models.py:142
+#: apps/siteconfig/models.py:155
 msgid "Extra text at the bottom of every page."
 msgstr "Extra tekst onderaan elke pagina."
 
-#: apps/siteconfig/models.py:143
+#: apps/siteconfig/models.py:156
 msgid "show address"
 msgstr "adres tonen"
 
-#: apps/siteconfig/models.py:144
+#: apps/siteconfig/models.py:157
 msgid "show phone"
 msgstr "telefoon tonen"
 
-#: apps/siteconfig/models.py:145
+#: apps/siteconfig/models.py:158
 msgid "show email"
 msgstr "e-mail tonen"
 
-#: apps/siteconfig/models.py:146
+#: apps/siteconfig/models.py:159
 msgid "show Chamber of Commerce number"
 msgstr "KvK-nummer tonen"
 
-#: apps/siteconfig/models.py:147
+#: apps/siteconfig/models.py:160
 msgid "show VAT number"
 msgstr "btw-nummer tonen"
 
-#: apps/siteconfig/models.py:151
+#: apps/siteconfig/models.py:164
 msgid "maintenance mode"
 msgstr "onderhoudsmodus"
 
-#: apps/siteconfig/models.py:152
+#: apps/siteconfig/models.py:165
 msgid ""
 "Visitors see the maintenance message and cannot log in. Staff can still use "
 "the admin."
@@ -6445,119 +6493,119 @@ msgstr ""
 "Bezoekers zien de onderhoudsmelding en kunnen niet inloggen. Medewerkers "
 "kunnen het beheer blijven gebruiken."
 
-#: apps/siteconfig/models.py:154
+#: apps/siteconfig/models.py:167
 msgid "maintenance message"
 msgstr "onderhoudsmelding"
 
-#: apps/siteconfig/models.py:156
+#: apps/siteconfig/models.py:169
 msgid "expected back"
 msgstr "verwacht terug"
 
-#: apps/siteconfig/models.py:156
+#: apps/siteconfig/models.py:169
 msgid "Optional; shown in the maintenance message."
 msgstr "Optioneel; wordt in de onderhoudsmelding getoond."
 
-#: apps/siteconfig/models.py:158
+#: apps/siteconfig/models.py:171
 msgid "show announcement"
 msgstr "melding tonen"
 
-#: apps/siteconfig/models.py:160
+#: apps/siteconfig/models.py:173
 msgid "announcement"
 msgstr "melding"
 
-#: apps/siteconfig/models.py:161
+#: apps/siteconfig/models.py:174
 msgid "Bar at the top of every page, e.g. to announce maintenance."
 msgstr "Balk bovenaan elke pagina, bijv. om onderhoud aan te kondigen."
 
-#: apps/siteconfig/models.py:164
+#: apps/siteconfig/models.py:177
 msgid "announcement colour"
 msgstr "kleur melding"
 
-#: apps/siteconfig/models.py:165
+#: apps/siteconfig/models.py:178
 msgid "Information"
 msgstr "Informatie"
 
-#: apps/siteconfig/models.py:165
+#: apps/siteconfig/models.py:178
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: apps/siteconfig/models.py:165
+#: apps/siteconfig/models.py:178
 msgid "Positive"
 msgstr "Positief"
 
-#: apps/siteconfig/models.py:169
+#: apps/siteconfig/models.py:182
 msgid "legal name"
 msgstr "statutaire naam"
 
-#: apps/siteconfig/models.py:180 apps/siteconfig/models.py:181
+#: apps/siteconfig/models.py:193 apps/siteconfig/models.py:194
 msgid "settings"
 msgstr "instellingen"
 
-#: apps/siteconfig/models.py:264
+#: apps/siteconfig/models.py:277
 msgid "For yourself, e.g. visiting address or postal address."
 msgstr "Voor uzelf, bijv. bezoekadres of postadres."
 
-#: apps/siteconfig/models.py:270
+#: apps/siteconfig/models.py:283
 msgid "Leave empty to use the general phone number."
 msgstr "Leeg laten om het algemene telefoonnummer te gebruiken."
 
-#: apps/siteconfig/models.py:271
+#: apps/siteconfig/models.py:284
 msgid "Leave empty to use the general email address."
 msgstr "Leeg laten om het algemene e-mailadres te gebruiken."
 
-#: apps/siteconfig/models.py:275
+#: apps/siteconfig/models.py:288
 msgid "quotes"
 msgstr "offertes"
 
-#: apps/siteconfig/models.py:276
+#: apps/siteconfig/models.py:289
 msgid "order confirmations"
 msgstr "orderbevestigingen"
 
-#: apps/siteconfig/models.py:277
+#: apps/siteconfig/models.py:290
 msgid "emails"
 msgstr "e-mails"
 
-#: apps/siteconfig/models.py:278
+#: apps/siteconfig/models.py:291
 msgid "sender on labels"
 msgstr "afzender op labels"
 
-#: apps/siteconfig/models.py:300
+#: apps/siteconfig/models.py:313
 msgid "not used yet"
 msgstr "nog nergens gebruikt"
 
-#: apps/siteconfig/models.py:311
+#: apps/siteconfig/models.py:324
 msgid "Everyone"
 msgstr "Iedereen"
 
-#: apps/siteconfig/models.py:312
+#: apps/siteconfig/models.py:325
 msgid "Only when not logged in"
 msgstr "Alleen als niet ingelogd"
 
-#: apps/siteconfig/models.py:313
+#: apps/siteconfig/models.py:326
 msgid "Only when logged in"
 msgstr "Alleen als ingelogd"
 
-#: apps/siteconfig/models.py:318
+#: apps/siteconfig/models.py:331
 msgid "not active"
 msgstr "niet actief"
 
-#: apps/siteconfig/models.py:326
+#: apps/siteconfig/models.py:339
 msgid "icon"
 msgstr "pictogram"
 
-#: apps/siteconfig/models.py:326
+#: apps/siteconfig/models.py:339
 msgid "A symbol or emoji, e.g. ✓ or 🛠"
 msgstr "Een symbool of emoji, bijv. ✓ of 🛠"
 
-#: apps/siteconfig/models.py:328 apps/siteconfig/models.py:363
+#: apps/siteconfig/models.py:341 apps/siteconfig/models.py:376
 msgid "text"
 msgstr "tekst"
 
-#: apps/siteconfig/models.py:330 apps/siteconfig/models.py:364
+#: apps/siteconfig/models.py:343 apps/siteconfig/models.py:377
 msgid "link"
 msgstr "link"
 
-#: apps/siteconfig/models.py:331
+#: apps/siteconfig/models.py:344
 msgid ""
 "Page address, e.g. /my/ or https://…; or just mailto: for an email to the "
 "general email address, with the title as subject."
@@ -6565,31 +6613,31 @@ msgstr ""
 "Paginaadres, bijv. /my/ of https://…; of alleen mailto: voor een e-mail naar "
 "het algemene e-mailadres, met de titel als onderwerp."
 
-#: apps/siteconfig/models.py:335 apps/siteconfig/models.py:366
+#: apps/siteconfig/models.py:348 apps/siteconfig/models.py:379
 msgid "visible for"
 msgstr "zichtbaar voor"
 
-#: apps/siteconfig/models.py:340
+#: apps/siteconfig/models.py:353
 msgid "home page block"
 msgstr "homepageblok"
 
-#: apps/siteconfig/models.py:341
+#: apps/siteconfig/models.py:354
 msgid "home page blocks"
 msgstr "homepageblokken"
 
-#: apps/siteconfig/models.py:364
+#: apps/siteconfig/models.py:377
 msgid "Page address, e.g. /my/ or https://…"
 msgstr "Paginaadres, bijv. /my/ of https://…"
 
-#: apps/siteconfig/models.py:365
+#: apps/siteconfig/models.py:378
 msgid "open in new tab"
 msgstr "openen in nieuw tabblad"
 
-#: apps/siteconfig/models.py:371
+#: apps/siteconfig/models.py:384
 msgid "menu item"
 msgstr "menu-item"
 
-#: apps/siteconfig/models.py:372
+#: apps/siteconfig/models.py:385
 msgid "menu items"
 msgstr "menu-items"
 
@@ -7290,7 +7338,7 @@ msgid "Design"
 msgstr "Ontwerp"
 
 #: templates/admin/invoices/invoicesettings/design.html:8
-#: templates/admin/packdesk/menu_editor.html:9 templates/base.html:52
+#: templates/admin/packdesk/menu_editor.html:9 templates/base.html:53
 msgid "Language"
 msgstr "Taal"
 
@@ -7494,30 +7542,31 @@ msgstr "Besteld op"
 msgid "Print"
 msgstr "Afdrukken"
 
-#: templates/base.html:41 templates/base.html:42
+#: templates/base.html:42 templates/base.html:43
 msgid "Appearance"
 msgstr "Weergave"
 
-#: templates/base.html:43
+#: templates/base.html:44
 msgid "Auto"
 msgstr "Auto"
 
-#: templates/base.html:61 templates/core/dashboard.html:3
+#: templates/base.html:62 templates/core/dashboard.html:3
 msgid "My account"
 msgstr "Mijn omgeving"
 
-#: templates/base.html:62
+#: templates/base.html:63
 msgid "Admin"
 msgstr "Beheer"
 
-#: templates/base.html:63 templates/unfold/helpers/account_links.html:31
+#: templates/base.html:64 templates/unfold/helpers/account_links.html:31
 msgid "Log out"
 msgstr "Uitloggen"
 
-#: templates/base.html:65 templates/core/home.html:11
+#: templates/base.html:66 templates/core/home.html:11
 #: templates/hardware/device.html:40 templates/registration/login.html:3
 #: templates/registration/login.html:7 templates/registration/login.html:13
 #: templates/registration/password_reset_complete.html:6
+#: templates/themes/open_house/core/home.html:15
 msgid "Log in"
 msgstr "Inloggen"
 
@@ -7590,10 +7639,13 @@ msgstr "Bekijk, download of mail uw facturen."
 
 #: templates/core/home.html:9
 #: templates/registration/password_change_done.html:6
+#: templates/themes/open_house/core/home.html:11
 msgid "Go to my account"
 msgstr "Naar mijn omgeving"
 
-#: templates/core/home.html:23
+#: templates/core/home.html:23 templates/themes/night_shift/core/home.html:24
+#: templates/themes/open_house/core/home.html:26
+#: templates/themes/workbench/core/home.html:23
 msgid "Read more"
 msgstr "Lees meer"
 
@@ -7746,6 +7798,7 @@ msgid "Prices and margin per pack"
 msgstr "Prijzen en marge per pack"
 
 #: templates/dashboard/report.html:93
+#: templates/themes/workbench/hardware/shop.html:49
 msgid "Price"
 msgstr "Prijs"
 
@@ -7863,12 +7916,41 @@ msgstr ""
 msgid "Send fault report"
 msgstr "Storingsmelding versturen"
 
+#: templates/hardware/_cart_link.html:1 templates/hardware/shop.html:12
+#, python-format
+msgid "Cart (%(n)s)"
+msgid_plural "Cart (%(n)s)"
+msgstr[0] "Winkelwagen (%(n)s)"
+msgstr[1] "Winkelwagen (%(n)s)"
+
+#: templates/hardware/_pages.html:2 templates/hardware/shop.html:56
+msgid "Pages"
+msgstr "Pagina's"
+
+#: templates/hardware/_pages.html:3 templates/hardware/shop.html:57
+msgid "Previous"
+msgstr "Vorige"
+
+#: templates/hardware/_pages.html:4 templates/hardware/shop.html:58
+#, python-format
+msgid "Page %(n)s of %(total)s"
+msgstr "Pagina %(n)s van %(total)s"
+
+#: templates/hardware/_pages.html:5 templates/hardware/shop.html:59
+#: templates/licences/options.html:27 templates/licences/step.html:18
+#: templates/setup/wizard.html:37
+#: templates/themes/night_shift/core/home.html:13
+#: templates/themes/workbench/core/home.html:12
+msgid "Next"
+msgstr "Volgende"
+
 #: templates/hardware/_price.html:7
 #, python-format
 msgid "Your price: %(pct)s%% discount on € "
 msgstr "Jouw prijs: %(pct)s%% korting op € "
 
 #: templates/hardware/_price.html:9
+#: templates/themes/workbench/core/home.html:41
 msgid "Price on request"
 msgstr "Prijs op aanvraag"
 
@@ -7902,7 +7984,7 @@ msgstr "Bestelling controleren"
 msgid "Your cart is empty."
 msgstr "Je winkelwagen is leeg."
 
-#: templates/hardware/cart.html:58
+#: templates/hardware/cart.html:58 templates/themes/open_house/core/home.html:9
 msgid "View the hardware for sale"
 msgstr "Bekijk de hardware die te koop is"
 
@@ -7912,6 +7994,11 @@ msgid "Photo %(n)s"
 msgstr "Foto %(n)s"
 
 #: templates/hardware/device.html:24 templates/hardware/shop.html:26
+#: templates/themes/night_shift/hardware/shop.html:17
+#: templates/themes/open_house/hardware/shop.html:21
+#: templates/themes/workbench/core/home.html:33
+#: templates/themes/workbench/hardware/shop.html:30
+#: templates/themes/workbench/hardware/shop.html:49
 msgid "Condition"
 msgstr "Staat"
 
@@ -8028,51 +8115,75 @@ msgstr "Btw %(rate)s %%"
 msgid "Place order"
 msgstr "Bestelling plaatsen"
 
-#: templates/hardware/shop.html:12
-#, python-format
-msgid "Cart (%(n)s)"
-msgid_plural "Cart (%(n)s)"
-msgstr[0] "Winkelwagen (%(n)s)"
-msgstr[1] "Winkelwagen (%(n)s)"
-
 #: templates/hardware/shop.html:17
+#: templates/themes/night_shift/hardware/shop.html:14
+#: templates/themes/open_house/hardware/shop.html:19
+#: templates/themes/workbench/hardware/shop.html:16
 msgid "Search, e.g. ThinkPad or i5"
 msgstr "Zoeken, bijv. ThinkPad of i5"
 
 #: templates/hardware/shop.html:17 templates/hardware/shop.html:35
 #: templates/legacy/_head.html:10
+#: templates/themes/night_shift/hardware/shop.html:14
+#: templates/themes/night_shift/hardware/shop.html:19
+#: templates/themes/open_house/hardware/shop.html:19
+#: templates/themes/open_house/hardware/shop.html:23
+#: templates/themes/workbench/hardware/shop.html:15
+#: templates/themes/workbench/hardware/shop.html:43
 msgid "Search"
 msgstr "Zoeken"
 
 #: templates/hardware/shop.html:19
+#: templates/themes/night_shift/hardware/shop.html:15
+#: templates/themes/workbench/hardware/shop.html:20
 msgid "All types"
 msgstr "Alle soorten"
 
 #: templates/hardware/shop.html:23
+#: templates/themes/night_shift/hardware/shop.html:16
+#: templates/themes/open_house/hardware/shop.html:20
+#: templates/themes/workbench/hardware/shop.html:26
 msgid "All brands"
 msgstr "Alle merken"
 
 #: templates/hardware/shop.html:27
+#: templates/themes/night_shift/hardware/shop.html:17
+#: templates/themes/open_house/hardware/shop.html:21
+#: templates/themes/workbench/hardware/shop.html:32
 msgid "Every condition"
 msgstr "Elke staat"
 
 #: templates/hardware/shop.html:30
+#: templates/themes/night_shift/hardware/shop.html:18
+#: templates/themes/open_house/hardware/shop.html:22
+#: templates/themes/workbench/hardware/shop.html:36
 msgid "Sort"
 msgstr "Sorteren"
 
 #: templates/hardware/shop.html:31
+#: templates/themes/night_shift/hardware/shop.html:18
+#: templates/themes/open_house/hardware/shop.html:22
+#: templates/themes/workbench/hardware/shop.html:38
 msgid "Newest first"
 msgstr "Nieuwste eerst"
 
 #: templates/hardware/shop.html:32
+#: templates/themes/night_shift/hardware/shop.html:18
+#: templates/themes/open_house/hardware/shop.html:22
+#: templates/themes/workbench/hardware/shop.html:39
 msgid "Price, low to high"
 msgstr "Prijs, laag naar hoog"
 
 #: templates/hardware/shop.html:33
+#: templates/themes/night_shift/hardware/shop.html:18
+#: templates/themes/open_house/hardware/shop.html:22
+#: templates/themes/workbench/hardware/shop.html:40
 msgid "Price, high to low"
 msgstr "Prijs, hoog naar laag"
 
 #: templates/hardware/shop.html:38
+#: templates/themes/night_shift/hardware/shop.html:21
+#: templates/themes/workbench/hardware/shop.html:6
 #, python-format
 msgid "%(n)s device"
 msgid_plural "%(n)s devices"
@@ -8080,28 +8191,15 @@ msgstr[0] "%(n)s apparaat"
 msgstr[1] "%(n)s apparaten"
 
 #: templates/hardware/shop.html:39
+#: templates/themes/night_shift/hardware/shop.html:21
+#: templates/themes/workbench/hardware/shop.html:44
 msgid "Show everything"
 msgstr "Alles tonen"
 
-#: templates/hardware/shop.html:56
-msgid "Pages"
-msgstr "Pagina's"
-
-#: templates/hardware/shop.html:57
-msgid "Previous"
-msgstr "Vorige"
-
-#: templates/hardware/shop.html:58
-#, python-format
-msgid "Page %(n)s of %(total)s"
-msgstr "Pagina %(n)s van %(total)s"
-
-#: templates/hardware/shop.html:59 templates/licences/options.html:27
-#: templates/licences/step.html:18 templates/setup/wizard.html:37
-msgid "Next"
-msgstr "Volgende"
-
 #: templates/hardware/shop.html:63
+#: templates/themes/night_shift/hardware/shop.html:37
+#: templates/themes/open_house/hardware/shop.html:44
+#: templates/themes/workbench/hardware/shop.html:62
 msgid "Nothing for sale matches your choice right now."
 msgstr "Er is nu niets te koop dat aan je keuze voldoet."
 
@@ -8334,6 +8432,8 @@ msgstr "Stappen"
 #: templates/licences/options.html:3 templates/licences/options.html:5
 #: templates/licences/step.html:3 templates/licences/step.html:6
 #: templates/orders/order_detail.html:26
+#: templates/themes/night_shift/core/home.html:10
+#: templates/themes/workbench/core/home.html:9
 msgid "Register a licence"
 msgstr "Licentie registreren"
 
@@ -9080,6 +9180,39 @@ msgstr "Prijs per poort (vorige webshop)"
 msgid "All telephony quotes"
 msgstr "Alle telefonie-offertes"
 
+#: templates/themes/night_shift/core/home.html:6
+msgid "service · licences · hardware"
+msgstr "service · licenties · hardware"
+
+#: templates/themes/night_shift/core/home.html:7
+msgid "Your devices keep running. We make sure of it."
+msgstr "Je apparaten draaien. Wij houden het zo."
+
+#: templates/themes/open_house/core/home.html:6
+msgid "IT hardware and support, sorted without hassle."
+msgstr "IT-hardware en support, zonder gedoe geregeld."
+
+#: templates/themes/open_house/core/home.html:13
+msgid "Become a customer"
+msgstr "Klant worden"
+
+#: templates/themes/open_house/core/home.html:20
+#: templates/themes/workbench/core/home.html:17
+msgid "What you can do here"
+msgstr "Wat je hier kunt doen"
+
+#: templates/themes/open_house/hardware/shop.html:6
+msgid "Find your next device"
+msgstr "Vind je volgende apparaat"
+
+#: templates/themes/workbench/core/home.html:6
+msgid "What would you like to arrange?"
+msgstr "Wat wil je regelen?"
+
+#: templates/themes/workbench/core/home.html:31
+msgid "New in the hardware"
+msgstr "Nieuw in de hardware"
+
 #: templates/unfold/helpers/account_links.html:6
 msgid "View site"
 msgstr "Website bekijken"
@@ -9092,7 +9225,7 @@ msgstr "Alles uitklappen"
 msgid "Collapse all"
 msgstr "Alles inklappen"
 
-#: templates/unfold/helpers/app_list.html:109
+#: templates/unfold/helpers/app_list.html:110
 msgid "You don’t have permission to view or edit anything."
 msgstr "U hebt geen rechten om iets te bekijken of te wijzigen."
 

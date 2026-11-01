@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="oh-home">
+  <section class="oh-hero">
+    <h1>{% firstof site_settings.tagline _("IT hardware and support, sorted without hassle.") %}</h1>
+    {% if site_settings.intro_text %}<p class="lead">{{ site_settings.intro_text|linebreaksbr }}</p>{% endif %}
+    <div class="oh-actions">
+      {% if hardware_enabled %}<a class="btn btn-primary" href="{% url 'hardware_shop' %}">{% translate "View the hardware for sale" %}</a>{% endif %}
+      {% if user.is_authenticated %}
+        <a class="btn oh-soft" href="{% url 'dashboard' %}">{% firstof site_settings.hero_button_text _("Go to my account") %}</a>
+      {% elif signup_enabled %}
+        <a class="btn oh-soft" href="{% url 'signup' %}">{% translate "Become a customer" %}</a>
+      {% else %}
+        <a class="btn oh-soft" href="{% url 'login' %}">{% firstof site_settings.hero_button_text _("Log in") %}</a>
+      {% endif %}
+    </div>
+  </section>
+  {% if blocks %}
+  <section class="oh-tiles" aria-label="{% translate 'What you can do here' %}">
+    {% for block in blocks %}
+    <article class="oh-tile">
+      {% if block.icon %}<div class="oh-tile-icon" aria-hidden="true">{{ block.icon }}</div>{% endif %}
+      <h2>{{ block.title }}</h2>
+      {% if block.text %}<p>{{ block.text|linebreaksbr }}</p>{% endif %}
+      {% with href=block.href %}{% if href %}<p class="oh-tile-link"><a href="{{ href }}">{% firstof block.link_text _("Read more") %} →</a></p>{% endif %}{% endwith %}
+    </article>
+    {% endfor %}
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

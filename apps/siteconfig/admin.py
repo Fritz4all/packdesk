@@ -139,7 +139,7 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
         ]}),
         (
             _("Branding"),
-            {"classes": ["tab"], "fields": ["logo", ("favicon", "icon_color"), ("primary_color", "accent_color"), "theme",
+            {"classes": ["tab"], "fields": ["logo", ("favicon", "icon_color"), ("primary_color", "accent_color"), "site_theme", "theme",
                                          "theme_switch"]},
         ),
         (_("Home page"), {"classes": ["tab"], "fields": ["tagline", "intro_text", "hero_button_text"]}),

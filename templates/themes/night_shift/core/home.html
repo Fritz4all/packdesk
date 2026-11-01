@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="ns-home">
+  <section class="ns-intro">
+    <div class="ns-kicker">{% translate "service · licences · hardware" %}</div>
+    <h1>{% firstof site_settings.tagline _("Your devices keep running. We make sure of it.") %}</h1>
+    {% if site_settings.intro_text %}<p class="lead">{{ site_settings.intro_text|linebreaksbr }}</p>{% endif %}
+    <form class="ns-lookup" method="get" action="{% url 'register_licence' %}">
+      <label for="ns-number">{% translate "Register a licence" %}</label>
+      <div class="ns-lookup-row">
+        <input class="ns-input" id="ns-number" type="search" name="number" placeholder="{% translate 'Licence number' %}">
+        <button class="btn btn-primary" type="submit">{% translate "Next" %}</button>
+      </div>
+    </form>
+  </section>
+  {% if blocks %}
+  <ol class="ns-tasks">
+    {% for block in blocks %}
+    <li class="ns-task">
+      <div>
+        <h2>{{ block.title }}</h2>
+        {% if block.text %}<p>{{ block.text|linebreaksbr }}</p>{% endif %}
+        {% with href=block.href %}{% if href %}<p class="ns-task-link"><a href="{{ href }}">{% firstof block.link_text _("Read more") %} →</a></p>{% endif %}{% endwith %}
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+</div>
+{% endblock %}

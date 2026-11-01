@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Hardware" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="oh-shop-head">
+  <h1>{% translate "Find your next device" %}</h1>
+  <div class="oh-shop-actions">
+    {% include "hardware/_vat_switch.html" with query=query %}
+    {% include "hardware/_cart_link.html" %}
+  </div>
+</div>
+{% if settings.intro %}<p class="lead">{{ settings.intro|linebreaksbr }}</p>{% endif %}
+<nav class="oh-pills" aria-label="{% translate 'Device type' %}">
+  <a class="oh-pill{% if not chosen.type %} is-current{% endif %}" href="{% url 'hardware_shop' %}"{% if not chosen.type %} aria-current="true"{% endif %}>{% translate "Everything" %}</a>
+  {% for t in types %}<a class="oh-pill{% if chosen.type == t.pk|stringformat:"s" %} is-current{% endif %}" href="?type={{ t.pk }}"{% if chosen.type == t.pk|stringformat:"s" %} aria-current="true"{% endif %}>{{ t }}</a>{% endfor %}
+</nav>
+<form method="get" class="oh-filters">
+  {% if chosen.type %}<input type="hidden" name="type" value="{{ chosen.type }}">{% endif %}
+  <label class="oh-search"><span class="visually-hidden">{% translate "Search" %}</span><input class="oh-input" style="width: 100%" type="search" name="q" value="{{ chosen.q }}" placeholder="{% translate 'Search, e.g. ThinkPad or i5' %}"></label>
+  <label><span class="visually-hidden">{% translate "Brand" %}</span><select class="oh-input" name="brand" onchange="this.form.submit()"><option value="">{% translate "All brands" %}</option>{% for b in brands %}<option value="{{ b.pk }}"{% if chosen.brand == b.pk|stringformat:"s" %} selected{% endif %}>{{ b.name }}</option>{% endfor %}</select></label>
+  <label><span class="visually-hidden">{% translate "Condition" %}</span><select class="oh-input" name="condition" onchange="this.form.submit()"><option value="">{% translate "Every condition" %}</option>{% for c in conditions %}<option value="{{ c.pk }}"{% if chosen.condition == c.pk|stringformat:"s" %} selected{% endif %}>{{ c }}</option>{% endfor %}</select></label>
+  <label><span class="visually-hidden">{% translate "Sort" %}</span><select class="oh-input" name="sort" onchange="this.form.submit()"><option value="">{% translate "Newest first" %}</option><option value="price"{% if chosen.sort == "price" %} selected{% endif %}>{% translate "Price, low to high" %}</option><option value="-price"{% if chosen.sort == "-price" %} selected{% endif %}>{% translate "Price, high to low" %}</option></select></label>
+  <button class="btn btn-primary" type="submit">{% translate "Search" %}</button>
+</form>
+{% if page.object_list %}
+<div class="oh-grid">
+  {% for device in page %}
+  <a class="oh-card" href="{% url 'hardware_device' device.number %}">
+    <div class="oh-visual">{% include "hardware/_device_visual.html" %}</div>
+    <div class="oh-card-body">
+      <span class="oh-card-meta">{{ device.device_type }}{% if device.condition %} · {{ device.condition }}{% endif %}</span>
+      <h2>{% if device.brand %}{{ device.brand.name }} {% endif %}{{ device.model }}</h2>
+      {% if device.spec_rows %}<ul class="oh-specs">{% for name, value in device.spec_rows %}<li>{{ name }}: {{ value }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+    <div class="oh-card-foot">
+      {% include "hardware/_price.html" with price=device.shop_price %}
+      <span class="oh-view">{% translate "View" %}</span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% include "hardware/_pages.html" %}
+{% else %}
+<p class="oh-empty">{% translate "Nothing for sale matches your choice right now." %}</p>
+{% endif %}
+{% endblock %}

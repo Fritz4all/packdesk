@@ -1,0 +1,1 @@
+{% load i18n %}{% if customer %}<a class="btn btn-ghost hw-cart-link" href="{% url 'hardware_cart' %}">{% blocktranslate count n=cart_count %}Cart ({{ n }}){% plural %}Cart ({{ n }}){% endblocktranslate %}</a>{% endif %}

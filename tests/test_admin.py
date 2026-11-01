@@ -19,6 +19,7 @@ def settings_form(**overrides):
         "trash_retention_days": "30",
         "primary_color": "#112233",
         "icon_color": "blue",
+        "site_theme": "classic",
         "accent_color": "#ffffff",
         "country": "NL",
         "theme": "auto",

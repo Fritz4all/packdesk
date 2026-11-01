@@ -1,0 +1,1 @@
+{% with photo=device.photos.all.0 %}{% if photo %}<img src="{{ photo.image.url }}" alt="" loading="lazy">{% else %}<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M6 8h36v24H6z M24 32v8 M16 40h16"></path></svg>{% endif %}{% endwith %}

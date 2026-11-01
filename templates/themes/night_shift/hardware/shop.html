@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Hardware" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="ns-shop-head">
+  <h1>{% translate "Hardware" %}</h1>
+  <div class="ns-shop-actions">
+    {% include "hardware/_vat_switch.html" with query=query %}
+    {% include "hardware/_cart_link.html" %}
+  </div>
+</div>
+{% if settings.intro %}<p class="lead">{{ settings.intro|linebreaksbr }}</p>{% endif %}
+<form method="get" class="ns-filters">
+  <label class="ns-wide">{% translate "Search" %}<input class="ns-input" type="search" name="q" value="{{ chosen.q }}" placeholder="{% translate 'Search, e.g. ThinkPad or i5' %}"></label>
+  <label>{% translate "Device type" %}<select class="ns-input" name="type" onchange="this.form.submit()"><option value="">{% translate "All types" %}</option>{% for t in types %}<option value="{{ t.pk }}"{% if chosen.type == t.pk|stringformat:"s" %} selected{% endif %}>{{ t }}</option>{% endfor %}</select></label>
+  <label>{% translate "Brand" %}<select class="ns-input" name="brand" onchange="this.form.submit()"><option value="">{% translate "All brands" %}</option>{% for b in brands %}<option value="{{ b.pk }}"{% if chosen.brand == b.pk|stringformat:"s" %} selected{% endif %}>{{ b.name }}</option>{% endfor %}</select></label>
+  <label>{% translate "Condition" %}<select class="ns-input" name="condition" onchange="this.form.submit()"><option value="">{% translate "Every condition" %}</option>{% for c in conditions %}<option value="{{ c.pk }}"{% if chosen.condition == c.pk|stringformat:"s" %} selected{% endif %}>{{ c }}</option>{% endfor %}</select></label>
+  <label>{% translate "Sort" %}<select class="ns-input" name="sort" onchange="this.form.submit()"><option value="">{% translate "Newest first" %}</option><option value="price"{% if chosen.sort == "price" %} selected{% endif %}>{% translate "Price, low to high" %}</option><option value="-price"{% if chosen.sort == "-price" %} selected{% endif %}>{% translate "Price, high to low" %}</option></select></label>
+  <button class="btn btn-primary" type="submit">{% translate "Search" %}</button>
+</form>
+<p class="muted">{% blocktranslate count n=total %}{{ n }} device{% plural %}{{ n }} devices{% endblocktranslate %}{% if chosen.q or chosen.type or chosen.brand or chosen.condition %} · <a href="{% url 'hardware_shop' %}">{% translate "Show everything" %}</a>{% endif %}</p>
+{% if page.object_list %}
+<div class="ns-grid">
+  {% for device in page %}
+  <a class="ns-card" href="{% url 'hardware_device' device.number %}">
+    <div class="ns-card-top"><span class="ns-visual">{% include "hardware/_device_visual.html" %}</span>{% if device.condition %}<span class="ns-badge">{{ device.condition }}</span>{% endif %}</div>
+    <div>
+      <h2>{% if device.brand %}{{ device.brand.name }} {% endif %}{{ device.model }}</h2>
+      {% if device.spec_rows %}<ul class="ns-specs">{% for name, value in device.spec_rows %}<li>{{ name }}: {{ value }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+    {% include "hardware/_price.html" with price=device.shop_price %}
+  </a>
+  {% endfor %}
+</div>
+{% include "hardware/_pages.html" %}
+{% else %}
+<p class="ns-empty">{% translate "Nothing for sale matches your choice right now." %}</p>
+{% endif %}
+{% endblock %}

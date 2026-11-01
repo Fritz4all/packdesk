@@ -17,6 +17,15 @@ class Theme(models.TextChoices):
     DARK = "dark", _("Dark")
 
 
+class SiteTheme(models.TextChoices):
+    """The look of the website; each has a light and a dark version (see `theme` for which one is shown)."""
+
+    CLASSIC = "classic", _("Classic")
+    WORKBENCH = "workbench", _("Workbench")
+    NIGHT_SHIFT = "night_shift", _("Night shift")
+    OPEN_HOUSE = "open_house", _("Open house")
+
+
 class SiteSettings(models.Model):
     """Everything that differs per customer installation.
 
@@ -105,6 +114,10 @@ class SiteSettings(models.Model):
     )
     primary_color = models.CharField(_("primary colour"), max_length=7, default="#1f6feb", validators=[hex_color])
     accent_color = models.CharField(_("accent colour"), max_length=7, default="#0ea5e9", validators=[hex_color])
+    site_theme = models.CharField(
+        _("website theme"), max_length=12, choices=SiteTheme.choices, default=SiteTheme.CLASSIC,
+        help_text=_("The design of the website. Every theme has a light and a dark version: see default appearance."),
+    )
     theme = models.CharField(
         _("default appearance"),
         max_length=8,

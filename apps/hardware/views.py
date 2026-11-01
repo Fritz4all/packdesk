@@ -7,6 +7,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 
 from apps.licences.models import Vendor
+from apps.siteconfig.themes import template
 
 from . import pricing, services
 from .models import Condition, Device, DeviceType, HardwareSettings, Specification
@@ -61,7 +62,7 @@ def shop(request):
     query = request.GET.copy()
     query.pop("page", None)
     query.pop("vat", None)
-    return render(request, "hardware/shop.html", {
+    return render(request, template(request, "hardware/shop.html"), {
         "settings": settings, "page": page, "chosen": chosen, "customer": customer,
         "incl_vat": pricing.show_incl_vat(request, settings), "query": query.urlencode(),
         "types": DeviceType.objects.filter(is_active=True, devices__in=on_sale).distinct(),
