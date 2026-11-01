@@ -225,8 +225,11 @@ def test_shop_can_be_switched_off_and_is_in_the_website_menu(client, site):
     from apps.siteconfig.models import MenuItem
 
     assert MenuItem.objects.filter(url="/hardware/").exists()
+    assert 'href="/hardware/"' in client.get("/").content.decode()
     HardwareSettings.objects.update(enabled=False)
     assert client.get("/hardware/").status_code == 404
+    assert "/hardware/" not in client.get("/").content.decode()  # no links left to a page that is gone
+    assert "/hardware/" not in client.get("/login/").content.decode()
 
 
 def test_home_page_has_a_hardware_card_and_one_for_packs_and_parts(client, site):

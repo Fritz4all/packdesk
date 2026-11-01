@@ -196,6 +196,11 @@ class SiteSettings(models.Model):
     def __str__(self):
         return str(_("Settings"))
 
+    @property
+    def active_theme(self):
+        """The website theme to use: Classic for a value this version does not know (e.g. a removed theme)."""
+        return self.site_theme if self.site_theme in SiteTheme.values else SiteTheme.CLASSIC
+
     def save(self, *args, **kwargs):
         self.pk = 1
         super().save(*args, **kwargs)
@@ -388,16 +393,26 @@ class MenuItem(models.Model):
     def __str__(self):
         return self.label
 
+    @property
+    def href(self):
+        return self.url
+
     def get_inline_title(self):
         """Collapsed row in the admin: text and link, then (smaller) who sees it."""
         return format_html('{} · {} <span class="pd-dim">— {}</span>', self.label, self.url, _row_state(self))
 
 
 def visible_for(items, user):
-    """Active items the current visitor may see."""
+    """Active items the current visitor may see. Links to the hardware shop go when the shop is switched off."""
     logged_in = user.is_authenticated
-    return [
+    visible = [
         item for item in items
         if item.is_active
         and (item.visibility == Visibility.ALL or (item.visibility == Visibility.LOGGED_IN) == logged_in)
     ]
+    if any(item.href.startswith("/hardware/") for item in visible):
+        from apps.hardware.models import HardwareSettings
+
+        if not HardwareSettings.load().enabled:
+            return [item for item in visible if not item.href.startswith("/hardware/")]
+    return visible

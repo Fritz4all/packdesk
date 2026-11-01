@@ -183,7 +183,7 @@ fieldset.field legend { font-weight: 500; margin-bottom: .35rem; padding: 0; }
 .field { align-content: start; }
 .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .auth-links { display: flex; justify-content: space-between; gap: 1rem; margin: 1rem 0 0; font-size: 0.95rem; }
-.two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; align-items: start; }
+.two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 1rem; align-items: start; }
 .details { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; margin: 1rem 0; }
 .details dt { color: var(--muted); }
 .details dd { margin: 0; }

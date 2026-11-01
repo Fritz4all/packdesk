@@ -8,7 +8,7 @@ from apps.siteconfig.themes import template
 def home(request):
     blocks = visible_for(request.site_settings.home_blocks.all(), request.user)
     context = {"blocks": blocks}
-    if request.site_settings.site_theme != SiteTheme.CLASSIC:
+    if request.site_settings.active_theme != SiteTheme.CLASSIC:
         context.update(_theme_home_context(request))
     return render(request, template(request, "core/home.html"), context)
 
@@ -21,7 +21,7 @@ def _theme_home_context(request):
 
     settings = HardwareSettings.load()
     latest = []
-    if settings.enabled and request.site_settings.site_theme == SiteTheme.WORKBENCH:
+    if settings.enabled and request.site_settings.active_theme == SiteTheme.WORKBENCH:
         customer = pricing.shop_customer(request)
         latest = list(Device.objects.filter(status=Device.Status.FOR_SALE)
                       .select_related("device_type", "brand", "condition").order_by("-created_at")[:3])

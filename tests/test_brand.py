@@ -65,6 +65,16 @@ def test_admin_sidebar_shows_the_version(client, site, beheerder, settings):
 THEMES = ["classic", "workbench", "night_shift", "open_house"]
 
 
+def test_unknown_theme_shows_classic(client, site):
+    """E.g. a theme that a later version removed: its stylesheet is gone, which in production is a server error."""
+    site.site_theme = "gone"
+    site.save()
+    page = client.get("/")
+    assert page.status_code == 200
+    assert 'data-site-theme="classic"' in page.content.decode() and "themes/gone" not in page.content.decode()
+    assert client.get("/does-not-exist/").status_code == 404
+
+
 @pytest.mark.parametrize("theme", THEMES)
 def test_every_page_works_in_every_theme(client, site, theme):
     from decimal import Decimal

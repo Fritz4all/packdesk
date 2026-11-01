@@ -66,7 +66,7 @@ def shop(request):
     return render(request, template(request, "hardware/shop.html"), {
         "settings": settings, "page": page, "chosen": chosen, "customer": customer,
         "incl_vat": pricing.show_incl_vat(request, settings), "query": query.urlencode(),
-        "as_list": pricing.show_as_list(request, request.site_settings.site_theme),
+        "as_list": pricing.show_as_list(request, request.site_settings.active_theme),
         "types": DeviceType.objects.filter(is_active=True, devices__in=on_sale).distinct(),
         "brands": Vendor.objects.filter(devices__in=on_sale).distinct().order_by("name"),
         "conditions": Condition.objects.filter(device__in=on_sale).distinct(),

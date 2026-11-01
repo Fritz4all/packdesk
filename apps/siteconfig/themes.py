@@ -8,5 +8,5 @@ from .models import SiteTheme
 
 def template(request, name):
     """The template for a page in the theme of the website: the theme's own version when it has one."""
-    theme = request.site_settings.site_theme
+    theme = request.site_settings.active_theme
     return name if theme == SiteTheme.CLASSIC else [f"themes/{theme}/{name}", name]
