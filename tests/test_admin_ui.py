@@ -11,6 +11,32 @@ def test_header_path_shows_repeated_titles_once(client, site, beheerder):
     assert page.count(">\n            Instellingen\n") <= 1 or len(header) <= 3
 
 
+def test_settings_page_has_a_webshop_tab(client, site, beheerder):
+    client.force_login(beheerder)
+    page = client.get("/admin/siteconfig/sitesettings/1/change/")
+    tabs = [str(tab["title"]) for tab in page.context["webshop_tabs"]]
+    assert tabs == ["Huisstijl", "Voettekst", "Homepageblokken", "Menu-items"]
+    html = page.content.decode()
+    assert "activeTab = 'webshop'" in html and 'id="webshop-group"' in html  # the address after saving returns here
+    assert 'name="site_theme"' in html and 'name="home_blocks-TOTAL_FORMS"' in html
+    assert "activeTab = 'home_blocks'" not in html and "activeTab = 'menu_items'" not in html
+    # Moved out of General: only the tab bar of General may list them, and it no longer does.
+    general = html.split("activeFieldsetTab: ")[1].split("webshopTab")[0]
+    assert "activeFieldsetTab = 'huisstijl'" not in general and "activeFieldsetTab = 'voettekst'" not in general
+
+
+def test_failed_save_opens_the_webshop_tab_with_the_error(client, site, beheerder):
+    from .test_admin import SETTINGS_URL, settings_form
+
+    client.force_login(beheerder)
+    page = client.post(SETTINGS_URL + "1/change/", settings_form(primary_color="red"))
+    assert page.status_code == 200 and page.context["error_tab"] == "webshop"
+    assert page.context["webshop_open"] == "huisstijl"
+    assert "activeTab = 'webshop'" in page.content.decode()
+    page = client.post(SETTINGS_URL + "1/change/", settings_form(name=""))
+    assert page.context["error_tab"] == "general"
+
+
 def test_add_button_next_to_search(client, site, beheerder):
     client.force_login(beheerder)
     page = client.get("/admin/customers/customer/").content.decode()

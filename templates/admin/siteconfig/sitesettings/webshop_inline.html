@@ -1,0 +1,6 @@
+{% comment %}The stacked inline of Unfold, shown by the tab Webshop instead of by a tab of its own.{% endcomment %}
+<div id="{{ inline_admin_formset.formset.prefix }}-group" data-inline-type="stacked">
+  <fieldset class="module relative {{ inline_admin_formset.classes }}">
+    {% include "unfold/helpers/edit_inline/stacked_list.html" %}
+  </fieldset>
+</div>

@@ -97,6 +97,12 @@ def unfold_tabs():
              "permission": lambda request, perm=perm: request.user.has_perm(perm)}
             for title, url, perm, _model, _form in tabs
         ]})
+    # The settings page: General (with its own tab bar), Addresses and Webshop, tabs within the one form.
+    page = reverse_lazy("admin:siteconfig_sitesettings_change", args=[1])
+    result.append({"models": [{"name": "siteconfig.sitesettings", "detail": True}], "items": [
+        {"title": title, "link": page, "inline": inline} for title, inline in (
+            (_("General"), "general"), (_("Addresses"), "addresses"), (_("Webshop"), "webshop"))
+    ]})
     return result
 
 

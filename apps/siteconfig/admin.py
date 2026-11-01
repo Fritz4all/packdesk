@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.admin.utils import flatten_fieldsets
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.text import capfirst, slugify
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
@@ -97,7 +99,8 @@ class AddressInline(StackedInline):
 class HomeBlockInline(StackedInline, TranslationStackedInline):
     model = HomeBlock
     extra = 0
-    tab = True
+    webshop_tab = True
+    template = "admin/siteconfig/sitesettings/webshop_inline.html"
     collapsible = True
     fields = ["icon", "title", "text", ("link_url", "link_text"), ("visibility", "is_active"), "position"]
 
@@ -105,7 +108,8 @@ class HomeBlockInline(StackedInline, TranslationStackedInline):
 class MenuItemInline(StackedInline, TranslationStackedInline):
     model = MenuItem
     extra = 0
-    tab = True
+    webshop_tab = True
+    template = "admin/siteconfig/sitesettings/webshop_inline.html"
     collapsible = True
     fields = ["label", ("url", "new_tab"), ("visibility", "is_active"), "position"]
 
@@ -139,14 +143,14 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
         ]}),
         (
             _("Branding"),
-            {"classes": ["tab"], "fields": ["logo", ("favicon", "icon_color"), ("primary_color", "accent_color"), "site_theme", "theme",
+            {"classes": ["webshop"], "fields": ["logo", ("favicon", "icon_color"), ("primary_color", "accent_color"), "site_theme", "theme",
                                          "theme_switch"]},
         ),
         (_("Home page"), {"classes": ["tab"], "fields": ["tagline", "intro_text", "hero_button_text"]}),
         (
             _("Footer"),
             {
-                "classes": ["tab"],
+                "classes": ["webshop"],
                 "fields": [
                     "footer_heading",
                     "footer_text",
@@ -183,6 +187,33 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
             return fieldsets
         return [(name, {**opts, "fields": [f for f in opts["fields"] if f not in self.superadmin_fields]})
                 for name, opts in fieldsets]
+
+    def render_change_form(self, request, context, *args, **kwargs):
+        """The tab Webshop: its fieldsets (class "webshop") and inlines (webshop_tab), each with its own tab."""
+        adminform, inlines = context["adminform"], context["inline_admin_formsets"]
+        errors = adminform.form.errors
+        tabs, webshop_fields = [], set()
+        for fieldset in adminform:
+            if "webshop" in fieldset.classes:
+                names = flatten_fieldsets([(None, {"fields": fieldset.fields})])
+                webshop_fields.update(names)
+                tabs.append({"id": slugify(fieldset.name), "title": fieldset.name, "fieldset": fieldset,
+                             "errors": sum(len(errors.get(name, [])) for name in names)})
+        for inline in inlines:
+            if getattr(inline.opts, "webshop_tab", False):
+                tabs.append({"id": inline.formset.prefix, "title": capfirst(inline.opts.verbose_name_plural),
+                             "inline": inline, "errors": inline.formset.total_error_count()})
+        failed = [tab for tab in tabs if tab["errors"]]
+        # After a failed save: open the tab with the first error, as the tabs on top do not show a count.
+        error_tab = ""
+        if set(errors) - webshop_fields:
+            error_tab = "general"
+        elif any(i.formset.total_error_count() for i in inlines if not getattr(i.opts, "webshop_tab", False)):
+            error_tab = next(i.formset.prefix for i in inlines if i.formset.total_error_count())
+        elif failed:
+            error_tab = "webshop"
+        context.update(webshop_tabs=tabs, webshop_open=(failed or tabs)[0]["id"], error_tab=error_tab)
+        return super().render_change_form(request, context, *args, **kwargs)
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name in self.color_fields:
