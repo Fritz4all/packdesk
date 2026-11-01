@@ -1,5 +1,5 @@
 {% extends "admin/change_form.html" %}
-{% load unfold %}
+{% load i18n unfold %}
 {% comment %}PackDesk: the settings page with a tab Webshop that holds both fields and inlines, with its own tab bar like General.{% endcomment %}
 {% block field_sets %}{% include "unfold/helpers/fieldsets_tabs.html" %}{% endblock %}
 {% block inline_field_sets %}
@@ -8,6 +8,14 @@
        x-data="{ webshopTab: '{{ webshop_open }}', init() {
          {% if error_tab %}this.activeTab = '{{ error_tab }}';{% else %}try { var saved = sessionStorage.getItem('packdesk-webshop-tab'); if (saved && this.$el.querySelector('[data-webshop-tab=&quot;' + saved + '&quot;]')) this.webshopTab = saved; } catch (e) {}{% endif %}
          this.$watch('webshopTab', function (tab) { try { sessionStorage.setItem('packdesk-webshop-tab', tab); } catch (e) {} });
+       }, restoreBrandingDefaults() {
+         var defaults = JSON.parse(document.getElementById('branding-defaults').textContent);
+         Object.keys(defaults).forEach(function (name) {
+           var field = document.getElementById('id_' + name);
+           if (!field) return;
+           if (field.type == 'checkbox') field.checked = defaults[name]; else field.value = defaults[name];
+           field.dispatchEvent(new Event('change', { bubbles: true }));
+         });
        } }">
     <div class="border-b border-base-200 dark:border-base-800">
       <nav class="flex flex-col items-center md:flex-row *:max-md:border-b dark:*:max-md:border-base-800 *:max-md:w-full max-md:*:last:!border-transparent max-md:[&>.active]:!border-b max-md:[&>.active]:after:!hidden *:min-md:border-x *:min-md:border-transparent *:font-medium *:text-important *:first:border-l-0 *:cursor-pointer *:relative *:py-2 *:px-3.5 *:hover:text-primary-600 dark:*:hover:text-primary-500 dark:*:border-transparent [&>.active]:bg-white dark:[&>.active]:bg-base-900 [&>.active]:border-base-200 dark:[&>.active]:border-base-800 [&>.active]:text-primary-600 dark:[&>.active]:text-primary-500 [&>.active]:after:absolute [&>.active]:after:content-[''] [&>.active]:after:-bottom-px [&>.active]:after:left-0 [&>.active]:after:right-0 [&>.active]:after:h-px [&>.active]:after:bg-white dark:[&>.active]:after:bg-base-900">
@@ -28,6 +36,16 @@
             <div class="form-rows aligned">
               {% with fieldset=tab.fieldset %}{% for line in fieldset %}{% include "unfold/helpers/fieldset_row.html" %}{% endfor %}{% endwith %}
             </div>
+            {% if tab.defaults %}
+              {{ tab.defaults|json_script:"branding-defaults" }}
+              <div class="flex flex-col gap-2 p-3">
+                <div>
+                  <button type="button" class="border border-base-200 dark:border-base-700 rounded-default px-3 py-2 font-medium text-important cursor-pointer hover:text-primary-600 dark:hover:text-primary-500"
+                          x-on:click="restoreBrandingDefaults()">{% translate "Restore default colours and theme" %}</button>
+                </div>
+                <p class="text-sm text-base-500 dark:text-base-400">{% translate "Fills in the default icon colour, colours, theme and appearance. Logo and favicon stay as they are. Nothing changes until you save." %}</p>
+              </div>
+            {% endif %}
           </fieldset>
         {% endif %}
       </div>

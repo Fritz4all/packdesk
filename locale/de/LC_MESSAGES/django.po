@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 19:01+0100\n"
+"POT-Creation-Date: 2026-11-01 21:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7575,6 +7575,16 @@ msgstr "Bestellt am"
 #: templates/admin/parts/picklist.html:11 templates/telephony/quote.html:22
 msgid "Print"
 msgstr "Drucken"
+
+#: templates/admin/siteconfig/sitesettings/change_form.html:43
+msgid "Restore default colours and theme"
+msgstr "Standardfarben und -design wiederherstellen"
+
+#: templates/admin/siteconfig/sitesettings/change_form.html:45
+msgid ""
+"Fills in the default icon colour, colours, theme and appearance. Logo and "
+"favicon stay as they are. Nothing changes until you save."
+msgstr "Trägt die Standardwerte für Symbolfarbe, Farben, Design und Darstellung ein. Logo und Favicon bleiben unverändert. Erst beim Speichern ändert sich etwas."
 
 #: templates/base.html:42 templates/base.html:43
 msgid "Appearance"

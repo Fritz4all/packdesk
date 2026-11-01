@@ -179,6 +179,8 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
     ]
 
     superadmin_fields = {"max_superadmins"}
+    # What the button on the tab Branding puts back; the logo and favicon are the customer's own files.
+    branding_default_fields = ["icon_color", "primary_color", "accent_color", "site_theme", "theme", "theme_switch"]
 
     def get_fieldsets(self, request, obj=None):
         """Fields only superadmins may see and change are left out for everyone else (also from the form)."""
@@ -198,7 +200,9 @@ class SiteSettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
                 names = flatten_fieldsets([(None, {"fields": fieldset.fields})])
                 webshop_fields.update(names)
                 tabs.append({"id": slugify(fieldset.name), "title": fieldset.name, "fieldset": fieldset,
-                             "errors": sum(len(errors.get(name, [])) for name in names)})
+                             "errors": sum(len(errors.get(name, [])) for name in names),
+                             "defaults": {name: SiteSettings._meta.get_field(name).get_default()
+                                          for name in self.branding_default_fields if name in names}})
         for inline in inlines:
             if getattr(inline.opts, "webshop_tab", False):
                 tabs.append({"id": inline.formset.prefix, "title": capfirst(inline.opts.verbose_name_plural),

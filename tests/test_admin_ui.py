@@ -25,6 +25,19 @@ def test_settings_page_has_a_webshop_tab(client, site, beheerder):
     assert "activeFieldsetTab = 'huisstijl'" not in general and "activeFieldsetTab = 'voettekst'" not in general
 
 
+def test_branding_tab_offers_the_default_look(client, site, beheerder):
+    client.force_login(beheerder)
+    page = client.get("/admin/siteconfig/sitesettings/1/change/")
+    tabs = {str(tab["title"]): tab.get("defaults") for tab in page.context["webshop_tabs"]}
+    assert tabs["Huisstijl"] == {"icon_color": "blue", "primary_color": "#1f6feb", "accent_color": "#0ea5e9",
+                                 "site_theme": "classic", "theme": "auto", "theme_switch": True}
+    assert not tabs["Voettekst"]
+    html = page.content.decode()
+    assert html.count('id="branding-defaults"') == 1 and '"site_theme": "classic"' in html
+    assert 'x-on:click="restoreBrandingDefaults()"' in html and "restoreBrandingDefaults() {" in html
+    assert '"logo"' not in html.split('id="branding-defaults"')[1].split("</script>")[0]
+
+
 def test_failed_save_opens_the_webshop_tab_with_the_error(client, site, beheerder):
     from .test_admin import SETTINGS_URL, settings_form
 
