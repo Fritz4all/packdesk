@@ -105,3 +105,23 @@ def test_theme_fonts_are_served_from_this_site(client, site):
 
 def test_licence_number_from_the_home_page_is_filled_in(client, site):
     assert 'value="26A0001"' in client.get("/register/?number=26A0001").content.decode()
+
+
+@pytest.mark.parametrize("theme", THEMES)
+def test_hardware_can_be_shown_as_list_or_tiles(client, site, theme):
+    from decimal import Decimal
+
+    from apps.hardware.models import Device, DeviceType
+
+    SiteSettings.objects.update(site_theme=theme)
+    Device.objects.create(device_type=DeviceType.objects.first(), model="Lijstmodel", serial_nr="TH-2",
+                          status=Device.Status.FOR_SALE, sale_price=Decimal("100.00"))
+    default = client.get("/hardware/").content.decode()
+    assert ('class="hw-list"' in default) == (theme == "workbench")  # a list fits this theme from the start
+    page = client.get("/hardware/?view=list").content.decode()
+    assert 'class="hw-list"' in page and "Lijstmodel" in page and "121,00" in page
+    assert 'class="hw-list"' in client.get("/hardware/").content.decode()  # remembered
+    page = client.get("/hardware/?view=tiles").content.decode()
+    assert 'class="hw-list"' not in page and "Lijstmodel" in page
+    assert 'class="hw-list"' not in client.get("/hardware/?type=1").content.decode()
+    assert "view=list" in page and "view=tiles" in page

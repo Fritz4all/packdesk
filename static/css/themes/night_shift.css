@@ -68,3 +68,5 @@ a.ns-card:hover { text-decoration: none; border-color: var(--brand); }
 [data-site-theme="night_shift"] .hw-vat-switch { border-radius: 6px; border-color: var(--field); }
 [data-site-theme="night_shift"] .hw-vat-switch a { padding: .6rem .85rem; }
 [data-site-theme="night_shift"] .hw-price strong { font-weight: 500; }
+[data-site-theme="night_shift"] .hw-row-specs { font-family: var(--mono); font-size: .8rem; }
+[data-site-theme="night_shift"] .hw-row-visual { color: var(--brand-text); }

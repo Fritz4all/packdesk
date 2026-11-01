@@ -1,0 +1,13 @@
+{% load i18n %}<div class="hw-grid">
+  {% for device in page %}
+  <a class="card hw-card card-link-block" href="{% url 'hardware_device' device.number %}">
+    <div class="hw-photo">{% with photo=device.photos.all.0 %}{% if photo %}<img src="{{ photo.image.url }}" alt="" loading="lazy">{% else %}<span class="hw-no-photo" aria-hidden="true">🖥</span>{% endif %}{% endwith %}</div>
+    <div class="hw-card-body">
+      <div class="hw-meta muted">{{ device.device_type }}{% if device.condition %} · {{ device.condition }}{% endif %}</div>
+      <h2 class="hw-title">{% if device.brand %}{{ device.brand.name }} {% endif %}{{ device.model }}</h2>
+      {% if device.spec_rows %}<ul class="hw-specs">{% for name, value in device.spec_rows %}<li><span class="muted">{{ name }}</span> {{ value }}</li>{% endfor %}</ul>{% endif %}
+      {% include "hardware/_price.html" with price=device.shop_price %}
+    </div>
+  </a>
+  {% endfor %}
+</div>

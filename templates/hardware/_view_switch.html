@@ -1,0 +1,4 @@
+{% load i18n %}<div class="hw-vat-switch hw-view-switch" role="group" aria-label="{% translate 'Show as' %}">
+  <a href="?{% if query %}{{ query }}&amp;{% endif %}view=tiles" class="{% if not as_list %}is-current{% endif %}"{% if not as_list %} aria-current="true"{% endif %}><svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M1 1h6v6H1zM9 1h6v6H9zM1 9h6v6H1zM9 9h6v6H9z"></path></svg>{% translate "Tiles" %}</a>
+  <a href="?{% if query %}{{ query }}&amp;{% endif %}view=list" class="{% if as_list %}is-current{% endif %}"{% if as_list %} aria-current="true"{% endif %}><svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M1 2h14v2H1zM1 7h14v2H1zM1 12h14v2H1z"></path></svg>{% translate "List" %}</a>
+</div>

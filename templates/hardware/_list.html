@@ -1,0 +1,15 @@
+{% load i18n %}<ul class="hw-list">
+  {% for device in page %}
+  <li>
+    <a class="hw-row" href="{% url 'hardware_device' device.number %}">
+      <span class="hw-row-visual">{% include "hardware/_device_visual.html" %}</span>
+      <span class="hw-row-main">
+        <strong class="hw-row-title">{% if device.brand %}{{ device.brand.name }} {% endif %}{{ device.model }}</strong>
+        <span class="hw-row-meta muted">{{ device.device_type }}{% if device.condition %} · {{ device.condition }}{% endif %}</span>
+        {% if device.spec_rows %}<span class="hw-row-specs">{% for name, value in device.spec_rows %}<span><span class="muted">{{ name }}</span> {{ value }}</span>{% endfor %}</span>{% endif %}
+      </span>
+      {% include "hardware/_price.html" with price=device.shop_price %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 12:33+0100\n"
+"POT-Creation-Date: 2026-11-01 12:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -366,7 +366,7 @@ msgstr ""
 #: apps/accounts/permissions.py:16 apps/customers/overview.py:159
 #: apps/invoices/admin.py:92 templates/invoices/my_invoices.html:14
 #: templates/telephony/my_quotes.html:7
-#: templates/themes/open_house/hardware/shop.html:37
+#: templates/themes/open_house/hardware/shop.html:39
 msgid "View"
 msgstr "Bekijken"
 
@@ -1460,7 +1460,6 @@ msgstr "Servicepack"
 #: templates/hardware/review.html:8 templates/licences/check.html:15
 #: templates/orders/my_licences.html:13 templates/orders/order_detail.html:7
 #: templates/themes/workbench/core/home.html:33
-#: templates/themes/workbench/hardware/shop.html:49
 msgid "Device"
 msgstr "Apparaat"
 
@@ -1753,7 +1752,6 @@ msgstr "Apparaattypes"
 
 #: apps/dashboard/navigation.py:19 apps/hardware/admin.py:191
 #: templates/hardware/device.html:51
-#: templates/themes/workbench/hardware/shop.html:49
 msgid "Specifications"
 msgstr "Kenmerken"
 
@@ -2011,7 +2009,7 @@ msgid "Spare parts: surcharges and costs"
 msgstr "Onderdelen: toeslagen en kosten"
 
 #: apps/dashboard/reports.py:242
-#: templates/themes/open_house/hardware/shop.html:14
+#: templates/themes/open_house/hardware/shop.html:15
 msgid "Everything"
 msgstr "Alles"
 
@@ -2436,11 +2434,11 @@ msgstr ""
 "verschijnen hier. Een soort zonder kenmerken heeft hier niets in te vullen "
 "(zie Hardware → Kenmerken)."
 
-#: apps/hardware/admin.py:208 templates/hardware/shop.html:18
-#: templates/themes/night_shift/hardware/shop.html:15
-#: templates/themes/open_house/hardware/shop.html:13
+#: apps/hardware/admin.py:208 templates/hardware/shop.html:19
+#: templates/themes/night_shift/hardware/shop.html:16
+#: templates/themes/open_house/hardware/shop.html:14
 #: templates/themes/workbench/core/home.html:33
-#: templates/themes/workbench/hardware/shop.html:18
+#: templates/themes/workbench/hardware/shop.html:19
 msgid "Device type"
 msgstr "Apparaatsoort"
 
@@ -4357,12 +4355,12 @@ msgstr "Merk en type"
 
 #: apps/licences/forms.py:50 apps/licences/forms.py:101
 #: apps/licences/forms.py:117 apps/parts/forms.py:13
-#: templates/faults/email_report.txt:5 templates/hardware/shop.html:22
+#: templates/faults/email_report.txt:5 templates/hardware/shop.html:23
 #: templates/licences/email_certificate.txt:17
 #: templates/licences/options.html:16
-#: templates/themes/night_shift/hardware/shop.html:16
-#: templates/themes/open_house/hardware/shop.html:20
-#: templates/themes/workbench/hardware/shop.html:24
+#: templates/themes/night_shift/hardware/shop.html:17
+#: templates/themes/open_house/hardware/shop.html:21
+#: templates/themes/workbench/hardware/shop.html:25
 msgid "Brand"
 msgstr "Merk"
 
@@ -6402,7 +6400,9 @@ msgstr "thema van de website"
 msgid ""
 "The design of the website. Every theme has a light and a dark version: see "
 "default appearance."
-msgstr "Het ontwerp van de website. Elk thema heeft een lichte en een donkere versie: zie standaardweergave."
+msgstr ""
+"Het ontwerp van de website. Elk thema heeft een lichte en een donkere "
+"versie: zie standaardweergave."
 
 #: apps/siteconfig/models.py:122
 msgid "default appearance"
@@ -7798,7 +7798,6 @@ msgid "Prices and margin per pack"
 msgstr "Prijzen en marge per pack"
 
 #: templates/dashboard/report.html:93
-#: templates/themes/workbench/hardware/shop.html:49
 msgid "Price"
 msgstr "Prijs"
 
@@ -7916,27 +7915,27 @@ msgstr ""
 msgid "Send fault report"
 msgstr "Storingsmelding versturen"
 
-#: templates/hardware/_cart_link.html:1 templates/hardware/shop.html:12
+#: templates/hardware/_cart_link.html:1 templates/hardware/shop.html:13
 #, python-format
 msgid "Cart (%(n)s)"
 msgid_plural "Cart (%(n)s)"
 msgstr[0] "Winkelwagen (%(n)s)"
 msgstr[1] "Winkelwagen (%(n)s)"
 
-#: templates/hardware/_pages.html:2 templates/hardware/shop.html:56
+#: templates/hardware/_pages.html:2 templates/hardware/shop.html:45
 msgid "Pages"
 msgstr "Pagina's"
 
-#: templates/hardware/_pages.html:3 templates/hardware/shop.html:57
+#: templates/hardware/_pages.html:3 templates/hardware/shop.html:46
 msgid "Previous"
 msgstr "Vorige"
 
-#: templates/hardware/_pages.html:4 templates/hardware/shop.html:58
+#: templates/hardware/_pages.html:4 templates/hardware/shop.html:47
 #, python-format
 msgid "Page %(n)s of %(total)s"
 msgstr "Pagina %(n)s van %(total)s"
 
-#: templates/hardware/_pages.html:5 templates/hardware/shop.html:59
+#: templates/hardware/_pages.html:5 templates/hardware/shop.html:48
 #: templates/licences/options.html:27 templates/licences/step.html:18
 #: templates/setup/wizard.html:37
 #: templates/themes/night_shift/core/home.html:13
@@ -7957,6 +7956,18 @@ msgstr "Prijs op aanvraag"
 #: templates/hardware/_vat_switch.html:1
 msgid "Show prices"
 msgstr "Prijzen tonen"
+
+#: templates/hardware/_view_switch.html:1
+msgid "Show as"
+msgstr "Tonen als"
+
+#: templates/hardware/_view_switch.html:2
+msgid "Tiles"
+msgstr "Tegels"
+
+#: templates/hardware/_view_switch.html:3
+msgid "List"
+msgstr "Lijst"
 
 #: templates/hardware/cart.html:3 templates/hardware/cart.html:6
 msgid "Your cart"
@@ -7993,12 +8004,11 @@ msgstr "Bekijk de hardware die te koop is"
 msgid "Photo %(n)s"
 msgstr "Foto %(n)s"
 
-#: templates/hardware/device.html:24 templates/hardware/shop.html:26
-#: templates/themes/night_shift/hardware/shop.html:17
-#: templates/themes/open_house/hardware/shop.html:21
+#: templates/hardware/device.html:24 templates/hardware/shop.html:27
+#: templates/themes/night_shift/hardware/shop.html:18
+#: templates/themes/open_house/hardware/shop.html:22
 #: templates/themes/workbench/core/home.html:33
-#: templates/themes/workbench/hardware/shop.html:30
-#: templates/themes/workbench/hardware/shop.html:49
+#: templates/themes/workbench/hardware/shop.html:31
 msgid "Condition"
 msgstr "Staat"
 
@@ -8115,74 +8125,74 @@ msgstr "Btw %(rate)s %%"
 msgid "Place order"
 msgstr "Bestelling plaatsen"
 
-#: templates/hardware/shop.html:17
-#: templates/themes/night_shift/hardware/shop.html:14
-#: templates/themes/open_house/hardware/shop.html:19
-#: templates/themes/workbench/hardware/shop.html:16
+#: templates/hardware/shop.html:18
+#: templates/themes/night_shift/hardware/shop.html:15
+#: templates/themes/open_house/hardware/shop.html:20
+#: templates/themes/workbench/hardware/shop.html:17
 msgid "Search, e.g. ThinkPad or i5"
 msgstr "Zoeken, bijv. ThinkPad of i5"
 
-#: templates/hardware/shop.html:17 templates/hardware/shop.html:35
+#: templates/hardware/shop.html:18 templates/hardware/shop.html:36
 #: templates/legacy/_head.html:10
-#: templates/themes/night_shift/hardware/shop.html:14
-#: templates/themes/night_shift/hardware/shop.html:19
-#: templates/themes/open_house/hardware/shop.html:19
-#: templates/themes/open_house/hardware/shop.html:23
-#: templates/themes/workbench/hardware/shop.html:15
-#: templates/themes/workbench/hardware/shop.html:43
+#: templates/themes/night_shift/hardware/shop.html:15
+#: templates/themes/night_shift/hardware/shop.html:20
+#: templates/themes/open_house/hardware/shop.html:20
+#: templates/themes/open_house/hardware/shop.html:24
+#: templates/themes/workbench/hardware/shop.html:16
+#: templates/themes/workbench/hardware/shop.html:44
 msgid "Search"
 msgstr "Zoeken"
 
-#: templates/hardware/shop.html:19
-#: templates/themes/night_shift/hardware/shop.html:15
-#: templates/themes/workbench/hardware/shop.html:20
+#: templates/hardware/shop.html:20
+#: templates/themes/night_shift/hardware/shop.html:16
+#: templates/themes/workbench/hardware/shop.html:21
 msgid "All types"
 msgstr "Alle soorten"
 
-#: templates/hardware/shop.html:23
-#: templates/themes/night_shift/hardware/shop.html:16
-#: templates/themes/open_house/hardware/shop.html:20
-#: templates/themes/workbench/hardware/shop.html:26
+#: templates/hardware/shop.html:24
+#: templates/themes/night_shift/hardware/shop.html:17
+#: templates/themes/open_house/hardware/shop.html:21
+#: templates/themes/workbench/hardware/shop.html:27
 msgid "All brands"
 msgstr "Alle merken"
 
-#: templates/hardware/shop.html:27
-#: templates/themes/night_shift/hardware/shop.html:17
-#: templates/themes/open_house/hardware/shop.html:21
-#: templates/themes/workbench/hardware/shop.html:32
+#: templates/hardware/shop.html:28
+#: templates/themes/night_shift/hardware/shop.html:18
+#: templates/themes/open_house/hardware/shop.html:22
+#: templates/themes/workbench/hardware/shop.html:33
 msgid "Every condition"
 msgstr "Elke staat"
 
-#: templates/hardware/shop.html:30
-#: templates/themes/night_shift/hardware/shop.html:18
-#: templates/themes/open_house/hardware/shop.html:22
-#: templates/themes/workbench/hardware/shop.html:36
+#: templates/hardware/shop.html:31
+#: templates/themes/night_shift/hardware/shop.html:19
+#: templates/themes/open_house/hardware/shop.html:23
+#: templates/themes/workbench/hardware/shop.html:37
 msgid "Sort"
 msgstr "Sorteren"
 
-#: templates/hardware/shop.html:31
-#: templates/themes/night_shift/hardware/shop.html:18
-#: templates/themes/open_house/hardware/shop.html:22
-#: templates/themes/workbench/hardware/shop.html:38
+#: templates/hardware/shop.html:32
+#: templates/themes/night_shift/hardware/shop.html:19
+#: templates/themes/open_house/hardware/shop.html:23
+#: templates/themes/workbench/hardware/shop.html:39
 msgid "Newest first"
 msgstr "Nieuwste eerst"
 
-#: templates/hardware/shop.html:32
-#: templates/themes/night_shift/hardware/shop.html:18
-#: templates/themes/open_house/hardware/shop.html:22
-#: templates/themes/workbench/hardware/shop.html:39
+#: templates/hardware/shop.html:33
+#: templates/themes/night_shift/hardware/shop.html:19
+#: templates/themes/open_house/hardware/shop.html:23
+#: templates/themes/workbench/hardware/shop.html:40
 msgid "Price, low to high"
 msgstr "Prijs, laag naar hoog"
 
-#: templates/hardware/shop.html:33
-#: templates/themes/night_shift/hardware/shop.html:18
-#: templates/themes/open_house/hardware/shop.html:22
-#: templates/themes/workbench/hardware/shop.html:40
+#: templates/hardware/shop.html:34
+#: templates/themes/night_shift/hardware/shop.html:19
+#: templates/themes/open_house/hardware/shop.html:23
+#: templates/themes/workbench/hardware/shop.html:41
 msgid "Price, high to low"
 msgstr "Prijs, hoog naar laag"
 
-#: templates/hardware/shop.html:38
-#: templates/themes/night_shift/hardware/shop.html:21
+#: templates/hardware/shop.html:39
+#: templates/themes/night_shift/hardware/shop.html:22
 #: templates/themes/workbench/hardware/shop.html:6
 #, python-format
 msgid "%(n)s device"
@@ -8190,16 +8200,16 @@ msgid_plural "%(n)s devices"
 msgstr[0] "%(n)s apparaat"
 msgstr[1] "%(n)s apparaten"
 
-#: templates/hardware/shop.html:39
-#: templates/themes/night_shift/hardware/shop.html:21
-#: templates/themes/workbench/hardware/shop.html:44
+#: templates/hardware/shop.html:40
+#: templates/themes/night_shift/hardware/shop.html:22
+#: templates/themes/workbench/hardware/shop.html:45
 msgid "Show everything"
 msgstr "Alles tonen"
 
-#: templates/hardware/shop.html:63
-#: templates/themes/night_shift/hardware/shop.html:37
-#: templates/themes/open_house/hardware/shop.html:44
-#: templates/themes/workbench/hardware/shop.html:62
+#: templates/hardware/shop.html:52
+#: templates/themes/night_shift/hardware/shop.html:40
+#: templates/themes/open_house/hardware/shop.html:47
+#: templates/themes/workbench/hardware/shop.html:48
 msgid "Nothing for sale matches your choice right now."
 msgstr "Er is nu niets te koop dat aan je keuze voldoet."
 

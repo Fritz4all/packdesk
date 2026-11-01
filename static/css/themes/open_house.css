@@ -80,3 +80,5 @@ a.oh-card:hover { text-decoration: none; outline: 2px solid var(--brand); }
 [data-site-theme="open_house"] .hw-vat-switch a { color: var(--text); border-radius: 999px; padding: .55rem 1rem; }
 [data-site-theme="open_house"] .hw-vat-switch a.is-current { background: var(--text); color: var(--bg); }
 [data-site-theme="open_house"] .hw-price strong { font-weight: 800; }
+[data-site-theme="open_house"] .hw-list { border: 0; background: var(--surface); }
+[data-site-theme="open_house"] .hw-row-title { font-weight: 800; }

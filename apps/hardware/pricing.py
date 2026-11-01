@@ -9,6 +9,7 @@ from apps.orders.models import HUNDRED, money
 from .models import HardwareSettings
 
 SESSION_KEY = "hardware_prices_incl_vat"
+VIEW_KEY = "hardware_view"
 
 
 def shop_customer(request):
@@ -25,6 +26,15 @@ def show_incl_vat(request, settings=None):
     if SESSION_KEY in request.session:
         return request.session[SESSION_KEY]
     return (settings or HardwareSettings.load()).prices_incl_vat
+
+
+def show_as_list(request, theme):
+    """Whether the shop shows a list instead of tiles: the visitor's own choice (?view=list/tiles), else what fits
+    the website theme."""
+    choice = request.GET.get("view")
+    if choice in ("list", "tiles"):
+        request.session[VIEW_KEY] = choice
+    return request.session.get(VIEW_KEY, "list" if theme == "workbench" else "tiles") == "list"
 
 
 def price(device, customer=None, settings=None):

@@ -5,6 +5,7 @@
 <div class="ns-shop-head">
   <h1>{% translate "Hardware" %}</h1>
   <div class="ns-shop-actions">
+    {% include "hardware/_view_switch.html" %}
     {% include "hardware/_vat_switch.html" with query=query %}
     {% include "hardware/_cart_link.html" %}
   </div>
@@ -20,6 +21,7 @@
 </form>
 <p class="muted">{% blocktranslate count n=total %}{{ n }} device{% plural %}{{ n }} devices{% endblocktranslate %}{% if chosen.q or chosen.type or chosen.brand or chosen.condition %} · <a href="{% url 'hardware_shop' %}">{% translate "Show everything" %}</a>{% endif %}</p>
 {% if page.object_list %}
+{% if as_list %}{% include "hardware/_list.html" %}{% else %}
 <div class="ns-grid">
   {% for device in page %}
   <a class="ns-card" href="{% url 'hardware_device' device.number %}">
@@ -32,6 +34,7 @@
   </a>
   {% endfor %}
 </div>
+{% endif %}
 {% include "hardware/_pages.html" %}
 {% else %}
 <p class="ns-empty">{% translate "Nothing for sale matches your choice right now." %}</p>

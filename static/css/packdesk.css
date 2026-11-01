@@ -280,3 +280,23 @@ a.card-link-block:hover { text-decoration: none; border-color: var(--brand); }
 .hw-checkout fieldset { margin-bottom: 1.25rem; }
 .hw-address { margin-top: .75rem; }
 .hw-cart-link { font-weight: 600; }
+
+/* Hardware shop: list view */
+.hw-view-switch a { display: inline-flex; align-items: center; gap: .35rem; }
+.hw-list { list-style: none; margin: 0 0 1.5rem; padding: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.hw-list li + li { border-top: 1px solid var(--border); }
+a.hw-row { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: .35rem 1rem; align-items: center; padding: .85rem 1.1rem; color: inherit; }
+a.hw-row:hover { text-decoration: none; background: color-mix(in srgb, var(--brand) 7%, transparent); }
+.hw-row-visual { width: 64px; height: 48px; color: var(--muted); }
+.hw-row-visual img, .hw-row-visual svg { width: 100%; height: 100%; object-fit: contain; display: block; }
+.hw-row-main { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+.hw-row-title { font-size: 1.05rem; color: var(--text); }
+.hw-row-meta { font-size: .85rem; }
+.hw-row-specs { display: flex; flex-wrap: wrap; gap: .1rem .9rem; font-size: .9rem; }
+a.hw-row .hw-price { margin: 0; padding: 0; text-align: right; white-space: nowrap; }
+a.hw-row .hw-price strong { font-size: 1.1rem; }
+@media (max-width: 560px) {
+  a.hw-row { grid-template-columns: 48px minmax(0, 1fr); }
+  .hw-row-visual { width: 48px; height: 36px; }
+  a.hw-row .hw-price { grid-column: 2; text-align: left; white-space: normal; }
+}

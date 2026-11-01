@@ -5,6 +5,7 @@
 <div class="wb-shop-head">
   <h1>{% translate "Hardware" %} <span>{% blocktranslate count n=total %}{{ n }} device{% plural %}{{ n }} devices{% endblocktranslate %}</span></h1>
   <div class="wb-shop-actions">
+    {% include "hardware/_view_switch.html" %}
     {% include "hardware/_vat_switch.html" with query=query %}
     {% include "hardware/_cart_link.html" %}
   </div>
@@ -43,24 +44,9 @@
     <button class="btn btn-primary" type="submit">{% translate "Search" %}</button>
     {% if chosen.q or chosen.type or chosen.brand or chosen.condition %}<a href="{% url 'hardware_shop' %}">{% translate "Show everything" %}</a>{% endif %}
   </form>
-  <div class="wb-panel wb-list">
-    {% if page.object_list %}
-    <table class="wb-table">
-      <thead><tr><th>{% translate "Device" %}</th><th>{% translate "Specifications" %}</th><th>{% translate "Condition" %}</th><th>{% translate "Price" %}</th></tr></thead>
-      <tbody>
-        {% for device in page %}
-        <tr>
-          <td><div class="wb-device"><span class="wb-device-visual">{% include "hardware/_device_visual.html" %}</span><div><a href="{% url 'hardware_device' device.number %}">{% if device.brand %}{{ device.brand.name }} {% endif %}{{ device.model }}</a><div class="wb-small">{{ device.device_type }}</div></div></div></td>
-          <td><ul class="wb-specs">{% for name, value in device.spec_rows %}<li><span class="wb-small">{{ name }}</span> {{ value }}</li>{% empty %}<li>–</li>{% endfor %}</ul></td>
-          <td>{{ device.condition|default:"–" }}</td>
-          <td>{% include "hardware/_price.html" with price=device.shop_price %}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p class="wb-intro muted">{% translate "Nothing for sale matches your choice right now." %}</p>
-    {% endif %}
+  <div class="wb-list">
+    {% if not page.object_list %}<p class="wb-panel wb-intro muted">{% translate "Nothing for sale matches your choice right now." %}</p>
+    {% elif as_list %}{% include "hardware/_list.html" %}{% else %}{% include "hardware/_grid.html" %}{% endif %}
   </div>
 </div>
 {% include "hardware/_pages.html" %}

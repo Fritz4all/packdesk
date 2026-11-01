@@ -5,6 +5,7 @@
 <div class="oh-shop-head">
   <h1>{% translate "Find your next device" %}</h1>
   <div class="oh-shop-actions">
+    {% include "hardware/_view_switch.html" %}
     {% include "hardware/_vat_switch.html" with query=query %}
     {% include "hardware/_cart_link.html" %}
   </div>
@@ -23,6 +24,7 @@
   <button class="btn btn-primary" type="submit">{% translate "Search" %}</button>
 </form>
 {% if page.object_list %}
+{% if as_list %}{% include "hardware/_list.html" %}{% else %}
 <div class="oh-grid">
   {% for device in page %}
   <a class="oh-card" href="{% url 'hardware_device' device.number %}">
@@ -39,6 +41,7 @@
   </a>
   {% endfor %}
 </div>
+{% endif %}
 {% include "hardware/_pages.html" %}
 {% else %}
 <p class="oh-empty">{% translate "Nothing for sale matches your choice right now." %}</p>
