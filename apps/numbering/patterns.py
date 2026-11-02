@@ -3,7 +3,7 @@
 Tokens:
     {nr}         the counter
     {nr:5}       the counter, padded with zeros to 5 digits
-    {year}       four-digit year, {yy} two-digit year, {month} two-digit month
+    {year}       four-digit year, {yy} two-digit year, {month} two-digit month, {day} two-digit day
     {letters:2}  random capital letters (as in the previous webshop's quote numbers)
     {block:4}    a letter plus 4 digits that counts on: A0000..A9999, B0000, ...
                  (as in the previous webshop's licence numbers, e.g. {yy}{block:4} = 26A0001);
@@ -14,7 +14,7 @@ import random
 import re
 import string
 
-TOKEN = re.compile(r"\{(nr|block|year|yy|month|letters)(?::(\d+))?\}")
+TOKEN = re.compile(r"\{(nr|block|year|yy|month|day|letters)(?::(\d+))?\}")
 
 
 class PatternError(ValueError):
@@ -44,6 +44,8 @@ def render(pattern, number, when, rng=random):
             return f"{when.year % 100:02d}"
         if token == "month":
             return f"{when.month:02d}"
+        if token == "day":
+            return f"{when.day:02d}"
         return "".join(rng.choice(string.ascii_uppercase) for _ in range(int(width or 1)))
 
     return TOKEN.sub(replace, pattern)
@@ -61,7 +63,7 @@ def number_from(pattern, value):
             parts.append(r"(?P<letter>[A-Z])(?P<block>\d{%s})" % (width or 4))
         elif token == "year":
             parts.append(r"\d{4}")
-        elif token in ("yy", "month"):
+        elif token in ("yy", "month", "day"):
             parts.append(r"\d{2}")
         else:
             parts.append(r"[A-Z]{%s}" % (width or 1))

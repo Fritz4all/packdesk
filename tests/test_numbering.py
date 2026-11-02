@@ -229,3 +229,12 @@ def test_counter_change_reason_can_be_fixed_or_removed(client, site, invoices):
     data["changes-0-DELETE"] = "on"
     client.post(f"{URL}{invoices.pk}/change/", data)
     assert not CounterChange.objects.exists() and TrashEntry.objects.get().model == "numbering.counterchange"
+
+
+def test_pattern_with_the_day():
+    day = datetime.date(2026, 3, 9)
+    patterns.validate("FR-{yy}{month}{day}-{nr:5}")
+    assert patterns.render("FR-{yy}{month}{day}-{nr:5}", 42, day) == "FR-260309-00042"
+    assert patterns.number_from("FR-{yy}{month}{day}-{nr:5}", "FR-260309-00042") == 42
+    with pytest.raises(patterns.PatternError):
+        patterns.validate("FR-{yy}{month}{day} nr:5}")

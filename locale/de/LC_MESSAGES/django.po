@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 20:29+0100\n"
+"POT-Creation-Date: 2026-11-02 20:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -564,7 +564,7 @@ msgid "Who"
 msgstr "Wer"
 
 #: apps/cmdb/admin.py:537 apps/invoices/admin.py:82 apps/legacy/admin.py:165
-#: apps/numbering/admin.py:183
+#: apps/numbering/admin.py:184
 msgid "Source"
 msgstr "Quelle"
 
@@ -591,8 +591,8 @@ msgstr ""
 #: apps/customers/overview.py:147 apps/customers/overview.py:149
 #: apps/faults/admin.py:70 apps/hardware/admin.py:212 apps/legacy/admin.py:228
 #: apps/legacy/admin.py:232 apps/licences/admin.py:122
-#: apps/licences/admin.py:193 apps/numbering/admin.py:167
-#: apps/numbering/admin.py:181 apps/parts/admin.py:106 apps/parts/admin.py:221
+#: apps/licences/admin.py:193 apps/numbering/admin.py:168
+#: apps/numbering/admin.py:182 apps/parts/admin.py:106 apps/parts/admin.py:221
 #: templates/faults/my_reports.html:9 templates/orders/my_licences.html:13
 #: templates/orders/order_detail.html:23 templates/parts/overview.html:8
 #: templates/parts/overview.html:15 templates/parts/request_detail.html:13
@@ -5751,11 +5751,11 @@ msgstr "Zähler zu niedrig"
 msgid "Numbers missing at the end"
 msgstr "Nummern fehlen am Ende"
 
-#: apps/numbering/admin.py:62
+#: apps/numbering/admin.py:63
 msgid "Correct next number"
 msgstr "Nächste Nummer korrigieren"
 
-#: apps/numbering/admin.py:66
+#: apps/numbering/admin.py:67
 msgid ""
 "Only to fix the counter. It can never be set to a number that was already "
 "issued."
@@ -5763,68 +5763,68 @@ msgstr ""
 "Nur zum Korrigieren des Zählers. Er kann nie auf eine bereits vergebene "
 "Nummer gesetzt werden."
 
-#: apps/numbering/admin.py:69
+#: apps/numbering/admin.py:70
 msgid "Reason for correction"
 msgstr "Grund der Korrektur"
 
-#: apps/numbering/admin.py:72
+#: apps/numbering/admin.py:73
 msgid "Required when you correct the counter; stored in the log."
 msgstr "Pflicht bei einer Korrektur; wird im Protokoll gespeichert."
 
-#: apps/numbering/admin.py:84
+#: apps/numbering/admin.py:85
 msgid "Give a reason for the correction."
 msgstr "Geben Sie einen Grund für die Korrektur an."
 
-#: apps/numbering/admin.py:89
+#: apps/numbering/admin.py:90
 #, python-format
 msgid "Must be higher than %(highest)s, the highest number already issued."
 msgstr "Muss höher sein als %(highest)s, die höchste bereits vergebene Nummer."
 
-#: apps/numbering/admin.py:130
+#: apps/numbering/admin.py:131
 msgid "Set counter to highest number + 1"
 msgstr "Zähler auf höchste Nummer + 1 setzen"
 
-#: apps/numbering/admin.py:136
+#: apps/numbering/admin.py:137
 msgid "Counter"
 msgstr "Zähler"
 
-#: apps/numbering/admin.py:152 apps/numbering/admin.py:156
+#: apps/numbering/admin.py:153 apps/numbering/admin.py:157
 msgid "Next number looks like"
 msgstr "Nächste Nummer wird"
 
-#: apps/numbering/admin.py:172
+#: apps/numbering/admin.py:173
 msgid "Unexplained gaps"
 msgstr "Ungeklärte Lücken"
 
-#: apps/numbering/admin.py:175
+#: apps/numbering/admin.py:176
 msgid "Check against documents"
 msgstr "Prüfung gegen Dokumente"
 
-#: apps/numbering/admin.py:183
+#: apps/numbering/admin.py:184
 msgid "No documents to compare with yet."
 msgstr "Noch keine Dokumente zum Vergleichen."
 
-#: apps/numbering/admin.py:186
+#: apps/numbering/admin.py:187
 msgid "Documents found"
 msgstr "Gefundene Dokumente"
 
-#: apps/numbering/admin.py:187
+#: apps/numbering/admin.py:188
 msgid "Lowest / highest number"
 msgstr "Niedrigste / höchste Nummer"
 
-#: apps/numbering/admin.py:188
+#: apps/numbering/admin.py:189
 msgid "Next number expected"
 msgstr "Erwartete nächste Nummer"
 
-#: apps/numbering/admin.py:189
+#: apps/numbering/admin.py:190
 msgid "Next number set"
 msgstr "Eingestellte nächste Nummer"
 
-#: apps/numbering/admin.py:193
+#: apps/numbering/admin.py:194
 msgid "Problem"
 msgstr "Problem"
 
-#: apps/numbering/admin.py:194
+#: apps/numbering/admin.py:195
 msgid ""
 "The counter would hand out a number that already exists. Correct it before "
 "issuing documents."
@@ -5832,20 +5832,20 @@ msgstr ""
 "Der Zähler würde eine bereits vorhandene Nummer vergeben. Korrigieren Sie "
 "dies, bevor Dokumente erstellt werden."
 
-#: apps/numbering/admin.py:197
+#: apps/numbering/admin.py:198
 msgid "Missing numbers (not explained)"
 msgstr "Fehlende Nummern (nicht geklärt)"
 
-#: apps/numbering/admin.py:200
+#: apps/numbering/admin.py:201
 msgid "Explained gaps"
 msgstr "Geklärte Lücken"
 
-#: apps/numbering/admin.py:210 apps/numbering/admin.py:235
+#: apps/numbering/admin.py:211 apps/numbering/admin.py:236
 #, python-format
 msgid "Counter set to %(n)s."
 msgstr "Zähler auf %(n)s gesetzt."
 
-#: apps/numbering/admin.py:231
+#: apps/numbering/admin.py:232
 msgid "Set to highest existing number + 1"
 msgstr "Auf höchste vorhandene Nummer + 1 gesetzt"
 
@@ -5861,11 +5861,8 @@ msgstr "Muster"
 #, python-brace-format
 msgid ""
 "{nr} = counter, {nr:5} = counter with 5 digits, {block:4} = letter + 4 "
-"digits (A0001), {year}, {yy}, {month}, {letters:2} = random letters."
-msgstr ""
-"{nr} = Zähler, {nr:5} = Zähler mit 5 Ziffern, {block:4} = Buchstabe + 4 "
-"Ziffern (A0001), {year} = Jahr, {yy} = Jahr zweistellig, {month} = Monat, "
-"{letters:2} = zufällige Buchstaben."
+"digits (A0001), {year}, {yy}, {month}, {day}, {letters:2} = random letters."
+msgstr "{nr} = Zähler, {nr:5} = Zähler mit 5 Ziffern, {block:4} = Buchstabe + 4 Ziffern (A0001), {year} = Jahr, {yy} = Jahr zweistellig, {month} = Monat, {day} = Tag, {letters:2} = zufällige Buchstaben."
 
 #: apps/numbering/models.py:28
 msgid "next number"

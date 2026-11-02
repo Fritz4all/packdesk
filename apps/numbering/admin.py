@@ -34,12 +34,13 @@ PREVIEW_SCRIPT = """
   function pad(v, w) { v = String(v); while (v.length < w) v = "0" + v; return v; }
   function render(p) {
     var d = new Date();
-    return p.replace(/\\{(nr|block|year|yy|month|letters)(?::(\\d+))?\\}/g, function (m, t, w) {
+    return p.replace(/\\{(nr|block|year|yy|month|day|letters)(?::(\\d+))?\\}/g, function (m, t, w) {
       if (t === "nr") return w ? pad(nr, +w) : String(nr);
       if (t === "block") { var size = Math.pow(10, +(w || 4)); return String.fromCharCode(65 + Math.floor(nr / size)) + pad(nr % size, +(w || 4)); }
       if (t === "year") return String(d.getFullYear());
       if (t === "yy") return pad(d.getFullYear() % 100, 2);
       if (t === "month") return pad(d.getMonth() + 1, 2);
+      if (t === "day") return pad(d.getDate(), 2);
       return "XXXXXXXXXX".slice(0, +(w || 1));
     });
   }

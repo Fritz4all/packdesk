@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 20:29+0100\n"
+"POT-Creation-Date: 2026-11-02 20:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -556,7 +556,7 @@ msgid "Who"
 msgstr "Wie"
 
 #: apps/cmdb/admin.py:537 apps/invoices/admin.py:82 apps/legacy/admin.py:165
-#: apps/numbering/admin.py:183
+#: apps/numbering/admin.py:184
 msgid "Source"
 msgstr "Bron"
 
@@ -582,8 +582,8 @@ msgstr "De CMDB staat uit. Zet hem hier aan om hem te gebruiken."
 #: apps/customers/overview.py:147 apps/customers/overview.py:149
 #: apps/faults/admin.py:70 apps/hardware/admin.py:212 apps/legacy/admin.py:228
 #: apps/legacy/admin.py:232 apps/licences/admin.py:122
-#: apps/licences/admin.py:193 apps/numbering/admin.py:167
-#: apps/numbering/admin.py:181 apps/parts/admin.py:106 apps/parts/admin.py:221
+#: apps/licences/admin.py:193 apps/numbering/admin.py:168
+#: apps/numbering/admin.py:182 apps/parts/admin.py:106 apps/parts/admin.py:221
 #: templates/faults/my_reports.html:9 templates/orders/my_licences.html:13
 #: templates/orders/order_detail.html:23 templates/parts/overview.html:8
 #: templates/parts/overview.html:15 templates/parts/request_detail.html:13
@@ -5719,11 +5719,11 @@ msgstr "Teller te laag"
 msgid "Numbers missing at the end"
 msgstr "Nummers ontbreken aan het eind"
 
-#: apps/numbering/admin.py:62
+#: apps/numbering/admin.py:63
 msgid "Correct next number"
 msgstr "Volgende nummer corrigeren"
 
-#: apps/numbering/admin.py:66
+#: apps/numbering/admin.py:67
 msgid ""
 "Only to fix the counter. It can never be set to a number that was already "
 "issued."
@@ -5731,69 +5731,69 @@ msgstr ""
 "Alleen om de teller recht te zetten. Kan nooit op een nummer worden gezet "
 "dat al is uitgegeven."
 
-#: apps/numbering/admin.py:69
+#: apps/numbering/admin.py:70
 msgid "Reason for correction"
 msgstr "Reden van correctie"
 
-#: apps/numbering/admin.py:72
+#: apps/numbering/admin.py:73
 msgid "Required when you correct the counter; stored in the log."
 msgstr "Verplicht bij een correctie; wordt in het logboek bewaard."
 
-#: apps/numbering/admin.py:84
+#: apps/numbering/admin.py:85
 msgid "Give a reason for the correction."
 msgstr "Geef een reden voor de correctie."
 
-#: apps/numbering/admin.py:89
+#: apps/numbering/admin.py:90
 #, python-format
 msgid "Must be higher than %(highest)s, the highest number already issued."
 msgstr ""
 "Moet hoger zijn dan %(highest)s, het hoogste nummer dat al is uitgegeven."
 
-#: apps/numbering/admin.py:130
+#: apps/numbering/admin.py:131
 msgid "Set counter to highest number + 1"
 msgstr "Teller op hoogste nummer + 1 zetten"
 
-#: apps/numbering/admin.py:136
+#: apps/numbering/admin.py:137
 msgid "Counter"
 msgstr "Teller"
 
-#: apps/numbering/admin.py:152 apps/numbering/admin.py:156
+#: apps/numbering/admin.py:153 apps/numbering/admin.py:157
 msgid "Next number looks like"
 msgstr "Volgende nummer wordt"
 
-#: apps/numbering/admin.py:172
+#: apps/numbering/admin.py:173
 msgid "Unexplained gaps"
 msgstr "Onverklaarde gaten"
 
-#: apps/numbering/admin.py:175
+#: apps/numbering/admin.py:176
 msgid "Check against documents"
 msgstr "Controle tegen documenten"
 
-#: apps/numbering/admin.py:183
+#: apps/numbering/admin.py:184
 msgid "No documents to compare with yet."
 msgstr "Nog geen documenten om mee te vergelijken."
 
-#: apps/numbering/admin.py:186
+#: apps/numbering/admin.py:187
 msgid "Documents found"
 msgstr "Gevonden documenten"
 
-#: apps/numbering/admin.py:187
+#: apps/numbering/admin.py:188
 msgid "Lowest / highest number"
 msgstr "Laagste / hoogste nummer"
 
-#: apps/numbering/admin.py:188
+#: apps/numbering/admin.py:189
 msgid "Next number expected"
 msgstr "Verwachte volgende nummer"
 
-#: apps/numbering/admin.py:189
+#: apps/numbering/admin.py:190
 msgid "Next number set"
 msgstr "Ingesteld volgende nummer"
 
-#: apps/numbering/admin.py:193
+#: apps/numbering/admin.py:194
 msgid "Problem"
 msgstr "Probleem"
 
-#: apps/numbering/admin.py:194
+#: apps/numbering/admin.py:195
 msgid ""
 "The counter would hand out a number that already exists. Correct it before "
 "issuing documents."
@@ -5801,20 +5801,20 @@ msgstr ""
 "De teller zou een nummer uitgeven dat al bestaat. Corrigeer dit voordat er "
 "documenten worden gemaakt."
 
-#: apps/numbering/admin.py:197
+#: apps/numbering/admin.py:198
 msgid "Missing numbers (not explained)"
 msgstr "Ontbrekende nummers (niet verklaard)"
 
-#: apps/numbering/admin.py:200
+#: apps/numbering/admin.py:201
 msgid "Explained gaps"
 msgstr "Verklaarde gaten"
 
-#: apps/numbering/admin.py:210 apps/numbering/admin.py:235
+#: apps/numbering/admin.py:211 apps/numbering/admin.py:236
 #, python-format
 msgid "Counter set to %(n)s."
 msgstr "Teller ingesteld op %(n)s."
 
-#: apps/numbering/admin.py:231
+#: apps/numbering/admin.py:232
 msgid "Set to highest existing number + 1"
 msgstr "Gelijkgezet met hoogste bestaande nummer + 1"
 
@@ -5830,11 +5830,8 @@ msgstr "patroon"
 #, python-brace-format
 msgid ""
 "{nr} = counter, {nr:5} = counter with 5 digits, {block:4} = letter + 4 "
-"digits (A0001), {year}, {yy}, {month}, {letters:2} = random letters."
-msgstr ""
-"{nr} = teller, {nr:5} = teller met 5 cijfers, {block:4} = letter + 4 cijfers "
-"(A0001), {year} = jaar, {yy} = jaar in 2 cijfers, {month} = maand, "
-"{letters:2} = willekeurige letters."
+"digits (A0001), {year}, {yy}, {month}, {day}, {letters:2} = random letters."
+msgstr "{nr} = teller, {nr:5} = teller met 5 cijfers, {block:4} = letter + 4 cijfers (A0001), {year} = jaar, {yy} = jaar in 2 cijfers, {month} = maand, {day} = dag, {letters:2} = willekeurige letters."
 
 #: apps/numbering/models.py:28
 msgid "next number"

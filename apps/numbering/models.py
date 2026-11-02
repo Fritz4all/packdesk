@@ -22,7 +22,7 @@ class NumberSequence(models.Model):
         default="{nr}",
         help_text=_(
             "{nr} = counter, {nr:5} = counter with 5 digits, {block:4} = letter + 4 digits (A0001), "
-            "{year}, {yy}, {month}, {letters:2} = random letters."
+            "{year}, {yy}, {month}, {day}, {letters:2} = random letters."
         ),
     )
     next_number = models.PositiveBigIntegerField(_("next number"), default=1)
