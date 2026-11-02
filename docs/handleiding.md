@@ -161,8 +161,8 @@ van de rest van PackDesk en gebruikt alleen klanten en contactpersonen.
   - *Velden:* alle velden van een item op één plek. Per veld de naam, of het verborgen, optioneel of verplicht is, en
     of het als kolom in de lijst staat (de volgorde geldt voor de kolommen). Klant, type en naam zijn altijd nodig; de
     status is verplicht of verborgen. Verbergen wist niets: de waarde blijft bewaard en gaat mee in een export.
-  - *Veld toevoegen:* een eigen veld voor items van een of meer types: tekst, getal, keuzelijst of ja/nee. Het staat
-    daarna op de tab *Eigen velden* van het item, in de historie en als eigen kolom in import en export. Eigen velden
+  - *Itemveld toevoegen:* een eigen veld voor items van een of meer types: tekst, getal, keuzelijst of ja/nee. Het staat
+    daarna op de tab *Eigen velden* van het item, in de geschiedenis en als eigen kolom in import en export. Eigen velden
     kun je ook weer verwijderen; de standaardvelden niet. De code kan na het toevoegen niet meer veranderen.
   - *Itemtypes*, *Statussen* (met kleur, en of het item nog in gebruik is) en *Relatiesoorten* (ook of ze meetellen
     voor de impact). Wat in gebruik is, kun je niet verwijderen; zet het dan op niet actief.
@@ -185,10 +185,10 @@ van de rest van PackDesk en gebruikt alleen klanten en contactpersonen.
   2. Start het script met de hand of volgens een planning, bijvoorbeeld dagelijks. Het meldt die computer en, als je
      dat vraagt, de apparaten die die computer al kent op zijn netwerk. Het scant niets en verandert daar niets.
   3. Onder *CMDB → Ontdekte items* zie je per regel wat nieuw is of afwijkt, en kies je *overnemen* of *negeren*.
-     Overnemen maakt een item of vult een bestaand item aan, met een regel in de historie. Een melding wist nooit
+     Overnemen maakt een item of vult een bestaand item aan, met een regel in de geschiedenis. Een melding wist nooit
      een veld of item. Bestaande items worden herkend aan het serienummer, of anders aan een naam die maar één item
      heeft. Met *Automatisch overnemen* op de bron is overnemen niet nodig.
-- **Historie:** de tab Historie toont per wijziging wie, wanneer, en van wat naar wat, ook bij een import.
+- **Geschiedenis:** de tab Geschiedenis toont per wijziging wie, wanneer, en van wat naar wat, ook bij een import.
 - **Import:** *Importeren* boven de lijst, met een voorbeeldbestand in Excel en CSV om te downloaden. Je ziet
   eerst per regel wat er gaat gebeuren. Items worden herkend aan het nummer, of anders aan dezelfde naam bij
   dezelfde klant. Een import verwijdert geen items en verplaatst ze niet naar een andere klant. Regels van

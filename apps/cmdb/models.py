@@ -14,6 +14,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from apps.customers.models import FieldMode
 
@@ -235,13 +236,14 @@ class RelationKind(models.Model):
 
 def default_status():
     """The status of an item that was not given one."""
-    status = ItemStatus.objects.filter(key="in_use").first() or ItemStatus.objects.filter(is_active=True).first()
-    return status.pk if status else None
+    # Only the pk: this also runs inside migrations, when the table may not have all of today's columns yet.
+    pks = ItemStatus.objects.values_list("pk", flat=True)
+    return pks.filter(key="in_use").first() or pks.filter(is_active=True).first()
 
 
 def default_relation_kind():
-    kind = RelationKind.objects.filter(key="depends_on").first() or RelationKind.objects.filter(is_active=True).first()
-    return kind.pk if kind else None
+    pks = RelationKind.objects.values_list("pk", flat=True)
+    return pks.filter(key="depends_on").first() or pks.filter(is_active=True).first()
 
 
 class ConfigurationItem(models.Model):
@@ -315,7 +317,7 @@ class Relation(models.Model):
     """`source` <kind> `target`: the source has a problem when the target fails."""
 
     source = models.ForeignKey(ConfigurationItem, on_delete=models.CASCADE, related_name="relations_out",
-                               verbose_name=_("item"))
+                               verbose_name=pgettext_lazy("cmdb", "item"))
     kind = models.ForeignKey(RelationKind, on_delete=models.PROTECT, related_name="relations", verbose_name=_("relation"),
                              default=default_relation_kind)
     target = models.ForeignKey(ConfigurationItem, on_delete=models.CASCADE, related_name="relations_in",
@@ -441,7 +443,7 @@ class DiscoveredItem(models.Model):
     data = models.JSONField(_("reported"), default=dict)
     status = models.CharField(_("status"), max_length=8, choices=Status.choices, default=Status.NEW, db_index=True)
     item = models.ForeignKey(ConfigurationItem, on_delete=models.SET_NULL, null=True, blank=True, related_name="discoveries",
-                             verbose_name=_("item"))
+                             verbose_name=pgettext_lazy("cmdb", "item"))
     first_seen = models.DateTimeField(_("first seen"), auto_now_add=True)
     last_seen = models.DateTimeField(_("last seen"), default=timezone.now)
 

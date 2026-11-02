@@ -61,6 +61,47 @@ def _order(rows, needs):
     return rows
 
 
+def _pass_row(x, row, place):
+    """Where a line at `x` crosses a row it does not stop at: at `x`, or else in the nearest gap beside a box."""
+    for pk in row:
+        left = place[pk][0]
+        if left - GAP_X / 4 < x < left + NODE_WIDTH + GAP_X / 4:
+            before, after = left - GAP_X / 2, left + NODE_WIDTH + GAP_X / 2
+            return before if x - before < after - x else after
+    return x
+
+
+def _curve(x1, y1, x2, y2):
+    bend = (y2 - y1) / 2
+    return f"C{x1:g} {y1 + bend:g} {x2:g} {y2 - bend:g} {x2:g} {y2:g}"
+
+
+def _route(source, target, rows, source_level, target_level, place):
+    """(path, label x, label y) of an arrow. One that skips rows goes around the boxes in them."""
+    x1, x2 = source[0] + NODE_WIDTH / 2, target[0] + NODE_WIDTH / 2
+    if target_level <= source_level:  # same row or upwards, in a circle: from the top of the box to the bottom of the other
+        y1, y2 = source[1], target[1] + NODE_HEIGHT + 3
+        bend = max(abs(y2 - y1) / 2, 30)
+        direction = 1 if y2 > y1 else -1
+        path = f"M{x1:g} {y1:g} C{x1:g} {y1 + direction * bend:g} {x2:g} {y2 - direction * bend:g} {x2:g} {y2:g}"
+        return path, (x1 + x2) / 2, (y1 + y2) / 2
+    y1, y2 = source[1] + NODE_HEIGHT, target[1] - 3
+    parts, x, y = [f"M{x1:g} {y1:g}"], x1, y1
+    label = None
+    between = range(source_level + 1, target_level)
+    for number, r in enumerate(between, start=1):
+        straight = x1 + (x2 - x1) * number / (len(between) + 1)
+        through = _pass_row(straight, rows[r], place)
+        top = MARGIN + r * (NODE_HEIGHT + GAP_Y)
+        parts.append(_curve(x, y, through, top))
+        label = label or ((x + through) / 2, (y + top) / 2)
+        parts.append(f"L{through:g} {top + NODE_HEIGHT:g}")
+        x, y = through, top + NODE_HEIGHT
+    parts.append(_curve(x, y, x2, y2))
+    label_x, label_y = label or ((x + x2) / 2, (y + y2) / 2)
+    return " ".join(parts), label_x, label_y
+
+
 def build(items, relations, focus=None):
     """{width, height, nodes, edges} for connected items. `focus` is highlighted, with what it affects when it fails."""
     by_pk = {item.pk: item for item in items}
@@ -77,7 +118,7 @@ def build(items, relations, focus=None):
     rows = _order(rows, needs)
 
     widest = max((len(row) for row in rows), default=0)
-    width = widest * NODE_WIDTH + max(widest - 1, 0) * GAP_X + 2 * MARGIN
+    width = widest * NODE_WIDTH + max(widest - 1, 0) * GAP_X + 2 * GAP_X  # room for a line beside the outer boxes
     height = len(rows) * NODE_HEIGHT + max(len(rows) - 1, 0) * GAP_Y + 2 * MARGIN
     affected = {item.pk for item in focus.affected_items()} if focus is not None else set()
     place, nodes = {}, []
@@ -97,17 +138,8 @@ def build(items, relations, focus=None):
             })
     edges = []
     for (source, target), kinds in labels.items():
-        sx, sy = place[source]
-        tx, ty = place[target]
-        x1, x2 = sx + NODE_WIDTH / 2, tx + NODE_WIDTH / 2
-        if ty > sy:
-            y1, y2 = sy + NODE_HEIGHT, ty - 3
-        else:  # same row or upwards: out of the side of the box, so the line stays visible
-            y1, y2 = sy, ty + NODE_HEIGHT + 3
-        bend = max(abs(y2 - y1) / 2, 30)
-        direction = 1 if y2 > y1 else -1
-        edges.append({"path": f"M{x1:g} {y1:g} C{x1:g} {y1 + direction * bend:g} {x2:g} {y2 - direction * bend:g} {x2:g} {y2:g}",
-                      "label": ", ".join(sorted(kinds)), "label_x": (x1 + x2) / 2, "label_y": (y1 + y2) / 2})
+        path, label_x, label_y = _route(place[source], place[target], rows, level[source], level[target], place)
+        edges.append({"path": path, "label": ", ".join(sorted(kinds)), "label_x": label_x, "label_y": label_y})
     return {"width": width, "height": height, "nodes": nodes, "edges": edges}
 
 

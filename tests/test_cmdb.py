@@ -962,3 +962,34 @@ def test_status_colours_show_as_an_example_and_in_the_list(client, customer, har
     assert "pd-colour-green" in client.get(LIST_URL).content.decode()
     ItemStatus.objects.filter(pk=status.pk).update(name="<b>x</b>", name_nl="<b>x</b>", name_en="<b>x</b>")
     assert "<b>x</b>" not in client.get(LIST_URL).content.decode()
+
+
+def test_everything_still_works_with_as_few_fields_as_possible(client, customer, hardware, beheerder):
+    client.force_login(beheerder)
+    ItemField.objects.exclude(key__in=ItemField.FIXED).update(mode=FieldMode.HIDDEN)
+    ItemField.objects.update(in_list=False)
+    data = {"customer": customer.pk, "item_type": hardware.pk, "name": "Kaal",
+            "relations_out-TOTAL_FORMS": 0, "relations_out-INITIAL_FORMS": 0}
+    assert client.post(LIST_URL + "add/", data).status_code == 302
+    row = ConfigurationItem.objects.get()
+    assert row.status.key == "in_use"
+    for url in (LIST_URL, f"{LIST_URL}{row.pk}/change/", LIST_URL + f"diagram/?customer={customer.pk}", LIST_URL + "export/",
+                LIST_URL + "example/", f"/admin/customers/customer/{customer.pk}/change/"):
+        assert client.get(url).status_code == 200, url
+    assert row.number in client.get(LIST_URL).content.decode()
+    transfer.run_import(csv_rows("customer;type;name\nK100;Hardware;Via import\n"))
+    assert ConfigurationItem.objects.filter(name="Via import").exists()
+
+
+def test_a_line_that_skips_a_row_goes_around_the_box_there(customer, hardware):
+    top, middle, bottom = (item(customer, hardware, n) for n in ("Boven", "Midden", "Onder"))
+    Relation.objects.create(source=top, kind=kind("uses"), target=middle)
+    Relation.objects.create(source=middle, kind=kind("uses"), target=bottom)
+    Relation.objects.create(source=top, kind=kind("runs_on"), target=bottom)  # past Midden
+    drawing = diagram.for_customer(customer)[0]
+    box = next(n for n in drawing["nodes"] if n["full_name"] == "Midden")
+    long_edge = next(e for e in drawing["edges"] if e["label"] == str(kind("runs_on")))
+    passing = float(long_edge["path"].split(" L")[1].split()[0])
+    assert passing < box["x"] or passing > box["x"] + box["width"]
+    assert 0 <= passing <= drawing["width"]
+    assert "L" not in next(e for e in drawing["edges"] if e["label"] != str(kind("runs_on")))["path"]

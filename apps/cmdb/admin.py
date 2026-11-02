@@ -18,6 +18,7 @@ from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from django.utils.translation import get_language, gettext
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 from modeltranslation.admin import TabbedTranslationAdmin
 from unfold.admin import ModelAdmin, StackedInline, TabularInline
 from unfold.decorators import display
@@ -481,7 +482,7 @@ class ConfigurationItemAdmin(WhenEnabled, ModelAdmin):
             return rows
 
         fieldsets = [
-            (_("Item"), {"classes": ["tab"], "fields": shown(
+            (pgettext_lazy("cmdb", "Item"), {"classes": ["tab"], "fields": shown(
                 "number", "customer", "item_type", "name", "status", ("manufacturer", "model"),
                 ("serial_nr", "asset_tag"), "location", "contact", "description",
             )}),
@@ -626,7 +627,7 @@ class DiscoveredItemAdmin(WhenEnabled, ModelAdmin):
     def show_status(self, obj):
         return obj.status, obj.get_status_display()
 
-    @display(description=_("Item"))
+    @display(description=pgettext_lazy("cmdb", "Item"))
     def show_item(self, obj):
         if obj.item_id is None:
             return "–"
