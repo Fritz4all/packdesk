@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "My items" %} – {{ site_settings.name }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "My items" %}</h1></div>
+<div class="card table-wrap">
+<table class="table">
+  <thead><tr><th>{% translate "Number" %}</th><th>{% translate "Name" %}</th><th>{% translate "Type" %}</th><th>{% translate "Status" %}</th><th>{% translate "Serial number" %}</th><th>{% translate "Location" %}</th><th>{% translate "Warranty until" %}</th></tr></thead>
+  <tbody>
+  {% for item in items %}<tr><td>{{ item.number }}</td><td>{{ item.name }}</td><td>{{ item.item_type }}</td><td>{{ item.get_status_display }}</td><td>{{ item.serial_nr }}</td><td>{{ item.location }}</td><td>{{ item.warranty_until|date:"j M Y" }}</td></tr>
+  {% empty %}<tr><td colspan="7" class="muted">{% translate "No items yet." %}</td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

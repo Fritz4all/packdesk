@@ -60,7 +60,18 @@ SETTINGS_TABS = {
          "invoices.invoicesettings", True),
         (_("Invoice design"), "admin:invoices_invoicesettings_design", "invoices.view_invoicesettings", None, False),
     ]),
+    "cmdb": (_("CMDB settings"), [
+        (_("Settings"), "admin:cmdb_cmdbsettings_changelist", "cmdb.view_cmdbsettings", "cmdb.cmdbsettings", True),
+        (_("Item types"), "admin:cmdb_itemtype_changelist", "cmdb.view_itemtype", "cmdb.itemtype", False),
+        (_("Item properties"), "admin:cmdb_itemproperty_changelist", "cmdb.view_itemproperty", "cmdb.itemproperty", False),
+    ]),
 }
+
+
+def _cmdb_in_use():
+    from apps.cmdb.models import CmdbSettings
+
+    return CmdbSettings.load().enabled
 
 
 def _tab_paths(key):
@@ -151,6 +162,7 @@ SECTIONS = [
                 "link": reverse_lazy("admin:trash_trashentry_changelist"),
                 "permission": lambda request: request.user.has_perm("trash.view_trashentry"),
             },
+            settings_item("cmdb"),  # here, as the CMDB's own main menu is gone while it is switched off
         ],
     },
     {
@@ -398,6 +410,19 @@ SECTIONS = [
         ],
     },
     {
+        "key": "cmdb",
+        "collapsible": True,
+        "title": _("CMDB"),
+        "items": [
+            {
+                "title": _("Configuration items"),
+                "icon": "lan",
+                "link": reverse_lazy("admin:cmdb_configurationitem_changelist"),
+                "permission": lambda request: _cmdb_in_use() and request.user.has_perm("cmdb.view_configurationitem"),
+            },
+        ],
+    },
+    {
         "key": "users",
         "collapsible": True,
         "title": _("Users and roles"),
@@ -424,6 +449,7 @@ DEFAULT_LAYOUT = [
     ("overview", []),
     ("webshop", ["parts", "hardware", "licences", "orders", "customers"]),
     ("faults", []),
+    ("cmdb", []),
     ("configuration", ["users", "databases"]),
     ("archive", ["printing", "telephony"]),
 ]

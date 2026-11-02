@@ -146,6 +146,30 @@ niet meer bekend.
 - **Instellingen:** aan of uit, teksten, wie de meldingen ontvangt, de bevestigingsmail, het maximale
   aantal en de grootte van bijlagen, en de keuzes voor de gewenste afhandeling.
 
+## CMDB (add-on)
+
+Een register van wat klanten gebruiken: hardware, software, netwerk, diensten en locaties. De CMDB werkt los
+van de rest van PackDesk en gebruikt alleen klanten en contactpersonen.
+
+- **Aanzetten:** *Configuratie → CMDB-instellingen → De CMDB gebruiken*. Daarna per klant op de tab **CMDB** van de
+  klantkaart: *Gebruikt de CMDB*. Staat een van beide uit, dan worden de items verborgen en niet verwijderd.
+- **Inloggende klanten:** alleen met *Mag items zien na inloggen* op de klantkaart. Ze zien dan een
+  alleen-lezen lijst onder *Mijn items*, zonder de interne omschrijving.
+- **Items:** nummer, klant, type, status, serienummer, locatie, contactpersoon, datums voor garantie en einde
+  levensduur, en eigen eigenschappen per type (*CMDB-instellingen → Itemeigenschappen*).
+- **Relaties:** op de tab Relaties, alleen tussen items van dezelfde klant. De tab **Impact** toont wat er
+  allemaal last heeft als dit item uitvalt.
+- **Historie:** de tab Historie toont per wijziging wie, wanneer, en van wat naar wat, ook bij een import.
+- **Import:** *Importeren* boven de lijst, met een voorbeeldbestand in Excel en CSV om te downloaden. Je ziet
+  eerst per regel wat er gaat gebeuren. Items worden herkend aan het nummer, of anders aan dezelfde naam bij
+  dezelfde klant. Een import verwijdert geen items en verplaatst ze niet naar een andere klant. Regels van
+  klanten zonder CMDB worden als fout getoond. Staat de kolom `relations` in het bestand, dan zijn dat na de
+  import precies de relaties van dat item.
+- **Export:** *Exporteren* boven de lijst geeft de items zoals de lijst nu gefilterd is, in dezelfde indeling
+  als het voorbeeld. Zo kun je exporteren, in Excel aanpassen en weer importeren.
+- **Rechten:** de rol Beheerder krijgt de CMDB-rechten; andere rollen pas als je ze daar aanzet
+  (*Gebruikers en rollen → Rollen*). Importeren en exporteren zijn aparte rechten.
+
 ## Gebruikers en rollen
 
 - **Gebruikers:** medewerkers en klantlogins. Elke medewerker heeft precies één rol. Bij klantlogins

@@ -59,6 +59,7 @@ urlpatterns = [
     path("", include("apps.parts.urls")),
     path("", include("apps.hardware.urls")),
     path("", include("apps.telephony.urls")),
+    path("", include("apps.cmdb.urls")),
     path("", include("apps.core.urls")),
     # Public assets such as the logo. Private documents (invoices) get
     # their own authenticated views later and never live under MEDIA_URL.

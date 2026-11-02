@@ -18,6 +18,7 @@
   {% if parts_enabled %}<a class="card card-link-block" href="{% url 'my_parts' %}"><h2>{% translate "Spare parts" %}</h2><p>{% translate "Request spare parts, see prices and order." %}</p></a>{% endif %}
   {% if telephony_enabled %}<a class="card card-link-block" href="{% url 'telephony_calculator' %}"><h2>{% translate "Telephony" %}</h2><p>{% translate "Calculate a phone system: hire or buy." %}</p></a>{% endif %}
   <a class="card card-link-block" href="{% url 'my_invoices' %}"><h2>{% translate "My invoices" %}</h2><p>{% translate "View, download or email your invoices." %}</p></a>
+  {% if cmdb_portal %}<a class="card card-link-block" href="{% url 'my_cmdb_items' %}"><h2>{% translate "My items" %}</h2><p>{% translate "The equipment, software and services registered for you." %}</p></a>{% endif %}
   {% endif %}
 </section>
 {% endblock %}
