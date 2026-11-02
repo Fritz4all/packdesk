@@ -41,6 +41,16 @@
     </section>
   </div>
 
+  {% for s in sections %}{% if s.block %}
+  <section class="pd-widget mb-6">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-semibold flex-1">{{ s.title }}</h2>
+      {% for label, url in s.block.links %}<a class="pd-btn" href="{{ url }}">{{ label }}</a>{% endfor %}
+    </div>
+    {% if s.block.stats %}<p class="pd-block-stats mt-2">{% for label, value in s.block.stats %}<span>{{ label }}: <strong>{{ value }}</strong></span>{% endfor %}</p>{% endif %}
+  </section>
+  {% endif %}{% endfor %}
+
   <nav class="flex flex-wrap gap-2 mb-3" id="pd-customer-tabs">
     {% for s in sections %}
       <button type="button" class="pd-btn" data-tab="{{ s.key }}">{{ s.title }} <span class="text-base-500">{{ s.count }}</span></button>

@@ -65,6 +65,8 @@ Handige opdrachten:
 | `python manage.py setup_database` | draait bij elke start: maakt de tabellen van een lege database aan en meldt wachtende databasewijzigingen en de installatiecode |
 | `python manage.py create_user --email <adres> --superuser` | beheerder aanmaken zonder de wizard |
 | `python manage.py load_demo_catalogue` | kleine democatalogus met testlicenties |
+| `python manage.py load_demo_customers --password <wachtwoord>` | verzonnen klanten in allerlei situaties (met en zonder aankopen, licenties, CMDB); alleen met `DEBUG` aan |
+| `python manage.py cmdb_warranty_mails --now` | garantiemails die nu klaarstaan versturen; in productie draait dit elk uur vanuit `docker/entrypoint.sh` (`RUN_TASKS=0` zet dat uit) |
 | `python manage.py import_invoice_archive` | factuur-pdf's uit het archief registreren (`--relink`, `--fix-dates`) |
 
 (Voer ze uit met `docker compose exec web …`.)

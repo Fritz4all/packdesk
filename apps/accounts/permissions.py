@@ -23,7 +23,8 @@ ACTIONS = [
 # Technical models whose standard permissions make no sense in a role (their special rights still show).
 HIDDEN_MODELS = {("dashboard", "dashboardlayout"), ("accounts", "customeruser"),  # customer users: rights of users
                  ("accounts", "roleinfo"),  # role names: part of the role
-                 ("cmdb", "itemchange")}  # the history of an item: written by PackDesk, shown on the item
+                 ("cmdb", "itemchange"),  # the history of an item: written by PackDesk, shown on the item
+                 ("cmdb", "warrantyreminder")}  # which reminders went out: written by PackDesk
 
 
 def managed_permissions():

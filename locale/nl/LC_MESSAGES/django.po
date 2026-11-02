@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 17:45+0100\n"
+"POT-Creation-Date: 2026-11-02 19:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,10 +34,10 @@ msgstr ""
 "Superadmins hebben altijd alle rechten, ook op alles wat later wordt "
 "toegevoegd."
 
-#: apps/accounts/admin.py:112 apps/accounts/admin.py:165
-#: apps/customers/admin.py:395 apps/customers/overview.py:112
-#: apps/legacy/old_shop/importer.py:138 apps/legacy/parts.py:110
-#: templates/admin/cmdb/import_review.html:15 templates/cmdb/my_items.html:8
+#: apps/accounts/admin.py:112 apps/accounts/admin.py:165 apps/cmdb/admin.py:605
+#: apps/cmdb/admin.py:737 apps/customers/admin.py:395
+#: apps/customers/overview.py:118 apps/legacy/old_shop/importer.py:138
+#: apps/legacy/parts.py:110 templates/admin/cmdb/import_review.html:15
 msgid "Name"
 msgstr "Naam"
 
@@ -58,7 +58,7 @@ msgstr ""
 "De rechten die hij nu heeft, blijven. Doorgaan?"
 
 #: apps/accounts/admin.py:169 apps/accounts/apps.py:8
-#: apps/dashboard/navigation.py:230 apps/dashboard/navigation.py:431
+#: apps/dashboard/navigation.py:234 apps/dashboard/navigation.py:447
 msgid "Users"
 msgstr "Gebruikers"
 
@@ -156,7 +156,7 @@ msgid "Password set"
 msgstr "Wachtwoord ingesteld"
 
 #: apps/accounts/admin.py:348 apps/customers/admin.py:375
-#: apps/customers/admin.py:406 apps/customers/overview.py:71
+#: apps/customers/admin.py:406 apps/customers/overview.py:77
 msgid "Must choose a new password"
 msgstr "Moet een nieuw wachtwoord kiezen"
 
@@ -197,6 +197,7 @@ msgid "Dates"
 msgstr "Datums"
 
 #: apps/accounts/admin.py:476 apps/accounts/models.py:26
+#: apps/cmdb/models.py:364 templates/admin/cmdb/diagram.html:10
 #: templates/admin/cmdb/import_review.html:15
 #: templates/dashboard/report.html:72 templates/dashboard/report.html:82
 #: templates/hardware/email_new_order.txt:3
@@ -235,11 +236,11 @@ msgstr "naam@bedrijf.nl"
 msgid "Your password"
 msgstr "Je wachtwoord"
 
-#: apps/accounts/models.py:25
+#: apps/accounts/models.py:25 apps/cmdb/models.py:363
 msgid "Staff"
 msgstr "Medewerker"
 
-#: apps/accounts/models.py:28 apps/cmdb/models.py:95
+#: apps/accounts/models.py:28 apps/cmdb/models.py:134
 #: apps/customers/models.py:158 apps/hardware/models.py:90
 #: apps/hardware/models.py:144 apps/orders/models.py:91 apps/trash/models.py:12
 #: apps/trash/models.py:13
@@ -278,8 +279,9 @@ msgstr "rol"
 msgid "roles"
 msgstr "rollen"
 
-#: apps/accounts/models.py:80 apps/cmdb/models.py:67 apps/cmdb/models.py:94
-#: apps/cmdb/models.py:137 apps/customers/models.py:14
+#: apps/accounts/models.py:80 apps/cmdb/models.py:96 apps/cmdb/models.py:131
+#: apps/cmdb/models.py:190 apps/cmdb/models.py:211 apps/cmdb/models.py:245
+#: apps/cmdb/models.py:391 apps/customers/models.py:14
 #: apps/customers/models.py:31 apps/faults/models.py:14
 #: apps/faults/models.py:134 apps/hardware/models.py:62
 #: apps/hardware/models.py:89 apps/hardware/models.py:123
@@ -367,7 +369,7 @@ msgstr ""
 "Je wachtwoord moet minstens %(staff)d tekens bevatten voor medewerkers en "
 "%(customers)d voor klanten."
 
-#: apps/accounts/permissions.py:16 apps/customers/overview.py:159
+#: apps/accounts/permissions.py:16 apps/customers/overview.py:165
 #: apps/invoices/admin.py:92 templates/invoices/my_invoices.html:14
 #: templates/telephony/my_quotes.html:7
 #: templates/themes/open_house/hardware/shop.html:39
@@ -378,7 +380,7 @@ msgstr "Bekijken"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: apps/accounts/permissions.py:18 apps/cmdb/admin.py:284
+#: apps/accounts/permissions.py:18 apps/cmdb/admin.py:521
 #: templates/admin/customers/customer/change_type.html:17
 #: templates/hardware/review.html:29 templates/orders/review.html:29
 #: templates/parts/review.html:19
@@ -390,7 +392,7 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #: apps/accounts/templates/accounts/permission_matrix.html:6
-#: apps/customers/overview.py:112 apps/legacy/parts.py:126
+#: apps/customers/overview.py:118 apps/legacy/parts.py:126
 msgid "Function"
 msgstr "Onderdeel"
 
@@ -415,183 +417,421 @@ msgstr "Overig: alles aan of uit"
 msgid "This part: everything on or off"
 msgstr "Dit onderdeel: alles aan of uit"
 
-#: apps/cmdb/admin.py:69 apps/cmdb/admin.py:100 apps/cmdb/transfer.py:622
+#: apps/cmdb/admin.py:68
+msgid "Warranty reminders"
+msgstr "Garantieherinneringen"
+
+#: apps/cmdb/admin.py:73
+msgid "Send warranty reminders now"
+msgstr "Garantieherinneringen nu versturen"
+
+#: apps/cmdb/admin.py:83
+#, python-format
+msgid "%(n)s mail(s) could not be sent; PackDesk tries again in an hour."
+msgstr ""
+"%(n)s mail(s) konden niet worden verstuurd; PackDesk probeert het over een "
+"uur opnieuw."
+
+#: apps/cmdb/admin.py:85
+#, python-format
+msgid ""
+"Sent: %(items)s item(s) in the overview, %(customers)s mail(s) to customers."
+msgstr ""
+"Verstuurd: %(items)s item(s) in het overzicht, %(customers)s mail(s) naar "
+"klanten."
+
+#: apps/cmdb/admin.py:103 apps/cmdb/admin.py:249 apps/cmdb/admin.py:722
+#: apps/cmdb/transfer.py:622
 msgid "Items"
 msgstr "Items"
 
-#: apps/cmdb/admin.py:81 apps/cmdb/transfer.py:601
-#: apps/dashboard/navigation.py:65
-msgid "Item types"
-msgstr "Itemtypes"
+#: apps/cmdb/admin.py:125
+msgid "Enter a name."
+msgstr "Vul een naam in."
 
-#: apps/cmdb/admin.py:131 apps/cmdb/models.py:121 apps/hardware/admin.py:107
+#: apps/cmdb/admin.py:152
+msgid ""
+"Choose at least one item type; the field shows for items of those types."
+msgstr "Kies minstens één itemtype; het veld staat bij items van die types."
+
+#: apps/cmdb/admin.py:187 apps/cmdb/admin.py:521
+#: templates/admin/customers/import_review.html:31
+msgid "Field"
+msgstr "Veld"
+
+#: apps/cmdb/admin.py:190
+#: templates/admin/invoices/invoicesettings/design.html:16
+#: templates/admin/packdesk/menu_editor.html:16
+msgid "Standard"
+msgstr "Standaard"
+
+#: apps/cmdb/admin.py:223
+msgid "Colour"
+msgstr "Kleur"
+
+#: apps/cmdb/admin.py:291 apps/cmdb/models.py:175 apps/hardware/admin.py:107
 #: apps/hardware/models.py:116 apps/hardware/transfer.py:274
 msgid "Yes"
 msgstr "Ja"
 
-#: apps/cmdb/admin.py:131 apps/cmdb/models.py:121 apps/hardware/admin.py:107
+#: apps/cmdb/admin.py:291 apps/cmdb/models.py:175 apps/hardware/admin.py:107
 #: apps/hardware/models.py:116 apps/hardware/transfer.py:274
 msgid "No"
 msgstr "Nee"
 
-#: apps/cmdb/admin.py:163
+#: apps/cmdb/admin.py:330
 msgid "Required for this item type."
 msgstr "Verplicht voor dit itemtype."
 
-#: apps/cmdb/admin.py:186
+#: apps/cmdb/admin.py:376
 msgid "warranty"
 msgstr "garantie"
 
-#: apps/cmdb/admin.py:190 templates/parts/overview.html:10
+#: apps/cmdb/admin.py:380 templates/parts/overview.html:10
 msgid "Expired"
 msgstr "Verlopen"
 
-#: apps/cmdb/admin.py:190
+#: apps/cmdb/admin.py:380
 msgid "Expires within 90 days"
 msgstr "Verloopt binnen 90 dagen"
 
-#: apps/cmdb/admin.py:235 templates/telephony/calculator.html:13
-#: templates/telephony/quote.html:8
+#: apps/cmdb/admin.py:468 apps/cmdb/admin.py:613
+#: templates/telephony/calculator.html:13 templates/telephony/quote.html:8
 msgid "Item"
 msgstr "Artikel"
 
-#: apps/cmdb/admin.py:239
-msgid "Properties"
-msgstr "Eigenschappen"
+#: apps/cmdb/admin.py:472
+msgid "Own fields"
+msgstr "Eigen velden"
 
-#: apps/cmdb/admin.py:240
+#: apps/cmdb/admin.py:473
 msgid "Lifecycle"
 msgstr "Levenscyclus"
 
-#: apps/cmdb/admin.py:247
+#: apps/cmdb/admin.py:480 apps/cmdb/admin.py:730
+#: templates/admin/cmdb/configurationitem/change_list.html:4
+msgid "Diagram"
+msgstr "Diagram"
+
+#: apps/cmdb/admin.py:481
 msgid "Impact"
 msgstr "Impact"
 
-#: apps/cmdb/admin.py:248 apps/cmdb/admin.py:272 apps/parts/admin.py:67
+#: apps/cmdb/admin.py:482 apps/cmdb/admin.py:509 apps/parts/admin.py:67
 msgid "History"
 msgstr "Geschiedenis"
 
-#: apps/cmdb/admin.py:251 apps/customers/admin.py:119
-#: apps/customers/overview.py:114 apps/customers/overview.py:121
-#: apps/customers/overview.py:141 apps/customers/overview.py:143
-#: apps/faults/admin.py:70 apps/hardware/admin.py:212 apps/legacy/admin.py:228
-#: apps/legacy/admin.py:232 apps/licences/admin.py:122
-#: apps/licences/admin.py:193 apps/numbering/admin.py:167
-#: apps/numbering/admin.py:181 apps/parts/admin.py:106 apps/parts/admin.py:221
-#: templates/cmdb/my_items.html:8 templates/faults/my_reports.html:9
-#: templates/orders/my_licences.html:13 templates/orders/order_detail.html:23
-#: templates/parts/overview.html:8 templates/parts/overview.html:15
-#: templates/parts/request_detail.html:13
-msgid "Status"
-msgstr "Status"
-
-#: apps/cmdb/admin.py:259
-msgid "Choose an item type on the Item tab first; its properties appear here."
+#: apps/cmdb/admin.py:489
+msgid "Choose an item type on the Item tab first; its fields appear here."
 msgstr ""
-"Kies eerst een itemtype op de tab Item; de eigenschappen ervan verschijnen "
-"hier."
+"Kies eerst een itemtype op de tab Item; de velden ervan verschijnen hier."
 
-#: apps/cmdb/admin.py:261
+#: apps/cmdb/admin.py:491
+msgid "How this item is connected"
+msgstr "Hoe dit item verbonden is"
+
+#: apps/cmdb/admin.py:495
+msgid "This item has no relations yet."
+msgstr "Dit item heeft nog geen relaties."
+
+#: apps/cmdb/admin.py:498
 msgid "Affected when this item fails"
 msgstr "Heeft last als dit item uitvalt"
 
-#: apps/cmdb/admin.py:265
+#: apps/cmdb/admin.py:502
 msgid "Nothing else depends on this item."
 msgstr "Niets anders hangt van dit item af."
 
-#: apps/cmdb/admin.py:276 apps/dashboard/widgets.py:92
-#: templates/admin/customers/customer/overview.html:63
+#: apps/cmdb/admin.py:513 apps/dashboard/widgets.py:92
+#: templates/admin/customers/customer/overview.html:73
 msgid "Nothing yet."
 msgstr "Nog niets."
 
-#: apps/cmdb/admin.py:284
+#: apps/cmdb/admin.py:521
 msgid "When"
 msgstr "Wanneer"
 
-#: apps/cmdb/admin.py:284
+#: apps/cmdb/admin.py:521
 msgid "Who"
 msgstr "Wie"
 
-#: apps/cmdb/admin.py:284 apps/invoices/admin.py:82 apps/legacy/admin.py:165
+#: apps/cmdb/admin.py:521 apps/invoices/admin.py:82 apps/legacy/admin.py:165
 #: apps/numbering/admin.py:183
 msgid "Source"
 msgstr "Bron"
 
-#: apps/cmdb/admin.py:284 templates/admin/customers/import_review.html:31
-msgid "Field"
-msgstr "Veld"
-
-#: apps/cmdb/admin.py:300
+#: apps/cmdb/admin.py:537
 msgid "Export selected items (Excel)"
 msgstr "Geselecteerde items exporteren (Excel)"
 
-#: apps/cmdb/admin.py:304
+#: apps/cmdb/admin.py:541
 msgid "Export selected items (CSV)"
 msgstr "Geselecteerde items exporteren (CSV)"
 
-#: apps/cmdb/admin.py:321
+#: apps/cmdb/admin.py:562 apps/dashboard/navigation.py:428
+#: templates/admin/cmdb/diagram.html:6
+msgid "Relation diagram"
+msgstr "Relatiediagram"
+
+#: apps/cmdb/admin.py:570 apps/cmdb/admin.py:601
 msgid "The CMDB is switched off. Switch it on here to use it."
 msgstr "De CMDB staat uit. Zet hem hier aan om hem te gebruiken."
 
-#: apps/cmdb/apps.py:7 apps/cmdb/models.py:57 apps/cmdb/models.py:58
-#: apps/dashboard/navigation.py:415
+#: apps/cmdb/admin.py:609 apps/cmdb/admin.py:737 apps/customers/admin.py:119
+#: apps/customers/overview.py:120 apps/customers/overview.py:127
+#: apps/customers/overview.py:147 apps/customers/overview.py:149
+#: apps/faults/admin.py:70 apps/hardware/admin.py:212 apps/legacy/admin.py:228
+#: apps/legacy/admin.py:232 apps/licences/admin.py:122
+#: apps/licences/admin.py:193 apps/numbering/admin.py:167
+#: apps/numbering/admin.py:181 apps/parts/admin.py:106 apps/parts/admin.py:221
+#: templates/faults/my_reports.html:9 templates/orders/my_licences.html:13
+#: templates/orders/order_detail.html:23 templates/parts/overview.html:8
+#: templates/parts/overview.html:15 templates/parts/request_detail.html:13
+msgid "Status"
+msgstr "Status"
+
+#: apps/cmdb/admin.py:620 apps/cmdb/admin.py:633
+msgid "Reported"
+msgstr "Gemeld"
+
+#: apps/cmdb/admin.py:626
+msgid "What accepting changes"
+msgstr "Wat overnemen verandert"
+
+#: apps/cmdb/admin.py:630
+msgid "A new item is made."
+msgstr "Er wordt een nieuw item gemaakt."
+
+#: apps/cmdb/admin.py:630
+msgid "Nothing: the item is the same."
+msgstr "Niets: het item is hetzelfde."
+
+#: apps/cmdb/admin.py:639
+msgid "Accept selected"
+msgstr "Geselecteerde overnemen"
+
+#: apps/cmdb/admin.py:646
+#, python-format
+msgid "%(n)s accepted."
+msgstr "%(n)s overgenomen."
+
+#: apps/cmdb/admin.py:648
+msgid "Ignore selected"
+msgstr "Geselecteerde negeren"
+
+#: apps/cmdb/admin.py:651
+#, python-format
+msgid "%(n)s ignored; they stay ignored when they are reported again."
+msgstr "%(n)s genegeerd; die blijven genegeerd als ze opnieuw gemeld worden."
+
+#: apps/cmdb/admin.py:664
+msgid "Make a new key"
+msgstr "Nieuwe sleutel maken"
+
+#: apps/cmdb/admin.py:665
+msgid "Make a new key? The old key stops working right away."
+msgstr "Nieuwe sleutel maken? De oude sleutel werkt dan meteen niet meer."
+
+#: apps/cmdb/admin.py:670 templates/admin/cmdb/discovery_key.html:5
+#, python-format
+msgid "Key of %(name)s"
+msgstr "Sleutel van %(name)s"
+
+#: apps/cmdb/admin.py:723 apps/siteconfig/admin.py:126
+msgid "In use"
+msgstr "In gebruik"
+
+#: apps/cmdb/admin.py:724 apps/cmdb/transfer.py:603
+msgid "Relations"
+msgstr "Relaties"
+
+#: apps/cmdb/admin.py:725
+msgid "Warranty expired"
+msgstr "Garantie verlopen"
+
+#: apps/cmdb/admin.py:726
+msgid "Warranty ends within 90 days"
+msgstr "Garantie eindigt binnen 90 dagen"
+
+#: apps/cmdb/admin.py:727
+msgid "Discovered, to decide on"
+msgstr "Ontdekt, nog te beoordelen"
+
+#: apps/cmdb/admin.py:729
+msgid "All items"
+msgstr "Alle items"
+
+#: apps/cmdb/admin.py:732 apps/dashboard/navigation.py:434
+msgid "Discovered items"
+msgstr "Ontdekte items"
+
+#: apps/cmdb/admin.py:736 apps/cmdb/apps.py:7 apps/cmdb/models.py:86
+#: apps/cmdb/models.py:87 apps/dashboard/navigation.py:419
 msgid "CMDB"
 msgstr "CMDB"
+
+#: apps/cmdb/admin.py:737 apps/cmdb/models.py:115 apps/customers/admin.py:110
+#: apps/customers/overview.py:120 apps/customers/overview.py:123
+#: apps/customers/overview.py:125 apps/customers/overview.py:127
+#: apps/customers/overview.py:147 apps/customers/overview.py:149
+#: apps/customers/overview.py:165 apps/customers/overview.py:168
+#: apps/customers/overview.py:170 apps/hardware/models.py:80
+#: templates/admin/cmdb/import_review.html:15
+#: templates/admin/customers/customer/overview.html:10
+#: templates/cmdb/my_items.html:8 templates/faults/done.html:8
+#: templates/faults/my_reports.html:9 templates/legacy/overview.html:42
+msgid "Number"
+msgstr "Nummer"
+
+#: apps/cmdb/admin.py:737 apps/licences/forms.py:116
+#: templates/licences/email_certificate.txt:18
+#: templates/licences/options.html:16 templates/setup/database.html:19
+msgid "Type"
+msgstr "Type"
+
+#: apps/cmdb/admin.py:737 apps/cmdb/transfer.py:44
+#: apps/customers/overview.py:120 apps/customers/overview.py:127
+#: apps/legacy/parts.py:151 apps/legacy/parts.py:165 apps/licences/forms.py:53
+#: apps/licences/forms.py:104 templates/admin/hardware/import_review.html:16
+#: templates/faults/email_report.txt:7 templates/faults/my_reports.html:9
+#: templates/licences/check.html:16 templates/licences/email_certificate.txt:21
+msgid "Serial number"
+msgstr "Serienummer"
+
+#: apps/cmdb/admin.py:737 apps/cmdb/transfer.py:46 apps/faults/admin.py:61
+msgid "Location"
+msgstr "Locatie"
+
+#: apps/cmdb/admin.py:737
+msgid "Warranty until"
+msgstr "Garantie tot"
+
+#: apps/cmdb/discovery.py:162 templates/admin/cmdb/discovery_key.html:11
+msgid "Windows (PowerShell)"
+msgstr "Windows (PowerShell)"
+
+#: apps/cmdb/discovery.py:163 templates/admin/cmdb/discovery_key.html:15
+msgid "Linux"
+msgstr "Linux"
 
 #: apps/cmdb/history.py:38
 msgid "Created"
 msgstr "Aangemaakt"
 
-#: apps/cmdb/models.py:25
+#: apps/cmdb/models.py:31
 msgid "use the CMDB"
 msgstr "de CMDB gebruiken"
 
-#: apps/cmdb/models.py:26
+#: apps/cmdb/models.py:32
 msgid ""
 "Off: the items and the switches on customers are hidden. Nothing is deleted."
 msgstr ""
 "Uit: de items en de schakelaars bij klanten zijn verborgen. Er wordt niets "
 "verwijderd."
 
-#: apps/cmdb/models.py:30 apps/cmdb/models.py:31 apps/cmdb/models.py:34
+#: apps/cmdb/models.py:35
+msgid "send warranty reminders"
+msgstr "garantieherinneringen versturen"
+
+#: apps/cmdb/models.py:36
+msgid ""
+"PackDesk checks this every hour and mails from 08:00. Each item is reported "
+"once per moment below."
+msgstr ""
+"PackDesk controleert dit elk uur en mailt vanaf 08:00 uur. Elk item wordt "
+"per moment hieronder één keer gemeld."
+
+#: apps/cmdb/models.py:39
+msgid "days before the end of the warranty"
+msgstr "dagen voor het einde van de garantie"
+
+#: apps/cmdb/models.py:40 apps/cmdb/models.py:41
+msgid "Numbers separated by commas, e.g. 90,30."
+msgstr "Getallen gescheiden door komma's, bijv. 90,30."
+
+#: apps/cmdb/models.py:44
+msgid "send the overview to"
+msgstr "overzicht sturen naar"
+
+#: apps/cmdb/models.py:45 apps/faults/models.py:38
+msgid ""
+"Email addresses separated by commas. Empty = the general email address from "
+"the settings."
+msgstr ""
+"E-mailadressen gescheiden door komma's. Leeg = het algemene e-mailadres uit "
+"de instellingen."
+
+#: apps/cmdb/models.py:49
+msgid "subject of the mail to a customer"
+msgstr "onderwerp van de mail aan een klant"
+
+#: apps/cmdb/models.py:50
+#, python-brace-format
+msgid "Placeholders: {company}, {customer}, {count}."
+msgstr "Invulvelden: {company}, {customer}, {count}."
+
+#: apps/cmdb/models.py:51
+msgid "text of the mail to a customer"
+msgstr "tekst van de mail aan een klant"
+
+#: apps/cmdb/models.py:52
+#, python-brace-format
+msgid "Placeholders: {company}, {customer}, {count}, {items}."
+msgstr "Invulvelden: {company}, {customer}, {count}, {items}."
+
+#: apps/cmdb/models.py:55 apps/cmdb/models.py:56 apps/cmdb/models.py:59
 #: apps/dashboard/navigation.py:63
 msgid "CMDB settings"
 msgstr "CMDB-instellingen"
 
-#: apps/cmdb/models.py:50 apps/cmdb/models.py:135 apps/customers/models.py:98
-#: apps/faults/models.py:76 apps/invoices/models.py:66
-#: apps/licences/models.py:249 apps/orders/models.py:92 apps/parts/admin.py:64
-#: apps/parts/models.py:149 apps/parts/models.py:302
-#: apps/printing/models.py:101 apps/printing/models.py:142
-#: apps/telephony/models.py:91
+#: apps/cmdb/models.py:75 apps/cmdb/models.py:243 apps/cmdb/models.py:390
+#: apps/cmdb/models.py:430 apps/customers/models.py:98 apps/faults/models.py:76
+#: apps/invoices/models.py:66 apps/licences/models.py:249
+#: apps/orders/models.py:92 apps/parts/admin.py:64 apps/parts/models.py:149
+#: apps/parts/models.py:302 apps/printing/models.py:101
+#: apps/printing/models.py:142 apps/telephony/models.py:91
 msgid "customer"
 msgstr "klant"
 
-#: apps/cmdb/models.py:51
+#: apps/cmdb/models.py:76
 msgid "uses the CMDB"
 msgstr "gebruikt de CMDB"
 
-#: apps/cmdb/models.py:52
+#: apps/cmdb/models.py:77
 msgid "Off: the items of this customer are hidden and kept."
 msgstr "Uit: de items van deze klant worden verborgen en bewaard."
 
-#: apps/cmdb/models.py:53
+#: apps/cmdb/models.py:78
 msgid "may see items when logged in"
 msgstr "mag items zien na inloggen"
 
-#: apps/cmdb/models.py:54
+#: apps/cmdb/models.py:79
 msgid "Contacts with a login see a read-only list of the items."
 msgstr ""
 "Contactpersonen met een login zien een alleen-lezen lijst van de items."
 
-#: apps/cmdb/models.py:68 apps/customers/models.py:35 apps/faults/models.py:16
+#: apps/cmdb/models.py:81
+msgid "gets warranty reminders"
+msgstr "krijgt garantieherinneringen"
+
+#: apps/cmdb/models.py:82
+msgid ""
+"Also mail this customer when warranty runs out (general email address of the "
+"customer)."
+msgstr ""
+"Mail ook deze klant als de garantie afloopt (algemeen e-mailadres van de "
+"klant)."
+
+#: apps/cmdb/models.py:97 apps/cmdb/models.py:194 apps/cmdb/models.py:216
+#: apps/cmdb/models.py:396 apps/customers/models.py:35 apps/faults/models.py:16
 #: apps/hardware/models.py:64 apps/hardware/models.py:146
 #: apps/orders/models.py:71 apps/siteconfig/models.py:354
 #: apps/siteconfig/models.py:385 apps/telephony/models.py:72
 msgid "active"
 msgstr "actief"
 
-#: apps/cmdb/models.py:69 apps/cmdb/models.py:99 apps/customers/models.py:16
+#: apps/cmdb/models.py:98 apps/cmdb/models.py:137 apps/cmdb/models.py:195
+#: apps/cmdb/models.py:217 apps/customers/models.py:16
 #: apps/customers/models.py:36 apps/faults/models.py:15
 #: apps/hardware/models.py:63 apps/hardware/models.py:98
 #: apps/hardware/models.py:125 apps/hardware/models.py:147
@@ -604,253 +844,286 @@ msgstr "actief"
 msgid "order"
 msgstr "volgorde"
 
-#: apps/cmdb/models.py:72
+#: apps/cmdb/models.py:101 apps/cmdb/models.py:392
 msgid "item type"
 msgstr "itemtype"
 
-#: apps/cmdb/models.py:73 apps/cmdb/models.py:97
+#: apps/cmdb/models.py:102 apps/cmdb/models.py:136
 msgid "item types"
 msgstr "itemtypes"
 
-#: apps/cmdb/models.py:84 apps/hardware/models.py:79
+#: apps/cmdb/models.py:114 apps/hardware/models.py:79
 #: templates/admin/invoices/invoicesettings/design.html:43
 msgid "Text"
 msgstr "Tekst"
 
-#: apps/cmdb/models.py:85 apps/customers/admin.py:110
-#: apps/customers/overview.py:114 apps/customers/overview.py:117
-#: apps/customers/overview.py:119 apps/customers/overview.py:121
-#: apps/customers/overview.py:141 apps/customers/overview.py:143
-#: apps/customers/overview.py:159 apps/customers/overview.py:162
-#: apps/customers/overview.py:164 apps/hardware/models.py:80
-#: templates/admin/cmdb/import_review.html:15
-#: templates/admin/customers/customer/overview.html:10
-#: templates/cmdb/my_items.html:8 templates/faults/done.html:8
-#: templates/faults/my_reports.html:9 templates/legacy/overview.html:42
-msgid "Number"
-msgstr "Nummer"
-
-#: apps/cmdb/models.py:86 apps/hardware/models.py:81
+#: apps/cmdb/models.py:116 apps/hardware/models.py:81
 msgid "Choice from a list"
 msgstr "Keuze uit een lijst"
 
-#: apps/cmdb/models.py:87 apps/hardware/models.py:82
+#: apps/cmdb/models.py:117 apps/hardware/models.py:82
 msgid "Yes / no"
 msgstr "Ja / nee"
 
-#: apps/cmdb/models.py:90 apps/customers/models.py:30
-#: apps/hardware/models.py:85 apps/invoices/models.py:137
-#: apps/licences/models.py:158 apps/numbering/models.py:17
-#: apps/orders/models.py:61 apps/parts/models.py:104 apps/printing/models.py:58
+#: apps/cmdb/models.py:127 apps/cmdb/models.py:188 apps/cmdb/models.py:209
+#: apps/customers/models.py:30 apps/hardware/models.py:85
+#: apps/invoices/models.py:137 apps/licences/models.py:158
+#: apps/numbering/models.py:17 apps/orders/models.py:61
+#: apps/parts/models.py:104 apps/printing/models.py:58
 msgid "code"
 msgstr "code"
 
-#: apps/cmdb/models.py:91 apps/hardware/models.py:86
+#: apps/cmdb/models.py:128 apps/hardware/models.py:86
 msgid "Lower case letters, digits and _ only."
 msgstr "Alleen kleine letters, cijfers en _."
 
-#: apps/cmdb/models.py:92
-msgid "Internal code, also the column name in import files, e.g. ip_address."
-msgstr "Interne code, ook de kolomnaam in importbestanden, bijv. ip_address."
+#: apps/cmdb/models.py:129
+msgid ""
+"Internal code, also the column name in import files, e.g. ip_address. Empty: "
+"made from the name."
+msgstr ""
+"Interne code, ook de kolomnaam in importbestanden, bijv. ip_address. Leeg: "
+"wordt gemaakt uit de naam."
 
-#: apps/cmdb/models.py:96 apps/hardware/models.py:91
+#: apps/cmdb/models.py:132
+msgid "use"
+msgstr "gebruik"
+
+#: apps/cmdb/models.py:133 apps/hardware/models.py:96
+msgid "show in the overview"
+msgstr "tonen in het overzicht"
+
+#: apps/cmdb/models.py:135 apps/hardware/models.py:91
 msgid "choices"
 msgstr "keuzes"
 
-#: apps/cmdb/models.py:96 apps/hardware/models.py:91
+#: apps/cmdb/models.py:135 apps/hardware/models.py:91
 msgid "For a choice from a list: one option per line."
 msgstr "Voor een keuze uit een lijst: één optie per regel."
 
-#: apps/cmdb/models.py:98 apps/hardware/models.py:95
-msgid "required"
-msgstr "verplicht"
+#: apps/cmdb/models.py:140
+msgid "item field"
+msgstr "itemveld"
 
-#: apps/cmdb/models.py:102
-msgid "item property"
-msgstr "itemeigenschap"
+#: apps/cmdb/models.py:141
+msgid "item fields"
+msgstr "itemvelden"
 
-#: apps/cmdb/models.py:103
-msgid "item properties"
-msgstr "itemeigenschappen"
+#: apps/cmdb/models.py:161
+msgid "This field is always needed."
+msgstr "Dit veld is altijd nodig."
 
-#: apps/cmdb/models.py:111
+#: apps/cmdb/models.py:163
+msgid "This field is required or hidden."
+msgstr "Dit veld is verplicht of verborgen."
+
+#: apps/cmdb/models.py:165
 msgid "This code is already a column of the import file."
 msgstr "Deze code is al een kolom van het importbestand."
 
-#: apps/cmdb/models.py:127
-msgid "Planned"
-msgstr "Gepland"
+#: apps/cmdb/models.py:183 apps/siteconfig/brand.py:14
+msgid "Blue"
+msgstr "Blauw"
 
-#: apps/cmdb/models.py:128 apps/siteconfig/admin.py:126
-msgid "In use"
-msgstr "In gebruik"
+#: apps/cmdb/models.py:184 apps/siteconfig/brand.py:17
+msgid "Green"
+msgstr "Groen"
 
-#: apps/cmdb/models.py:129
-msgid "In repair"
-msgstr "In reparatie"
+#: apps/cmdb/models.py:185 apps/siteconfig/brand.py:18
+msgid "Orange"
+msgstr "Oranje"
 
-#: apps/cmdb/models.py:130
-msgid "Retired"
-msgstr "Afgevoerd"
+#: apps/cmdb/models.py:186
+msgid "Red"
+msgstr "Rood"
 
-#: apps/cmdb/models.py:132 apps/faults/models.py:71 apps/printing/models.py:99
-#: apps/printing/models.py:189
-msgid "number"
-msgstr "nummer"
+#: apps/cmdb/models.py:189
+msgid "Internal code, also usable in import files, e.g. in_use."
+msgstr "Interne code, ook te gebruiken in importbestanden, bijv. in_use."
 
-#: apps/cmdb/models.py:136 apps/legacy/models.py:17 apps/licences/models.py:95
-#: apps/licences/models.py:356
-msgid "type"
-msgstr "type"
+#: apps/cmdb/models.py:191 apps/printing/models.py:20
+#: apps/printing/models.py:42
+msgid "colour"
+msgstr "kleur"
 
-#: apps/cmdb/models.py:138 apps/customers/models.py:63 apps/faults/models.py:72
+#: apps/cmdb/models.py:192
+msgid "no longer in use"
+msgstr "niet meer in gebruik"
+
+#: apps/cmdb/models.py:193
+msgid "Items with this status get no warranty reminders."
+msgstr "Items met deze status krijgen geen garantieherinneringen."
+
+#: apps/cmdb/models.py:198 apps/cmdb/models.py:246 apps/cmdb/models.py:434
+#: apps/customers/models.py:63 apps/faults/models.py:72
 #: apps/hardware/models.py:175 apps/legacy/models.py:130
 #: apps/parts/models.py:153 apps/parts/models.py:207 apps/parts/models.py:255
 #: apps/parts/models.py:307
 msgid "status"
 msgstr "status"
 
-#: apps/cmdb/models.py:139
+#: apps/cmdb/models.py:199
+msgid "statuses"
+msgstr "statussen"
+
+#: apps/cmdb/models.py:210
+msgid ""
+"Internal code, used in the relations column of import files, e.g. runs_on."
+msgstr ""
+"Interne code, gebruikt in de kolom relations van importbestanden, bijv. "
+"runs_on."
+
+#: apps/cmdb/models.py:211
+msgid "Reads as: item … other item, e.g. runs on."
+msgstr "Leest als: item … ander item, bijv. draait op."
+
+#: apps/cmdb/models.py:213
+msgid "counts for the impact"
+msgstr "telt mee voor de impact"
+
+#: apps/cmdb/models.py:214
+msgid "On: the item has a problem when the other item fails."
+msgstr "Aan: het item heeft een probleem als het andere item uitvalt."
+
+#: apps/cmdb/models.py:220
+msgid "relation type"
+msgstr "relatiesoort"
+
+#: apps/cmdb/models.py:221
+msgid "relation types"
+msgstr "relatiesoorten"
+
+#: apps/cmdb/models.py:240 apps/faults/models.py:71 apps/printing/models.py:99
+#: apps/printing/models.py:189
+msgid "number"
+msgstr "nummer"
+
+#: apps/cmdb/models.py:244 apps/legacy/models.py:17 apps/licences/models.py:95
+#: apps/licences/models.py:356
+msgid "type"
+msgstr "type"
+
+#: apps/cmdb/models.py:248
 msgid "manufacturer"
 msgstr "fabrikant"
 
-#: apps/cmdb/models.py:140 apps/hardware/models.py:171
+#: apps/cmdb/models.py:249 apps/hardware/models.py:171
 msgid "model"
 msgstr "model"
 
-#: apps/cmdb/models.py:141 apps/faults/models.py:87 apps/hardware/models.py:172
+#: apps/cmdb/models.py:250 apps/faults/models.py:87 apps/hardware/models.py:172
 #: apps/hardware/services.py:65 apps/licences/models.py:265
 #: apps/licences/models.py:360 apps/printing/models.py:173
 #: templates/licences/email_certificate.txt:24
 msgid "serial number"
 msgstr "serienummer"
 
-#: apps/cmdb/models.py:142
+#: apps/cmdb/models.py:251
 msgid "asset tag"
 msgstr "inventarisnummer"
 
-#: apps/cmdb/models.py:143
+#: apps/cmdb/models.py:252
 msgid "location"
 msgstr "locatie"
 
-#: apps/cmdb/models.py:145 apps/customers/models.py:209
+#: apps/cmdb/models.py:254 apps/customers/models.py:209
 msgid "contact"
 msgstr "contactpersoon"
 
-#: apps/cmdb/models.py:145
+#: apps/cmdb/models.py:254
 msgid "A contact of the same customer."
 msgstr "Een contactpersoon van dezelfde klant."
 
-#: apps/cmdb/models.py:146 apps/hardware/models.py:178
+#: apps/cmdb/models.py:255 apps/hardware/models.py:178
 #: apps/licences/models.py:266
 msgid "purchase date"
 msgstr "aanschafdatum"
 
-#: apps/cmdb/models.py:147
+#: apps/cmdb/models.py:256 apps/cmdb/models.py:367
 msgid "warranty until"
 msgstr "garantie tot"
 
-#: apps/cmdb/models.py:148
+#: apps/cmdb/models.py:257
 msgid "end of life"
 msgstr "einde levensduur"
 
-#: apps/cmdb/models.py:149
+#: apps/cmdb/models.py:258
 msgid "internal description"
 msgstr "interne omschrijving"
 
-#: apps/cmdb/models.py:150
+#: apps/cmdb/models.py:259
 msgid "properties"
 msgstr "eigenschappen"
 
-#: apps/cmdb/models.py:151 apps/customers/models.py:94
+#: apps/cmdb/models.py:260 apps/cmdb/models.py:399 apps/customers/models.py:94
 #: apps/invoices/models.py:99 apps/legacy/models.py:28
 #: apps/legacy/old_shop/importer.py:129 apps/licences/models.py:277
 #: apps/parts/models.py:218 apps/parts/models.py:375
 msgid "created"
 msgstr "aangemaakt"
 
-#: apps/cmdb/models.py:152 apps/customers/models.py:95 apps/legacy/models.py:29
+#: apps/cmdb/models.py:261 apps/customers/models.py:95 apps/legacy/models.py:29
 #: apps/legacy/old_shop/importer.py:129 apps/parts/models.py:161
 #: apps/siteconfig/models.py:190
 msgid "updated"
 msgstr "bijgewerkt"
 
-#: apps/cmdb/models.py:155
+#: apps/cmdb/models.py:264
 msgid "configuration item"
 msgstr "configuratie-item"
 
-#: apps/cmdb/models.py:156
+#: apps/cmdb/models.py:265
 msgid "configuration items"
 msgstr "configuratie-items"
 
-#: apps/cmdb/models.py:159
+#: apps/cmdb/models.py:268
 msgid "Can export configuration items"
 msgstr "Kan configuratie-items exporteren"
 
-#: apps/cmdb/models.py:160
+#: apps/cmdb/models.py:269
 msgid "Can import configuration items"
 msgstr "Kan configuratie-items importeren"
 
-#: apps/cmdb/models.py:168
+#: apps/cmdb/models.py:277
 msgid "This contact belongs to another customer."
 msgstr "Deze contactpersoon hoort bij een andere klant."
 
-#: apps/cmdb/models.py:172
+#: apps/cmdb/models.py:281
 msgid "Remove the relations of this item before moving it to another customer."
 msgstr ""
 "Verwijder eerst de relaties van dit item voordat je het naar een andere "
 "klant verplaatst."
 
-#: apps/cmdb/models.py:200
-msgid "depends on"
-msgstr "is afhankelijk van"
-
-#: apps/cmdb/models.py:201
-msgid "runs on"
-msgstr "draait op"
-
-#: apps/cmdb/models.py:202
-msgid "is connected to"
-msgstr "is verbonden met"
-
-#: apps/cmdb/models.py:203
-msgid "is part of"
-msgstr "is onderdeel van"
-
-#: apps/cmdb/models.py:204
-msgid "uses"
-msgstr "gebruikt"
-
-#: apps/cmdb/models.py:207 apps/telephony/models.py:120
+#: apps/cmdb/models.py:310 apps/cmdb/models.py:436 apps/telephony/models.py:120
 msgid "item"
 msgstr "artikel"
 
-#: apps/cmdb/models.py:208 apps/cmdb/models.py:213
+#: apps/cmdb/models.py:311 apps/cmdb/models.py:317
 msgid "relation"
 msgstr "relatie"
 
-#: apps/cmdb/models.py:210
+#: apps/cmdb/models.py:314
 msgid "other item"
 msgstr "ander item"
 
-#: apps/cmdb/models.py:214
+#: apps/cmdb/models.py:318
 msgid "relations"
 msgstr "relaties"
 
-#: apps/cmdb/models.py:224
+#: apps/cmdb/models.py:328
 msgid "An item cannot have a relation with itself."
 msgstr "Een item kan geen relatie met zichzelf hebben."
 
-#: apps/cmdb/models.py:226
+#: apps/cmdb/models.py:330
 msgid "Both items must belong to the same customer."
 msgstr "Beide items moeten bij dezelfde klant horen."
 
-#: apps/cmdb/models.py:233 templates/base.html:63
+#: apps/cmdb/models.py:337 templates/base.html:63
 msgid "Admin"
 msgstr "Beheer"
 
-#: apps/cmdb/models.py:234 apps/legacy/admin.py:65 apps/legacy/models.py:147
-#: templates/admin/cmdb/configurationitem/change_list.html:4
+#: apps/cmdb/models.py:338 apps/legacy/admin.py:65 apps/legacy/models.py:147
+#: templates/admin/cmdb/configurationitem/change_list.html:5
 #: templates/admin/cmdb/import_review.html:41
 #: templates/admin/customers/customer/change_list.html:4
 #: templates/admin/customers/import_review.html:51
@@ -860,37 +1133,136 @@ msgstr "Beheer"
 msgid "Import"
 msgstr "Importeren"
 
-#: apps/cmdb/models.py:237
+#: apps/cmdb/models.py:339
+msgid "Automatic discovery"
+msgstr "Automatisch ontdekken"
+
+#: apps/cmdb/models.py:342
 msgid "when"
 msgstr "wanneer"
 
-#: apps/cmdb/models.py:239
+#: apps/cmdb/models.py:344
 msgid "who"
 msgstr "wie"
 
-#: apps/cmdb/models.py:240
+#: apps/cmdb/models.py:345 apps/cmdb/models.py:429
 msgid "source"
 msgstr "bron"
 
-#: apps/cmdb/models.py:241 apps/legacy/admin.py:130
+#: apps/cmdb/models.py:346 apps/legacy/admin.py:130
 msgid "field"
 msgstr "veld"
 
-#: apps/cmdb/models.py:242
+#: apps/cmdb/models.py:347
 msgid "old value"
 msgstr "oude waarde"
 
-#: apps/cmdb/models.py:243
+#: apps/cmdb/models.py:348
 msgid "new value"
 msgstr "nieuwe waarde"
 
-#: apps/cmdb/models.py:246
+#: apps/cmdb/models.py:351
 msgid "item change"
 msgstr "itemwijziging"
 
-#: apps/cmdb/models.py:247
+#: apps/cmdb/models.py:352
 msgid "item changes"
 msgstr "itemwijzigingen"
+
+#: apps/cmdb/models.py:368
+msgid "days before"
+msgstr "dagen ervoor"
+
+#: apps/cmdb/models.py:369 apps/invoices/models.py:175
+msgid "sent to"
+msgstr "verstuurd naar"
+
+#: apps/cmdb/models.py:370 apps/invoices/models.py:174
+#: apps/printing/models.py:193
+msgid "sent at"
+msgstr "verstuurd op"
+
+#: apps/cmdb/models.py:373
+msgid "warranty reminder"
+msgstr "garantieherinnering"
+
+#: apps/cmdb/models.py:374
+msgid "warranty reminders"
+msgstr "garantieherinneringen"
+
+#: apps/cmdb/models.py:391
+msgid "For yourself, e.g. Main office."
+msgstr "Voor jezelf, bijv. Hoofdkantoor."
+
+#: apps/cmdb/models.py:393
+msgid "The type of new items from this source."
+msgstr "Het type van nieuwe items uit deze bron."
+
+#: apps/cmdb/models.py:394
+msgid "accept automatically"
+msgstr "automatisch overnemen"
+
+#: apps/cmdb/models.py:395
+msgid "Off: what is found first waits for you under Discovered items."
+msgstr "Uit: wat gevonden wordt, wacht eerst op jou onder Ontdekte items."
+
+#: apps/cmdb/models.py:398
+msgid "last report"
+msgstr "laatste melding"
+
+#: apps/cmdb/models.py:402
+msgid "discovery source"
+msgstr "ontdekkingsbron"
+
+#: apps/cmdb/models.py:403
+msgid "discovery sources"
+msgstr "ontdekkingsbronnen"
+
+#: apps/cmdb/models.py:424 apps/faults/models.py:67 apps/parts/admin.py:55
+#: apps/parts/models.py:118 templates/admin/cmdb/import_review.html:24
+#: templates/admin/hardware/import_review.html:24
+msgid "New"
+msgstr "Nieuw"
+
+#: apps/cmdb/models.py:425
+msgid "Differs from the item"
+msgstr "Wijkt af van het item"
+
+#: apps/cmdb/models.py:426
+msgid "Accepted"
+msgstr "Overgenomen"
+
+#: apps/cmdb/models.py:427
+msgid "Ignored"
+msgstr "Genegeerd"
+
+#: apps/cmdb/models.py:431
+msgid "recognised by"
+msgstr "herkend aan"
+
+#: apps/cmdb/models.py:432
+msgid "What the source recognises this by, e.g. a serial number."
+msgstr "Waaraan de bron dit herkent, bijv. een serienummer."
+
+#: apps/cmdb/models.py:433
+msgid "reported"
+msgstr "gemeld"
+
+#: apps/cmdb/models.py:437
+msgid "first seen"
+msgstr "voor het eerst gezien"
+
+#: apps/cmdb/models.py:438
+msgid "last seen"
+msgstr "laatst gezien"
+
+#: apps/cmdb/models.py:441
+msgid "discovered item"
+msgstr "ontdekt item"
+
+#: apps/cmdb/models.py:442
+msgid "discovered items"
+msgstr "ontdekte items"
 
 #: apps/cmdb/transfer.py:37
 msgid "Number (filled in by PackDesk; empty for a new item)"
@@ -913,9 +1285,8 @@ msgid "Name (required)"
 msgstr "Naam (verplicht)"
 
 #: apps/cmdb/transfer.py:41
-msgid "Status: Planned, In use, In repair or Retired (empty = In use)"
-msgstr ""
-"Status: Gepland, In gebruik, In reparatie of Afgevoerd (leeg = In gebruik)"
+msgid "Status, as under CMDB settings → Statuses (empty = In use)"
+msgstr "Status, zoals onder CMDB-instellingen → Statussen (leeg = In gebruik)"
 
 #: apps/cmdb/transfer.py:42
 msgid "Manufacturer"
@@ -925,24 +1296,9 @@ msgstr "Fabrikant"
 msgid "Model"
 msgstr "Model"
 
-#: apps/cmdb/transfer.py:44 apps/customers/overview.py:114
-#: apps/customers/overview.py:121 apps/legacy/parts.py:151
-#: apps/legacy/parts.py:165 apps/licences/forms.py:53
-#: apps/licences/forms.py:104 templates/admin/hardware/import_review.html:16
-#: templates/cmdb/my_items.html:8 templates/faults/email_report.txt:7
-#: templates/faults/my_reports.html:9 templates/licences/check.html:16
-#: templates/licences/email_certificate.txt:21
-msgid "Serial number"
-msgstr "Serienummer"
-
 #: apps/cmdb/transfer.py:45
 msgid "Asset tag"
 msgstr "Inventarisnummer"
-
-#: apps/cmdb/transfer.py:46 apps/faults/admin.py:61
-#: templates/cmdb/my_items.html:8
-msgid "Location"
-msgstr "Locatie"
 
 #: apps/cmdb/transfer.py:47
 msgid "Email address of a contact of this customer"
@@ -968,19 +1324,19 @@ msgstr "Interne omschrijving; klanten zien dit niet"
 msgid "Relations, e.g. runs_on:CI-00012 | depends_on:Mail server"
 msgstr "Relaties, bijv. runs_on:CI-00012 | depends_on:Mailserver"
 
-#: apps/cmdb/transfer.py:80
+#: apps/cmdb/transfer.py:79
 msgid "This file is too large; at most 10 MB."
 msgstr "Dit bestand is te groot; maximaal 10 MB."
 
-#: apps/cmdb/transfer.py:85 apps/hardware/transfer.py:73
+#: apps/cmdb/transfer.py:84 apps/hardware/transfer.py:73
 msgid "Choose an Excel file (.xlsx) or a CSV file (.csv)."
 msgstr "Kies een Excel-bestand (.xlsx) of een CSV-bestand (.csv)."
 
-#: apps/cmdb/transfer.py:94 apps/hardware/transfer.py:82
+#: apps/cmdb/transfer.py:93 apps/hardware/transfer.py:82
 msgid "This is not a readable Excel file."
 msgstr "Dit is geen leesbaar Excel-bestand."
 
-#: apps/cmdb/transfer.py:117
+#: apps/cmdb/transfer.py:116
 msgid ""
 "The first row must hold the column names. Download the example file to see "
 "the columns."
@@ -988,48 +1344,53 @@ msgstr ""
 "De eerste regel moet de kolomnamen bevatten. Download het voorbeeldbestand "
 "om de kolommen te zien."
 
-#: apps/cmdb/transfer.py:125
+#: apps/cmdb/transfer.py:124
 #, python-format
 msgid "At most %(n)s items per file."
 msgstr "Maximaal %(n)s items per bestand."
 
-#: apps/cmdb/transfer.py:155 apps/hardware/transfer.py:157
+#: apps/cmdb/transfer.py:154 apps/hardware/transfer.py:157
 #, python-format
 msgid "“%(value)s” is not a date (use e.g. 2026-10-28)"
 msgstr "“%(value)s” is geen datum (gebruik bijv. 2026-10-28)"
 
-#: apps/cmdb/transfer.py:170 apps/cmdb/transfer.py:172
+#: apps/cmdb/transfer.py:169 apps/cmdb/transfer.py:171
 #, python-format
 msgid "“%(value)s” is not a number"
 msgstr "“%(value)s” is geen getal"
 
-#: apps/cmdb/transfer.py:187 apps/hardware/transfer.py:208
+#: apps/cmdb/transfer.py:186 apps/hardware/transfer.py:208
 #, python-format
 msgid "“%(value)s” is not yes or no"
 msgstr "“%(value)s” is geen ja of nee"
 
-#: apps/cmdb/transfer.py:192 apps/hardware/transfer.py:213
+#: apps/cmdb/transfer.py:191 apps/hardware/transfer.py:213
 #, python-format
 msgid "“%(value)s” is not one of the choices (%(choices)s)"
 msgstr "“%(value)s” is geen van de keuzes (%(choices)s)"
 
-#: apps/cmdb/transfer.py:224
+#: apps/cmdb/transfer.py:209 apps/hardware/transfer.py:189
+#, python-format
+msgid "unknown status “%(value)s”"
+msgstr "onbekende status “%(value)s”"
+
+#: apps/cmdb/transfer.py:223
 #, python-format
 msgid ""
 "customer: several customers are called “%(value)s”; use the customer number"
 msgstr "customer: meerdere klanten heten “%(value)s”; gebruik het klantnummer"
 
-#: apps/cmdb/transfer.py:227
+#: apps/cmdb/transfer.py:226
 #, python-format
 msgid "customer: unknown customer “%(value)s”"
 msgstr "customer: onbekende klant “%(value)s”"
 
-#: apps/cmdb/transfer.py:229
+#: apps/cmdb/transfer.py:228
 #, python-format
 msgid "customer: “%(value)s” does not use the CMDB"
 msgstr "customer: “%(value)s” gebruikt de CMDB niet"
 
-#: apps/cmdb/transfer.py:243
+#: apps/cmdb/transfer.py:242
 #, python-format
 msgid "“%(value)s” must look like runs_on:CI-00012"
 msgstr "“%(value)s” moet eruitzien als runs_on:CI-00012"
@@ -1038,11 +1399,6 @@ msgstr "“%(value)s” moet eruitzien als runs_on:CI-00012"
 #, python-format
 msgid "unknown relation “%(value)s” (%(choices)s)"
 msgstr "onbekende relatie “%(value)s” (%(choices)s)"
-
-#: apps/cmdb/transfer.py:269 apps/hardware/transfer.py:189
-#, python-format
-msgid "unknown status “%(value)s”"
-msgstr "onbekende status “%(value)s”"
 
 #: apps/cmdb/transfer.py:274
 #, python-format
@@ -1091,33 +1447,33 @@ msgstr "%(column)s: geen eigenschap van %(type)s"
 msgid "%(column)s: required for %(type)s"
 msgstr "%(column)s: verplicht voor %(type)s"
 
-#: apps/cmdb/transfer.py:393
+#: apps/cmdb/transfer.py:392
 msgid "this item is already in an earlier row"
 msgstr "dit item staat al in een eerdere regel"
 
-#: apps/cmdb/transfer.py:398
+#: apps/cmdb/transfer.py:397
 #, python-format
 msgid "%(column)s: required for a new item"
 msgstr "%(column)s: verplicht voor een nieuw item"
 
-#: apps/cmdb/transfer.py:404
+#: apps/cmdb/transfer.py:403
 #, python-format
 msgid ""
 "contact: this customer has no contact with the email address “%(value)s”"
 msgstr ""
 "contact: deze klant heeft geen contactpersoon met het e-mailadres “%(value)s”"
 
-#: apps/cmdb/transfer.py:423
+#: apps/cmdb/transfer.py:422
 #, python-format
 msgid "relations: several items are called “%(value)s”; use the number"
 msgstr "relations: meerdere items heten “%(value)s”; gebruik het nummer"
 
-#: apps/cmdb/transfer.py:426
+#: apps/cmdb/transfer.py:425
 #, python-format
 msgid "relations: no item “%(value)s” at this customer"
 msgstr "relations: geen item “%(value)s” bij deze klant"
 
-#: apps/cmdb/transfer.py:428
+#: apps/cmdb/transfer.py:427
 msgid "relations: an item cannot have a relation with itself"
 msgstr "relations: een item kan geen relatie met zichzelf hebben"
 
@@ -1137,28 +1493,29 @@ msgstr ""
 "Vervang EXAMPLE-CUSTOMER door het nummer van een klant die de CMDB gebruikt, "
 "anders meldt de controle een fout."
 
-#: apps/cmdb/transfer.py:602 apps/hardware/transfer.py:448
+#: apps/cmdb/transfer.py:601 apps/dashboard/navigation.py:66
+msgid "Item types"
+msgstr "Itemtypes"
+
+#: apps/cmdb/transfer.py:602 apps/dashboard/navigation.py:67
+#: apps/hardware/transfer.py:448
 msgid "Statuses"
 msgstr "Statussen"
-
-#: apps/cmdb/transfer.py:603
-msgid "Relations"
-msgstr "Relaties"
 
 #: apps/cmdb/transfer.py:635 apps/hardware/transfer.py:484
 msgid "Explanation"
 msgstr "Uitleg"
 
-#: apps/cmdb/transfer_views.py:79 apps/hardware/transfer_views.py:75
+#: apps/cmdb/transfer_views.py:80 apps/hardware/transfer_views.py:75
 msgid "Excel or CSV file"
 msgstr "Excel- of CSV-bestand"
 
-#: apps/cmdb/transfer_views.py:89 apps/cmdb/transfer_views.py:96
-#: apps/cmdb/transfer_views.py:103 templates/admin/cmdb/import_upload.html:5
+#: apps/cmdb/transfer_views.py:90 apps/cmdb/transfer_views.py:97
+#: apps/cmdb/transfer_views.py:104 templates/admin/cmdb/import_upload.html:5
 msgid "Import items"
 msgstr "Items importeren"
 
-#: apps/cmdb/transfer_views.py:112 apps/customers/transfer_views.py:119
+#: apps/cmdb/transfer_views.py:113 apps/customers/transfer_views.py:119
 #: apps/hardware/transfer_views.py:116
 #: templates/admin/cmdb/import_review.html:4
 #: templates/admin/customers/import_review.html:4
@@ -1166,22 +1523,36 @@ msgstr "Items importeren"
 msgid "Check the import"
 msgstr "Import controleren"
 
-#: apps/cmdb/transfer_views.py:121 apps/customers/transfer_views.py:128
+#: apps/cmdb/transfer_views.py:122 apps/customers/transfer_views.py:128
 #: apps/customers/transfer_views.py:133 apps/hardware/transfer_views.py:126
 msgid "This import has expired. Upload the file again."
 msgstr "Deze import is verlopen. Upload het bestand opnieuw."
 
-#: apps/cmdb/transfer_views.py:125 apps/customers/transfer_views.py:137
+#: apps/cmdb/transfer_views.py:126 apps/customers/transfer_views.py:137
 #: apps/hardware/transfer_views.py:130
 msgid "Import cancelled; nothing was changed."
 msgstr "Import geannuleerd; er is niets gewijzigd."
 
-#: apps/cmdb/transfer_views.py:131 apps/hardware/transfer_views.py:136
+#: apps/cmdb/transfer_views.py:132 apps/hardware/transfer_views.py:136
 #, python-format
 msgid "Import done: %(added)s added, %(updated)s updated, %(skipped)s skipped."
 msgstr ""
 "Import klaar: %(added)s toegevoegd, %(updated)s bijgewerkt, %(skipped)s "
 "overgeslagen."
+
+#: apps/cmdb/warranty.py:63
+#, python-format
+msgid "%(number)s %(name)s – until %(date)s (%(days)s days)"
+msgstr "%(number)s %(name)s – tot %(date)s (%(days)s dagen)"
+
+#: apps/cmdb/warranty.py:108
+#, python-format
+msgid "Warranty running out: %(count)s item(s)"
+msgstr "Garantie loopt af: %(count)s item(s)"
+
+#: apps/cmdb/warranty.py:109
+msgid "The warranty of these items runs out soon:"
+msgstr "De garantie van deze items loopt binnenkort af:"
 
 #: apps/core/middleware.py:76 apps/core/middleware.py:149
 #: apps/core/setup_views.py:43
@@ -1421,7 +1792,7 @@ msgid "(none)"
 msgstr "(geen)"
 
 #: apps/customers/admin.py:57 apps/customers/admin.py:370
-#: apps/customers/admin.py:399 apps/customers/overview.py:112
+#: apps/customers/admin.py:399 apps/customers/overview.py:118
 msgid "Login"
 msgstr "Login"
 
@@ -1431,7 +1802,7 @@ msgstr "Nog geen login"
 
 #: apps/customers/admin.py:61 apps/customers/admin.py:376
 #: apps/customers/admin.py:407 apps/customers/models.py:50
-#: apps/customers/overview.py:73 apps/legacy/parts.py:117
+#: apps/customers/overview.py:79 apps/legacy/parts.py:117
 msgid "Active"
 msgstr "Actief"
 
@@ -1457,13 +1828,13 @@ msgstr ""
 "Deze klant blokkeren? De contactpersonen kunnen dan niet meer inloggen."
 
 #: apps/customers/admin.py:84
-#: templates/admin/cmdb/configurationitem/change_list.html:5
+#: templates/admin/cmdb/configurationitem/change_list.html:6
 #: templates/admin/customers/customer/change_list.html:5
 #: templates/admin/hardware/device/change_list.html:5
 msgid "Export"
 msgstr "Exporteren"
 
-#: apps/customers/admin.py:87 apps/dashboard/navigation.py:115
+#: apps/customers/admin.py:87 apps/dashboard/navigation.py:119
 #: apps/hardware/admin.py:38 apps/parts/admin.py:385
 #: apps/siteconfig/admin.py:133
 #: templates/admin/customers/customer/overview.html:23
@@ -1488,8 +1859,8 @@ msgstr "Notities"
 msgid "City"
 msgstr "Plaats"
 
-#: apps/customers/admin.py:123 apps/customers/overview.py:111
-#: apps/dashboard/navigation.py:224 apps/legacy/old_shop/importer.py:113
+#: apps/customers/admin.py:123 apps/customers/overview.py:117
+#: apps/dashboard/navigation.py:228 apps/legacy/old_shop/importer.py:113
 #: apps/legacy/parts.py:122
 msgid "Contacts"
 msgstr "Contactpersonen"
@@ -1538,13 +1909,13 @@ msgstr ""
 "contactpersonen kunnen dan niet meer inloggen."
 
 #: apps/customers/admin.py:238 apps/customers/forms.py:32
-#: apps/customers/overview.py:112 apps/invoices/design.py:70
+#: apps/customers/overview.py:118 apps/invoices/design.py:70
 #: apps/legacy/parts.py:112 apps/legacy/parts.py:126 apps/licences/forms.py:38
 #: apps/parts/forms.py:71 templates/customers/my_details.html:12
 msgid "Phone"
 msgstr "Telefoon"
 
-#: apps/customers/admin.py:238 apps/customers/overview.py:112
+#: apps/customers/admin.py:238 apps/customers/overview.py:118
 #: apps/invoices/design.py:71 apps/legacy/parts.py:112 apps/legacy/parts.py:125
 #: apps/legacy/parts.py:134
 msgid "Email"
@@ -1642,12 +2013,12 @@ msgid "Activation email"
 msgstr "Activeringsmail"
 
 #: apps/customers/admin.py:373 apps/customers/admin.py:402
-#: apps/customers/overview.py:67
+#: apps/customers/overview.py:73
 msgid "No login"
 msgstr "Geen login"
 
 #: apps/customers/admin.py:374 apps/customers/admin.py:404
-#: apps/customers/overview.py:69
+#: apps/customers/overview.py:75
 msgid "Not active"
 msgstr "Niet actief"
 
@@ -1657,8 +2028,8 @@ msgstr ""
 "Geselecteerde contactpersonen een nieuw wachtwoord laten kiezen (e-mail met "
 "link)"
 
-#: apps/customers/apps.py:7 apps/dashboard/navigation.py:214
-#: apps/dashboard/navigation.py:217 apps/legacy/old_shop/importer.py:112
+#: apps/customers/apps.py:7 apps/dashboard/navigation.py:218
+#: apps/dashboard/navigation.py:221 apps/legacy/old_shop/importer.py:112
 #: apps/legacy/parts.py:107
 msgid "Customers"
 msgstr "Klanten"
@@ -2124,25 +2495,25 @@ msgstr "klantinstellingen"
 msgid "Customer settings"
 msgstr "Klantinstellingen"
 
-#: apps/customers/overview.py:100
+#: apps/customers/overview.py:106
 msgid "Not paid"
 msgstr "Niet betaald"
 
-#: apps/customers/overview.py:113 apps/dashboard/navigation.py:298
+#: apps/customers/overview.py:119 apps/dashboard/navigation.py:302
 #: apps/dashboard/widgets.py:51 apps/legacy/old_shop/importer.py:114
 #: apps/legacy/parts.py:146 apps/orders/admin.py:34
 #: templates/orders/order_detail.html:7
 msgid "Licences"
 msgstr "Licenties"
 
-#: apps/customers/overview.py:114 apps/orders/forms.py:22
+#: apps/customers/overview.py:120 apps/orders/forms.py:22
 #: templates/dashboard/report.html:93 templates/orders/my_licences.html:13
 #: templates/orders/order_detail.html:7 templates/orders/order_form.html:13
 #: templates/orders/review.html:9
 msgid "Service pack"
 msgstr "Servicepack"
 
-#: apps/customers/overview.py:114 apps/customers/overview.py:121
+#: apps/customers/overview.py:120 apps/customers/overview.py:127
 #: apps/hardware/admin.py:188 apps/licences/admin.py:150
 #: apps/licences/views.py:23 apps/licences/views.py:138 apps/orders/admin.py:27
 #: templates/faults/email_report.txt:4 templates/faults/email_report.txt:6
@@ -2153,24 +2524,24 @@ msgstr "Servicepack"
 msgid "Device"
 msgstr "Apparaat"
 
-#: apps/customers/overview.py:114 apps/customers/overview.py:164
+#: apps/customers/overview.py:120 apps/customers/overview.py:170
 msgid "Start"
 msgstr "Begin"
 
-#: apps/customers/overview.py:114 apps/customers/overview.py:164
+#: apps/customers/overview.py:120 apps/customers/overview.py:170
 msgid "End"
 msgstr "Einde"
 
-#: apps/customers/overview.py:116 apps/dashboard/navigation.py:244
+#: apps/customers/overview.py:122 apps/dashboard/navigation.py:248
 #: apps/legacy/old_shop/importer.py:114 apps/legacy/parts.py:137
 #: apps/orders/apps.py:7 apps/parts/admin.py:110
 msgid "Orders"
 msgstr "Bestellingen"
 
-#: apps/customers/overview.py:117 apps/customers/overview.py:119
-#: apps/customers/overview.py:121 apps/customers/overview.py:141
-#: apps/customers/overview.py:143 apps/customers/overview.py:159
-#: apps/customers/overview.py:162 templates/dashboard/report.html:82
+#: apps/customers/overview.py:123 apps/customers/overview.py:125
+#: apps/customers/overview.py:127 apps/customers/overview.py:147
+#: apps/customers/overview.py:149 apps/customers/overview.py:165
+#: apps/customers/overview.py:168 templates/dashboard/report.html:82
 #: templates/faults/my_reports.html:9 templates/invoices/my_invoices.html:7
 #: templates/orders/email_confirmation.txt:7 templates/orders/my_orders.html:7
 #: templates/parts/overview.html:8 templates/parts/overview.html:15
@@ -2178,9 +2549,9 @@ msgstr "Bestellingen"
 msgid "Date"
 msgstr "Datum"
 
-#: apps/customers/overview.py:117 apps/customers/overview.py:119
-#: apps/customers/overview.py:141 apps/customers/overview.py:143
-#: apps/customers/overview.py:159 apps/customers/overview.py:162
+#: apps/customers/overview.py:123 apps/customers/overview.py:125
+#: apps/customers/overview.py:147 apps/customers/overview.py:149
+#: apps/customers/overview.py:165 apps/customers/overview.py:168
 #: apps/legacy/parts.py:140 apps/legacy/parts.py:155 apps/licences/forms.py:29
 #: apps/orders/forms.py:24 templates/faults/email_report.txt:10
 #: templates/orders/order_form.html:13 templates/telephony/calculator.html:26
@@ -2188,59 +2559,59 @@ msgstr "Datum"
 msgid "Reference"
 msgstr "Referentie"
 
-#: apps/customers/overview.py:117 apps/customers/overview.py:119
-#: apps/customers/overview.py:143 apps/legacy/parts.py:141
+#: apps/customers/overview.py:123 apps/customers/overview.py:125
+#: apps/customers/overview.py:149 apps/legacy/parts.py:141
 #: apps/legacy/parts.py:175
 msgid "Total"
 msgstr "Totaal"
 
-#: apps/customers/overview.py:118 apps/dashboard/navigation.py:250
+#: apps/customers/overview.py:124 apps/dashboard/navigation.py:254
 #: apps/invoices/admin.py:106 apps/invoices/apps.py:7
 #: apps/legacy/old_shop/importer.py:116 apps/legacy/parts.py:170
 msgid "Invoices"
 msgstr "Facturen"
 
-#: apps/customers/overview.py:119
+#: apps/customers/overview.py:125
 msgid "Paid"
 msgstr "Betaald"
 
-#: apps/customers/overview.py:120 apps/dashboard/navigation.py:389
-#: apps/dashboard/navigation.py:392 apps/faults/apps.py:7
+#: apps/customers/overview.py:126 apps/dashboard/navigation.py:393
+#: apps/dashboard/navigation.py:396 apps/faults/apps.py:7
 msgid "Fault reports"
 msgstr "Storingsmeldingen"
 
-#: apps/customers/overview.py:140 apps/dashboard/navigation.py:264
+#: apps/customers/overview.py:146 apps/dashboard/navigation.py:268
 #: apps/legacy/old_shop/importer.py:118
 msgid "Spare parts requests"
 msgstr "Onderdelenaanvragen"
 
-#: apps/customers/overview.py:141 templates/parts/email.txt:19
+#: apps/customers/overview.py:147 templates/parts/email.txt:19
 #: templates/parts/overview.html:8 templates/parts/request_form.html:11
 #: templates/parts/totals.html:2
 msgid "Parts"
 msgstr "Onderdelen"
 
-#: apps/customers/overview.py:142 apps/dashboard/navigation.py:270
+#: apps/customers/overview.py:148 apps/dashboard/navigation.py:274
 #: apps/legacy/old_shop/importer.py:120
 msgid "Spare parts orders"
 msgstr "Onderdelenbestellingen"
 
-#: apps/customers/overview.py:158 apps/dashboard/navigation.py:318
+#: apps/customers/overview.py:164 apps/dashboard/navigation.py:322
 #: apps/legacy/old_shop/importer.py:125
 msgid "Telephony quotes"
 msgstr "Telefonie-offertes"
 
-#: apps/customers/overview.py:161 apps/dashboard/navigation.py:349
+#: apps/customers/overview.py:167 apps/dashboard/navigation.py:353
 #: apps/legacy/old_shop/importer.py:123
 msgid "Printing quotes"
 msgstr "Printing-offertes"
 
-#: apps/customers/overview.py:163 apps/dashboard/navigation.py:355
+#: apps/customers/overview.py:169 apps/dashboard/navigation.py:359
 #: apps/legacy/old_shop/importer.py:124
 msgid "Printing contracts"
 msgstr "Printing-contracten"
 
-#: apps/customers/overview.py:164 apps/licences/views.py:21
+#: apps/customers/overview.py:170 apps/licences/views.py:21
 #: apps/licences/views.py:110 templates/licences/check.html:13
 msgid "End customer"
 msgstr "Eindklant"
@@ -2440,7 +2811,7 @@ msgid "Spare parts settings"
 msgstr "Instellingen onderdelen"
 
 #: apps/dashboard/navigation.py:28 apps/dashboard/navigation.py:64
-#: apps/dashboard/navigation.py:141 apps/siteconfig/apps.py:7
+#: apps/dashboard/navigation.py:145 apps/siteconfig/apps.py:7
 #: apps/siteconfig/models.py:197
 msgid "Settings"
 msgstr "Instellingen"
@@ -2514,90 +2885,98 @@ msgstr "Factuurinstellingen"
 msgid "Invoice design"
 msgstr "Factuurontwerp"
 
-#: apps/dashboard/navigation.py:66
-msgid "Item properties"
-msgstr "Itemeigenschappen"
+#: apps/dashboard/navigation.py:65 apps/legacy/admin.py:169
+msgid "Fields"
+msgstr "Velden"
 
-#: apps/dashboard/navigation.py:115 apps/legacy/old_shop/importer.py:112
+#: apps/dashboard/navigation.py:68
+msgid "Relation types"
+msgstr "Relatiesoorten"
+
+#: apps/dashboard/navigation.py:69
+msgid "Discovery sources"
+msgstr "Ontdekkingsbronnen"
+
+#: apps/dashboard/navigation.py:119 apps/legacy/old_shop/importer.py:112
 #: templates/admin/customers/customer/overview.html:29
 msgid "Addresses"
 msgstr "Adressen"
 
-#: apps/dashboard/navigation.py:115
+#: apps/dashboard/navigation.py:119
 msgid "Webshop"
 msgstr "Webshop"
 
-#: apps/dashboard/navigation.py:124 templates/legacy/_head.html:12
+#: apps/dashboard/navigation.py:128 templates/legacy/_head.html:12
 msgid "Overview"
 msgstr "Overzicht"
 
-#: apps/dashboard/navigation.py:126 templates/admin/index.html:6
+#: apps/dashboard/navigation.py:130 templates/admin/index.html:6
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: apps/dashboard/navigation.py:128 apps/dashboard/reports.py:239
+#: apps/dashboard/navigation.py:132 apps/dashboard/reports.py:239
 #: templates/dashboard/report.html:5
 msgid "Sales and margin"
 msgstr "Verkoop en marge"
 
-#: apps/dashboard/navigation.py:138
+#: apps/dashboard/navigation.py:142
 msgid "Configuration"
 msgstr "Configuratie"
 
-#: apps/dashboard/navigation.py:147 apps/dashboard/views.py:159
+#: apps/dashboard/navigation.py:151 apps/dashboard/views.py:159
 msgid "Menu"
 msgstr "Menu"
 
-#: apps/dashboard/navigation.py:153 apps/numbering/apps.py:7
+#: apps/dashboard/navigation.py:157 apps/numbering/apps.py:7
 msgid "Number sequences"
 msgstr "Nummerreeksen"
 
-#: apps/dashboard/navigation.py:160 apps/trash/apps.py:7
+#: apps/dashboard/navigation.py:164 apps/trash/apps.py:7
 msgid "Trash"
 msgstr "Prullenbak"
 
-#: apps/dashboard/navigation.py:171
+#: apps/dashboard/navigation.py:175
 msgid "WebShop"
 msgstr "Webshop"
 
-#: apps/dashboard/navigation.py:177
+#: apps/dashboard/navigation.py:181
 msgid "Databases"
 msgstr "Databases"
 
-#: apps/dashboard/navigation.py:180 apps/legacy/apps.py:7
+#: apps/dashboard/navigation.py:184 apps/legacy/apps.py:7
 msgid "External databases"
 msgstr "Externe databases"
 
-#: apps/dashboard/navigation.py:186 apps/legacy/views.py:68
+#: apps/dashboard/navigation.py:190 apps/legacy/views.py:68
 #: apps/legacy/views.py:80 templates/legacy/choose.html:4
 msgid "Compare databases"
 msgstr "Databases vergelijken"
 
-#: apps/dashboard/navigation.py:192 apps/legacy/admin.py:60
+#: apps/dashboard/navigation.py:196 apps/legacy/admin.py:60
 #: templates/legacy/overview.html:49
 msgid "Table mappings"
 msgstr "Koppelingen"
 
-#: apps/dashboard/navigation.py:198
+#: apps/dashboard/navigation.py:202
 msgid "Imports"
 msgstr "Importeren"
 
-#: apps/dashboard/navigation.py:208
+#: apps/dashboard/navigation.py:212
 msgid "Archived"
 msgstr "Archief"
 
-#: apps/dashboard/navigation.py:241
+#: apps/dashboard/navigation.py:245
 msgid "Orders and invoices"
 msgstr "Bestellingen en facturen"
 
-#: apps/dashboard/navigation.py:261 apps/dashboard/reports.py:149
+#: apps/dashboard/navigation.py:265 apps/dashboard/reports.py:149
 #: apps/dashboard/reports.py:242 apps/parts/apps.py:7
 #: templates/core/dashboard.html:18 templates/parts/overview.html:3
 #: templates/parts/overview.html:5
 msgid "Spare parts"
 msgstr "Onderdelen"
 
-#: apps/dashboard/navigation.py:281 apps/dashboard/reports.py:125
+#: apps/dashboard/navigation.py:285 apps/dashboard/reports.py:125
 #: apps/dashboard/reports.py:243 apps/hardware/apps.py:7
 #: apps/orders/models.py:88 templates/hardware/shop.html:3
 #: templates/hardware/shop.html:7
@@ -2609,78 +2988,78 @@ msgstr "Onderdelen"
 msgid "Hardware"
 msgstr "Hardware"
 
-#: apps/dashboard/navigation.py:284 apps/hardware/admin.py:50
+#: apps/dashboard/navigation.py:288 apps/hardware/admin.py:50
 #: apps/hardware/transfer.py:468
 msgid "Devices"
 msgstr "Apparaten"
 
-#: apps/dashboard/navigation.py:295 apps/licences/apps.py:7
+#: apps/dashboard/navigation.py:299 apps/licences/apps.py:7
 msgid "Service packs and licences"
 msgstr "Servicepacks en licenties"
 
-#: apps/dashboard/navigation.py:304 apps/dashboard/reports.py:242
+#: apps/dashboard/navigation.py:308 apps/dashboard/reports.py:242
 #: apps/orders/models.py:87 templates/orders/order_form.html:11
 msgid "Service packs"
 msgstr "Servicepacks"
 
-#: apps/dashboard/navigation.py:315 apps/telephony/apps.py:7
+#: apps/dashboard/navigation.py:319 apps/telephony/apps.py:7
 #: templates/core/dashboard.html:19 templates/telephony/calculator.html:3
 msgid "Telephony"
 msgstr "Telefonie"
 
-#: apps/dashboard/navigation.py:324
+#: apps/dashboard/navigation.py:328
 msgid "Telephony items"
 msgstr "Telefonie-artikelen"
 
-#: apps/dashboard/navigation.py:330
+#: apps/dashboard/navigation.py:334
 msgid "Telephony categories"
 msgstr "Telefonie-categorieën"
 
-#: apps/dashboard/navigation.py:336 apps/telephony/models.py:29
+#: apps/dashboard/navigation.py:340 apps/telephony/models.py:29
 msgid "Telephony settings"
 msgstr "Instellingen telefonie"
 
-#: apps/dashboard/navigation.py:346 apps/printing/apps.py:7
+#: apps/dashboard/navigation.py:350 apps/printing/apps.py:7
 msgid "Printing services"
 msgstr "Printing services"
 
-#: apps/dashboard/navigation.py:361 apps/legacy/old_shop/importer.py:124
+#: apps/dashboard/navigation.py:365 apps/legacy/old_shop/importer.py:124
 msgid "Supplies orders"
 msgstr "Verbruiksbestellingen"
 
-#: apps/dashboard/navigation.py:367
+#: apps/dashboard/navigation.py:371
 msgid "Printers"
 msgstr "Printers"
 
-#: apps/dashboard/navigation.py:373
+#: apps/dashboard/navigation.py:377
 msgid "Supplies"
 msgstr "Verbruiksartikelen"
 
-#: apps/dashboard/navigation.py:379
+#: apps/dashboard/navigation.py:383
 msgid "Support plans"
 msgstr "Supportpakketten"
 
-#: apps/dashboard/navigation.py:399
+#: apps/dashboard/navigation.py:403
 msgid "Handling options"
 msgstr "Afhandelopties"
 
-#: apps/dashboard/navigation.py:405 apps/faults/models.py:53
+#: apps/dashboard/navigation.py:409 apps/faults/models.py:53
 msgid "Fault report settings"
 msgstr "Storingsinstellingen"
 
-#: apps/dashboard/navigation.py:418
+#: apps/dashboard/navigation.py:422
 msgid "Configuration items"
 msgstr "Configuratie-items"
 
-#: apps/dashboard/navigation.py:428
+#: apps/dashboard/navigation.py:444
 msgid "Users and roles"
 msgstr "Gebruikers en rollen"
 
-#: apps/dashboard/navigation.py:437
+#: apps/dashboard/navigation.py:453
 msgid "Roles"
 msgstr "Rollen"
 
-#: apps/dashboard/navigation.py:487
+#: apps/dashboard/navigation.py:503
 #: templates/admin/packdesk/menu_editor.html:62
 msgid "New menu"
 msgstr "Nieuw menu"
@@ -2878,14 +3257,6 @@ msgstr "Bijv. buiten kantoortijden belt u ..."
 msgid "send reports to"
 msgstr "meldingen sturen naar"
 
-#: apps/faults/models.py:38
-msgid ""
-"Email addresses separated by commas. Empty = the general email address from "
-"the settings."
-msgstr ""
-"E-mailadressen gescheiden door komma's. Leeg = het algemene e-mailadres uit "
-"de instellingen."
-
 #: apps/faults/models.py:40
 msgid "copy to"
 msgstr "kopie naar"
@@ -2919,12 +3290,6 @@ msgstr "max. aantal bijlagen"
 #: apps/faults/models.py:49 apps/faults/models.py:50
 msgid "fault report settings"
 msgstr "storingsinstellingen"
-
-#: apps/faults/models.py:67 apps/parts/admin.py:55 apps/parts/models.py:118
-#: templates/admin/cmdb/import_review.html:24
-#: templates/admin/hardware/import_review.html:24
-msgid "New"
-msgstr "Nieuw"
 
 #: apps/faults/models.py:68
 msgid "In progress"
@@ -3312,9 +3677,9 @@ msgstr "eenheid"
 msgid "E.g. GB, inch, GHz."
 msgstr "Bijv. GB, inch, GHz."
 
-#: apps/hardware/models.py:96
-msgid "show in the overview"
-msgstr "tonen in het overzicht"
+#: apps/hardware/models.py:95
+msgid "required"
+msgstr "verplicht"
 
 #: apps/hardware/models.py:97
 msgid "Shown with each device in the list on the website."
@@ -4048,14 +4413,6 @@ msgstr "betaling"
 msgid "payments"
 msgstr "betalingen"
 
-#: apps/invoices/models.py:174 apps/printing/models.py:193
-msgid "sent at"
-msgstr "verstuurd op"
-
-#: apps/invoices/models.py:175
-msgid "sent to"
-msgstr "verstuurd naar"
-
 #: apps/invoices/models.py:177 apps/printing/models.py:195
 msgid "sent by"
 msgstr "verstuurd door"
@@ -4172,10 +4529,6 @@ msgstr "Bron in de externe database"
 #: apps/legacy/admin.py:161 apps/legacy/models.py:69
 msgid "PackDesk part"
 msgstr "PackDesk-onderdeel"
-
-#: apps/legacy/admin.py:169
-msgid "Fields"
-msgstr "Velden"
 
 #: apps/legacy/admin.py:188
 msgid "Tables and columns"
@@ -4410,7 +4763,7 @@ msgid "Running"
 msgstr "Bezig"
 
 #: apps/legacy/models.py:124 apps/parts/models.py:295
-#: templates/admin/index.html:12
+#: templates/admin/cmdb/discovery_key.html:18 templates/admin/index.html:12
 msgid "Done"
 msgstr "Klaar"
 
@@ -4898,12 +5251,6 @@ msgstr "Dit artikelnummer is ongeldig. %(help)s"
 #: apps/licences/forms.py:110
 msgid "Choose the brand of the monitor."
 msgstr "Kies het merk van het beeldscherm."
-
-#: apps/licences/forms.py:116 templates/cmdb/my_items.html:8
-#: templates/licences/email_certificate.txt:18
-#: templates/licences/options.html:16 templates/setup/database.html:19
-msgid "Type"
-msgstr "Type"
 
 #: apps/licences/forms.py:129
 msgid "Describe the option."
@@ -6423,10 +6770,6 @@ msgstr "installatiekosten"
 msgid "support factor"
 msgstr "supportfactor"
 
-#: apps/printing/models.py:20 apps/printing/models.py:42
-msgid "colour"
-msgstr "kleur"
-
 #: apps/printing/models.py:21
 msgid "maximum prints per month"
 msgstr "maximaal aantal afdrukken per maand"
@@ -6698,10 +7041,6 @@ msgstr "Bedrijfsgegevens"
 msgid "Maintenance"
 msgstr "Onderhoud"
 
-#: apps/siteconfig/brand.py:14
-msgid "Blue"
-msgstr "Blauw"
-
 #: apps/siteconfig/brand.py:15
 msgid "Purple"
 msgstr "Paars"
@@ -6709,14 +7048,6 @@ msgstr "Paars"
 #: apps/siteconfig/brand.py:16
 msgid "Teal"
 msgstr "Petrol"
-
-#: apps/siteconfig/brand.py:17
-msgid "Green"
-msgstr "Groen"
-
-#: apps/siteconfig/brand.py:18
-msgid "Orange"
-msgstr "Oranje"
 
 #: apps/siteconfig/brand.py:19
 msgid "Pink"
@@ -7460,7 +7791,8 @@ msgstr ""
 msgid "To the home page"
 msgstr "Naar de homepage"
 
-#: templates/500.html:23 templates/admin/cmdb/import_upload.html:23
+#: templates/500.html:23 templates/admin/cmdb/diagram.html:7
+#: templates/admin/cmdb/import_upload.html:23
 #: templates/admin/customers/export.html:14
 #: templates/admin/customers/import_upload.html:20
 #: templates/admin/hardware/import_upload.html:24
@@ -7475,9 +7807,62 @@ msgstr "Terug"
 msgid "Add %(name)s"
 msgstr "%(name)s toevoegen"
 
-#: templates/admin/cmdb/configurationitem/change_list.html:5
+#: templates/admin/cmdb/configurationitem/change_list.html:6
 msgid "The items in the list as filtered now"
 msgstr "De items in de lijst zoals die nu gefilterd is"
+
+#: templates/admin/cmdb/diagram.html:15 templates/dashboard/report.html:25
+msgid "Show"
+msgstr "Tonen"
+
+#: templates/admin/cmdb/diagram.html:18
+msgid "Choose a customer to see how its items depend on each other."
+msgstr "Kies een klant om te zien hoe de items van elkaar afhangen."
+
+#: templates/admin/cmdb/diagram.html:22
+msgid ""
+"An arrow points to what an item needs: when that fails, the item has a "
+"problem. Click an item to open it."
+msgstr ""
+"Een pijl wijst naar wat een item nodig heeft: valt dat uit, dan heeft het "
+"item een probleem. Klik op een item om het te openen."
+
+#: templates/admin/cmdb/diagram.html:24
+#, python-format
+msgid "%(n)s more items do not fit in the diagram."
+msgstr "Nog %(n)s items passen niet in het diagram."
+
+#: templates/admin/cmdb/diagram.html:26
+msgid "This customer has no relations between items yet."
+msgstr "Deze klant heeft nog geen relaties tussen items."
+
+#: templates/admin/cmdb/diagram.html:31
+msgid "Items without relations"
+msgstr "Items zonder relaties"
+
+#: templates/admin/cmdb/discovery_key.html:6
+msgid ""
+"Copy this key now: it is shown only once. PackDesk keeps no copy; with a new "
+"key the old one stops working."
+msgstr ""
+"Kopieer deze sleutel nu: hij wordt maar één keer getoond. PackDesk bewaart "
+"geen kopie; met een nieuwe sleutel werkt de oude niet meer."
+
+#: templates/admin/cmdb/discovery_key.html:8
+msgid "Use it on a computer at the customer"
+msgstr "Gebruik hem op een computer bij de klant"
+
+#: templates/admin/cmdb/discovery_key.html:9
+msgid ""
+"Download the script and run it by hand or on a schedule, e.g. once a day. It "
+"reports that computer and, if you ask for it, the devices that computer "
+"already knows on its network. It does not scan the network and changes "
+"nothing there."
+msgstr ""
+"Download het script en start het met de hand of volgens een planning, bijv. "
+"één keer per dag. Het meldt die computer en, als je daarom vraagt, de "
+"apparaten die die computer al kent op zijn netwerk. Het scant het netwerk "
+"niet en verandert daar niets."
 
 #: templates/admin/cmdb/import_review.html:6
 #: templates/admin/customers/_import_outcome.html:6
@@ -7630,7 +8015,7 @@ msgstr "Nog geen adres."
 msgid "Email and prices"
 msgstr "E-mail en prijzen"
 
-#: templates/admin/customers/customer/overview.html:62
+#: templates/admin/customers/customer/overview.html:72
 #, python-format
 msgid "Show all (%(n)s more)"
 msgstr "Alles tonen (nog %(n)s)"
@@ -7886,11 +8271,6 @@ msgstr "Voorbeeld-PDF"
 msgid "Set every part back to the standard wording and colours?"
 msgstr "Alle onderdelen terugzetten naar de standaardteksten en -kleuren?"
 
-#: templates/admin/invoices/invoicesettings/design.html:16
-#: templates/admin/packdesk/menu_editor.html:16
-msgid "Standard"
-msgstr "Standaard"
-
 #: templates/admin/invoices/invoicesettings/design.html:17
 #: templates/admin/packdesk/menu_editor.html:17
 #: templates/customers/my_details.html:24
@@ -8119,10 +8499,6 @@ msgstr "Inloggen"
 msgid "My items"
 msgstr "Mijn items"
 
-#: templates/cmdb/my_items.html:8
-msgid "Warranty until"
-msgstr "Garantie tot"
-
 #: templates/cmdb/my_items.html:11
 msgid "No items yet."
 msgstr "Nog geen items."
@@ -8256,10 +8632,6 @@ msgstr "Van"
 #: templates/dashboard/report.html:23
 msgid "to"
 msgstr "tot en met"
-
-#: templates/dashboard/report.html:25
-msgid "Show"
-msgstr "Tonen"
 
 #: templates/dashboard/report.html:30
 #, python-format

@@ -156,9 +156,38 @@ van de rest van PackDesk en gebruikt alleen klanten en contactpersonen.
 - **Inloggende klanten:** alleen met *Mag items zien na inloggen* op de klantkaart. Ze zien dan een
   alleen-lezen lijst onder *Mijn items*, zonder de interne omschrijving.
 - **Items:** nummer, klant, type, status, serienummer, locatie, contactpersoon, datums voor garantie en einde
-  levensduur, en eigen eigenschappen per type (*CMDB-instellingen → Itemeigenschappen*).
+  levensduur, en eigen velden per type.
+- **Velden aanpassen:** onder *CMDB-instellingen* beheer je alles zelf, in drie talen:
+  - *Velden:* alle velden van een item op één plek. Per veld de naam, of het verborgen, optioneel of verplicht is, en
+    of het als kolom in de lijst staat (de volgorde geldt voor de kolommen). Klant, type en naam zijn altijd nodig; de
+    status is verplicht of verborgen. Verbergen wist niets: de waarde blijft bewaard en gaat mee in een export.
+  - *Veld toevoegen:* een eigen veld voor items van een of meer types: tekst, getal, keuzelijst of ja/nee. Het staat
+    daarna op de tab *Eigen velden* van het item, in de historie en als eigen kolom in import en export. Eigen velden
+    kun je ook weer verwijderen; de standaardvelden niet. De code kan na het toevoegen niet meer veranderen.
+  - *Itemtypes*, *Statussen* (met kleur, en of het item nog in gebruik is) en *Relatiesoorten* (ook of ze meetellen
+    voor de impact). Wat in gebruik is, kun je niet verwijderen; zet het dan op niet actief.
 - **Relaties:** op de tab Relaties, alleen tussen items van dezelfde klant. De tab **Impact** toont wat er
   allemaal last heeft als dit item uitvalt.
+- **Relatiediagram:** *CMDB → Relatiediagram* tekent per klant hoe de items van elkaar afhangen; een pijl wijst naar
+  wat een item nodig heeft. Op een item toont de tab **Diagram** alles waarmee het verbonden is, met in oranje wat
+  last heeft als dit item uitvalt.
+- **Klantpagina:** bij een klant met de CMDB staat een blok met de aantallen en links naar de items en het diagram,
+  plus een tabblad met de items.
+- **Garantiemails:** zet ze aan onder *CMDB-instellingen → Instellingen* en kies op hoeveel dagen vooraf (standaard
+  90 en 30). Medewerkers krijgen één overzicht; een klant krijgt alleen een eigen mail met *Krijgt
+  garantieherinneringen* op de klantkaart, op het algemene e-mailadres en in de tekst die je zelf instelt. PackDesk
+  controleert dit elk uur en mailt vanaf 08:00 uur. Elk item wordt per moment één keer gemeld, en opnieuw als de
+  garantiedatum verandert. Geen mail voor items die niet meer in gebruik zijn, of aan geblokkeerde klanten.
+- **Automatisch ontdekken:** PackDesk kan van buitenaf niet in het netwerk van een klant kijken. Daarom draait daar
+  een klein script dat meldt wat het vindt.
+  1. Maak onder *CMDB-instellingen → Ontdekkingsbronnen* een bron aan voor de klant. Je ziet één keer de sleutel,
+     met de scripts voor Windows en Linux om te downloaden.
+  2. Start het script met de hand of volgens een planning, bijvoorbeeld dagelijks. Het meldt die computer en, als je
+     dat vraagt, de apparaten die die computer al kent op zijn netwerk. Het scant niets en verandert daar niets.
+  3. Onder *CMDB → Ontdekte items* zie je per regel wat nieuw is of afwijkt, en kies je *overnemen* of *negeren*.
+     Overnemen maakt een item of vult een bestaand item aan, met een regel in de historie. Een melding wist nooit
+     een veld of item. Bestaande items worden herkend aan het serienummer, of anders aan een naam die maar één item
+     heeft. Met *Automatisch overnemen* op de bron is overnemen niet nodig.
 - **Historie:** de tab Historie toont per wijziging wie, wanneer, en van wat naar wat, ook bij een import.
 - **Import:** *Importeren* boven de lijst, met een voorbeeldbestand in Excel en CSV om te downloaden. Je ziet
   eerst per regel wat er gaat gebeuren. Items worden herkend aan het nummer, of anders aan dezelfde naam bij

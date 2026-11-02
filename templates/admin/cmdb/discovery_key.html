@@ -1,0 +1,20 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div class="max-w-3xl">
+  <h1 class="font-semibold text-lg mb-2 text-font-important-light dark:text-font-important-dark">{% blocktranslate with name=source.name %}Key of {{ name }}{% endblocktranslate %}</h1>
+  <p class="mb-3 text-sm font-semibold">{% translate "Copy this key now: it is shown only once. PackDesk keeps no copy; with a new key the old one stops working." %}</p>
+  <section class="pd-widget mb-4"><code class="break-all text-sm">{{ token }}</code></section>
+  <h2 class="font-semibold mb-2">{% translate "Use it on a computer at the customer" %}</h2>
+  <p class="text-sm mb-3">{% translate "Download the script and run it by hand or on a schedule, e.g. once a day. It reports that computer and, if you ask for it, the devices that computer already knows on its network. It does not scan the network and changes nothing there." %}</p>
+  <section class="pd-widget mb-3">
+    <h3 class="font-semibold mb-1"><a class="underline" href="{% url 'admin:cmdb_discoverysource_script' 'windows' %}">{% translate "Windows (PowerShell)" %}</a></h3>
+    <code class="break-all text-sm">powershell -ExecutionPolicy Bypass -File packdesk-discovery.ps1 -Key {{ token }} -Neighbours</code>
+  </section>
+  <section class="pd-widget mb-4">
+    <h3 class="font-semibold mb-1"><a class="underline" href="{% url 'admin:cmdb_discoverysource_script' 'linux' %}">{% translate "Linux" %}</a></h3>
+    <code class="break-all text-sm">PACKDESK_KEY={{ token }} sh packdesk-discovery.sh --neighbours</code>
+  </section>
+  <a class="pd-btn pd-btn-primary" href="{% url 'admin:cmdb_discoverysource_changelist' %}">{% translate "Done" %}</a>
+</div>
+{% endblock %}

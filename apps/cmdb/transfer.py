@@ -30,15 +30,15 @@ from django.utils.translation import gettext_lazy
 
 from apps.customers.models import Contact, Customer
 
-from . import history
-from .models import ConfigurationItem, ItemChange, ItemProperty, ItemType, Relation
+from . import fields, history
+from .models import ConfigurationItem, ItemChange, ItemField, ItemStatus, ItemType, Relation, RelationKind, default_status
 
 COLUMNS = [
     ("number", gettext_lazy("Number (filled in by PackDesk; empty for a new item)")),
     ("customer", gettext_lazy("Customer number or exact company name; the customer must use the CMDB (required)")),
     ("type", gettext_lazy("Item type, as under CMDB settings → Item types (required)")),
     ("name", gettext_lazy("Name (required)")),
-    ("status", gettext_lazy("Status: Planned, In use, In repair or Retired (empty = In use)")),
+    ("status", gettext_lazy("Status, as under CMDB settings → Statuses (empty = In use)")),
     ("manufacturer", gettext_lazy("Manufacturer")),
     ("model", gettext_lazy("Model")),
     ("serial_nr", gettext_lazy("Serial number")),
@@ -53,7 +53,6 @@ COLUMNS = [
 ]
 TEXT_FIELDS = ["name", "manufacturer", "model", "serial_nr", "asset_tag", "location", "description"]
 DATE_FIELDS = ["purchase_date", "warranty_until", "end_of_life"]
-REQUIRED = ["customer", "type", "name"]
 MAX_ROWS = 5000
 MAX_BYTES = 10 * 1024 * 1024
 FORMULA_START = ("=", "+", "-", "@", "\t", "\r")
@@ -69,7 +68,7 @@ class ImportFileError(Exception):
 
 
 def properties():
-    return list(ItemProperty.objects.prefetch_related("item_types"))
+    return list(ItemField.own().prefetch_related("item_types"))
 
 
 # --- reading a file ----------------------------------------------------------------------------------------
@@ -176,9 +175,9 @@ def _number(value):
 def _property_value(prop, value):
     if value in (None, ""):
         return None
-    if prop.kind == ItemProperty.Kind.NUMBER:
+    if prop.kind == ItemField.Kind.NUMBER:
         return _number(value)
-    if prop.kind == ItemProperty.Kind.YES_NO:
+    if prop.kind == ItemField.Kind.YES_NO:
         text = _text(value).lower()
         if text in YES:
             return True
@@ -186,7 +185,7 @@ def _property_value(prop, value):
             return False
         raise ValueError(_("“%(value)s” is not yes or no") % {"value": value})
     text = _text(value)
-    if prop.kind == ItemProperty.Kind.CHOICE:
+    if prop.kind == ItemField.Kind.CHOICE:
         match = next((o for o in prop.options() if o.lower() == text.lower()), None)
         if match is None:
             raise ValueError(_("“%(value)s” is not one of the choices (%(choices)s)")
@@ -195,24 +194,24 @@ def _property_value(prop, value):
     return text
 
 
-def _choice(choices, value, unknown):
-    """The code of a choice from its code or its name in any language."""
-    text = _text(value).lower()
-    for code, label in choices:
-        if text == code:
-            return code
-        for lang, _name in settings.LANGUAGES:
-            with translation.override(lang):
-                if text == str(label).lower():
-                    return code
-    raise ValueError(unknown % {"value": value})
-
-
-def _item_type(name):
+def _named(model, name):
+    """The row of a translated list with this name in any language."""
     query = Q()
     for lang, _name in settings.LANGUAGES:
         query |= Q(**{f"name_{lang}__iexact": name})
-    return ItemType.objects.filter(query).first()
+    return model.objects.filter(query).first()
+
+
+def _status(value):
+    text = _text(value)
+    status = ItemStatus.objects.filter(key=text.lower()).first() or _named(ItemStatus, text)
+    if status is None:
+        raise ValueError(_("unknown status “%(value)s”") % {"value": value})
+    return status
+
+
+def _item_type(name):
+    return _named(ItemType, name)
 
 
 def _customer(text):
@@ -241,14 +240,15 @@ def _relations(text):
         kind, reference = kind.strip(), reference.strip()
         if not separator or not reference:
             raise ValueError(_("“%(value)s” must look like runs_on:CI-00012") % {"value": part})
-        if kind not in Relation.Kind.values:
+        known = list(RelationKind.objects.values_list("key", flat=True))
+        if kind not in known:
             raise ValueError(_("unknown relation “%(value)s” (%(choices)s)")
-                             % {"value": kind, "choices": ", ".join(Relation.Kind.values)})
+                             % {"value": kind, "choices": ", ".join(known)})
         result.append((kind, reference))
     return result
 
 
-def clean_row(row, props):
+def clean_row(row, props, required):
     """(values, errors) for one row: the fields present in the file, understood."""
     values, errors = {}, []
 
@@ -266,7 +266,7 @@ def clean_row(row, props):
     for key in DATE_FIELDS:
         take(key, _date)
     if "status" in row and _text(row["status"]):
-        take("status", lambda v: _choice(ConfigurationItem.Status.choices, v, _("unknown status “%(value)s”")))
+        take("status", _status)
     if "type" in row:
         name = _text(row["type"])
         values["type"] = _item_type(name) if name else None
@@ -292,7 +292,7 @@ def clean_row(row, props):
             except ValueError as exc:
                 errors.append(f"{prop.key}: {exc}")
     values["properties"] = prop_values
-    for key in REQUIRED:
+    for key in required:
         if key in row and not _text(row[key]):
             errors.append(_("%(column)s: required") % {"column": key})
     for key in TEXT_FIELDS:
@@ -334,7 +334,7 @@ def _check_properties(item, values, props, is_new, errors):
         if value is not None and key not in keys:
             errors.append(_("%(column)s: not a property of %(type)s") % {"column": key, "type": item_type})
     for prop in props:
-        if prop.required and prop.key in keys and (
+        if prop.is_required and prop.key in keys and (
                 (prop.key in values["properties"] and values["properties"][prop.key] is None)
                 or (is_new and prop.key not in values["properties"])):
             errors.append(_("%(column)s: required for %(type)s") % {"column": prop.key, "type": item_type})
@@ -347,8 +347,6 @@ def _apply(item, values, contact):
             setattr(item, key, values[key])
     if values.get("status"):
         item.status = values["status"]
-    elif item.pk is None:
-        item.status = ConfigurationItem.Status.IN_USE
     if values.get("type"):
         item.item_type = values["type"]
     if values.get("customer") and item.pk is None:
@@ -382,9 +380,10 @@ def _resolve_target(customer_id, reference, in_file):
 def analyse(rows):
     """What the import would do, per row: {line, number, name, customer, action, errors, changes, item}."""
     props = properties()
+    required = fields.required_columns()
     outcome, keys = [], set()
     for line, row in enumerate(rows, start=2):
-        values, errors = clean_row(row, props)
+        values, errors = clean_row(row, props, required)
         item = _find_item(values, errors)
         is_new = item is None
         key = item.pk if item is not None else ((values["customer"].pk, values.get("name", "").lower())
@@ -393,7 +392,7 @@ def analyse(rows):
             errors.append(_("this item is already in an earlier row"))
         keys.add(key)
         if is_new:
-            for column in REQUIRED:
+            for column in required:
                 if column not in row:
                     errors.append(_("%(column)s: required for a new item") % {"column": column})
         customer_id = item.customer_id if item is not None else (values["customer"].pk if values.get("customer") else None)
@@ -457,7 +456,7 @@ def analyse(rows):
 
 
 def _relation_set(item):
-    return set(item.relations_out.values_list("kind", "target_id"))
+    return set(item.relations_out.values_list("kind__key", "target_id"))
 
 
 def _new_rows(outcome):
@@ -508,12 +507,12 @@ def run_import(rows, user=None):
         before = history.relation_texts(item)
         wanted = {(kind, (target if isinstance(target, ConfigurationItem) else target["saved"]).pk)
                   for kind, target in result["targets"]}
-        for relation in item.relations_out.all():
-            if (relation.kind, relation.target_id) not in wanted:
+        for relation in item.relations_out.select_related("kind"):
+            if (relation.kind.key, relation.target_id) not in wanted:
                 relation.delete()
         existing = _relation_set(item)
         for kind, target_id in wanted - existing:
-            Relation.objects.create(source=item, kind=kind, target_id=target_id)
+            Relation.objects.create(source=item, kind=RelationKind.objects.get(key=kind), target_id=target_id)
         history.record_relations(item, before, user, source)
     return added, updated, skipped
 
@@ -539,11 +538,11 @@ def _yes_no(value):
 def item_row(item, props):
     values = {
         "number": item.number, "customer": item.customer.number or item.customer.name, "type": str(item.item_type),
-        "name": item.name, "status": item.get_status_display(), "manufacturer": item.manufacturer, "model": item.model,
+        "name": item.name, "status": str(item.status), "manufacturer": item.manufacturer, "model": item.model,
         "serial_nr": item.serial_nr, "asset_tag": item.asset_tag, "location": item.location,
         "contact": item.contact.email if item.contact_id else "", "purchase_date": item.purchase_date,
         "warranty_until": item.warranty_until, "end_of_life": item.end_of_life, "description": item.description,
-        "relations": f" {RELATION_SPLIT} ".join(f"{r.kind}:{r.target.number}" for r in item.relations_out.all()),
+        "relations": f" {RELATION_SPLIT} ".join(f"{r.kind.key}:{r.target.number}" for r in item.relations_out.all()),
     }
     row = [_safe(values[key]) for key, _label in COLUMNS]
     for prop in props:
@@ -556,6 +555,7 @@ def example_rows(props):
     """A few made-up items that show how the columns are filled in. They hold no data of real customers."""
     types = list(ItemType.objects.filter(is_active=True)[:2])
     customer = "EXAMPLE-CUSTOMER"
+    status = ItemStatus.objects.filter(pk=default_status()).first()
     rows = []
     for i, (name, manufacturer, model, serial, relations) in enumerate([
         ("Example server", "Example brand", "Rack 100", "EXAMPLE-1", ""),
@@ -563,7 +563,7 @@ def example_rows(props):
     ]):
         item_type = types[i % len(types)] if types else None
         values = {"number": "", "customer": customer, "type": str(item_type or ""), "name": name,
-                  "status": str(ConfigurationItem.Status.IN_USE.label), "manufacturer": manufacturer, "model": model,
+                  "status": str(status or ""), "manufacturer": manufacturer, "model": model,
                   "serial_nr": serial, "asset_tag": "", "location": "", "contact": "",
                   "purchase_date": datetime.date(2026, 1, 15), "warranty_until": datetime.date(2029, 1, 15),
                   "end_of_life": None, "description": "", "relations": relations}
@@ -576,11 +576,11 @@ def example_rows(props):
 
 
 def _example_value(prop):
-    if prop.kind == ItemProperty.Kind.CHOICE:
+    if prop.kind == ItemField.Kind.CHOICE:
         return (prop.options() or [""])[0]
-    if prop.kind == ItemProperty.Kind.NUMBER:
+    if prop.kind == ItemField.Kind.NUMBER:
         return 8
-    if prop.kind == ItemProperty.Kind.YES_NO:
+    if prop.kind == ItemField.Kind.YES_NO:
         return _yes_no(True)
     return ""
 
@@ -591,7 +591,7 @@ def explanation(props):
     rows += [[key, str(label)] for key, label in COLUMNS]
     for prop in props:
         kind = prop.get_kind_display()
-        if prop.kind == ItemProperty.Kind.CHOICE:
+        if prop.kind == ItemField.Kind.CHOICE:
             kind += ": " + ", ".join(prop.options())
         types = ", ".join(str(t) for t in prop.item_types.all())
         rows.append([prop.key, f"{prop.name} ({kind}) – {types}"])
@@ -599,8 +599,8 @@ def explanation(props):
     rows.append([_("Replace EXAMPLE-CUSTOMER by the number of a customer that uses the CMDB, otherwise the check reports an error.")])
     rows.append([])
     rows.append([_("Item types"), ", ".join(str(t) for t in ItemType.objects.all())])
-    rows.append([_("Statuses"), ", ".join(str(label) for _code, label in ConfigurationItem.Status.choices)])
-    rows.append([_("Relations"), ", ".join(f"{code} ({label})" for code, label in Relation.Kind.choices)])
+    rows.append([_("Statuses"), ", ".join(str(status) for status in ItemStatus.objects.all())])
+    rows.append([_("Relations"), ", ".join(f"{kind.key} ({kind})" for kind in RelationKind.objects.all())])
     return rows
 
 

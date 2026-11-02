@@ -1,0 +1,14 @@
+{% load l10n %}
+<div class="pd-diagram" style="overflow-x:auto">
+<svg width="{{ diagram.width }}" height="{{ diagram.height }}" viewBox="0 0 {{ diagram.width }} {{ diagram.height }}" role="img">
+  <defs><marker id="pd-diagram-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="pd-diagram-head"/></marker></defs>
+  {% for edge in diagram.edges %}<path d="{{ edge.path }}" class="pd-diagram-edge" marker-end="url(#pd-diagram-arrow)"/><text x="{{ edge.label_x|unlocalize }}" y="{{ edge.label_y|unlocalize }}" text-anchor="middle" class="pd-diagram-edge-label">{{ edge.label }}</text>{% endfor %}
+  {% for node in diagram.nodes %}<a href="{{ node.url }}">
+    <title>{{ node.number }} {{ node.full_name }} – {{ node.type }} – {{ node.status }}</title>
+    <rect x="{{ node.x|unlocalize }}" y="{{ node.y|unlocalize }}" width="{{ node.width }}" height="{{ node.height }}" rx="8" class="pd-diagram-node{% if node.state %} is-{{ node.state }}{% endif %}"/>
+    <rect x="{{ node.x|unlocalize }}" y="{{ node.y|unlocalize }}" width="6" height="{{ node.height }}" rx="3" class="pd-diagram-status is-{{ node.colour }}"/>
+    <text x="{{ node.x|add:16|unlocalize }}" y="{{ node.y|add:23|unlocalize }}" class="pd-diagram-name">{{ node.name }}</text>
+    <text x="{{ node.x|add:16|unlocalize }}" y="{{ node.y|add:43|unlocalize }}" class="pd-diagram-sub">{{ node.number }} · {{ node.type }}</text>
+  </a>{% endfor %}
+</svg>
+</div>

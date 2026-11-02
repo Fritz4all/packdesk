@@ -15,11 +15,14 @@ ROWS_SHOWN = 50
 _SECTIONS = []
 
 
-def register(key, title, model_label, queryset, columns, cells, filter_field="customer", order=100):
+def register(key, title, model_label, queryset, columns, cells, filter_field="customer", order=100, visible=None,
+             block=None):
     """Add a section. `queryset(customer)` gives the items, `columns` the headers and `cells(item)` the
-    values of one row. `filter_field` is the customer field to filter the full list on."""
+    values of one row. `filter_field` is the customer field to filter the full list on. `visible(customer)` can
+    leave the section out. `block(customer)` can add a summary above the tabs: {"stats": [(label, value)],
+    "links": [(label, url)]}."""
     _SECTIONS.append(dict(key=key, title=title, model_label=model_label, queryset=queryset, columns=columns,
-                          cells=cells, filter_field=filter_field, order=order))
+                          cells=cells, filter_field=filter_field, order=order, visible=visible, block=block))
     _SECTIONS.sort(key=lambda s: s["order"])
 
 
@@ -37,6 +40,8 @@ def sections(request, customer):
         app_label, model_name = s["model_label"].split(".")
         if not request.user.has_perm(f"{app_label}.view_{model_name}"):
             continue
+        if s["visible"] is not None and not s["visible"](customer):
+            continue
         items = s["queryset"](customer)
         count = items.count()
         rows = []
@@ -51,7 +56,8 @@ def sections(request, customer):
         except NoReverseMatch:
             all_url = ""
         result.append({"key": s["key"], "title": s["title"], "columns": s["columns"], "rows": rows, "count": count,
-                       "all_url": all_url if count > ROWS_SHOWN else "", "more": count - len(rows)})
+                       "all_url": all_url if count > ROWS_SHOWN else "", "more": count - len(rows),
+                       "block": s["block"](customer) if s["block"] is not None else None})
     return result
 
 

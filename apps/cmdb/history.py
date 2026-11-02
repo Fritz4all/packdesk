@@ -2,7 +2,8 @@
 
 from django.utils.translation import gettext as _
 
-from .models import ConfigurationItem, ItemChange, ItemProperty, Relation
+from . import fields
+from .models import ConfigurationItem, ItemChange, ItemField, Relation
 
 TRACKED = ["customer", "item_type", "name", "status", "manufacturer", "model", "serial_nr", "asset_tag", "location",
            "contact", "purchase_date", "warranty_until", "end_of_life", "description"]
@@ -11,17 +12,16 @@ TRACKED = ["customer", "item_type", "name", "status", "manufacturer", "model", "
 def snapshot(item):
     """{field label: value as text} of an item as it is now on the object."""
     values = {}
+    labels = fields.labels()
     for name in TRACKED:
         field = ConfigurationItem._meta.get_field(name)
         if field.is_relation:
             value = str(getattr(item, name)) if getattr(item, field.attname) else ""
-        elif field.choices:
-            value = str(getattr(item, f"get_{name}_display")())
         else:
             value = getattr(item, name)
             value = "" if value is None else str(value)
-        values[str(field.verbose_name).capitalize()] = value
-    properties = {p.key: p for p in ItemProperty.objects.all()}
+        values[labels.get(name) or str(field.verbose_name).capitalize()] = value
+    properties = {p.key: p for p in ItemField.own()}
     for key, value in (item.properties or {}).items():
         prop = properties.get(key)
         values[prop.name if prop else key] = prop.display(value) if prop else str(value)
@@ -29,7 +29,7 @@ def snapshot(item):
 
 
 def relation_texts(item):
-    return sorted(f"{r.get_kind_display()} {r.target}" for r in item.relations_out.select_related("target"))
+    return sorted(f"{r.kind} {r.target}" for r in item.relations_out.select_related("kind", "target"))
 
 
 def record(item, before, user, source=ItemChange.Source.ADMIN):

@@ -62,8 +62,12 @@ SETTINGS_TABS = {
     ]),
     "cmdb": (_("CMDB settings"), [
         (_("Settings"), "admin:cmdb_cmdbsettings_changelist", "cmdb.view_cmdbsettings", "cmdb.cmdbsettings", True),
+        (_("Fields"), "admin:cmdb_itemfield_changelist", "cmdb.view_itemfield", "cmdb.itemfield", False),
         (_("Item types"), "admin:cmdb_itemtype_changelist", "cmdb.view_itemtype", "cmdb.itemtype", False),
-        (_("Item properties"), "admin:cmdb_itemproperty_changelist", "cmdb.view_itemproperty", "cmdb.itemproperty", False),
+        (_("Statuses"), "admin:cmdb_itemstatus_changelist", "cmdb.view_itemstatus", "cmdb.itemstatus", False),
+        (_("Relation types"), "admin:cmdb_relationkind_changelist", "cmdb.view_relationkind", "cmdb.relationkind", False),
+        (_("Discovery sources"), "admin:cmdb_discoverysource_changelist", "cmdb.view_discoverysource",
+         "cmdb.discoverysource", False),
     ]),
 }
 
@@ -419,6 +423,18 @@ SECTIONS = [
                 "icon": "lan",
                 "link": reverse_lazy("admin:cmdb_configurationitem_changelist"),
                 "permission": lambda request: _cmdb_in_use() and request.user.has_perm("cmdb.view_configurationitem"),
+            },
+            {
+                "title": _("Relation diagram"),
+                "icon": "account_tree",
+                "link": reverse_lazy("admin:cmdb_configurationitem_diagram"),
+                "permission": lambda request: _cmdb_in_use() and request.user.has_perm("cmdb.view_configurationitem"),
+            },
+            {
+                "title": _("Discovered items"),
+                "icon": "radar",
+                "link": reverse_lazy("admin:cmdb_discovereditem_changelist"),
+                "permission": lambda request: _cmdb_in_use() and request.user.has_perm("cmdb.view_discovereditem"),
             },
         ],
     },

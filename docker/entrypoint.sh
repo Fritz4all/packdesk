@@ -16,4 +16,14 @@ fi
 # update never changes the database by surprise.
 python manage.py setup_database
 
+# Reminders that are due go out from here, so an installation needs no separate scheduler. Only for the real
+# server: a development server (RUN_TASKS=0) or a one-off command must not send anything.
+case "${1:-}" in
+  gunicorn)
+    if [ "${RUN_TASKS:-1}" = "1" ]; then
+      ( while :; do sleep 3600; python manage.py cmdb_warranty_mails >/dev/null 2>&1 || true; done ) &
+    fi
+    ;;
+esac
+
 exec "$@"

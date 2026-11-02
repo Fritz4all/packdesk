@@ -47,7 +47,8 @@ def _check(request, permission):
 
 def export_response(queryset, fmt):
     props = transfer.properties()
-    items = queryset.select_related("customer", "item_type", "contact").prefetch_related("relations_out__target")
+    items = queryset.select_related("customer", "item_type", "contact", "status").prefetch_related(
+        "relations_out__target", "relations_out__kind")
     return _file(transfer.write([transfer.item_row(i, props) for i in items], fmt, props), fmt,
                  f"packdesk-cmdb-{timezone.localdate():%Y%m%d}")
 
