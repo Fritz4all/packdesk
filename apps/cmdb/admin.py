@@ -14,6 +14,7 @@ from django.urls import path, reverse
 from django.utils import timezone
 from django.utils.functional import lazy
 from django.utils.html import format_html, format_html_join
+from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from django.utils.translation import get_language, gettext
 from django.utils.translation import gettext_lazy as _
@@ -33,7 +34,6 @@ from .models import (
     ItemType, Relation, RelationKind,
 )
 
-STATUS_COLOURS = {colour: colour for colour in ItemStatus.Colour.values}
 PROPERTY_PREFIX = "prop_"
 SOON_DAYS = 90
 
@@ -153,10 +153,26 @@ class ItemFieldForm(AnyLanguageName):
         return cleaned
 
 
+def colour_badge(colour, text):
+    """A text in the colour of a status; static/admin/packdesk-admin.css has the colours."""
+    return format_html('<span class="pd-colour pd-colour-{}">{}</span>', colour, text)
+
+
+class ColourChoice(forms.RadioSelect):
+    """All colours side by side, each as it will look. A dropdown list cannot show colours in every browser."""
+
+    def render(self, name, value, attrs=None, renderer=None):
+        options = format_html_join("", '<label class="pd-colour-option"><input type="radio" name="{}" value="{}"{}> {}</label>', (
+            (name, code, mark_safe(" checked") if str(value) == str(code) else "", colour_badge(code, label))
+            for code, label in self.choices if code))
+        return format_html('<div class="pd-colour-choice">{}</div>', options)
+
+
 class ItemStatusForm(AnyLanguageName):
     class Meta:
         model = ItemStatus
         fields = "__all__"
+        widgets = {"colour": ColourChoice}
 
 
 class RelationKindForm(AnyLanguageName):
@@ -220,9 +236,9 @@ class ItemStatusAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = ["name", "key", "show_colour", "out_of_use", "is_active", "position"]
     list_editable = ["position"]
 
-    @display(description=_("Colour"), ordering="colour", label=STATUS_COLOURS)
+    @display(description=_("Colour"), ordering="colour")
     def show_colour(self, obj):
-        return obj.colour, obj.get_colour_display()
+        return colour_badge(obj.colour, obj.get_colour_display())
 
 
 @admin.register(RelationKind)
@@ -425,9 +441,9 @@ class ConfigurationItemAdmin(WhenEnabled, ModelAdmin):
     col_warranty_until = _column("warranty_until")
     col_end_of_life = _column("end_of_life")
 
-    @display(description=lazy(fields.label, str)("status"), ordering="status", label=STATUS_COLOURS)
+    @display(description=lazy(fields.label, str)("status"), ordering="status")
     def col_status(self, obj):
-        return obj.status.colour, str(obj.status)
+        return colour_badge(obj.status.colour, obj.status)
 
     def get_list_display(self, request):
         columns = ItemField.objects.filter(in_list=True).exclude(mode=FieldMode.HIDDEN)

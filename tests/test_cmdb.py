@@ -945,5 +945,20 @@ def test_a_name_in_one_language_is_enough(client, on, hardware, beheerder, langu
     assert client.post(FIELD_URL + "add/", {**data, language: "Rackplek"}).status_code == 302
     field = ItemField.objects.get(key="rackplek")
     assert field.name_nl == "Rackplek"
-    assert client.post("/admin/cmdb/itemstatus/add/", {language: "Uitgeleend", "key": "on_loan", "colour": "info", "position": 9}).status_code == 302
+    assert client.post("/admin/cmdb/itemstatus/add/", {language: "Uitgeleend", "key": "on_loan", "colour": "teal", "position": 9}).status_code == 302
     assert ItemStatus.objects.get(key="on_loan").name_nl == "Uitgeleend"
+
+
+def test_status_colours_show_as_an_example_and_in_the_list(client, customer, hardware, beheerder):
+    client.force_login(beheerder)
+    page = client.get("/admin/cmdb/itemstatus/add/").content.decode()
+    for colour in ItemStatus.Colour.values:
+        assert f"pd-colour-{colour}" in page and f'value="{colour}"' in page
+    status = ItemStatus.objects.get(key="in_use")
+    assert status.colour == "green"
+    page = client.get(f"/admin/cmdb/itemstatus/{status.pk}/change/").content.decode()
+    assert 'value="green" checked' in page
+    item(customer, hardware)
+    assert "pd-colour-green" in client.get(LIST_URL).content.decode()
+    ItemStatus.objects.filter(pk=status.pk).update(name="<b>x</b>", name_nl="<b>x</b>", name_en="<b>x</b>")
+    assert "<b>x</b>" not in client.get(LIST_URL).content.decode()

@@ -6,7 +6,7 @@
   {% for node in diagram.nodes %}<a href="{{ node.url }}">
     <title>{{ node.number }} {{ node.full_name }} – {{ node.type }} – {{ node.status }}</title>
     <rect x="{{ node.x|unlocalize }}" y="{{ node.y|unlocalize }}" width="{{ node.width }}" height="{{ node.height }}" rx="8" class="pd-diagram-node{% if node.state %} is-{{ node.state }}{% endif %}"/>
-    <rect x="{{ node.x|unlocalize }}" y="{{ node.y|unlocalize }}" width="6" height="{{ node.height }}" rx="3" class="pd-diagram-status is-{{ node.colour }}"/>
+    <rect x="{{ node.x|unlocalize }}" y="{{ node.y|unlocalize }}" width="6" height="{{ node.height }}" rx="3" class="pd-diagram-status pd-colour-{{ node.colour }}"/>
     <text x="{{ node.x|add:16|unlocalize }}" y="{{ node.y|add:23|unlocalize }}" class="pd-diagram-name">{{ node.name }}</text>
     <text x="{{ node.x|add:16|unlocalize }}" y="{{ node.y|add:43|unlocalize }}" class="pd-diagram-sub">{{ node.number }} · {{ node.type }}</text>
   </a>{% endfor %}

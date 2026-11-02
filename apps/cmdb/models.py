@@ -180,15 +180,23 @@ class ItemStatus(models.Model):
     """Status of an item, e.g. planned or in use (configurable)."""
 
     class Colour(models.TextChoices):
-        INFO = "info", _("Blue")
-        SUCCESS = "success", _("Green")
-        WARNING = "warning", _("Orange")
-        DANGER = "danger", _("Red")
+        GREY = "grey", _("Grey")
+        BROWN = "brown", _("Brown")
+        RED = "red", _("Red")
+        ORANGE = "orange", _("Orange")
+        YELLOW = "yellow", _("Yellow")
+        LIME = "lime", _("Lime")
+        GREEN = "green", _("Green")
+        TEAL = "teal", _("Teal")
+        BLUE = "blue", _("Blue")
+        INDIGO = "indigo", _("Indigo")
+        PURPLE = "purple", _("Purple")
+        PINK = "pink", _("Pink")
 
     key = models.SlugField(_("code"), max_length=32, unique=True,
                            help_text=_("Internal code, also usable in import files, e.g. in_use."))
     name = models.CharField(_("name"), max_length=60)
-    colour = models.CharField(_("colour"), max_length=8, choices=Colour.choices, default=Colour.INFO)
+    colour = models.CharField(_("colour"), max_length=8, choices=Colour.choices, default=Colour.BLUE)
     out_of_use = models.BooleanField(_("no longer in use"), default=False,
                                      help_text=_("Items with this status get no warranty reminders."))
     is_active = models.BooleanField(_("active"), default=True)
