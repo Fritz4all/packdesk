@@ -7,6 +7,31 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+class PrintingSettings(models.Model):
+    """One row: whether this installation shows the archive. An import that brings in printing data switches it on."""
+
+    enabled = models.BooleanField(
+        _("show the printing archive"), default=False,
+        help_text=_("Off: the archive is hidden from the menu and the customer page. Nothing is deleted."),
+    )
+
+    class Meta:
+        verbose_name = _("printing settings")
+        verbose_name_plural = _("printing settings")
+
+    def __str__(self):
+        return str(_("Printing settings"))
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _created = cls.objects.get_or_create(pk=1)
+        return obj
+
+
 class Printer(models.Model):
     name = models.CharField(_("name"), max_length=48)
     product_nr = models.CharField(_("article number"), max_length=32, blank=True)

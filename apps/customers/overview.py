@@ -26,7 +26,7 @@ def register(key, title, model_label, queryset, columns, cells, filter_field="cu
     _SECTIONS.sort(key=lambda s: s["order"])
 
 
-def _date(value):
+def short_date(value):
     return formats.date_format(value, "SHORT_DATE_FORMAT") if value else "–"
 
 
@@ -86,7 +86,7 @@ def _licences(customer):
 
 def _licence_cells(lic):
     return [lic.full_number, str(lic.pack), lic.description or (str(lic.system) if lic.system else ""), lic.serial_nr,
-            _date(lic.start_date), _date(lic.end_date), lic.status.label]
+            short_date(lic.start_date), short_date(lic.end_date), lic.status.label]
 
 
 def _orders(customer):
@@ -94,7 +94,7 @@ def _orders(customer):
 
 
 def _order_cells(order):
-    return [order.number, _date(order.created_at), order.reference, _money(order.total)]
+    return [order.number, short_date(order.created_at), order.reference, _money(order.total)]
 
 
 def _invoices(customer):
@@ -102,8 +102,8 @@ def _invoices(customer):
 
 
 def _invoice_cells(inv):
-    return [inv.number, _date(inv.issued_on), inv.reference, _money(inv.total),
-            _date(inv.paid_on) if inv.paid_on else gettext("Not paid")]
+    return [inv.number, short_date(inv.issued_on), inv.reference, _money(inv.total),
+            short_date(inv.paid_on) if inv.paid_on else gettext("Not paid")]
 
 
 def _faults(customer):
@@ -111,7 +111,7 @@ def _faults(customer):
 
 
 def _fault_cells(f):
-    return [f.number, _date(f.created_at), f"{f.vendor} {f.device}", f.serial_nr, f.get_status_display()]
+    return [f.number, short_date(f.created_at), f"{f.vendor} {f.device}", f.serial_nr, f.get_status_display()]
 
 
 register("contacts", _("Contacts"), "customers.contact", _contacts,
@@ -132,7 +132,7 @@ def _part_requests(customer):
 
 
 def _part_request_cells(r):
-    return [r.number, _date(r.created_at), r.reference, len(r.lines.all()), r.get_status_display()]
+    return [r.number, short_date(r.created_at), r.reference, len(r.lines.all()), r.get_status_display()]
 
 
 def _part_orders(customer):
@@ -140,32 +140,10 @@ def _part_orders(customer):
 
 
 def _part_order_cells(o):
-    return [o.number, _date(o.created_at), o.reference, _money(o.total), o.get_status_display()]
+    return [o.number, short_date(o.created_at), o.reference, _money(o.total), o.get_status_display()]
 
 
 register("part_requests", _("Spare parts requests"), "parts.partrequest", _part_requests,
          [_("Number"), _("Date"), _("Reference"), _("Parts"), _("Status")], _part_request_cells, order=50)
 register("part_orders", _("Spare parts orders"), "parts.partorder", _part_orders,
          [_("Number"), _("Date"), _("Reference"), _("Total"), _("Status")], _part_order_cells, order=55)
-
-
-def _telephony_quotes(customer):
-    return customer.telephony_quotes.order_by("-created_at")
-
-
-def _print_quotes(customer):
-    return customer.print_quotes.order_by("-created_at")
-
-
-def _print_contracts(customer):
-    return customer.print_contracts.order_by("-created_at")
-
-
-register("telephony_quotes", _("Telephony quotes"), "telephony.quote", _telephony_quotes,
-         [_("Number"), _("Date"), _("Reference"), _("View")],
-         lambda q: [f"T{q.pk}", _date(q.created_at), q.reference, q.get_view_display()], order=57)
-register("print_quotes", _("Printing quotes"), "printing.printquote", _print_quotes,
-         [_("Number"), _("Date"), _("Reference")], lambda q: [q.number, _date(q.created_at), q.reference], order=58)
-register("print_contracts", _("Printing contracts"), "printing.printcontract", _print_contracts,
-         [_("Number"), _("End customer"), _("Start"), _("End")],
-         lambda c: [c.number, c.company, _date(c.start_date), _date(c.end_date)], order=59)

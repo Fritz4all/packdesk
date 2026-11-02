@@ -33,8 +33,9 @@ def _theme_home_context(request):
 
 @login_required
 def dashboard(request):
+    from apps.customers.models import customer_of
     from apps.parts.models import PartsSettings
-    from apps.telephony.models import TelephonySettings
+    from apps.telephony.models import open_to
 
     return render(request, "core/dashboard.html", {"parts_enabled": PartsSettings.load().enabled,
-                                                   "telephony_enabled": TelephonySettings.load().enabled})
+                                                   "telephony_enabled": open_to(customer_of(request.user))})

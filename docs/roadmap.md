@@ -21,6 +21,7 @@ Wat PackDesk nu kan en wat er nog komt.
 - Onderdelen: aanvragen, beantwoorden, bestellen, uitleveren, corrigeren en annuleren, met de import uit
   de vorige webshop (fase 2).
 - Telefoniecalculator met offertes, en printing services als archief, met de import uit de vorige webshop (fase 3).
+  Telefonie is aan of uit te zetten per installatie en per klant, het printing-archief per installatie.
 - CMDB als add-on: items, relaties, impact, diagram, historie, import en export, aanpasbare velden, garantiemails,
   automatisch ontdekken met een script bij de klant, en een alleen-lezen lijst voor klanten.
 

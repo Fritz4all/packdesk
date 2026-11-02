@@ -10,8 +10,8 @@ from collections import defaultdict
 from django.utils.translation import gettext as _
 
 from apps.customers.models import Contact
-from apps.printing.models import (Consumable, PrintContract, PrintContractLine, Printer, PrintQuote, PrintQuoteLine,
-                                  SuppliesOrder, SuppliesOrderLine, SupportPlan)
+from apps.printing.models import (Consumable, PrintContract, PrintContractLine, Printer, PrintingSettings, PrintQuote,
+                                  PrintQuoteLine, SuppliesOrder, SuppliesOrderLine, SupportPlan)
 from apps.telephony.models import Category, Item, Quote, QuoteLine, TelephonySettings
 
 
@@ -152,6 +152,12 @@ def import_printing(imp):
     imp.report.note(_("Printing services are kept as an archive: the previous webshop no longer offered them and its "
                       "calculation rules are not known, so PackDesk shows them but makes no new quotes. "
                       "ps_printer_option was empty."))
+    # Only when this run brought something in: a later run must not undo switching the archive off.
+    brought_in = any(imp.report.counts[part].get("created", 0) for part in ("printing catalogue", "printing quotes",
+                                                                             "printing contracts", "supplies orders"))
+    if brought_in and not imp.dry:
+        PrintingSettings.objects.update_or_create(pk=1, defaults={"enabled": True})
+        imp.report.note(_("The printing archive is switched on; you can switch it off under Printing settings."))
 
 
 AUTO = re.compile(r"amount_sum_items\s+([\d,\s]+)")
@@ -226,5 +232,6 @@ def import_telephony(imp):
 
     imp.sync("telephony quotes", "telephony_tender_item", QuoteLine, imp.rows("SELECT * FROM `telephony_tender_item`"),
              quote_line, name=lambda r, v: str(r["amount"]))
-    imp.report.note(_("The telephony calculator is switched off until you switch it on under Telephony settings. "
+    imp.report.note(_("Telephony stays switched off until you switch it on under Telephony settings: the calculator, "
+                      "and the quotes and items in the menu. "
                       "The previous webshop's price per port cannot be recalculated; old quotes show the stored value."))

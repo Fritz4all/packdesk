@@ -1,10 +1,14 @@
+import importlib
 from decimal import Decimal
 
 import pytest
+from django.apps import apps
+from django.contrib import admin
 
 from apps.customers.models import Contact, Customer
-from apps.printing.models import PrintQuote
-from apps.telephony.models import Category, Item, Quote, TelephonySettings
+from apps.printing.models import Printer, PrintingSettings, PrintQuote
+from apps.telephony.admin import CustomerSwitchInline
+from apps.telephony.models import Category, Item, Quote, TelephonyCustomer, TelephonySettings
 
 from .conftest import make_user
 
@@ -61,7 +65,82 @@ def test_calculator_off_or_other_customer(client, site, phones):
     assert client.get("/my/telephony/").status_code == 403
 
 
+def test_customer_without_a_switch_uses_telephony_and_can_be_switched_off(client, site, phones):
+    client.force_login(phones["user"])
+    assert client.get("/my/telephony/").status_code == 200
+    assert "/my/telephony/" in client.get("/my/").content.decode()
+    client.post("/my/telephony/", {"action": "save", f"q-{phones['phone'].pk}": "1"})
+    quote = Quote.objects.get()
+    TelephonyCustomer.objects.create(customer=phones["customer"], enabled=False)
+    for url in ("/my/telephony/", "/my/telephony/quotes/", f"/my/telephony/quotes/{quote.pk}/"):
+        assert client.get(url).status_code == 403, url
+    assert "/my/telephony/" not in client.get("/my/").content.decode()
+    assert Quote.objects.filter(pk=quote.pk).exists()
+    TelephonyCustomer.objects.filter(customer=phones["customer"]).update(enabled=True)
+    assert client.get("/my/telephony/").status_code == 200
+
+
+def test_customer_page_leaves_out_quotes_of_a_customer_switched_off(client, site, phones, beheerder):
+    Quote.objects.create(customer=phones["customer"], reference="Kantoor-offerte")
+    client.force_login(beheerder)
+    url = f"/admin/customers/customer/{phones['customer'].pk}/change/"
+    assert "Kantoor-offerte" in client.get(url).content.decode()
+    TelephonyCustomer.objects.create(customer=phones["customer"], enabled=False)
+    assert "Kantoor-offerte" not in client.get(url).content.decode()
+
+
+def test_telephony_off_hides_it_in_the_admin_but_not_its_settings(client, site, phones, beheerder):
+    Quote.objects.create(customer=phones["customer"], reference="Kantoor-offerte")
+    client.force_login(beheerder)
+    TelephonySettings.objects.filter(pk=1).update(enabled=False)
+    for url in ("telephony/quote", "telephony/item", "telephony/category"):
+        assert client.get(f"/admin/{url}/").url == "/admin/telephony/telephonysettings/", url
+    assert client.get(f"/admin/telephony/quote/{Quote.objects.get().pk}/change/").status_code in (302, 403)
+    assert client.get("/admin/telephony/item/add/").status_code == 403
+    page = client.get("/admin/telephony/telephonysettings/", follow=True)
+    assert page.status_code == 200
+    menu = page.content.decode()
+    assert "/admin/telephony/telephonysettings/" in menu and "/admin/telephony/quote/" not in menu
+    customer_page = client.get(f"/admin/customers/customer/{phones['customer'].pk}/change/").content.decode()
+    assert "Kantoor-offerte" not in customer_page and "telephony-0-enabled" not in customer_page
+    assert Quote.objects.exists()
+
+
+def test_customer_form_keeps_the_switch_off_once_saved_off(db, phones):
+    form = CustomerSwitchInline(Customer, admin.site).get_formset(None).form
+    assert form().fields["enabled"].initial is True
+    unchanged = form(data={"enabled": "on"}, empty_permitted=True, use_required_attribute=False)
+    assert not unchanged.has_changed()  # so a customer form saved as it is makes no row, and the customer stays on
+    unticked = form(data={}, empty_permitted=True, use_required_attribute=False)
+    assert unticked.has_changed()
+
+
+def test_printing_archive_is_off_by_default_with_its_settings_still_there(client, site, phones, beheerder):
+    PrintQuote.objects.create(number="12", customer=phones["customer"], reference="Kantoor")
+    client.force_login(beheerder)
+    assert not PrintingSettings.load().enabled
+    for url in ("printing/printquote", "printing/printer", "printing/printcontract", "printing/suppliesorder",
+                "printing/consumable", "printing/supportplan"):
+        assert client.get(f"/admin/{url}/").url == "/admin/printing/printingsettings/", url
+    page = client.get("/admin/printing/printingsettings/", follow=True)
+    assert page.status_code == 200
+    menu = page.content.decode()
+    assert "/admin/printing/printingsettings/" in menu and "/admin/printing/printquote/" not in menu
+    assert "Kantoor" not in client.get(f"/admin/customers/customer/{phones['customer'].pk}/change/").content.decode()
+    assert PrintQuote.objects.exists()
+
+
+def test_installation_with_printing_data_keeps_the_archive_visible(db):
+    migration = importlib.import_module("apps.printing.migrations.0004_existing_archive_and_permissions")
+    migration.keep_existing_archive_visible(apps, None)
+    assert not PrintingSettings.load().enabled
+    Printer.objects.create(name="Oude printer")
+    migration.keep_existing_archive_visible(apps, None)
+    assert PrintingSettings.load().enabled
+
+
 def test_admin_pages_and_printing_is_read_only(client, site, phones, beheerder):
+    PrintingSettings.objects.update_or_create(pk=1, defaults={"enabled": True})
     PrintQuote.objects.create(number="12", customer=phones["customer"], reference="Kantoor")
     client.force_login(beheerder)
     for url in ("telephony/quote", "telephony/item", "telephony/category", "printing/printquote", "printing/printer",

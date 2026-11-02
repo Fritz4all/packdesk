@@ -78,6 +78,18 @@ def _cmdb_in_use():
     return CmdbSettings.load().enabled
 
 
+def _telephony_in_use():
+    from apps.telephony.models import TelephonySettings
+
+    return TelephonySettings.load().enabled
+
+
+def _printing_in_use():
+    from apps.printing.models import PrintingSettings
+
+    return PrintingSettings.load().enabled
+
+
 def _tab_paths(key):
     return [str(reverse_lazy(url)) for _title, url, _perm, _model, _form in SETTINGS_TABS[key][1]]
 
@@ -322,19 +334,19 @@ SECTIONS = [
                 "title": _("Telephony quotes"),
                 "icon": "request_quote",
                 "link": reverse_lazy("admin:telephony_quote_changelist"),
-                "permission": lambda request: request.user.has_perm("telephony.view_quote"),
+                "permission": lambda request: _telephony_in_use() and request.user.has_perm("telephony.view_quote"),
             },
             {
                 "title": _("Telephony items"),
                 "icon": "call",
                 "link": reverse_lazy("admin:telephony_item_changelist"),
-                "permission": lambda request: request.user.has_perm("telephony.view_item"),
+                "permission": lambda request: _telephony_in_use() and request.user.has_perm("telephony.view_item"),
             },
             {
                 "title": _("Telephony categories"),
                 "icon": "folder",
                 "link": reverse_lazy("admin:telephony_category_changelist"),
-                "permission": lambda request: request.user.has_perm("telephony.view_category"),
+                "permission": lambda request: _telephony_in_use() and request.user.has_perm("telephony.view_category"),
             },
             {
                 "title": _("Telephony settings"),
@@ -353,37 +365,43 @@ SECTIONS = [
                 "title": _("Printing quotes"),
                 "icon": "request_quote",
                 "link": reverse_lazy("admin:printing_printquote_changelist"),
-                "permission": lambda request: request.user.has_perm("printing.view_printquote"),
+                "permission": lambda request: _printing_in_use() and request.user.has_perm("printing.view_printquote"),
             },
             {
                 "title": _("Printing contracts"),
                 "icon": "contract",
                 "link": reverse_lazy("admin:printing_printcontract_changelist"),
-                "permission": lambda request: request.user.has_perm("printing.view_printcontract"),
+                "permission": lambda request: _printing_in_use() and request.user.has_perm("printing.view_printcontract"),
             },
             {
                 "title": _("Supplies orders"),
                 "icon": "inventory",
                 "link": reverse_lazy("admin:printing_suppliesorder_changelist"),
-                "permission": lambda request: request.user.has_perm("printing.view_suppliesorder"),
+                "permission": lambda request: _printing_in_use() and request.user.has_perm("printing.view_suppliesorder"),
             },
             {
                 "title": _("Printers"),
                 "icon": "print",
                 "link": reverse_lazy("admin:printing_printer_changelist"),
-                "permission": lambda request: request.user.has_perm("printing.view_printer"),
+                "permission": lambda request: _printing_in_use() and request.user.has_perm("printing.view_printer"),
             },
             {
                 "title": _("Supplies"),
                 "icon": "water_drop",
                 "link": reverse_lazy("admin:printing_consumable_changelist"),
-                "permission": lambda request: request.user.has_perm("printing.view_consumable"),
+                "permission": lambda request: _printing_in_use() and request.user.has_perm("printing.view_consumable"),
             },
             {
                 "title": _("Support plans"),
                 "icon": "support_agent",
                 "link": reverse_lazy("admin:printing_supportplan_changelist"),
-                "permission": lambda request: request.user.has_perm("printing.view_supportplan"),
+                "permission": lambda request: _printing_in_use() and request.user.has_perm("printing.view_supportplan"),
+            },
+            {
+                "title": _("Printing settings"),
+                "icon": "tune",
+                "link": reverse_lazy("admin:printing_printingsettings_changelist"),
+                "permission": lambda request: request.user.has_perm("printing.view_printingsettings"),
             },
         ],
     },

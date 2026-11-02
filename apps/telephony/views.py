@@ -9,14 +9,14 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 
-from apps.customers.models import Customer, customer_of
+from apps.customers.models import customer_of
 
-from .models import Item, Quote, QuoteLine, TelephonySettings, automatic_quantities, calculate
+from .models import Item, Quote, QuoteLine, TelephonySettings, automatic_quantities, calculate, open_to
 
 
 def _customer(request):
     customer = customer_of(request.user)
-    if customer is None or customer.status != Customer.Status.ACTIVE or not TelephonySettings.load().enabled:
+    if not open_to(customer):
         raise PermissionDenied
     return customer
 

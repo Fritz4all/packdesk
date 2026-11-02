@@ -1,17 +1,12 @@
 from datetime import timedelta
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import Decimal
 
 from django.conf import settings
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-CENT = Decimal("0.01")
-HUNDRED = Decimal("100")
-
-
-def money(value):
-    return Decimal(value).quantize(CENT, rounding=ROUND_HALF_UP)
+from apps.core.amounts import CENT, HUNDRED, money  # noqa: F401 (other apps import them from here)
 
 
 class OrderSettings(models.Model):

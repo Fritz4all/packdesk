@@ -24,6 +24,7 @@ from unfold.admin import ModelAdmin, StackedInline, TabularInline
 from unfold.decorators import display
 from unfold.widgets import UnfoldAdminDecimalFieldWidget, UnfoldAdminSelectWidget, UnfoldAdminTextInputWidget
 
+from apps.core.module_switch import when_enabled
 from apps.core.object_actions import ObjectAction, ObjectActionsMixin
 from apps.customers import overview
 from apps.customers.admin import CustomerAdmin
@@ -43,23 +44,7 @@ def in_use():
     return CmdbSettings.load().enabled
 
 
-class WhenEnabled:
-    """Admin pages that only exist while the installation uses the CMDB."""
-
-    def has_module_permission(self, request):
-        return in_use() and super().has_module_permission(request)
-
-    def has_view_permission(self, request, obj=None):
-        return in_use() and super().has_view_permission(request, obj)
-
-    def has_add_permission(self, request, *args):
-        return in_use() and super().has_add_permission(request, *args)
-
-    def has_change_permission(self, request, obj=None):
-        return in_use() and super().has_change_permission(request, obj)
-
-    def has_delete_permission(self, request, obj=None):
-        return in_use() and super().has_delete_permission(request, obj)
+WhenEnabled = when_enabled(in_use)
 
 
 @admin.register(CmdbSettings)

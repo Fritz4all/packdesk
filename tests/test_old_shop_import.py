@@ -15,7 +15,7 @@ from apps.licences.models import Category, HardwareClass, Licence, LicenceOption
 from apps.numbering.models import NumberSequence
 from apps.orders.models import Order, OrderLine
 from apps.parts.models import PartOrder, PartRequest, Remark
-from apps.printing.models import PrintContract, PrintQuote, SuppliesOrder
+from apps.printing.models import PrintContract, PrintingSettings, PrintQuote, SuppliesOrder
 from apps.telephony.models import Item, Quote, TelephonySettings
 
 from .conftest import make_user
@@ -340,5 +340,13 @@ def test_printing_and_telephony_come_along(old_db):
     assert tq.customer.number == "400123" and tq.view == "reseller" and tq.old_price_per_port == Decimal("14.93")
     assert tq.lines.count() == 1 and tq.totals()["hire_per_month"] == Decimal("11.44")  # 4 × 2.60 + 10%
 
+    assert PrintingSettings.load().enabled  # the import brought printing data in
+    PrintingSettings.objects.filter(pk=1).update(enabled=False)
     again = _run(old_db, apply=True)
     assert again.counts["telephony quotes"].get("created", 0) == 0 and again.counts["printing quotes"].get("created", 0) == 0
+    assert not PrintingSettings.load().enabled  # nothing new came in, so switching it off stays
+
+
+def test_a_trial_import_does_not_switch_on_the_printing_archive(old_db):
+    _run(old_db, apply=False)
+    assert not PrintingSettings.load().enabled

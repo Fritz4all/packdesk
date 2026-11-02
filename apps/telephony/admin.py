@@ -1,10 +1,24 @@
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin
-from unfold.admin import ModelAdmin, TabularInline
+from unfold.admin import ModelAdmin, StackedInline, TabularInline
 
-from .models import Category, Item, Quote, QuoteLine, TelephonySettings
+from apps.core.module_switch import opens_settings_when_off, when_enabled
+from apps.customers import overview
+from apps.customers.admin import CustomerAdmin
+
+from .models import Category, Item, Quote, QuoteLine, TelephonyCustomer, TelephonySettings, uses_telephony
+
+
+def in_use():
+    return TelephonySettings.load().enabled
+
+
+WhenEnabled = when_enabled(in_use)
+OpensSettingsWhenOff = opens_settings_when_off(in_use, "admin:telephony_telephonysettings_changelist",
+                                               _("Telephony is switched off. Switch it on here to use it."))
 
 
 @admin.register(TelephonySettings)
@@ -21,14 +35,28 @@ class TelephonySettingsAdmin(ModelAdmin, TabbedTranslationAdmin):
         return False
 
 
+class CustomerSwitchInline(WhenEnabled, StackedInline):
+    """The switch on the customer form. Added here, so the customer module stays unaware of telephony."""
+
+    model = TelephonyCustomer
+    extra = 1
+    max_num = 1
+    can_delete = False
+    tab = True
+    fields = ["enabled"]
+
+
+CustomerAdmin.inlines = [*CustomerAdmin.inlines, CustomerSwitchInline]
+
+
 @admin.register(Category)
-class CategoryAdmin(ModelAdmin, TabbedTranslationAdmin):
+class CategoryAdmin(OpensSettingsWhenOff, WhenEnabled, ModelAdmin, TabbedTranslationAdmin):
     list_display = ["name", "position"]
     list_editable = ["position"]
 
 
 @admin.register(Item)
-class ItemAdmin(ModelAdmin, TabbedTranslationAdmin):
+class ItemAdmin(OpensSettingsWhenOff, WhenEnabled, ModelAdmin, TabbedTranslationAdmin):
     list_display = ["name", "category", "hire_per_month", "buy_price", "buy_per_month", "is_active", "position"]
     list_editable = ["position"]
     list_filter = ["category", "is_active"]
@@ -51,7 +79,7 @@ class QuoteLineInline(TabularInline):
 
 
 @admin.register(Quote)
-class QuoteAdmin(ModelAdmin):
+class QuoteAdmin(OpensSettingsWhenOff, WhenEnabled, ModelAdmin):
     """Quotes are made by customers in the portal; here they can be looked at."""
 
     inlines = [QuoteLineInline]
@@ -64,3 +92,13 @@ class QuoteAdmin(ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+
+def _overview_quotes(customer):
+    return customer.telephony_quotes.order_by("-created_at")
+
+
+overview.register("telephony_quotes", _("Telephony quotes"), "telephony.quote", _overview_quotes,
+                  [_("Number"), _("Date"), _("Reference"), _("View")],
+                  lambda q: [f"T{q.pk}", overview.short_date(q.created_at), q.reference, q.get_view_display()], order=57,
+                  visible=uses_telephony)

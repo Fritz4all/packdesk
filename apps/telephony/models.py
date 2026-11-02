@@ -9,11 +9,16 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.orders.models import HUNDRED, money
+from apps.core.amounts import HUNDRED, money
+from apps.customers.models import Customer
 
 
 class TelephonySettings(models.Model):
-    enabled = models.BooleanField(_("telephony calculator active"), default=False)
+    enabled = models.BooleanField(
+        _("use telephony"), default=False,
+        help_text=_("Off: the calculator, the quotes, the items and the switches on customers are hidden. "
+                    "Nothing is deleted."),
+    )
     installation_costs = models.DecimalField(_("one-off installation costs (€)"), max_digits=8, decimal_places=2,
                                              default=Decimal("0"))
     default_margin = models.DecimalField(_("default margin (%)"), max_digits=5, decimal_places=2, default=Decimal("10"),
@@ -36,6 +41,35 @@ class TelephonySettings(models.Model):
     def load(cls):
         obj, _created = cls.objects.get_or_create(pk=1)
         return obj
+
+
+class TelephonyCustomer(models.Model):
+    """A customer's own switch. Kept here so the customer module knows nothing about telephony. A customer without
+    a row uses telephony, so only the customers that were switched off have one that matters."""
+
+    customer = models.OneToOneField("customers.Customer", on_delete=models.CASCADE, related_name="telephony",
+                                    verbose_name=_("customer"))
+    enabled = models.BooleanField(
+        _("uses telephony"), default=True,
+        help_text=_("Off: this customer does not see the calculator, and the quotes are left out of the customer "
+                    "page. Nothing is deleted."),
+    )
+
+    class Meta:
+        verbose_name = _("telephony")
+        verbose_name_plural = _("telephony")
+
+    def __str__(self):
+        return str(self.customer)
+
+
+def uses_telephony(customer):
+    return TelephonySettings.load().enabled and not TelephonyCustomer.objects.filter(customer=customer, enabled=False).exists()
+
+
+def open_to(customer):
+    """Whether this customer can use the calculator in the portal."""
+    return customer is not None and customer.status == Customer.Status.ACTIVE and uses_telephony(customer)
 
 
 class Category(models.Model):

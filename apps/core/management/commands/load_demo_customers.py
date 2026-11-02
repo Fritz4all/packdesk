@@ -26,8 +26,11 @@ from apps.licences.models import Licence, SupportPack, Vendor
 from apps.numbering.models import NumberSequence
 from apps.orders.models import Order, OrderLine, PaymentMethod, place_order
 from apps.parts.models import Packing, PartOrder, PartOrderLine, PartRequest, RequestLine
+from apps.printing.models import Printer, PrintingSettings, PrintContract, PrintQuote, PrintQuoteLine
+from apps.telephony.models import Category, Item, Quote, QuoteLine, TelephonyCustomer, TelephonySettings
 
 MARKER = "Alles Tegelijk BV"
+MODULES_MARKER = "Telefonie Uit BV"
 DOMAIN = "example.test"
 
 
@@ -40,14 +43,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if not settings.DEBUG:
             raise CommandError("Only for a development installation (DEBUG on).")
-        if Customer.objects.filter(name=MARKER).exists():
+        base_missing = not Customer.objects.filter(name=MARKER).exists()
+        modules_missing = not Customer.objects.filter(name=MODULES_MARKER).exists()
+        if not (base_missing or modules_missing):
             self.stdout.write("The demo customers are already there; nothing created.")
             return
         self.password = options["password"]
         self.logins = []
+        self.made = []
         self.today = timezone.localdate()
         with transaction.atomic():
-            self.build()
+            if base_missing:
+                self.build()
+            if modules_missing:
+                self.telephony_and_printing()
         self.stdout.write(self.style.SUCCESS(f"{len(self.made)} demo customers created."))
         for name, situation in self.made:
             self.stdout.write(f"  {name}: {situation}")
@@ -217,8 +226,43 @@ class Command(BaseCommand):
 
     # --- the situations ---------------------------------------------------------------------------------------
 
+    def telephony_and_printing(self):
+        TelephonySettings.objects.update_or_create(pk=1, defaults={
+            "enabled": True, "installation_costs": Decimal("25"), "default_margin": Decimal("10")})
+        PrintingSettings.objects.update_or_create(pk=1, defaults={"enabled": True})
+        devices = Category.objects.create(name_nl="Toestellen", name_en="Phones", position=1)
+        licences = Category.objects.create(name_nl="Licenties", name_en="Licences", position=2)
+        phone = Item.objects.create(category=devices, name_nl="IP-toestel", name_en="IP phone",
+                                    hire_per_month=Decimal("2.60"), buy_price=Decimal("132"))
+        licence = Item.objects.create(category=licences, name_nl="Gebruikerslicentie", name_en="User licence",
+                                      hire_per_month=Decimal("5.90"), buy_per_month=Decimal("5.90"))
+        licence.quantity_from.set([phone])
+
+        def quote(customer, reference):
+            made = Quote.objects.create(customer=customer, reference=reference, margin_hire=Decimal("10"),
+                                        margin_buy=Decimal("10"), installation_costs=Decimal("25"))
+            for item in (phone, licence):
+                QuoteLine.objects.create(quote=made, item=item, quantity=4, hire_per_month=item.hire_per_month,
+                                         buy_price=item.buy_price, buy_per_month=item.buy_per_month)
+
+        quote(self.customer("Telefonie Aan BV", "Gebruikt telefonie: ziet de calculator en heeft een offerte.", login=True),
+              "Kantoor Rotterdam")
+        off = self.customer(MODULES_MARKER, "Telefonie uitgezet voor deze klant: geen calculator, de offerte is bewaard.",
+                            login=True)
+        quote(off, "Oude offerte")
+        TelephonyCustomer.objects.create(customer=off, enabled=False)
+
+        archive = self.customer("Printing Archief BV", "Heeft een oude offerte en een contract in het printing-archief.")
+        printer = Printer.objects.create(name="Voorbeeldprinter 4000", product_nr="VP4000", vendor=Vendor.objects.first(),
+                                         price=Decimal("899"), color=True)
+        old_quote = PrintQuote.objects.create(number="DEMO-1", customer=archive, reference="Kantoorprinters",
+                                              created_at=timezone.now() - datetime.timedelta(days=4000))
+        PrintQuoteLine.objects.create(quote=old_quote, printer=printer)
+        PrintContract.objects.create(number="DEMO-C1", quote=old_quote, customer=archive, company="Eindklant Voorbeeld",
+                                     start_date=self.today - datetime.timedelta(days=4000),
+                                     end_date=self.today - datetime.timedelta(days=2500))
+
     def build(self):
-        self.made = []
         self.customer("Alleen Gegevens BV", "Alleen bedrijfsgegevens: geen contactpersoon, aankopen, licenties of CMDB.", contact=False)
         if not SupportPack.objects.exists():
             call_command("load_demo_catalogue", licences=0, stdout=self.stdout)

@@ -119,8 +119,14 @@ uitleveren en corrigeren, *Beheerder* mag ook de instellingen wijzigen.
 ## Telefonie
 
 Een calculator in het klantportaal (*Telefonie*) waarmee klanten, zoals resellers, een telefooncentrale
-doorrekenen en huren met kopen vergelijken. Staat standaard uit: zet hem aan onder *Instellingen telefonie*.
+doorrekenen en huren met kopen vergelijken.
 
+- **Aan of uit:** telefonie staat standaard uit: zet het aan onder *Instellingen telefonie*. Uit betekent geen
+  calculator, en in het beheer geen offertes, artikelen, categorieën of schakelaar op de klant; alleen de
+  instellingen blijven bereikbaar. Er wordt niets gewist. Artikelen voer je dus in terwijl telefonie aanstaat.
+- **Per klant:** op het klantformulier staat *Gebruikt telefonie*, standaard aan. Zet je het uit, dan ziet die
+  klant de calculator en de eigen offertes niet meer, en staan de offertes niet meer op de klantpagina. In de
+  lijst *Telefonie-offertes* blijven ze wel zichtbaar.
 - **Artikelen** (*Telefonie-artikelen*, per categorie): huur per maand, koopprijs (eenmalig) en per maand
   bij koop. Een leeg veld betekent dat het artikel niet zo te krijgen is. Bij *aantal = som van* telt
   PackDesk het aantal zelf, bijvoorbeeld één gebruikerslicentie per toestel en installatie per licentie.
@@ -138,6 +144,10 @@ laatste offerte is uit 2013. De gegevens zijn bewaard om in te zien: printers en
 supportpakketten, offertes, contracten (met serienummers en tellerstanden) en verbruiksbestellingen.
 Je kunt zoeken en kijken, maar niets wijzigen of nieuw maken; de rekenregels van de vorige webshop zijn
 niet meer bekend.
+
+Het archief staat standaard uit en gaat vanzelf aan als een import uit de vorige webshop printinggegevens
+binnenhaalt. Onder *Instellingen printing* zet je het aan of uit. Uit betekent geen menu-items en niets op de
+klantpagina; er wordt niets gewist. Dit geldt voor de hele installatie, niet per klant.
 
 ## Storingsmeldingen
 
